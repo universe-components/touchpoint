@@ -1,7 +1,7 @@
 package com.universe.touchpoint.channel.eventbus;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.TouchPointChannel;
+import com.universe.touchpoint.channel.TouchPointChannel;
 
 import org.greenrobot.eventbus.EventBus;
 

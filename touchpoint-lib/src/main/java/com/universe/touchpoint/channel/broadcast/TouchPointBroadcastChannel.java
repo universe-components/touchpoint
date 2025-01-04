@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.TouchPointChannel;
+import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
 

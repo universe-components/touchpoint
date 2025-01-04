@@ -2,6 +2,7 @@ package com.universe.touchpoint;
 
 import android.content.Context;
 
+import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.channel.broadcast.TouchPointBroadcastChannel;
 import com.universe.touchpoint.channel.eventbus.TouchPointEventBus;
 

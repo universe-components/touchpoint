@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi;
 import com.qihoo360.mobilesafe.api.AppVar;
 import com.qihoo360.replugin.RePlugin;
 import com.qihoo360.replugin.helper.LogDebug;
+import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
 
 import java.lang.reflect.Method;

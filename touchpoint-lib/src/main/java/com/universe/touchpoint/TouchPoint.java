@@ -2,6 +2,8 @@ package com.universe.touchpoint;
 
 import android.util.Log;
 
+import com.universe.touchpoint.channel.TouchPointChannel;
+
 import java.lang.reflect.Field;
 
 public abstract class TouchPoint {
