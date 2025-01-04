@@ -14,14 +14,7 @@ import com.qihoo360.replugin.RePluginCallbacks;
 import com.qihoo360.replugin.RePluginConfig;
 import com.qihoo360.replugin.RePluginHost;
 
-/**
- * 方便宿主直接继承RePluginApplication来完成插件框架的注册 <p>
- * 此外，也可以无需继承此Application，自己择机调用相关方法来使用
- *
- * @author RePlugin Team
- */
-
-public class RePluginApplication extends Application {
+public class TouchPointPluginApplication extends Application {
 
     private Activity currentActivity;
 
@@ -92,7 +85,6 @@ public class RePluginApplication extends Application {
             @Override
             public void onActivityResumed(@NonNull Activity activity) {
                 // 每次 Activity 恢复时，记录当前的 Activity 实例
-//        currentActivity = activity;
             }
 
             @Override
