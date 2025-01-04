@@ -42,6 +42,8 @@ class FontBroadcastReceiver : TouchPointReceiver<TextTouchPoint> {
 }
 ```
 
+说明：TextTouchPoint为用户自定义触点类，需继承TouchPoint类，该类可在不同应用间共享。
+
 ## RoadMap
 
 1. **新增拉取触点**
