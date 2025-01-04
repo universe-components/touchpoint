@@ -1,6 +1,6 @@
 # Touchpoint-Lib
 
-`touchpoint-lib` 是一个用于触点IoC框架，用于远程和本地依赖注入和使用。
+`touchpoint-lib` 是一个触点IoC框架，用于远程和本地触点注入和使用。
 
 ## 使用指南
 
@@ -12,6 +12,7 @@
 dependencies {
     implementation 'com.universe.touchpoint:touchpoint-lib:1.0.0'
 }
+```
 
 ### 触点注入
 ```kotlin
@@ -23,7 +24,8 @@ val textTouchPoint = TouchPointContextManager
 textTouchPoint
     .setFontSize(10.0)
     .finish()
-    
+```
+
 ### 接收触点
 ```kotlin
 class FontBroadcastReceiver : TouchPointReceiver<TextTouchPoint> {
@@ -38,6 +40,7 @@ class FontBroadcastReceiver : TouchPointReceiver<TextTouchPoint> {
         }
         
 }
+```
 
 ## RoadMap
 
