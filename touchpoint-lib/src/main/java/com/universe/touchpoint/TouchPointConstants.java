@@ -8,6 +8,6 @@ public class TouchPointConstants {
 
     public static final String TOUCH_POINT_RECEIVER_FILTERS = "com.universe.touchpoint.receiver.filters";
 
-    public static final String PLUGIN_NAME_PREFIX = "com.qihoo360.plugin.name";
+    public static final String AGENT_NAME_PREFIX = "com.universe.agent.name";
 
 }

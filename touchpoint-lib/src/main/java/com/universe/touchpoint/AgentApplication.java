@@ -9,12 +9,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.qihoo360.mobilesafe.api.AppVar;
 import com.qihoo360.replugin.RePlugin;
 import com.qihoo360.replugin.RePluginCallbacks;
 import com.qihoo360.replugin.RePluginConfig;
+import com.qihoo360.replugin.RePluginFramework;
 import com.qihoo360.replugin.RePluginHost;
 
-public class TouchPointPluginApplication extends Application {
+public class AgentApplication extends Application {
 
     private Activity currentActivity;
 
@@ -64,10 +66,18 @@ public class TouchPointPluginApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-//        RePluginHost.App.onCreate();
+        if (AppVar.sAppContext != null) {
+            RePluginHost.App.onCreate();
+            // 初始化发送方
+            RePluginFramework.init(AppVar.sAppContext.getClassLoader());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            TouchPointContextManager.registerTouchPointReceivers(RePlugin.getPluginContext(), true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                TouchPointContextManager.registerTouchPointReceivers(AppVar.sAppContext, false);
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                TouchPointContextManager.registerTouchPointReceivers(RePlugin.getPluginContext(), true);
+            }
         }
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
