@@ -32,6 +32,16 @@ public class TouchPointContextManager {
         }
     }
 
+    public static <T extends TouchPoint> T generateTouchPoint(Class<T> tpClass) {
+        String name = RePlugin.getPluginName();
+        Context ctx = RePlugin.getPluginContext();
+        if (name == null) {
+            name = RePlugin.getHostName(AppVar.sAppContext);
+            ctx = AppVar.sAppContext;
+        }
+        return generateTouchPoint(tpClass, name, ctx);
+    }
+
     public static <T> T generateTouchPoint(Class<T> tpClass, Context context) {
         String name = RePlugin.getPluginName();
         if (name == null) {

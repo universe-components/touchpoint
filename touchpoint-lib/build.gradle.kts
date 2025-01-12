@@ -25,11 +25,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "21"
     }
     packagingOptions {
         pickFirst("**")
@@ -38,25 +38,6 @@ android {
 
 fataar {
     transitive = true
-}
-
-dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    embed(libs.androidx.localbroadcast) {
-        exclude(group = "androidx.annotation", module = "annotation")
-    }
-//    implementation(libs.material)
-    embed(libs.replugin.plugin.lib)
-    embed(libs.replugin.host.lib)
-    embed(libs.kryo)
-    implementation(libs.fury)
-    embed(libs.eventbus)
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
 
 publishing {
@@ -75,4 +56,30 @@ publishing {
             }
         }
     }
+}
+
+dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.room.compiler.processing)
+    embed(libs.androidx.localbroadcast) {
+        exclude(group = "androidx.annotation", module = "annotation")
+    }
+//    implementation(libs.material)
+    embed(libs.replugin.plugin.lib)
+    embed(libs.replugin.host.lib)
+    embed(libs.kryo)
+    implementation(libs.fury)
+    embed(libs.eventbus)
+    implementation(libs.incap)
+    annotationProcessor(libs.incap.processor)
+    implementation(libs.auto.service)
+    annotationProcessor(libs.auto.service.annotations)
+    implementation(libs.auto.value)
+    implementation(libs.auto.value.annotations)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }
