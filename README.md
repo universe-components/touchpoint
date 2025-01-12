@@ -14,6 +14,25 @@ dependencies {
 }
 ```
 
+### 配置Agent
+
+#### 前置Agent
+```xml
+<meta-data
+    android:name="com.universe.agent.name"
+    android:value="memo_agent" />
+```
+
+#### 后置Agent
+```xml
+<meta-data
+    android:name="com.universe.agent.name"
+    android:value="font_agent" />
+<meta-data
+    android:name="com.universe.agent.iconName"
+    android:value="字体" />
+```
+
 ### 定义触点
 ```java
 public class TextTouchPoint extends TouchPoint {
