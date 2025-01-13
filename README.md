@@ -1,6 +1,6 @@
-# Touchpoint-Lib
+# Touchpoint Protocol
 
-`touchpoint-lib` 是一个触点IoC框架，用于远程和本地触点注入和使用。
+`touchpoint-protocol` ，触点协议，是一个Agent之间通信的协议，每个Agent之间通过共享触点实现通信。
 
 ## 核心功能
 
