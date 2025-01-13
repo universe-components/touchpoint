@@ -112,6 +112,9 @@ public class TextTouchPoint extends TouchPoint {
 ```
 
 ### 触点注入
+
+在 `FontAgent` 中注入触点：
+
 ```kotlin
 import com.universe.touchpoint.touchpoints.TextTouchPoint
 
@@ -124,9 +127,9 @@ textTouchPoint
 ```
 
 ### 接收触点
-
-继承 `TouchPointListener` 接口，并实现 `onReceive` 方法。<br>
-注解 `@TouchPointListener` 用于标识该类为触点监听器，`from` 属性用于指定该监听器接收的触点来自哪个Agent。
+在 `Memo Agent` 中接收触点，方法如下：<br>
+1. 继承 `TouchPointListener` 接口，并实现 `onReceive` 方法。<br>
+2. 注解 `@TouchPointListener` 用于标识该类为触点监听器，`from` 属性用于指定该监听器接收的触点来自哪个Agent。
 
 ```kotlin
 @com.universe.touchpoint.annotations.TouchPointListener(from = "memo")
