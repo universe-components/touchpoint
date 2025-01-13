@@ -22,7 +22,7 @@ dependencies {
 
 #### Memo Agent
 
-Memo Application
+MemoApplication继承AgentApplication
 ```kotlin
 class MemoApplication : AgentApplication()
 ```
@@ -36,7 +36,7 @@ class MemoApplication : AgentApplication()
 
 #### Font Agent
 
-Font Application
+FontApplication继承AgentApplication
 ```kotlin
 class FontApplication : AgentApplication()
 ```
