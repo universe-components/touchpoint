@@ -16,14 +16,32 @@ dependencies {
 
 ### 配置Agent
 
-#### 前置Agent
+#### Example 
+
+以更新备忘录字体为例，其中，有两个Agent：Memo Agent和Font Agent。
+
+#### Memo Agent
+
+Memo Application
+```kotlin
+class MemoApplication : AgentApplication()
+```
+
+配置Memo Agent Name
 ```xml
 <meta-data
     android:name="com.universe.agent.name"
     android:value="memo_agent" />
 ```
 
-#### 后置Agent
+#### Font Agent
+
+Font Application
+```kotlin
+class FontApplication : AgentApplication()
+```
+
+配置Font Agent Name
 ```xml
 <meta-data
     android:name="com.universe.agent.name"
@@ -112,6 +130,7 @@ class FontBroadcastListener : TouchPointListener<TextTouchPoint> {
         if (textTouchPoint.fontSize != null && textTouchPoint.fontSize != 1f) {
             memoEditView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textTouchPoint.fontSize)
         }
+    }
         
 }
 ```
