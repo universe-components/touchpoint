@@ -22,5 +22,5 @@ pluginManagement {
 //    }
 //}
 
-rootProject.name = "touchpoint-lib"
+rootProject.name = "touchpoint"
 include(":touchpoint-lib")
