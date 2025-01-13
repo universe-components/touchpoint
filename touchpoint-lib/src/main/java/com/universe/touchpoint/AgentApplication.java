@@ -72,11 +72,11 @@ public class AgentApplication extends Application {
             RePluginFramework.init(AppVar.sAppContext.getClassLoader());
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                TouchPointContextManager.registerTouchPointReceivers(AppVar.sAppContext, false);
+                TouchPointContextManager.registerTouchPointReceivers(AppVar.sAppContext, false, ConfigType.ANNOTATION);
             }
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                TouchPointContextManager.registerTouchPointReceivers(RePlugin.getPluginContext(), true);
+                TouchPointContextManager.registerTouchPointReceivers(RePlugin.getPluginContext(), true, ConfigType.ANNOTATION);
             }
         }
 

@@ -6,16 +6,22 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
 import com.qihoo360.mobilesafe.api.AppVar;
 import com.qihoo360.replugin.RePlugin;
 import com.qihoo360.replugin.helper.LogDebug;
+import com.universe.touchpoint.annotations.TouchPointListener;
 import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.utils.ApkUtils;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TouchPointContextManager {
 
@@ -71,10 +77,9 @@ public class TouchPointContextManager {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public static void registerTouchPointReceivers(Context appContext, boolean isPlugin) {
+    public static void registerTouchPointReceivers(Context appContext, boolean isPlugin, ConfigType configType) {
         try {
             Bundle metaData = null;
-
             if (isPlugin) {
                 metaData = appContext.getApplicationInfo().metaData;
             } else {
@@ -83,32 +88,42 @@ public class TouchPointContextManager {
                 metaData = appInfo.metaData;
             }
 
-            // 获取存储的字符串列表
-            String receiverClasses = metaData.getString(TouchPointConstants.TOUCH_POINT_RECEIVERS);
-            String receiverFilters = metaData.getString(TouchPointConstants.TOUCH_POINT_RECEIVER_FILTERS);
+            List<String> receiverClassList = null;
+            List<String> receiverFilterList = null;
+            if (configType == ConfigType.XML) {
+                // 获取存储的字符串列表
+                String receiverClasses = metaData.getString(TouchPointConstants.TOUCH_POINT_RECEIVERS);
+                String receiverFilters = metaData.getString(TouchPointConstants.TOUCH_POINT_RECEIVER_FILTERS);
+                assert receiverClasses != null;
+                receiverClassList = Arrays.asList(receiverClasses.replace(" ", "").split(","));
+                assert receiverFilters != null;
+                receiverFilterList = Arrays.asList(receiverFilters.replace(" ", "").split(","));
+            } else {
+                List<Pair<String, String>> receiverFilterPair = ApkUtils.getClassNames(appContext, TouchPointListener.class, "from");
+                receiverClassList = receiverFilterPair.stream()
+                        .map(pair -> pair.first) // 提取每个 Pair 的第一个值
+                        .collect(Collectors.toList());
+                receiverFilterList = receiverFilterPair.stream()
+                        .map(pair -> pair.second) // 提取每个 Pair 的第二个值
+                        .collect(Collectors.toList());
+            }
 
-            if (receiverClasses != null && receiverFilters != null) {
-                // 将字符串转换为列表
-                String[] receiverClassList = receiverClasses.replace(" ", "").split(",");
-                String[] receiverFilterList = receiverFilters.replace(" ", "").split(",");
+            if (receiverClassList.size() == receiverFilterList.size()) {
+                for (int i = 0; i < receiverClassList.size(); i++) {
+                    String name = TouchPointHelper.touchPointPluginName(receiverFilterList.get(i));
 
-                if (receiverClassList.length == receiverFilterList.length) {
-                    for (int i = 0; i < receiverClassList.length; i++) {
-                        String name = TouchPointHelper.touchPointPluginName(receiverFilterList[i]);
-
-                        // 动态注册接收器，并传递相应的过滤器
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                            TouchPointReceiverManager.getInstance().registerTouchPointReceiver(
-                                    appContext,
-                                    name,
-                                    receiverClassList[i]
-                            );
-                        }
+                    // 动态注册接收器，并传递相应的过滤器
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        TouchPointReceiverManager.getInstance().registerTouchPointReceiver(
+                                appContext,
+                                name,
+                                receiverClassList.get(i)
+                        );
                     }
-                } else {
-                    // 处理不匹配的情况，例如打印日志或抛出异常
-                    Log.e("ReceiverRegistration", "Receiver classes and filters list sizes do not match.");
                 }
+            } else {
+                // 处理不匹配的情况，例如打印日志或抛出异常
+                Log.e("ReceiverRegistration", "Receiver classes and filters list sizes do not match.");
             }
         } catch (Exception e) {
             if (LogDebug.LOG) {

@@ -118,8 +118,10 @@ textTouchPoint
 ### 接收触点
 
 继承 `TouchPointListener` 接口，并实现 `onReceive` 方法。
+注解 `@TouchPointListener` 用于标识该类为触点监听器，`from` 属性用于指定该监听器接收的触点来自哪个Agent。
 
 ```kotlin
+@com.universe.touchpoint.annotations.TouchPointListener(from = "memo")
 class FontBroadcastListener : TouchPointListener<TextTouchPoint> {
 
     override fun onReceive(textTouchPoint: TextTouchPoint, context: Context) {
