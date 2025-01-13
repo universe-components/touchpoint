@@ -30,7 +30,7 @@ public class TouchPointReceiverManager {
     public void registerTouchPointReceiver(Context appContext, String name, String receiverClassName) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(receiverClassName);
-            TouchPointReceiver<?> tpInstanceReceiver = (TouchPointReceiver<?>) tpInstanceReceiverClass.getConstructor().newInstance();
+            TouchPointListener<?> tpInstanceReceiver = (TouchPointListener<?>) tpInstanceReceiverClass.getConstructor().newInstance();
 
             Type[] interfaces = tpInstanceReceiverClass.getGenericInterfaces();
             ParameterizedType parameterizedType = (ParameterizedType) interfaces[0];

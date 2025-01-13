@@ -4,17 +4,17 @@ import java.util.HashMap;
 
 public class TouchPointContext {
 
-    private final HashMap<String, TouchPointReceiver<?>> touchPointReceivers = new HashMap<>();
+    private final HashMap<String, TouchPointListener<?>> touchPointReceivers = new HashMap<>();
 
-    public void putTouchPointReceiver(String name, TouchPointReceiver<?> receiver) {
+    public void putTouchPointReceiver(String name, TouchPointListener<?> receiver) {
         touchPointReceivers.put(name, receiver);
     }
 
-    public TouchPointReceiver<?> getTouchPointReceiver(String name) {
+    public TouchPointListener<?> getTouchPointReceiver(String name) {
         return touchPointReceivers.get(name);
     }
 
-    public HashMap<String, TouchPointReceiver<?>> getTouchPointReceivers() {
+    public HashMap<String, TouchPointListener<?>> getTouchPointReceivers() {
         return touchPointReceivers;
     }
 

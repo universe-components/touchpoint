@@ -98,8 +98,11 @@ textTouchPoint
 ```
 
 ### 接收触点
+
+继承 `TouchPointListener` 接口，并实现 `onReceive` 方法。
+
 ```kotlin
-class FontBroadcastReceiver : TouchPointReceiver<TextTouchPoint> {
+class FontBroadcastListener : TouchPointListener<TextTouchPoint> {
 
     override fun onReceive(textTouchPoint: TextTouchPoint, context: Context) {
         val memoActivity = (context as MainApplication).currentActivity as MemoActivity

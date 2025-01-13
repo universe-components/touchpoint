@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointContextManager;
-import com.universe.touchpoint.TouchPointReceiver;
+import com.universe.touchpoint.TouchPointListener;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
 
@@ -28,7 +28,7 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
         T touchPoint = SerializeUtils.deserializeFromByteArray(touchPointBytes, tpClass);
 
         String name = TouchPointHelper.touchPointPluginName(touchPoint.name);
-        TouchPointReceiver<T> tpReceiver = (TouchPointReceiver<T>) TouchPointContextManager.getContext().getTouchPointReceiver(name);
+        TouchPointListener<T> tpReceiver = (TouchPointListener<T>) TouchPointContextManager.getContext().getTouchPointReceiver(name);
         tpReceiver.onReceive(touchPoint, mContext);
     }
 
