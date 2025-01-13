@@ -113,7 +113,7 @@ public class TextTouchPoint extends TouchPoint {
 
 ### 触点注入
 
-在 `FontAgent` 中注入触点：
+在 `Font Agent` 中注入触点：
 
 ```kotlin
 import com.universe.touchpoint.touchpoints.TextTouchPoint
