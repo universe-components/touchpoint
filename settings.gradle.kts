@@ -23,4 +23,4 @@ pluginManagement {
 //}
 
 rootProject.name = "touchpoint"
-include(":touchpoint-lib")
+include(":touchpoint-protocol")

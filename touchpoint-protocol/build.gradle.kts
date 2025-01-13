@@ -48,7 +48,7 @@ publishing {
         register<MavenPublication>("mavenJava") {
             groupId = "com.universe.touchpoint"
             version = "1.0.0"
-            artifactId = "touchpoint-lib"
+            artifactId = "touchpoint-protocol"
 
             // 必须有这个，否则不会上传AAR包
             afterEvaluate {
