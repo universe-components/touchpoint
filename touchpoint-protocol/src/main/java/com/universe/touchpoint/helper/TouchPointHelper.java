@@ -7,12 +7,20 @@ public class TouchPointHelper {
         return TouchPointConstants.AGENT_NAME_PREFIX + "." + name;
     }
 
+    public static String touchPointFilterName(String name, String filter) {
+        return touchPointPluginName(name) + "." + filter;
+    }
+
     public static String touchPointReceiverClassName(String type) {
         return String.format(TouchPointConstants.TOUCH_POINT_PKG + ".%sBroadcastReceiver", type);
     }
 
     public static String touchPointSubscriberClassName(String type) {
         return String.format(TouchPointConstants.TOUCH_POINT_PKG + ".%sSubscriber", type);
+    }
+
+    public static String touchPointContentProviderUri(String prefix, String objectName) {
+        return String.format("content://%s/%s", prefix, objectName);
     }
 
 }

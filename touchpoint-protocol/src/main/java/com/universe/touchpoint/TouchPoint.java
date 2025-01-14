@@ -1,30 +1,33 @@
 package com.universe.touchpoint;
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.universe.touchpoint.channel.TouchPointChannel;
+import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.provider.TouchPointContent;
 
 import java.lang.reflect.Field;
 
 public abstract class TouchPoint {
 
-    public String name;
+    public String filter;
     public transient TouchPointChannel channel;
 
     protected TouchPoint() {
     }
 
-    protected TouchPoint(String name) {
-        this.name = name;
+    protected TouchPoint(String filter) {
+        this.filter = filter;
     }
 
-    protected TouchPoint(String name, TouchPointChannel channel) {
-        this.name = name;
+    protected TouchPoint(String filter, TouchPointChannel channel) {
+        this.filter = filter;
         this.channel = channel;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     public void setChannel(TouchPointChannel channel) {
@@ -46,6 +49,13 @@ public abstract class TouchPoint {
         }
 
         try {
+            String contentProviderUri = TouchPointHelper.touchPointContentProviderUri(
+                    TouchPointConstants.CONTENT_PROVIDER_PREFIX, filter);
+            TouchPointContent touchPointContent = TouchPointContentFactory.createContent(Uri.parse(contentProviderUri), TouchPointContext.getAgentContext());
+            boolean rs = touchPointContent.insertOrUpdate(this);
+            if (!rs) {
+                throw new RuntimeException("insertOrUpdate failed");
+            }
             return channel.send(this);
         } catch (Exception e) {
             throw new RuntimeException(e);

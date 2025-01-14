@@ -30,13 +30,6 @@ public class AgentApplication extends Application {
         return new RePluginConfig();
     }
 
-    /**
-     * 子类可以复写此方法来自定义RePluginCallbacks。请参见 RePluginCallbacks 的说明 <p>
-     * 注意：若在createConfig的RePluginConfig内同时也注册了Callbacks，则以这里创建出来的为准
-     *
-     * @see RePluginCallbacks
-     * @return 新的RePluginCallbacks对象，可以为空
-     */
     protected RePluginCallbacks createCallbacks() {
         return null;
     }
@@ -66,19 +59,24 @@ public class AgentApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        Context ctx;
+        boolean isPlugin = false;
         if (AppVar.sAppContext != null) {
             RePluginHost.App.onCreate();
             // 初始化发送方
             RePluginFramework.init(AppVar.sAppContext.getClassLoader());
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                TouchPointContextManager.registerTouchPointReceivers(AppVar.sAppContext, false, ConfigType.ANNOTATION);
-            }
+            ctx = AppVar.sAppContext;
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                TouchPointContextManager.registerTouchPointReceivers(RePlugin.getPluginContext(), true, ConfigType.ANNOTATION);
-            }
+            ctx = RePlugin.getPluginContext();
+            isPlugin = true;
         }
+
+        TouchPointContextManager.initContext();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            TouchPointContextManager.registerTouchPointReceivers(ctx, isPlugin, ConfigType.ANNOTATION);
+        }
+
+        TouchPointContextManager.registerContentProvider(this);
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override

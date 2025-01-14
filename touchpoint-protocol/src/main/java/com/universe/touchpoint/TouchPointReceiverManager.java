@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.channel.broadcast.TouchPointBroadcastReceiver;
+import com.universe.touchpoint.helper.TouchPointHelper;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -27,7 +28,7 @@ public class TouchPointReceiverManager {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public void registerTouchPointReceiver(Context appContext, String name, String receiverClassName) {
+    public void registerTouchPointReceiver(Context appContext, String name, String filter, String receiverClassName) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(receiverClassName);
             TouchPointListener<?> tpInstanceReceiver = (TouchPointListener<?>) tpInstanceReceiverClass.getConstructor().newInstance();
@@ -40,10 +41,11 @@ public class TouchPointReceiverManager {
             Class<? extends TouchPoint> touchPointClass = touchPointClazz.asSubclass(TouchPoint.class);
             TouchPointBroadcastReceiver<? extends TouchPoint> tpReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
 
-            IntentFilter filter = new IntentFilter(name);
-            appContext.registerReceiver(tpReceiver, filter, Context.RECEIVER_EXPORTED);
+            String filterAction = TouchPointHelper.touchPointFilterName(name, filter);
+            IntentFilter intentFilter = new IntentFilter(filterAction);
+            appContext.registerReceiver(tpReceiver, intentFilter, Context.RECEIVER_EXPORTED);
 
-            TouchPointContextManager.getContext().putTouchPointReceiver(name, tpInstanceReceiver);
+            TouchPointContextManager.getContext(name).putTouchPointReceiver(filterAction, tpInstanceReceiver);
         } catch (Exception e) {
             if (LogDebug.LOG) {
                 e.printStackTrace();

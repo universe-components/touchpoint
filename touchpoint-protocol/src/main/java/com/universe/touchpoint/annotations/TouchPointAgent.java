@@ -7,8 +7,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface TouchPointListener {
+public @interface TouchPointAgent {
 
-    String from();
+    String name();
+    String iconName() default "";
 
 }
