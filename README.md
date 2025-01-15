@@ -1,6 +1,6 @@
 # Touchpoint Protocol
 
-`touchpoint-protocol` ，触点协议，是一个Agent之间通信的协议，每个Agent之间通过共享触点实现通信。
+`touchpoint-protocol` ，触点协议（TPP协议），是一个Agent之间通信的协议，每个Agent之间通过共享触点实现通信。
 
 ## 核心功能
 
