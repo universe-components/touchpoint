@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.universe.touchpoint.TouchPointConstants;
 
-public class TouchPointContentProvider extends ContentProvider {
+public class TouchPointProvider extends ContentProvider {
 
     private LruCache<String, byte[]> cache;
 

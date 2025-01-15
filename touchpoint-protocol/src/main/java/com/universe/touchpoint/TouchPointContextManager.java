@@ -20,7 +20,7 @@ import com.universe.touchpoint.annotations.TouchPointListener;
 import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.provider.TouchPointContent;
-import com.universe.touchpoint.provider.TouchPointContentProvider;
+import com.universe.touchpoint.provider.TouchPointProvider;
 import com.universe.touchpoint.utils.ApkUtils;
 
 import java.lang.reflect.Method;
@@ -149,7 +149,7 @@ public class TouchPointContextManager {
             installProviderMethod.setAccessible(true);
 
             // 创建 ContentProvider 实例
-            ContentProvider provider = new TouchPointContentProvider();
+            ContentProvider provider = new TouchPointProvider();
 
             // 设置 ProviderInfo
             ProviderInfo providerInfo = new ProviderInfo();
