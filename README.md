@@ -6,7 +6,7 @@
 
 - **支持多种Agent架构：** 不同Agent可在一个进程，也可分属不同进程，及不同Agent可部署在不同的设备上。
 
-- **多种Agent文件格式：** 支持apk、jar、exe、ipa等文件格式。
+- **多种Agent文件格式：** 支持apk、jar、exe、ipa、py等文件格式。
 
 - **可热插拔Agent：** Agent网络中的任意一个Agent都可在线加入和退出，不影响整个Agent网络。
 
