@@ -1,6 +1,6 @@
 # Touchpoint Protocol
 
-`touchpoint-protocol` ，触点协议（TPP协议），是一个Agent之间通信的协议，每个Agent之间通过共享触点实现通信。
+`touchpoint-protocol` ，触点协议（TPP协议），是一个Agent之间通信的协议，每个Agent之间通过共享触点实现通信，是Agent网络的基础设施。
 
 ## 核心功能
 
@@ -22,11 +22,11 @@ dependencies {
 }
 ```
 
-### 配置Agent
-
-#### Example 
+### Example
 
 以更新备忘录字体为例，其中，有两个Agent：Memo Agent和Font Agent。
+
+### 配置Agent
 
 #### Memo Agent
 
