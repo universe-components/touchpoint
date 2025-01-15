@@ -60,6 +60,9 @@ class FontApplication : AgentApplication()
 ```
 
 ### 定义触点
+
+TextTouchPoint为用户自定义触点类，需继承TouchPoint类，该类可在不同Agent间共享。
+
 ```java
 public class TextTouchPoint extends TouchPoint {
 
@@ -158,8 +161,6 @@ val fontTouchPoint = TouchPointContextManager.fetchTouchPoint<TextTouchPoint>(
     TextTouchPoint::class.java //触点类型
 )
 ```
-
-说明：TextTouchPoint为用户自定义触点类，需继承TouchPoint类，该类可在不同应用间共享。
 
 ## RoadMap
 
