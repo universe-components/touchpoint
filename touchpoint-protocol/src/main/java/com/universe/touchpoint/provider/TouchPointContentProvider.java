@@ -9,6 +9,7 @@ import android.util.LruCache;
 
 import androidx.annotation.NonNull;
 
+import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.utils.SerializeUtils;
 
 public class TouchPointContentProvider extends ContentProvider {
@@ -28,7 +29,7 @@ public class TouchPointContentProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         String key = uri.getLastPathSegment();  // URI path segment is the key
         assert values != null;
-        byte[] objectBytes = values.getAsByteArray("touch_point");
+        byte[] objectBytes = values.getAsByteArray(TouchPointConstants.TOUCH_POINT_EVENT_NAME);
 
         if (objectBytes != null) {
             // Serialize the object to byte array
@@ -45,7 +46,7 @@ public class TouchPointContentProvider extends ContentProvider {
 
         if (objectBytes != null) {
             // 创建一个 MatrixCursor
-            MatrixCursor cursor = new MatrixCursor(new String[]{"touch_point"});
+            MatrixCursor cursor = new MatrixCursor(new String[]{TouchPointConstants.TOUCH_POINT_EVENT_NAME});
             // 直接添加字节数组到 Cursor
             cursor.addRow(new Object[]{objectBytes});
             return cursor;
@@ -58,7 +59,7 @@ public class TouchPointContentProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         String key = uri.getLastPathSegment();
         assert values != null;
-        byte[] objectBytes = values.getAsByteArray("touch_point");
+        byte[] objectBytes = values.getAsByteArray(TouchPointConstants.TOUCH_POINT_EVENT_NAME);
 
         if (objectBytes != null) {
             cache.put(key, objectBytes);

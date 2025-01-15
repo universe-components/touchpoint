@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.TouchPointContext;
 import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.TouchPointListener;
@@ -24,13 +25,14 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
     @Override
     @SuppressWarnings("unchecked")
     public void onReceive(Context context, Intent intent) {
-        byte[] touchPointBytes = intent.getByteArrayExtra("touch_point");
+        byte[] touchPointBytes = intent.getByteArrayExtra(TouchPointConstants.TOUCH_POINT_EVENT_NAME);
 
         T touchPoint = SerializeUtils.deserializeFromByteArray(touchPointBytes, tpClass);
 
         String name = TouchPointContext.getAgentName();
-        String filter = TouchPointHelper.touchPointPluginName(touchPoint.filter);
-        TouchPointListener<T> tpReceiver = (TouchPointListener<T>) TouchPointContextManager.getContext(name).getTouchPointReceiver(filter);
+        String ctxName = TouchPointHelper.touchPointPluginName(name);
+        String filter = TouchPointHelper.touchPointFilterName(touchPoint.filter);
+        TouchPointListener<T> tpReceiver = (TouchPointListener<T>) TouchPointContextManager.getContext(ctxName).getTouchPointReceiver(filter);
         tpReceiver.onReceive(touchPoint, mContext);
     }
 

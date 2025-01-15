@@ -7,8 +7,8 @@ public class TouchPointHelper {
         return TouchPointConstants.AGENT_NAME_PREFIX + "." + name;
     }
 
-    public static String touchPointFilterName(String name, String filter) {
-        return touchPointPluginName(name) + "." + filter;
+    public static String touchPointFilterName(String filter) {
+        return TouchPointConstants.TOUCH_POINT_FILTER_PREFIX + "." + filter;
     }
 
     public static String touchPointReceiverClassName(String type) {

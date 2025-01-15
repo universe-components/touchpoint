@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.utils.SerializeUtils;
 
 public class TouchPointContent {
@@ -20,7 +21,7 @@ public class TouchPointContent {
 
     public <T> boolean insertOrUpdate(T object) {
         ContentValues values = new ContentValues();
-        values.put("touch_point", SerializeUtils.serializeToByteArray(object));
+        values.put(TouchPointConstants.TOUCH_POINT_EVENT_NAME, SerializeUtils.serializeToByteArray(object));
 
         int rowsUpdated = context.getContentResolver().update(uri, values, null, null);
 
@@ -37,7 +38,7 @@ public class TouchPointContent {
         T object = null;
         Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
-            @SuppressLint("Range") byte[] objectBytes = cursor.getBlob(cursor.getColumnIndex("touch_point"));
+            @SuppressLint("Range") byte[] objectBytes = cursor.getBlob(cursor.getColumnIndex(TouchPointConstants.TOUCH_POINT_EVENT_NAME));
             // 这里的 object 需要被反序列化
             object = SerializeUtils.deserializeFromByteArray(objectBytes, clazz);
             cursor.close();

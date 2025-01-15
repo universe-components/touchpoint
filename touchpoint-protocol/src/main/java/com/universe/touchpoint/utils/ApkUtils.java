@@ -1,9 +1,9 @@
 package com.universe.touchpoint.utils;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.util.Pair;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -16,13 +16,16 @@ public class ApkUtils {
     public static List<Pair<String, List<String>>> getClassNames(
             Context context,
             Class<? extends Annotation> annotationClass,
-            List<String> propertyNames) {
+            List<String> propertyNames,
+            boolean canLoad) {
         List<Pair<String, List<String>>> result = new ArrayList<>();
         try {
             // 获取应用的 APK 文件路径
-            ApplicationInfo appInfo = context.getPackageManager()
-                    .getApplicationInfo(context.getPackageName(), 0);
-            String apkPath = appInfo.sourceDir;
+            String apkPath = context.getApplicationInfo().sourceDir;
+            if (!canLoad) {
+                File dexFile = new File(apkPath);
+                dexFile.setWritable(false);
+            }
 
             // 使用 DexFile 获取 APK 中的所有类
             DexFile dexFile = new DexFile(apkPath);

@@ -41,11 +41,12 @@ public class TouchPointReceiverManager {
             Class<? extends TouchPoint> touchPointClass = touchPointClazz.asSubclass(TouchPoint.class);
             TouchPointBroadcastReceiver<? extends TouchPoint> tpReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
 
-            String filterAction = TouchPointHelper.touchPointFilterName(name, filter);
+            String filterAction = TouchPointHelper.touchPointFilterName(filter);
             IntentFilter intentFilter = new IntentFilter(filterAction);
             appContext.registerReceiver(tpReceiver, intentFilter, Context.RECEIVER_EXPORTED);
 
-            TouchPointContextManager.getContext(name).putTouchPointReceiver(filterAction, tpInstanceReceiver);
+            String ctxName = TouchPointHelper.touchPointPluginName(name);
+            TouchPointContextManager.getContext(ctxName).putTouchPointReceiver(filterAction, tpInstanceReceiver);
         } catch (Exception e) {
             if (LogDebug.LOG) {
                 e.printStackTrace();

@@ -10,6 +10,10 @@ public class TouchPointConstants {
 
     public static final String AGENT_NAME_PREFIX = "com.universe.agent.name";
 
+    public static final String TOUCH_POINT_FILTER_PREFIX = "com.universe.receiver.filter";
+
     public static final String CONTENT_PROVIDER_PREFIX = "com.universe.touchpoint.provider";
+
+    public static final String TOUCH_POINT_EVENT_NAME = "touch_point";
 
 }

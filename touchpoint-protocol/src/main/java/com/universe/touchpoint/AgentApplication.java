@@ -76,7 +76,7 @@ public class AgentApplication extends Application {
             TouchPointContextManager.registerTouchPointReceivers(ctx, isPlugin, ConfigType.ANNOTATION);
         }
 
-        TouchPointContextManager.registerContentProvider(this);
+        TouchPointContextManager.registerContentProvider(ctx);
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override

@@ -4,7 +4,7 @@
 
 ## 核心功能
 
-- **动态连接Agent：** 动态连接多个Apk Agent，不同Agent可在一个进程，也可分属不同进程。
+- **支持多种Agent架构：** 不同Agent可在一个进程，也可分属不同进程，及不同Agent可部署在不同的设备上。
 
 - **可热插拔Agent：** Agent网络中的任意一个Agent都可在线加入和退出，不影响整个Agent网络。
 
@@ -119,7 +119,7 @@ public class TextTouchPoint extends TouchPoint {
 import com.universe.touchpoint.touchpoints.TextTouchPoint
 
 val textTouchPoint = TouchPointContextManager
-    .generateTouchPoint<TextTouchPoint>(TextTouchPoint::class.java)
+    .generateTouchPoint<TextTouchPoint>(TextTouchPoint::class.java, "font_touch_point")
             
 textTouchPoint
     .setFontSize(10.0)
@@ -129,10 +129,10 @@ textTouchPoint
 ### 接收触点
 在 `Memo Agent` 中接收触点，方法如下：<br>
 1. 继承 `TouchPointListener` 接口，并实现 `onReceive` 方法。<br>
-2. 注解 `@TouchPointListener` 用于标识该类为触点监听器，`from` 属性用于指定该监听器接收的触点来自哪个Agent。
+2. 注解 `@TouchPointListener` 用于标识该类为触点监听器，`touchPointName` 属性用于指定监听的触点名称。
 
 ```kotlin
-@com.universe.touchpoint.annotations.TouchPointListener(from = "memo")
+@com.universe.touchpoint.annotations.TouchPointListener(touchPointName = "font_touch_point")
 class FontBroadcastListener : TouchPointListener<TextTouchPoint> {
 
     override fun onReceive(textTouchPoint: TextTouchPoint, context: Context) {
@@ -148,10 +148,17 @@ class FontBroadcastListener : TouchPointListener<TextTouchPoint> {
 }
 ```
 
+### 读取触点
+
+```kotlin
+val fontTouchPoint = TouchPointContextManager.fetchTouchPoint<TextTouchPoint>(
+    "font_touch_point", //触点名称
+    TextTouchPoint::class.java //触点类型
+)
+```
+
 说明：TextTouchPoint为用户自定义触点类，需继承TouchPoint类，该类可在不同应用间共享。
 
 ## RoadMap
 
-1. **新增拉取触点**
-
-2. **新增注解方式注入和使用**
+1. **新增注解方式注入和使用**

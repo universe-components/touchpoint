@@ -49,7 +49,7 @@ public class TouchPointContext {
         if (name == null) {
             name = RePlugin.getHostName(AppVar.sAppContext);
         }
-        return TouchPointHelper.touchPointPluginName(name);
+        return name;
     }
 
 }
