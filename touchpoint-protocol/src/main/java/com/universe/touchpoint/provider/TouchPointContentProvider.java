@@ -10,7 +10,6 @@ import android.util.LruCache;
 import androidx.annotation.NonNull;
 
 import com.universe.touchpoint.TouchPointConstants;
-import com.universe.touchpoint.utils.SerializeUtils;
 
 public class TouchPointContentProvider extends ContentProvider {
 

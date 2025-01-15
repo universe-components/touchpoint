@@ -7,7 +7,6 @@ import com.esotericsoftware.kryo.io.Output;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-
 public class SerializeUtils {
 
     public static byte[] serializeToByteArray(Object object) {

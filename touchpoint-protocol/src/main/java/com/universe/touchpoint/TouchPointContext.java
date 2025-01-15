@@ -1,14 +1,10 @@
 package com.universe.touchpoint;
 
-import android.annotation.SuppressLint;
 import android.content.ContentProvider;
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 
 import com.qihoo360.mobilesafe.api.AppVar;
 import com.qihoo360.replugin.RePlugin;
-import com.universe.touchpoint.helper.TouchPointHelper;
 
 import java.util.HashMap;
 
