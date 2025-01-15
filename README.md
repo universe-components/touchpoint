@@ -150,6 +150,8 @@ class FontBroadcastListener : TouchPointListener<TextTouchPoint> {
 
 ### 读取触点
 
+在 `Font Agent` 中读取触点
+
 ```kotlin
 val fontTouchPoint = TouchPointContextManager.fetchTouchPoint<TextTouchPoint>(
     "font_touch_point", //触点名称
