@@ -2,9 +2,9 @@ package com.universe.touchpoint;
 
 import com.openai.models.ChatCompletion;
 import com.universe.touchpoint.ai.AIModelFactory;
-import com.universe.touchpoint.router.AIModelRouter;
+import com.universe.touchpoint.router.routers.AIModelRouter;
 import com.universe.touchpoint.router.AgentRouteItem;
-import com.universe.touchpoint.router.AgentRouter;
+import com.universe.touchpoint.router.routers.AgentRouter;
 
 public class Dispatcher {
 

@@ -1,9 +1,11 @@
-package com.universe.touchpoint.router;
+package com.universe.touchpoint.router.routers;
 
 import com.openai.models.ChatCompletion;
 import com.universe.touchpoint.Agent;
-import com.universe.touchpoint.Router;
 import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.router.AgentRouteItem;
+import com.universe.touchpoint.router.ChoiceParser;
+import com.universe.touchpoint.router.Router;
 
 import java.util.ArrayList;
 import java.util.HashMap;

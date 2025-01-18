@@ -1,4 +1,4 @@
-package com.universe.touchpoint;
+package com.universe.touchpoint.router;
 
 public interface Router<I, T> {
 
