@@ -45,7 +45,7 @@ public class AIModelFactory {
         // 获取模型实例
         AIModel<?, C, R> model = createModel(modelType);
         // 创建聊天对话
-        model.createChatCompletion(content);
+        model.createCompletion(content);
         // 执行推理并获取choice，随机选择一个choice
         return model.selectChoice(model.run());
     }

@@ -31,13 +31,13 @@ public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion
                 .model(ChatModel.O1)
                 .build();
 
-        this.chatCompletions.add(client.chat().completions().create(params));
+        this.completions.add(client.chat().completions().create(params));
     }
 
     @Override
     public Map<ChatCompletion, List<ChatCompletion.Choice>> run() {
         Map<ChatCompletion, List<ChatCompletion.Choice>> choices = new HashMap<>();
-        for (ChatCompletion chatCompletion : chatCompletions) {
+        for (ChatCompletion chatCompletion : completions) {
             choices.put(chatCompletion, chatCompletion.choices());
         }
         return choices;

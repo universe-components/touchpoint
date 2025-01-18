@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class AIModel<T, C, R> {
 
     protected final T client;
-    protected List<C> chatCompletions = new ArrayList<>();
+    protected List<C> completions = new ArrayList<>();
 
     public AIModel(T client) {
         this.client = client;

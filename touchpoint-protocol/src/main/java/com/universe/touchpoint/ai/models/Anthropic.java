@@ -28,14 +28,14 @@ public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
                 .prompt(content)
                 .model(Model.CLAUDE_3_5_SONNET_LATEST)
                 .build();
-        this.chatCompletions.add(client.completions().create(params));
+        this.completions.add(client.completions().create(params));
     }
 
     @Override
     public Map<Completion, List<String>> run() {
         Map<Completion, List<String>> choices = new HashMap<>();
-        for (Completion chatCompletion : chatCompletions) {
-            choices.put(chatCompletion, Lists.newArrayList(chatCompletion.completion()));
+        for (Completion completion : completions) {
+            choices.put(completion, Lists.newArrayList(completion.completion()));
         }
         return choices;
     }
