@@ -19,6 +19,8 @@ incap = "1.0.0"
 auto-service = "1.1.1"
 auto-value = "1.11.0"
 hilt = "2.55"
+openai = "0.11.5"
+anthropic = "0.1.0-alpha.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +44,8 @@ auto-value = { group = "com.google.auto.value", name = "auto-value", version.ref
 auto-value-annotations = { group = "com.google.auto.value", name = "auto-value-annotations", version.ref = "auto-value" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+openai = { group = "com.openai", name = "openai-java", version.ref = "openai" }
+anthropic = { group = "com.anthropic", name = "anthropic-java", version.ref = "anthropic"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

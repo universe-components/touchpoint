@@ -1,12 +1,19 @@
 package com.universe.touchpoint;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
 
 import com.qihoo360.i.Factory;
+import com.qihoo360.mobilesafe.api.AppVar;
+import com.qihoo360.replugin.RePluginEnv;
 import com.qihoo360.replugin.RePluginHost;
 import com.qihoo360.replugin.model.PluginInfo;
+import com.universe.touchpoint.annotations.TouchPointAgent;
+import com.universe.touchpoint.utils.AnnotationUtils;
+
+import java.util.Objects;
 
 public class Agent {
 
@@ -33,17 +40,33 @@ public class Agent {
         }
     }
 
+    public static String getProperty(String propertyName) {
+        Context context = RePluginEnv.getPluginContext();
+        if (context == null) {
+            context = AppVar.sAppContext;
+        }
+
+        Application application = (Application) context;
+        Class<?> applicationClass = application.getClass();
+        if (applicationClass.isAnnotationPresent(TouchPointAgent.class)) {
+            // 获取注解实例
+            TouchPointAgent annotation = applicationClass.getAnnotation(TouchPointAgent.class);
+            // 返回注解的属性值
+            assert annotation != null;
+            return Objects.requireNonNull(
+                    AnnotationUtils.getAnnotationValue(annotation, TouchPointAgent.class, propertyName))
+                    .toString();
+        }
+
+        return null;
+    }
+
     public static Context fetchContext(String name) {
         return Factory.queryPluginContext(name);
     }
 
     public static PackageInfo fetchPackageInfo(String name) {
         return Factory.queryPluginPackageInfo(name);
-    }
-
-    public static boolean connect(String filePath) {
-        PluginInfo pluginInfo = RePluginHost.install(filePath);
-        return pluginInfo != null;
     }
 
 }

@@ -15,12 +15,15 @@ import android.util.Pair;
 import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.RePlugin;
+import com.qihoo360.replugin.RePluginHost;
 import com.qihoo360.replugin.helper.LogDebug;
+import com.qihoo360.replugin.model.PluginInfo;
 import com.universe.touchpoint.annotations.TouchPointListener;
 import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.provider.TouchPointContent;
 import com.universe.touchpoint.provider.TouchPointProvider;
+import com.universe.touchpoint.router.AgentRouter;
 import com.universe.touchpoint.utils.ApkUtils;
 
 import java.lang.reflect.Method;
@@ -38,7 +41,7 @@ public class TouchPointContextManager {
 
     public static void initContext() {
         synchronized(lock) {
-            String name = TouchPointContext.getAgentName();
+            String name = Agent.getProperty("name");
             String ctxName = TouchPointHelper.touchPointPluginName(name);
             contexts.put(ctxName, new TouchPointContext());
         }
@@ -76,16 +79,20 @@ public class TouchPointContextManager {
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     public static void registerTouchPointReceivers(Context appContext, boolean isPlugin, ConfigType configType) {
         try {
-            Bundle metaData;
+            Bundle metaData = null;
             String name;
-            if (isPlugin) {
-                metaData = appContext.getApplicationInfo().metaData;
-                name = RePlugin.getPluginName();
+            if (configType == ConfigType.XML) {
+                if (isPlugin) {
+                    metaData = appContext.getApplicationInfo().metaData;
+                    name = RePlugin.getPluginName();
+                } else {
+                    ApplicationInfo appInfo = appContext.getPackageManager().getApplicationInfo(
+                            appContext.getPackageName(), PackageManager.GET_META_DATA);
+                    metaData = appInfo.metaData;
+                    name = RePlugin.getHostName(appContext);
+                }
             } else {
-                ApplicationInfo appInfo = appContext.getPackageManager().getApplicationInfo(
-                        appContext.getPackageName(), PackageManager.GET_META_DATA);
-                metaData = appInfo.metaData;
-                name = RePlugin.getHostName(appContext);
+                name = Agent.getProperty("name");
             }
 
             List<String> receiverClassList;
@@ -173,6 +180,11 @@ public class TouchPointContextManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static <T extends TouchPoint> void attendAgent(String filePath, String name, Class<T> touchPointClass) {
+        PluginInfo pluginInfo = RePluginHost.install(filePath);
+        AgentRouter.addRoute(name, pluginInfo.getName(), touchPointClass);
     }
 
     public static <T extends TouchPoint> T fetchTouchPoint(String filter, Class<T> clazz) {

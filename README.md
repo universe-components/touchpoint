@@ -12,6 +12,8 @@
 
 - **共享触点对象：** Agent之间共享触点对象，通过触点对象交换数据，无需关心交换形式是消息队列、RPC、还是REST等。
 
+- **支持多种LLM：** 支持多种LLM，如GPT-3、GPT-4、GPT-3.5、GPT-4.0、Claude-3、Claude-3.5等。
+
 ## 使用指南
 
 ### 导入依赖
@@ -20,7 +22,7 @@
 
 ```gradle
 dependencies {
-    implementation 'com.universe.touchpoint:touchpoint-lib:1.0.0'
+    implementation 'com.universe.touchpoint:touchpoint-protocol:1.0.0'
 }
 ```
 

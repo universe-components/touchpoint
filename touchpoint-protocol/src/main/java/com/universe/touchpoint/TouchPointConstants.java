@@ -16,4 +16,6 @@ public class TouchPointConstants {
 
     public static final String TOUCH_POINT_EVENT_NAME = "touch_point";
 
+    public static final String AI_MODEL_API_KEY = "universe";
+
 }

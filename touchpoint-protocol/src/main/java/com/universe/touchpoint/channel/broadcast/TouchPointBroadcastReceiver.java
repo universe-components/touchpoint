@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.universe.touchpoint.Agent;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.TouchPointContext;
@@ -29,7 +30,7 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
 
         T touchPoint = SerializeUtils.deserializeFromByteArray(touchPointBytes, tpClass);
 
-        String name = TouchPointContext.getAgentName();
+        String name = Agent.getProperty("name");
         String ctxName = TouchPointHelper.touchPointPluginName(name);
         String filter = TouchPointHelper.touchPointFilterName(touchPoint.filter);
         TouchPointListener<T> tpReceiver = (TouchPointListener<T>) TouchPointContextManager.getContext(ctxName).getTouchPointReceiver(filter);

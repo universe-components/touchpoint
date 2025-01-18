@@ -34,19 +34,9 @@ public abstract class TouchPoint {
         this.channel = channel;
     }
 
-    public boolean finish() throws IllegalAccessException {
+    public boolean finish() {
         // 获取子类实例的类对象
         Class<?> clazz = this.getClass();
-
-        // 获取子类的所有字段
-        Field[] fields = clazz.getDeclaredFields();
-
-        // 打印字段名和字段值
-        for (Field field : fields) {
-            field.setAccessible(true); // 设置私有字段可访问
-            Object value = field.get(this); // 获取字段的值
-            Log.i("MemberVariable", field.getName() + ": " + value);
-        }
 
         try {
             String contentProviderUri = TouchPointHelper.touchPointContentProviderUri(

@@ -40,12 +40,4 @@ public class TouchPointContext {
         return RePlugin.getPluginContext();
     }
 
-    public static String getAgentName() {
-        String name = RePlugin.getPluginName();
-        if (name == null) {
-            name = RePlugin.getHostName(AppVar.sAppContext);
-        }
-        return name;
-    }
-
 }

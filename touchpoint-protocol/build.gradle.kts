@@ -79,6 +79,8 @@ dependencies {
     implementation(libs.auto.value.annotations)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.openai)
+    api(libs.anthropic)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
