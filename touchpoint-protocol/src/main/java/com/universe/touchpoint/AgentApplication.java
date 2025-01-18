@@ -20,12 +20,6 @@ public class AgentApplication extends Application {
 
     private Activity currentActivity;
 
-    /**
-     * 子类可以复写此方法来自定义RePluginConfig。请参见 RePluginConfig 的说明
-     *
-     * @see RePluginConfig
-     * @return 新的RePluginConfig对象
-     */
     protected RePluginConfig createConfig() {
         return new RePluginConfig();
     }
@@ -140,4 +134,5 @@ public class AgentApplication extends Application {
         // 如果App的minSdkVersion >= 14，该方法可以不调用
         RePluginHost.App.onConfigurationChanged(newConfig);
     }
+
 }
