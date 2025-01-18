@@ -1,4 +1,4 @@
-package com.universe.touchpoint;
+package com.universe.touchpoint.channel;
 
 import android.content.Context;
 import android.content.IntentFilter;
@@ -7,6 +7,9 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.helper.LogDebug;
+import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.TouchPointContextManager;
+import com.universe.touchpoint.TouchPointListener;
 import com.universe.touchpoint.channel.broadcast.TouchPointBroadcastReceiver;
 import com.universe.touchpoint.helper.TouchPointHelper;
 

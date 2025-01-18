@@ -1,12 +1,12 @@
-package com.universe.touchpoint;
+package com.universe.touchpoint.provider;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 
-import com.universe.touchpoint.provider.TouchPointContent;
-
 public class TouchPointContentFactory {
 
+    @SuppressLint("StaticFieldLeak")
     private static TouchPointContent content;
     private static final Object lock = new Object();
 

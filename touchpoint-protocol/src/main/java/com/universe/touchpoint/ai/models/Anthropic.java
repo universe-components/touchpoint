@@ -26,7 +26,7 @@ public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
         CompletionCreateParams params = CompletionCreateParams.builder()
                 .maxTokensToSample(1024L)
                 .prompt(content)
-                .model(Model.CLAUDE_3_5_HAIKU_LATEST)
+                .model(Model.CLAUDE_3_5_SONNET_LATEST)
                 .build();
         this.chatCompletions.add(client.completions().create(params));
     }

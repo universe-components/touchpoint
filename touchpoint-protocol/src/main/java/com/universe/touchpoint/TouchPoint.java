@@ -1,13 +1,11 @@
 package com.universe.touchpoint;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.provider.TouchPointContent;
-
-import java.lang.reflect.Field;
+import com.universe.touchpoint.provider.TouchPointContentFactory;
 
 public abstract class TouchPoint {
 
