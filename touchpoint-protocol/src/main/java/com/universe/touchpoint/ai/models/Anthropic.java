@@ -22,7 +22,7 @@ public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
     }
 
     @Override
-    public void createChatCompletion(String content) {
+    public void createCompletion(String content) {
         CompletionCreateParams params = CompletionCreateParams.builder()
                 .maxTokensToSample(1024L)
                 .prompt(content)

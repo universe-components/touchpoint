@@ -22,7 +22,7 @@ public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion
     }
 
     @Override
-    public void createChatCompletion(String content) {
+    public void createCompletion(String content) {
         ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
                 .addMessage(ChatCompletionUserMessageParam.builder()
                         .role(ChatCompletionUserMessageParam.Role.USER)

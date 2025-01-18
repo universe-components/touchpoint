@@ -24,7 +24,7 @@ public abstract class AIModel<T, C, R> {
         return client;
     }
 
-    public abstract void createChatCompletion(String content);
+    public abstract void createCompletion(String content);
     public abstract Map<C, List<R>> run();
 
 }
