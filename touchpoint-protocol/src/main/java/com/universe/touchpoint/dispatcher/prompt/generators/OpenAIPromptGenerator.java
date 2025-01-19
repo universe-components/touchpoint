@@ -1,4 +1,4 @@
-package com.universe.touchpoint.dispatcher.prompt.builders;
+package com.universe.touchpoint.dispatcher.prompt.generators;
 
 import com.universe.touchpoint.dispatcher.AgentRouteItem;
 import com.universe.touchpoint.dispatcher.prompt.PromptGenerator;

@@ -1,8 +1,8 @@
 package com.universe.touchpoint.dispatcher.prompt;
 
 import com.universe.touchpoint.ai.AIModelType;
-import com.universe.touchpoint.dispatcher.prompt.builders.AnthropicPromptGenerator;
-import com.universe.touchpoint.dispatcher.prompt.builders.OpenAIPromptGenerator;
+import com.universe.touchpoint.dispatcher.prompt.generators.AnthropicPromptGenerator;
+import com.universe.touchpoint.dispatcher.prompt.generators.OpenAIPromptGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
