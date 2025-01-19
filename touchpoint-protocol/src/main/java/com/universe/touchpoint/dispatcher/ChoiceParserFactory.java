@@ -1,6 +1,5 @@
 package com.universe.touchpoint.dispatcher;
 
-import com.universe.touchpoint.ai.AIModel;
 import com.universe.touchpoint.ai.AIModelType;
 import com.universe.touchpoint.dispatcher.parsers.AnthropicChoiceParser;
 import com.universe.touchpoint.dispatcher.parsers.OpenAIChoiceParser;

@@ -1,9 +1,5 @@
 package com.universe.touchpoint.dispatcher.prompt.template;
 
-import androidx.annotation.NonNull;
-
-import com.universe.touchpoint.TouchPoint;
-
 public class OpenAITemplate {
 
     public static final String PREFIX = "Answer the following questions as best you can. You have access to the following tools:";

@@ -7,7 +7,6 @@ import android.content.Intent;
 import com.universe.touchpoint.Agent;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointConstants;
-import com.universe.touchpoint.TouchPointContext;
 import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.TouchPointListener;
 import com.universe.touchpoint.helper.TouchPointHelper;
