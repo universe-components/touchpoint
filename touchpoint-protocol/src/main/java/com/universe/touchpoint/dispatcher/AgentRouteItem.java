@@ -1,11 +1,12 @@
 package com.universe.touchpoint.dispatcher;
 
+import com.universe.touchpoint.AgentEntity;
 import com.universe.touchpoint.TouchPoint;
 
 public class AgentRouteItem {
 
     private String fromAgent;
-    private String toAgent;
+    private AgentEntity toAgent;
     private Class<? extends TouchPoint> sharedClass;
 
     public String getFromAgent() {
@@ -16,11 +17,11 @@ public class AgentRouteItem {
         this.fromAgent = fromAgent;
     }
 
-    public String getToAgent() {
+    public AgentEntity getToAgent() {
         return toAgent;
     }
 
-    public void setToAgent(String toAgent) {
+    public void setToAgent(AgentEntity toAgent) {
         this.toAgent = toAgent;
     }
 

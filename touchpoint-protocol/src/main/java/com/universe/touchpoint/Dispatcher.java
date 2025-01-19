@@ -18,7 +18,7 @@ public class Dispatcher {
 
         AgentRouter agentRouter = new AgentRouter();
         content = PromptBuilder.createPromptGenerator(modelType).generatePrompt(
-                agentRouter.agentRouteItems(Agent.getProperty("name")));
+                agentRouter.agentRouteItems(Agent.getProperty("name")), content);
 
         // 推理并获取choice，随机选择一个choice
         ChatCompletion.Choice choice = AIModelFactory.callModel(content, modelType);
@@ -27,7 +27,7 @@ public class Dispatcher {
             if (routeItem != null) {
                 // 找到匹配的AgentRouteTable并处理
                 T touchPoint = TouchPointContextManager.generateTouchPoint(
-                        (Class<T>) routeItem.getSharedClass(), routeItem.getToAgent());
+                        (Class<T>) routeItem.getSharedClass(), routeItem.getToAgent().getName());
                 boolean rs = touchPoint.finish();
                 if (!rs) {
                     throw new RuntimeException("send target agent failed");

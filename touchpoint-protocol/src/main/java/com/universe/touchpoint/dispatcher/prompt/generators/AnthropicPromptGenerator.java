@@ -8,7 +8,7 @@ import java.util.List;
 public class AnthropicPromptGenerator implements PromptGenerator {
 
     @Override
-    public String generatePrompt(List<AgentRouteItem> agentRouteItems) {
+    public String generatePrompt(List<AgentRouteItem> agentRouteItems, String question) {
         return "";
     }
 

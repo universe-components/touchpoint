@@ -185,9 +185,9 @@ public class TouchPointContextManager {
         }
     }
 
-    public static <T extends TouchPoint> void attendAgent(String filePath, String name, Class<T> touchPointClass) {
-        PluginInfo pluginInfo = RePluginHost.install(filePath);
-        AgentRouter.addRoute(name, pluginInfo.getName(), touchPointClass);
+    public static <T extends TouchPoint> void attendAgent(String filePath, AgentEntity agent, Class<T> touchPointClass) {
+        RePluginHost.install(filePath);
+        AgentRouter.addRoute(Agent.getProperty("name"), agent, touchPointClass);
     }
 
     public static <T extends TouchPoint> T fetchTouchPoint(String filter, Class<T> clazz) {

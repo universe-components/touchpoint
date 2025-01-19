@@ -2,6 +2,7 @@ package com.universe.touchpoint.dispatcher.routers;
 
 import com.openai.models.ChatCompletion;
 import com.universe.touchpoint.Agent;
+import com.universe.touchpoint.AgentEntity;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.dispatcher.AgentRouteItem;
 import com.universe.touchpoint.dispatcher.ChoiceParser;
@@ -35,7 +36,7 @@ public class AgentRouter implements Router<ChatCompletion.Choice, AgentRouteItem
         return null;
     }
 
-    public static <T extends TouchPoint> void addRoute(String fromAgent, String toAgent, Class<T> sharedClass) {
+    public static <T extends TouchPoint> void addRoute(String fromAgent, AgentEntity toAgent, Class<T> sharedClass) {
         synchronized (lock) {
             AgentRouteItem routeItem = new AgentRouteItem();
             routeItem.setFromAgent(fromAgent);
