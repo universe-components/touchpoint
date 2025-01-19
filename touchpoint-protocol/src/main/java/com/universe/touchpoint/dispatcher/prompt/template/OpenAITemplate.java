@@ -1,10 +1,15 @@
 package com.universe.touchpoint.dispatcher.prompt.template;
 
+import androidx.annotation.NonNull;
+
+import com.universe.touchpoint.TouchPoint;
+
 public class OpenAITemplate {
 
     public static final String PREFIX = "Answer the following questions as best you can. You have access to the following tools:";
     public static final String FORMAT_INSTRUCTIONS = """
             Use the following format:
+            
             Question: the input question you must answer
             Thought: you should always think about what to do
             Action: the action to take, should be one of [{agent_names}]
@@ -16,7 +21,8 @@ public class OpenAITemplate {
 
     public static final String SUFFIX = """
             Begin!
+            
             Question: {input}
-            Thought:{agent_scratchpad}""";
+            Thought: {agent_scratchpad}""";
 
 }

@@ -1,5 +1,6 @@
 package com.universe.touchpoint.dispatcher.prompt.generators;
 
+import com.universe.touchpoint.ai.AIModelResponse;
 import com.universe.touchpoint.dispatcher.AgentRouteItem;
 import com.universe.touchpoint.dispatcher.prompt.PromptGenerator;
 import com.universe.touchpoint.dispatcher.prompt.template.OpenAITemplate;
@@ -8,8 +9,10 @@ import java.util.List;
 
 public class OpenAIPromptGenerator implements PromptGenerator {
 
+
     @Override
-    public String generatePrompt(List<AgentRouteItem> agentRouteItems, String question) {
+    public String generatePrompt(List<AgentRouteItem> agentRouteItems,
+                                 AIModelResponse.AgentAction action, String question) {
         StringBuilder toolList = new StringBuilder();
         StringBuilder agentNames = new StringBuilder();
 
@@ -25,13 +28,23 @@ public class OpenAIPromptGenerator implements PromptGenerator {
             agentNames.setLength(agentNames.length() - 2);
         }
 
-        // Replace {input} with the actual question
+        StringBuilder actionBody = new StringBuilder();
         String finalSuffix = OpenAITemplate.SUFFIX.replace("{input}", question);
+        if (action != null) {
+            finalSuffix = finalSuffix.replace("{agent_scratchpad}", action.getThought());
+            actionBody.append(finalSuffix)
+                    .append("\nAction:")
+                    .append(action.getAction())
+                    .append("\nAction Input:")
+                    .append(action.getActionInput())
+                    .append("\nObservation:")
+                    .append(action.getObservation());
+        }
         // Replace [{agent_names}] with the agent names
         String finalFormatInstructions = OpenAITemplate.FORMAT_INSTRUCTIONS.replace("{agent_names}", agentNames.toString());
 
         // Combine PREFIX, dynamically generated TOOL_LIST, FORMAT_INSTRUCTIONS, and SUFFIX
-        return OpenAITemplate.PREFIX + toolList + finalFormatInstructions + finalSuffix;
+        return OpenAITemplate.PREFIX + toolList + finalFormatInstructions + actionBody;
     }
 
 }

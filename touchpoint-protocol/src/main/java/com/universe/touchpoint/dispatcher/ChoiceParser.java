@@ -1,12 +1,11 @@
 package com.universe.touchpoint.dispatcher;
 
-import com.openai.models.ChatCompletion;
+import android.util.Pair;
 
-public class ChoiceParser {
+import com.universe.touchpoint.ai.AIModelResponse;
 
-    public static <T> T parse(ChatCompletion.Choice choice, Class<T> tClass) {
+public interface ChoiceParser<T> {
 
-        return null;
-    }
+    Pair<AIModelResponse.AgentAction, AIModelResponse.AgentFinish> parse(T choice);
 
 }
