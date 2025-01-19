@@ -26,7 +26,7 @@ import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.provider.TouchPointContent;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
 import com.universe.touchpoint.provider.TouchPointProvider;
-import com.universe.touchpoint.router.routers.AgentRouter;
+import com.universe.touchpoint.dispatcher.routers.AgentRouter;
 import com.universe.touchpoint.utils.ApkUtils;
 
 import java.lang.reflect.Method;

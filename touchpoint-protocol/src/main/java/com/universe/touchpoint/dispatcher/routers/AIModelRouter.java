@@ -1,7 +1,7 @@
-package com.universe.touchpoint.router.routers;
+package com.universe.touchpoint.dispatcher.routers;
 
 import com.universe.touchpoint.ai.AIModelType;
-import com.universe.touchpoint.router.Router;
+import com.universe.touchpoint.dispatcher.Router;
 
 public class AIModelRouter implements Router<String, AIModelType> {
 

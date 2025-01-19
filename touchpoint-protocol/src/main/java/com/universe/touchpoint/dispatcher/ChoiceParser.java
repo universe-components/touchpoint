@@ -1,4 +1,4 @@
-package com.universe.touchpoint.router;
+package com.universe.touchpoint.dispatcher;
 
 import com.openai.models.ChatCompletion;
 

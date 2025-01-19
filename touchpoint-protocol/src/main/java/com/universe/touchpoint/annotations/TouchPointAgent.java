@@ -12,6 +12,7 @@ public @interface TouchPointAgent {
     String name();
 
     String desc() default "";
+
     String iconName() default "";
 
 }

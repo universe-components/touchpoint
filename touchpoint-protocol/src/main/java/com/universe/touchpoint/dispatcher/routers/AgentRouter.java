@@ -1,11 +1,11 @@
-package com.universe.touchpoint.router.routers;
+package com.universe.touchpoint.dispatcher.routers;
 
 import com.openai.models.ChatCompletion;
 import com.universe.touchpoint.Agent;
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.router.AgentRouteItem;
-import com.universe.touchpoint.router.ChoiceParser;
-import com.universe.touchpoint.router.Router;
+import com.universe.touchpoint.dispatcher.AgentRouteItem;
+import com.universe.touchpoint.dispatcher.ChoiceParser;
+import com.universe.touchpoint.dispatcher.Router;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +48,10 @@ public class AgentRouter implements Router<ChatCompletion.Choice, AgentRouteItem
 
             Objects.requireNonNull(routeTable.get(fromAgent)).add(routeItem);
         }
+    }
+
+    public List<AgentRouteItem> agentRouteItems(String fromAgent) {
+        return routeTable.getOrDefault(fromAgent, new ArrayList<>());
     }
 
 }
