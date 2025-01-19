@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class PromptBuilder {
 
+    private static PromptGenerator promptGenerator;
     private static final Object lock = new Object();
 
     private static final Map<AIModelType, Class<? extends PromptGenerator>> modelGeneratorMap = new HashMap<>();
@@ -19,16 +20,20 @@ public class PromptBuilder {
 
     public static PromptGenerator createPromptGenerator(AIModelType modelType) {
         synchronized (lock) {
-            try {
-                // 获取模型类类型
-                Class<? extends PromptGenerator> modelGeneratorClass = modelGeneratorMap.get(modelType);
-                if (modelGeneratorClass == null) {
-                    throw new IllegalArgumentException("Unknown model type: " + modelType);
+            if (promptGenerator == null) {
+                try {
+
+                    // 获取模型类类型
+                    Class<? extends PromptGenerator> modelGeneratorClass = modelGeneratorMap.get(modelType);
+                    if (modelGeneratorClass == null) {
+                        throw new IllegalArgumentException("Unknown model type: " + modelType);
+                    }
+                    promptGenerator = modelGeneratorClass.getConstructor().newInstance();
+                } catch (Exception e) {
+                    throw new IllegalArgumentException("Error creating prompt generator for type: " + modelType, e);
                 }
-                return modelGeneratorClass.getConstructor().newInstance();
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Error creating prompt generator for type: " + modelType, e);
             }
+            return promptGenerator;
         }
     }
 
