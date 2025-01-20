@@ -9,8 +9,8 @@ import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.ai.ChoiceParserFactory;
 import com.universe.touchpoint.ai.prompt.PromptBuilder;
 import com.universe.touchpoint.ai.AIModelSelector;
-import com.universe.touchpoint.transport.AgentRouteItem;
-import com.universe.touchpoint.transport.AgentRouter;
+import com.universe.touchpoint.router.AgentRouteItem;
+import com.universe.touchpoint.router.AgentRouter;
 
 public class Dispatcher {
 
@@ -56,7 +56,7 @@ public class Dispatcher {
         }
 
         loopCall(answer.first, content, null);
-        return null;
+        throw new RuntimeException("unknown error");
     }
 
 }
