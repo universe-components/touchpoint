@@ -1,8 +1,8 @@
-package com.universe.touchpoint.dispatcher.prompt.generators;
+package com.universe.touchpoint.ai.prompt.generators;
 
 import com.universe.touchpoint.ai.AIModelResponse;
-import com.universe.touchpoint.dispatcher.AgentRouteItem;
-import com.universe.touchpoint.dispatcher.prompt.PromptGenerator;
+import com.universe.touchpoint.transport.AgentRouteItem;
+import com.universe.touchpoint.ai.prompt.PromptGenerator;
 
 import java.util.List;
 

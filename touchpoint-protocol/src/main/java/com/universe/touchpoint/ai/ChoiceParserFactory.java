@@ -1,8 +1,7 @@
-package com.universe.touchpoint.dispatcher;
+package com.universe.touchpoint.ai;
 
-import com.universe.touchpoint.ai.AIModelType;
-import com.universe.touchpoint.dispatcher.parsers.AnthropicChoiceParser;
-import com.universe.touchpoint.dispatcher.parsers.OpenAIChoiceParser;
+import com.universe.touchpoint.ai.parsers.AnthropicChoiceParser;
+import com.universe.touchpoint.ai.parsers.OpenAIChoiceParser;
 
 import java.util.HashMap;
 import java.util.Map;

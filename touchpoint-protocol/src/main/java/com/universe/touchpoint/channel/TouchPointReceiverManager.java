@@ -7,11 +7,13 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.helper.LogDebug;
+import com.universe.touchpoint.Agent;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.TouchPointListener;
 import com.universe.touchpoint.channel.broadcast.TouchPointBroadcastReceiver;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.transport.AgentRouter;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -44,7 +46,9 @@ public class TouchPointReceiverManager {
             Class<? extends TouchPoint> touchPointClass = touchPointClazz.asSubclass(TouchPoint.class);
             TouchPointBroadcastReceiver<? extends TouchPoint> tpReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
 
-            String filterAction = TouchPointHelper.touchPointFilterName(filter);
+            String filterAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
+                    Agent.getProperty("name"), filter
+            ));
             IntentFilter intentFilter = new IntentFilter(filterAction);
             appContext.registerReceiver(tpReceiver, intentFilter, Context.RECEIVER_EXPORTED);
 

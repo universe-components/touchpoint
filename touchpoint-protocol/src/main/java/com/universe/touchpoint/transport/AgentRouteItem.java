@@ -1,4 +1,4 @@
-package com.universe.touchpoint.dispatcher;
+package com.universe.touchpoint.transport;
 
 import com.universe.touchpoint.AgentEntity;
 import com.universe.touchpoint.TouchPoint;

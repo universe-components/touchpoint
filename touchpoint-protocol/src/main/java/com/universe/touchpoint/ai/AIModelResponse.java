@@ -1,7 +1,6 @@
 package com.universe.touchpoint.ai;
 
 import androidx.annotation.NonNull;
-
 import com.universe.touchpoint.TouchPoint;
 
 public class AIModelResponse {
@@ -63,7 +62,7 @@ public class AIModelResponse {
     }
 
     // 公共内部类 AgentFinish
-    public static class AgentFinish {
+    public static class AgentFinish extends TouchPoint {
         private String output;
 
         public AgentFinish(String output) {

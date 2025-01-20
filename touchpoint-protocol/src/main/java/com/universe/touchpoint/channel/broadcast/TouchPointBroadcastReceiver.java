@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.universe.touchpoint.Agent;
+import com.universe.touchpoint.Dispatcher;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.TouchPointListener;
+import com.universe.touchpoint.ai.AIModelResponse;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
 
@@ -33,7 +35,14 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
         String ctxName = TouchPointHelper.touchPointPluginName(name);
         String filter = TouchPointHelper.touchPointFilterName(touchPoint.filter);
         TouchPointListener<T> tpReceiver = (TouchPointListener<T>) TouchPointContextManager.getContext(ctxName).getTouchPointReceiver(filter);
-        tpReceiver.onReceive(touchPoint, mContext);
+        if (!(touchPoint instanceof AIModelResponse.AgentAction)) {
+            tpReceiver.onReceive(touchPoint, mContext);
+            return;
+        }
+
+        String actionResult = tpReceiver.onReceiveAction(touchPoint, mContext);
+        ((AIModelResponse.AgentAction) touchPoint).setObservation(actionResult);
+        Dispatcher.loopCall((AIModelResponse.AgentAction) touchPoint, touchPoint.content, intent.getAction());
     }
 
 }

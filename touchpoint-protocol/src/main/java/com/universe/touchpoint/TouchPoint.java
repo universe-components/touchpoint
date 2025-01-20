@@ -10,6 +10,7 @@ import com.universe.touchpoint.provider.TouchPointContentFactory;
 public abstract class TouchPoint {
 
     public String filter;
+    public String content;
     public transient TouchPointChannel channel;
 
     protected TouchPoint() {
@@ -28,14 +29,15 @@ public abstract class TouchPoint {
         this.filter = filter;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public void setChannel(TouchPointChannel channel) {
         this.channel = channel;
     }
 
     public boolean finish() {
-        // 获取子类实例的类对象
-        Class<?> clazz = this.getClass();
-
         try {
             String contentProviderUri = TouchPointHelper.touchPointContentProviderUri(
                     TouchPointConstants.CONTENT_PROVIDER_PREFIX, filter);

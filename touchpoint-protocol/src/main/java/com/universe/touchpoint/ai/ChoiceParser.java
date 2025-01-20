@@ -1,8 +1,6 @@
-package com.universe.touchpoint.dispatcher;
+package com.universe.touchpoint.ai;
 
 import android.util.Pair;
-
-import com.universe.touchpoint.ai.AIModelResponse;
 
 public interface ChoiceParser<T> {
 

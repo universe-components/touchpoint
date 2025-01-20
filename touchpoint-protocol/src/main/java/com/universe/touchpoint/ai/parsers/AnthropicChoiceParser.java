@@ -1,9 +1,9 @@
-package com.universe.touchpoint.dispatcher.parsers;
+package com.universe.touchpoint.ai.parsers;
 
 import android.util.Pair;
 
 import com.universe.touchpoint.ai.AIModelResponse;
-import com.universe.touchpoint.dispatcher.ChoiceParser;
+import com.universe.touchpoint.ai.ChoiceParser;
 
 public class AnthropicChoiceParser implements ChoiceParser<String> {
 

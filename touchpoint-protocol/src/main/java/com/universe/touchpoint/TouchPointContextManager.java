@@ -17,7 +17,6 @@ import androidx.annotation.RequiresApi;
 import com.qihoo360.replugin.RePlugin;
 import com.qihoo360.replugin.RePluginHost;
 import com.qihoo360.replugin.helper.LogDebug;
-import com.qihoo360.replugin.model.PluginInfo;
 import com.universe.touchpoint.annotations.TouchPointListener;
 import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.channel.TouchPointChannelManager;
@@ -26,7 +25,7 @@ import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.provider.TouchPointContent;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
 import com.universe.touchpoint.provider.TouchPointProvider;
-import com.universe.touchpoint.dispatcher.routers.AgentRouter;
+import com.universe.touchpoint.transport.AgentRouter;
 import com.universe.touchpoint.utils.ApkUtils;
 
 import java.lang.reflect.Method;
@@ -57,6 +56,18 @@ public class TouchPointContextManager {
     public static <T extends TouchPoint> T generateTouchPoint(Class<T> tpClass, String name) {
         Context ctx = TouchPointContext.getAgentContext();
         return generateTouchPoint(tpClass, name, ctx);
+    }
+
+    public static <A extends TouchPoint> A generateTouchPoint(
+            A action, String name, String content) {
+        Context ctx = TouchPointContext.getAgentContext();
+        TouchPointChannel channel = TouchPointChannelManager.defaultChannel(ctx);
+
+        action.setFilter(name);
+        action.setChannel(channel);
+        action.setContent(content);
+
+        return action;
     }
 
     public static <T> T generateTouchPoint(Class<T> tpClass, String name, Context context) {

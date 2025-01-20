@@ -1,4 +1,4 @@
-package com.universe.touchpoint.dispatcher.prompt.template;
+package com.universe.touchpoint.ai.prompt.template;
 
 public class OpenAITemplate {
 
