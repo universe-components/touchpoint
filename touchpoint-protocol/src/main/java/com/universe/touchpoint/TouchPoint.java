@@ -9,6 +9,7 @@ import com.universe.touchpoint.provider.TouchPointContentFactory;
 
 public abstract class TouchPoint {
 
+    public Header header;
     public String filter;
     public String content;
     public transient TouchPointChannel channel;
@@ -33,6 +34,14 @@ public abstract class TouchPoint {
         this.content = content;
     }
 
+    public void setHeader(Header header) {
+        this.header = header;
+    }
+
+    public Header getHeader() {
+        return header;
+    }
+
     public void setChannel(TouchPointChannel channel) {
         this.channel = channel;
     }
@@ -50,6 +59,26 @@ public abstract class TouchPoint {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static class Header {
+
+        public Header(String fromAgent, String toAgent) {
+            this.fromAgent = fromAgent;
+            this.toAgent = toAgent;
+        }
+
+        private final String fromAgent;
+        private final String toAgent;
+
+        public String getFromAgent() {
+            return fromAgent;
+        }
+
+        public String getToAgent() {
+            return toAgent;
+        }
+
     }
 
 }

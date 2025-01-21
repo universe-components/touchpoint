@@ -47,10 +47,17 @@ public class TouchPointReceiverManager {
             TouchPointBroadcastReceiver<? extends TouchPoint> tpReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
 
             String filterAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
-                    Agent.getProperty("name"), filter
+                    filter, Agent.getProperty("name")
             ));
             IntentFilter intentFilter = new IntentFilter(filterAction);
             appContext.registerReceiver(tpReceiver, intentFilter, Context.RECEIVER_EXPORTED);
+
+            TouchPointBroadcastReceiver<? extends TouchPoint> agentFinishReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
+            String agentFinishAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
+                    Agent.getProperty("name"), filter
+            ));
+            IntentFilter agentFinishFilter = new IntentFilter(agentFinishAction);
+            appContext.registerReceiver(agentFinishReceiver, agentFinishFilter, Context.RECEIVER_EXPORTED);
 
             String ctxName = TouchPointHelper.touchPointPluginName(name);
             TouchPointContextManager.getContext(ctxName).putTouchPointReceiver(filterAction, tpInstanceReceiver);

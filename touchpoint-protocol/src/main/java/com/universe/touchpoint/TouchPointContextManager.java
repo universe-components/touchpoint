@@ -64,6 +64,7 @@ public class TouchPointContextManager {
         TouchPointChannel channel = TouchPointChannelManager.defaultChannel(ctx);
 
         action.setFilter(name);
+        action.setHeader(new TouchPoint.Header(Agent.getProperty("name"), name));
         action.setChannel(channel);
         action.setContent(content);
 

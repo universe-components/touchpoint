@@ -11,6 +11,7 @@ import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.TouchPointListener;
 import com.universe.touchpoint.ai.AIModelResponse;
+import com.universe.touchpoint.arp.AgentRouter;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
 
@@ -40,6 +41,13 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
             String actionResult = tpReceiver.onAction(touchPoint, mContext);
             ((AIModelResponse.AgentAction) touchPoint).setObservation(actionResult);
             Dispatcher.loopCall((AIModelResponse.AgentAction) touchPoint, touchPoint.content, intent.getAction());
+        } else if (touchPoint instanceof AIModelResponse.AgentFinish) {
+            TouchPointContextManager.generateTouchPoint(
+                    AIModelResponse.AgentFinish.class,
+                    AgentRouter.buildChunk(
+                            touchPoint.getHeader().getFromAgent(),
+                            touchPoint.getHeader().getToAgent())
+            ).finish();
         } else {
             tpReceiver.onReceive(touchPoint, mContext);
         }

@@ -6,6 +6,10 @@ public class AgentEntity {
     private String iconPath = "";
     private String description = "";
 
+    public AgentEntity(String name) {
+        this.name = name;
+    }
+
     public AgentEntity(String name, String description) {
         this.name = name;
         this.description = description;
