@@ -30,7 +30,7 @@ dependencies {
 
 以获取上海天气为例，其中，有一个入口Entry Agent和一个Weather Agent。
 
-### 配置Agent
+### 实现Agent
 
 #### Entry Agent
 
@@ -92,7 +92,7 @@ class WeathertListener : TouchPointListener<AgentAction> {
 }
 ```
 
-#### 在` Entry Agent` 中执行
+在` Entry Agent` 中执行
 ```kotlin
 AgentBuilder builder = AgentBuilder
     .createConfig(AgentConfig.Model.GPT_4) // 选择模型
