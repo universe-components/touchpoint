@@ -6,18 +6,23 @@ import com.openai.models.ChatCompletion;
 import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatCompletionUserMessageParam;
 import com.openai.models.ChatModel;
-import com.universe.touchpoint.TouchPointConstants;
+import com.universe.touchpoint.AgentBuilder;
+import com.universe.touchpoint.AgentConfig;
 import com.universe.touchpoint.ai.AIModel;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion.Choice> {
 
     public OpenAI() {
         super(OpenAIOkHttpClient.builder()
-                .apiKey(TouchPointConstants.AI_MODEL_API_KEY)
+                .apiKey(AgentBuilder
+                        .getBuilder()
+                        .getConfig()
+                        .getModelApiKey())
                 .build());
     }
 
@@ -28,14 +33,16 @@ public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion
                         .role(ChatCompletionUserMessageParam.Role.USER)
                         .content(content)
                         .build())
-                .model(ChatModel.O1)
+                .model((ChatModel) Objects.requireNonNull(
+                        AgentConfig.modelConfigMap.get(
+                                AgentBuilder.getBuilder().getConfig().getModel())))
                 .build();
 
         this.completions.add(client.chat().completions().create(params));
     }
 
     @Override
-    public Map<ChatCompletion, List<ChatCompletion.Choice>> run() {
+    public Map<ChatCompletion, List<ChatCompletion.Choice>> predict() {
         Map<ChatCompletion, List<ChatCompletion.Choice>> choices = new HashMap<>();
         for (ChatCompletion chatCompletion : completions) {
             choices.put(chatCompletion, chatCompletion.choices());

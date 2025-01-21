@@ -25,6 +25,6 @@ public abstract class AIModel<T, C, R> {
     }
 
     public abstract void createCompletion(String content);
-    public abstract Map<C, List<R>> run();
+    public abstract Map<C, List<R>> predict();
 
 }

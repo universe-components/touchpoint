@@ -47,7 +47,7 @@ public class AIModelFactory {
         // 创建聊天对话
         model.createCompletion(content);
         // 执行推理并获取choice，随机选择一个choice
-        return model.selectChoice(model.run());
+        return model.selectChoice(model.predict());
     }
 
 }
