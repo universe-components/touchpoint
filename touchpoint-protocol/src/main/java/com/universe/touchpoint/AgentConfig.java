@@ -14,7 +14,7 @@ public class AgentConfig {
     static {
         modelConfigMap.put(Model.GPT_3_5, ChatModel.GPT_3_5_TURBO);
         modelConfigMap.put(Model.GPT_4, ChatModel.GPT_4);
-        modelConfigMap.put(Model.GPT_o1, ChatModel.O1);
+        modelConfigMap.put(Model.o1, ChatModel.O1);
         modelConfigMap.put(Model.ClAUDE_3_5_SONNET, com.anthropic.models.Model.CLAUDE_3_5_SONNET_LATEST);
     }
 
@@ -38,7 +38,7 @@ public class AgentConfig {
 
         GPT_3_5,
         GPT_4,
-        GPT_o1,
+        o1,
         ClAUDE_3_5_SONNET
 
     }
