@@ -13,7 +13,7 @@ import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.TouchPointListener;
 import com.universe.touchpoint.channel.broadcast.TouchPointBroadcastReceiver;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.router.AgentRouter;
+import com.universe.touchpoint.arp.AgentRouter;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

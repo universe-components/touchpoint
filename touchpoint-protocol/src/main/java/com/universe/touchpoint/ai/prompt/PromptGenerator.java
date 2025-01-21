@@ -1,7 +1,7 @@
 package com.universe.touchpoint.ai.prompt;
 
 import com.universe.touchpoint.ai.AIModelResponse;
-import com.universe.touchpoint.router.AgentRouteItem;
+import com.universe.touchpoint.arp.AgentRouteItem;
 
 import java.util.List;
 
