@@ -40,6 +40,16 @@ dependencies {
 class EntryApplication : AgentApplication()
 ```
 
+在` Entry Agent` 中执行
+```kotlin
+AgentBuilder builder = AgentBuilder
+    .createConfig(AgentConfig.Model.GPT_4) // 选择模型
+    .setModelApiKey("My API Key") // 设置模型API Key
+    .build();
+
+builder.run("我想查询上海天气");
+```
+
 #### Weather Agent
 
 `WeatherApplication` 继承 `AgentApplication`
@@ -90,16 +100,6 @@ class WeathertListener : TouchPointListener<AgentAction> {
     }
 
 }
-```
-
-在` Entry Agent` 中执行
-```kotlin
-AgentBuilder builder = AgentBuilder
-    .createConfig(AgentConfig.Model.GPT_4) // 选择模型
-    .setModelApiKey("My API Key") // 设置模型API Key
-    .build();
-
-builder.run("我想查询上海天气");
 ```
 
 ## 高级用法
