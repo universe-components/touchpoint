@@ -48,7 +48,7 @@ class EntryApplication : AgentApplication()
 class WeatherApplication : AgentApplication()
 ```
 
-监听来自Entry Agent的Action，并返回天气信息。
+监听来自 `Entry Agent` 的Action，并返回天气信息。
 ```kotlin
 @com.universe.touchpoint.annotations.TouchPointListener(fromAgent = "entry_agent")
 class WeathertListener : TouchPointListener<AgentAction> {
@@ -92,7 +92,7 @@ class WeathertListener : TouchPointListener<AgentAction> {
 }
 ```
 
-#### 在Entry Agent中执行
+#### 在` Entry Agent` 中执行
 ```kotlin
 AgentBuilder builder = AgentBuilder
     .createConfig(AgentConfig.Model.GPT_4) // 选择模型
