@@ -59,7 +59,7 @@ public class AgentRouter {
         return chunk.split("->");
     }
 
-    public static List<AgentRouteItem> agentRouteItems(String fromAgent) {
+    public static List<AgentRouteItem> routeItems(String fromAgent) {
         return routeTable.getOrDefault(fromAgent, new ArrayList<>());
     }
 

@@ -25,7 +25,7 @@ public class Dispatcher {
         }
 
         String input = PromptBuilder.createPromptGenerator(modelType).generatePrompt(
-                AgentRouter.agentRouteItems(Agent.getProperty("name")), action, content);
+                AgentRouter.routeItems(Agent.getProperty("name")), action, content);
 
         // 推理并获取choice，随机选择一个choice
         C choice = AIModelFactory.callModel(input, modelType);
