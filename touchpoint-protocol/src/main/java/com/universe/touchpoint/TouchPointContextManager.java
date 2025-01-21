@@ -120,7 +120,7 @@ public class TouchPointContextManager {
                 assert receiverFilters != null;
                 receiverFilterList = Arrays.asList(receiverFilters.replace(" ", "").split(","));
             } else {
-                List<Pair<String, List<String>>> receiverFilterPair = ApkUtils.getClassNames(appContext, TouchPointListener.class, Collections.singletonList("touchPointName"), !isPlugin);
+                List<Pair<String, List<String>>> receiverFilterPair = ApkUtils.getClassNames(appContext, TouchPointListener.class, Collections.singletonList("fromAgent"), !isPlugin);
                 receiverClassList = receiverFilterPair.stream()
                         .map(pair -> pair.first)
                         .collect(Collectors.toList());

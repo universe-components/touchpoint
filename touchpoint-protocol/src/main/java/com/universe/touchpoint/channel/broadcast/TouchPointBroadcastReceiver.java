@@ -37,11 +37,9 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
         TouchPointListener<T> tpReceiver = (TouchPointListener<T>) TouchPointContextManager.getContext(ctxName).getTouchPointReceiver(filter);
 
         if (touchPoint instanceof AIModelResponse.AgentAction) {
-            String actionResult = tpReceiver.onReceiveAction(touchPoint, mContext);
+            String actionResult = tpReceiver.onAction(touchPoint, mContext);
             ((AIModelResponse.AgentAction) touchPoint).setObservation(actionResult);
             Dispatcher.loopCall((AIModelResponse.AgentAction) touchPoint, touchPoint.content, intent.getAction());
-        } else if (touchPoint instanceof AIModelResponse.AgentFinish) {
-            return;
         } else {
             tpReceiver.onReceive(touchPoint, mContext);
         }

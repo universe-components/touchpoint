@@ -48,7 +48,51 @@ class EntryApplication : AgentApplication()
 class WeatherApplication : AgentApplication()
 ```
 
-#### 执行
+监听来自Entry Agent的Action，并返回天气信息。
+```kotlin
+@com.universe.touchpoint.annotations.TouchPointListener(fromAgent = "entry_agent")
+class WeathertListener : TouchPointListener<AgentAction> {
+
+    override fun onAction(action: AgentAction, context: Context) : String {
+        val client = OkHttpClient()
+
+        // 设置请求的 URL 和参数
+        val url = "$BASE_URL?q=$action.input&appid=$WEATHER_API_KEY&units=metric&lang=zh_cn"
+        
+        // 创建请求对象
+        val request = Request.Builder()
+            .url(url)
+            .build()
+    
+        // 发送请求并获取响应
+        val response: Response = client.newCall(request).execute()
+    
+        // 解析 JSON 响应
+        if (response.isSuccessful) {
+            val jsonResponse = response.body?.string()
+    
+            // 使用 Moshi 来解析 JSON
+            val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+            val jsonAdapter = moshi.adapter(WeatherResponse::class.java)
+    
+            val weatherResponse = jsonAdapter.fromJson(jsonResponse)
+    
+            return if (weatherResponse != null) {
+                val weatherDescription = weatherResponse.weather[0].description
+                val temperature = weatherResponse.main.temp
+                "天气：$weatherDescription, 温度：$temperature°C"
+            } else {
+                "无法解析天气信息。"
+            }
+        } else {
+            return "无法获取天气信息，请检查城市名称是否正确。"
+        }
+    }
+
+}
+```
+
+#### 在Entry Agent中执行
 ```kotlin
 AgentBuilder builder = AgentBuilder
     .createConfig(AgentConfig.Model.GPT_4) // 选择模型
