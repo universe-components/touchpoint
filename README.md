@@ -54,7 +54,7 @@ builder.run("我想查询上海天气");
 
 `WeatherApplication` 继承 `AgentApplication`
 ```kotlin
-@TouchPointAgent(name = "weather_agent", desc = "查询上海天气")
+@TouchPointAgent(name = "weather_agent", desc = "查询城市的天气信息")
 class WeatherApplication : AgentApplication()
 ```
 
