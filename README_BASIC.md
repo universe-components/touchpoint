@@ -2,18 +2,6 @@
 
 `touchpoint-protocol` ，触点协议（TPP协议），是一个Agent之间通信的协议，每个Agent之间通过共享触点实现通信，是Agent网络的基础设施。
 
-## 核心功能
-
-- **支持多种Agent架构：** 不同Agent可在一个进程，也可分属不同进程，及不同Agent可部署在不同的设备上。
-
-- **多种Agent文件格式：** 支持apk、jar、exe、ipa、py等文件格式。
-
-- **可热插拔Agent：** Agent网络中的任意一个Agent都可在线加入和退出，不影响整个Agent网络。
-
-- **共享触点对象：** Agent之间共享触点对象，通过触点对象交换数据，无需关心交换形式是消息队列、RPC、还是REST等。
-
-- **支持多种LLM：** 支持多种LLM，如GPT-3、GPT-4、GPT-3.5、GPT-4.0、Claude-3、Claude-3.5等。
-
 ## 使用指南
 
 ### 导入依赖
