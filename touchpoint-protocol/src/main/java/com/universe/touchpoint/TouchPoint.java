@@ -9,29 +9,22 @@ import com.universe.touchpoint.provider.TouchPointContentFactory;
 
 public abstract class TouchPoint {
 
-    public Header header;
-    public String filter;
+    private Header header = new Header();
     public String content;
-    public transient TouchPointChannel channel;
 
     protected TouchPoint() {
     }
 
-    protected TouchPoint(String filter) {
-        this.filter = filter;
-    }
-
-    protected TouchPoint(String filter, TouchPointChannel channel) {
-        this.filter = filter;
-        this.channel = channel;
-    }
-
-    public void setFilter(String filter) {
-        this.filter = filter;
-    }
-
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setChannel(TouchPointChannel channel) {
+        this.header.setChannel(channel);
+    }
+
+    public void setToAgent(String agent) {
+        this.header.setToAgent(agent);
     }
 
     public void setHeader(Header header) {
@@ -42,20 +35,16 @@ public abstract class TouchPoint {
         return header;
     }
 
-    public void setChannel(TouchPointChannel channel) {
-        this.channel = channel;
-    }
-
     public boolean finish() {
         try {
             String contentProviderUri = TouchPointHelper.touchPointContentProviderUri(
-                    TouchPointConstants.CONTENT_PROVIDER_PREFIX, filter);
+                    TouchPointConstants.CONTENT_PROVIDER_PREFIX, header.toAgent);
             TouchPointContent touchPointContent = TouchPointContentFactory.createContent(Uri.parse(contentProviderUri), TouchPointContext.getAgentContext());
             boolean rs = touchPointContent.insertOrUpdate(this);
             if (!rs) {
                 throw new RuntimeException("insertOrUpdate failed");
             }
-            return channel.send(this);
+            return header.channel.send(this);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -63,13 +52,18 @@ public abstract class TouchPoint {
 
     public static class Header {
 
-        public Header(String fromAgent, String toAgent) {
-            this.fromAgent = fromAgent;
-            this.toAgent = toAgent;
+        private String fromAgent = null;
+        private String toAgent = null;
+        private transient TouchPointChannel channel;
+
+        public Header() {
         }
 
-        private final String fromAgent;
-        private final String toAgent;
+        public Header(String fromAgent, String toAgent, TouchPointChannel channel) {
+            this.fromAgent = fromAgent;
+            this.toAgent = toAgent;
+            this.channel = channel;
+        }
 
         public String getFromAgent() {
             return fromAgent;
@@ -77,6 +71,18 @@ public abstract class TouchPoint {
 
         public String getToAgent() {
             return toAgent;
+        }
+
+        public void setToAgent(String toAgent) {
+            this.toAgent = toAgent;
+        }
+
+        public TouchPointChannel getChannel() {
+            return channel;
+        }
+
+        public void setChannel(TouchPointChannel channel) {
+            this.channel = channel;
         }
 
     }

@@ -63,4 +63,15 @@ public class AgentRouter {
         return routeTable.getOrDefault(fromAgent, new ArrayList<>());
     }
 
+    public static boolean hasFromAgent(String toAgent) {
+        for (List<AgentRouteItem> routeItems : routeTable.values()) {
+            for (AgentRouteItem routeItem : routeItems) {
+                if (routeItem.getToAgent().getName().equals(toAgent)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

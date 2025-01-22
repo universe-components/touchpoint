@@ -14,7 +14,7 @@ public abstract class TouchPointSubscriber<T extends TouchPoint> {
     @SuppressWarnings("unchecked")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(T event) {
-        String name = TouchPointHelper.touchPointPluginName(event.filter);
+        String name = TouchPointHelper.touchPointPluginName(event.getHeader().getToAgent());
         TouchPointListener<T> tpReceiver = (TouchPointListener<T>) TouchPointContextManager.getContext(name).getTouchPointReceiver(name);
         tpReceiver.onReceive(event, RePlugin.getHostContext());
     }

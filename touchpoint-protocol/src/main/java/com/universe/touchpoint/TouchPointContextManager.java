@@ -63,9 +63,8 @@ public class TouchPointContextManager {
         Context ctx = TouchPointContext.getAgentContext();
         TouchPointChannel channel = TouchPointChannelManager.defaultChannel(ctx);
 
-        action.setFilter(name);
-        action.setHeader(new TouchPoint.Header(Agent.getProperty("name"), name));
-        action.setChannel(channel);
+        action.setHeader(
+                new TouchPoint.Header(Agent.getProperty("name"), name, channel));
         action.setContent(content);
 
         return action;
@@ -78,7 +77,7 @@ public class TouchPointContextManager {
             Class<?> touchPointClass = tpClass.getSuperclass();
 
             assert touchPointClass != null;
-            Method setNameMethod = touchPointClass.getDeclaredMethod("setFilter", String.class);
+            Method setNameMethod = touchPointClass.getDeclaredMethod("setToAgent", String.class);
             setNameMethod.invoke(selfTouchPoint, name);
 
             Method setChannelMethod = touchPointClass.getDeclaredMethod("setChannel", TouchPointChannel.class);
