@@ -89,7 +89,7 @@ public class TouchPointContextManager {
         return null;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     public static void registerTouchPointReceivers(Context appContext, boolean isPlugin, ConfigType configType) {
         try {
             Bundle metaData = null;
@@ -122,11 +122,11 @@ public class TouchPointContextManager {
                 List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext, TouchPointListener.class, Collections.singletonList("fromAgent"), !isPlugin);
                 receiverClassList = receiverFilterPair.stream()
                         .map(pair -> pair.first)
-                        .collect(Collectors.toList());
+                        .toList();
                 receiverFilterList = receiverFilterPair.stream()
                         .map(pair -> pair.second.get(0))
-                        .collect(Collectors.toList());
-            //}
+                        .toList();
+//            }
 
             if (receiverClassList.size() == receiverFilterList.size()) {
                 for (int i = 0; i < receiverClassList.size(); i++) {
