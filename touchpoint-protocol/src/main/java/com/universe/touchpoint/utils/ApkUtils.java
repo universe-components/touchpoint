@@ -1,6 +1,8 @@
 package com.universe.touchpoint.utils;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.util.Pair;
 
 import java.io.File;
@@ -69,6 +71,18 @@ public class ApkUtils {
         }
 
         return result;
+    }
+
+    public static String getApkPath(Context context) {
+        try {
+            // 获取应用程序的包信息
+            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+            // 返回APK文件路径
+            return appInfo.sourceDir;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

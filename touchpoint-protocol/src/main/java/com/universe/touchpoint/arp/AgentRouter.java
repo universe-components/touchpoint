@@ -14,16 +14,16 @@ import java.util.Objects;
 public class AgentRouter {
 
     private static final Object lock = new Object();
-    protected final static Map<String, List<AgentRouteItem>> routeTable = new HashMap<>();
+    protected final static Map<String, List<AgentRouteEntry>> routeTable = new HashMap<>();
 
-    public static AgentRouteItem routeTo(AIModelResponse.AgentAction action) {
-        List<AgentRouteItem> agentRouteItems = routeTable.get(Agent.getProperty("name"));
-        if (agentRouteItems == null || agentRouteItems.isEmpty()) {
+    public static AgentRouteEntry routeTo(AIModelResponse.AgentAction action) {
+        List<AgentRouteEntry> agentRouteEntries = routeTable.get(Agent.getProperty("name"));
+        if (agentRouteEntries == null || agentRouteEntries.isEmpty()) {
             return null;
         }
 
         // 解析 choice，获取 choice中需要的数据
-        for (AgentRouteItem routeItem : agentRouteItems) {
+        for (AgentRouteEntry routeItem : agentRouteEntries) {
             if (action.getAction().contains(routeItem.getToAgent().getName())) {
                 return routeItem;
             }
@@ -34,7 +34,7 @@ public class AgentRouter {
 
     public static <T extends TouchPoint> void addRoute(String fromAgent, AgentEntity toAgent, Class<T> sharedClass) {
         synchronized (lock) {
-            AgentRouteItem routeItem = new AgentRouteItem();
+            AgentRouteEntry routeItem = new AgentRouteEntry();
             routeItem.setFromAgent(fromAgent);
             routeItem.setToAgent(toAgent);
             routeItem.setSharedClass(sharedClass);
@@ -51,7 +51,7 @@ public class AgentRouter {
         return fromAgent + "->" + toAgent;
     }
 
-    public static String buildChunk(AgentRouteItem routeItem) {
+    public static String buildChunk(AgentRouteEntry routeItem) {
         return routeItem.getFromAgent() + "->" +routeItem.getToAgent().getName();
     }
 
@@ -59,13 +59,13 @@ public class AgentRouter {
         return chunk.split("->");
     }
 
-    public static List<AgentRouteItem> routeItems(String fromAgent) {
+    public static List<AgentRouteEntry> routeItems(String fromAgent) {
         return routeTable.getOrDefault(fromAgent, new ArrayList<>());
     }
 
     public static boolean hasFromAgent(String toAgent) {
-        for (List<AgentRouteItem> routeItems : routeTable.values()) {
-            for (AgentRouteItem routeItem : routeItems) {
+        for (List<AgentRouteEntry> routeItems : routeTable.values()) {
+            for (AgentRouteEntry routeItem : routeItems) {
                 if (routeItem.getToAgent().getName().equals(toAgent)) {
                     return true;
                 }

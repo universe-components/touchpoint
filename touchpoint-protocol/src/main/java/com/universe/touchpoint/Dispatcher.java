@@ -9,7 +9,7 @@ import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.ai.ChoiceParserFactory;
 import com.universe.touchpoint.ai.prompt.PromptBuilder;
 import com.universe.touchpoint.ai.AIModelSelector;
-import com.universe.touchpoint.arp.AgentRouteItem;
+import com.universe.touchpoint.arp.AgentRouteEntry;
 import com.universe.touchpoint.arp.AgentRouter;
 
 public class Dispatcher {
@@ -41,7 +41,7 @@ public class Dispatcher {
                     content);
         }
         if (answer.first != null) {
-            AgentRouteItem routeItem = AgentRouter.routeTo(answer.first);
+            AgentRouteEntry routeItem = AgentRouter.routeTo(answer.first);
             assert routeItem != null;
             touchPoint = TouchPointContextManager.generateTouchPoint(
                     answer.first,

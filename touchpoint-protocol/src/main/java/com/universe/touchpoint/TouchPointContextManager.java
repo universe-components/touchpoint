@@ -15,17 +15,16 @@ import android.util.Pair;
 import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.RePlugin;
-import com.qihoo360.replugin.RePluginHost;
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.annotations.TouchPointListener;
 import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.channel.TouchPointChannelManager;
 import com.universe.touchpoint.channel.TouchPointReceiverManager;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.arp.AgentRouterManager;
 import com.universe.touchpoint.provider.TouchPointContent;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
 import com.universe.touchpoint.provider.TouchPointProvider;
-import com.universe.touchpoint.arp.AgentRouter;
 import com.universe.touchpoint.utils.ApkUtils;
 
 import java.lang.reflect.Method;
@@ -139,6 +138,7 @@ public class TouchPointContextManager {
                                 receiverFilterList.get(i),
                                 receiverClassList.get(i)
                         );
+                        AgentRouterManager.registerRouteEntry(receiverFilterList.get(i), appContext);
                     }
                 }
             } else {
@@ -194,11 +194,6 @@ public class TouchPointContextManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static <T extends TouchPoint> void attendAgent(String filePath, AgentEntity agent, Class<T> touchPointClass) {
-        RePluginHost.install(filePath);
-        AgentRouter.addRoute(Agent.getProperty("name"), agent, touchPointClass);
     }
 
     public static <T extends TouchPoint> T fetchTouchPoint(String filter, Class<T> clazz) {

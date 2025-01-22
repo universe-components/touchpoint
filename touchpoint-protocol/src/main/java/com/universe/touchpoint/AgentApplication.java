@@ -15,6 +15,7 @@ import com.qihoo360.replugin.RePluginCallbacks;
 import com.qihoo360.replugin.RePluginConfig;
 import com.qihoo360.replugin.RePluginFramework;
 import com.qihoo360.replugin.RePluginHost;
+import com.universe.touchpoint.arp.AgentRouterManager;
 
 public class AgentApplication extends Application {
 
@@ -68,6 +69,7 @@ public class AgentApplication extends Application {
         TouchPointContextManager.initContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             TouchPointContextManager.registerTouchPointReceivers(ctx, isPlugin, ConfigType.ANNOTATION);
+            AgentRouterManager.registerRouterReceiver(ctx);
         }
 
         TouchPointContextManager.registerContentProvider(ctx);
