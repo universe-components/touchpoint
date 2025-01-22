@@ -109,8 +109,8 @@ public class TouchPointContextManager {
             }
 
             List<String> receiverClassList;
-            List<String> receiverFilterList;
-            if (configType == ConfigType.XML) {
+            List<Object> receiverFilterList;
+            /* if (configType == ConfigType.XML) {
                 // 获取存储的字符串列表
                 String receiverClasses = metaData.getString(TouchPointConstants.TOUCH_POINT_RECEIVERS);
                 String receiverFilters = metaData.getString(TouchPointConstants.TOUCH_POINT_RECEIVER_FILTERS);
@@ -118,15 +118,15 @@ public class TouchPointContextManager {
                 receiverClassList = Arrays.asList(receiverClasses.replace(" ", "").split(","));
                 assert receiverFilters != null;
                 receiverFilterList = Arrays.asList(receiverFilters.replace(" ", "").split(","));
-            } else {
-                List<Pair<String, List<String>>> receiverFilterPair = ApkUtils.getClassNames(appContext, TouchPointListener.class, Collections.singletonList("fromAgent"), !isPlugin);
+            } else {*/
+                List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext, TouchPointListener.class, Collections.singletonList("fromAgent"), !isPlugin);
                 receiverClassList = receiverFilterPair.stream()
                         .map(pair -> pair.first)
                         .collect(Collectors.toList());
                 receiverFilterList = receiverFilterPair.stream()
                         .map(pair -> pair.second.get(0))
                         .collect(Collectors.toList());
-            }
+            //}
 
             if (receiverClassList.size() == receiverFilterList.size()) {
                 for (int i = 0; i < receiverClassList.size(); i++) {
@@ -135,10 +135,10 @@ public class TouchPointContextManager {
                         TouchPointReceiverManager.getInstance().registerTouchPointReceiver(
                                 appContext,
                                 name,
-                                receiverFilterList.get(i),
+                                (String[]) receiverFilterList.get(i),
                                 receiverClassList.get(i)
                         );
-                        AgentRouterManager.registerRouteEntry(receiverFilterList.get(i), appContext);
+                        AgentRouterManager.registerRouteEntry((String[]) receiverFilterList.get(i), appContext);
                     }
                 }
             } else {

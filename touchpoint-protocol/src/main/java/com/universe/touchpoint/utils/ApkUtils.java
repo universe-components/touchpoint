@@ -15,12 +15,12 @@ import dalvik.system.DexFile;
 
 public class ApkUtils {
 
-    public static List<Pair<String, List<String>>> getClassNames(
+    public static List<Pair<String, List<Object>>> getClassNames(
             Context context,
             Class<? extends Annotation> annotationClass,
             List<String> propertyNames,
             boolean canLoad) {
-        List<Pair<String, List<String>>> result = new ArrayList<>();
+        List<Pair<String, List<Object>>> result = new ArrayList<>();
         try {
             // 获取应用的 APK 文件路径
             String apkPath = context.getApplicationInfo().sourceDir;
@@ -46,14 +46,14 @@ public class ApkUtils {
                         // 获取注解
                         Annotation annotation = loadedClass.getAnnotation(annotationClass);
                         // 存储属性值的列表
-                        List<String> annotationValues = new ArrayList<>();
+                        List<Object> annotationValues = new ArrayList<>();
                         // 遍历属性名列表，获取每个属性值
                         for (String propertyName : propertyNames) {
                             try {
                                 // 调用方法获取属性值
                                 Object value = AnnotationUtils.getAnnotationValue(annotation, annotationClass, propertyName);
                                 assert value != null;
-                                annotationValues.add(value.toString());
+                                annotationValues.add(value);
                             } catch (Exception e) {
                                 // 如果属性获取失败，记录异常信息或忽略
                                 annotationValues.add(null);

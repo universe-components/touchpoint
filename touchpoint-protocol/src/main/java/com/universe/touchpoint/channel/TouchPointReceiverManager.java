@@ -36,7 +36,7 @@ public class TouchPointReceiverManager {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public void registerTouchPointReceiver(Context appContext, String name, String filter, String receiverClassName) {
+    public void registerTouchPointReceiver(Context appContext, String name, String[] filters, String receiverClassName) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(receiverClassName);
             TouchPointListener<?> tpInstanceReceiver = (TouchPointListener<?>) tpInstanceReceiverClass.getConstructor().newInstance();
@@ -47,27 +47,53 @@ public class TouchPointReceiverManager {
 
             Class<?> touchPointClazz = Class.forName(actualType.getTypeName());
             Class<? extends TouchPoint> touchPointClass = touchPointClazz.asSubclass(TouchPoint.class);
-            TouchPointBroadcastReceiver<? extends TouchPoint> tpReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
 
-            String filterAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
-                    filter, Agent.getProperty("name")
-            ));
-            IntentFilter intentFilter = new IntentFilter(filterAction);
-            appContext.registerReceiver(tpReceiver, intentFilter, Context.RECEIVER_EXPORTED);
+            registerDefaultReceiver(appContext, filters, touchPointClass);
+            registerAgentFinishReceiver(appContext, filters, touchPointClass);
 
-            TouchPointBroadcastReceiver<? extends TouchPoint> agentFinishReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
-            String agentFinishAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
-                    Agent.getProperty("name"), filter
-            ));
-            IntentFilter agentFinishFilter = new IntentFilter(agentFinishAction);
-            appContext.registerReceiver(agentFinishReceiver, agentFinishFilter, Context.RECEIVER_EXPORTED);
-
-            String ctxName = TouchPointHelper.touchPointPluginName(name);
-            TouchPointContextManager.getContext(ctxName).putTouchPointReceiver(filterAction, tpInstanceReceiver);
+            registerContextReceiver(name, filters, tpInstanceReceiver);
         } catch (Exception e) {
             if (LogDebug.LOG) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public void registerDefaultReceiver(Context appContext, String[] filters, Class<? extends TouchPoint> touchPointClass) {
+        TouchPointBroadcastReceiver<? extends TouchPoint> tpReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
+
+        IntentFilter intentFilter = new IntentFilter();
+        for (String filter : filters) {
+            String filterAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
+                    filter, Agent.getProperty("name")
+            ));
+            intentFilter.addAction(filterAction);
+        }
+        appContext.registerReceiver(tpReceiver, intentFilter, Context.RECEIVER_EXPORTED);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public void registerAgentFinishReceiver(Context appContext, String[] filters, Class<? extends TouchPoint> touchPointClass) {
+        TouchPointBroadcastReceiver<? extends TouchPoint> agentFinishReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
+
+        IntentFilter agentFinishFilter = new IntentFilter();
+        for (String filter : filters) {
+            String agentFinishAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
+                    Agent.getProperty("name"), filter
+            ));
+            agentFinishFilter.addAction(agentFinishAction);
+        }
+        appContext.registerReceiver(agentFinishReceiver, agentFinishFilter, Context.RECEIVER_EXPORTED);
+    }
+
+    public void registerContextReceiver(String name, String[] filters, TouchPointListener<?> tpInstanceReceiver) {
+        String ctxName = TouchPointHelper.touchPointPluginName(name);
+        for (String filter : filters) {
+            String filterAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
+                    filter, Agent.getProperty("name")
+            ));
+            TouchPointContextManager.getContext(ctxName).putTouchPointReceiver(filterAction, tpInstanceReceiver);
         }
     }
 

@@ -13,9 +13,13 @@ import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.ApkUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class AgentRouterManager {
 
-    public static void registerRouteEntry(String toAgent, Context context) {
+    public static void registerRouteEntry(String[] toAgents, Context context) {
         String apkPath = ApkUtils.getApkPath(context);
         assert apkPath != null;
         RePluginHost.install(apkPath);
@@ -25,8 +29,11 @@ public class AgentRouterManager {
                 TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME);
 
         Intent routerIntent = new Intent(routerAction);
-        routerIntent.putExtra(TouchPointConstants.TOUCH_POINT_ROUTER_EVENT_NAME,
-                AgentRouter.buildChunk(toAgent, Agent.getProperty("name")));
+        ArrayList<String> routeEntries = Arrays.stream(toAgents)
+                .map(agent -> AgentRouter.buildChunk(agent, Agent.getProperty("name")))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        routerIntent.putStringArrayListExtra(TouchPointConstants.TOUCH_POINT_ROUTER_EVENT_NAME, routeEntries);
 
         context.sendBroadcast(routerIntent);
     }
