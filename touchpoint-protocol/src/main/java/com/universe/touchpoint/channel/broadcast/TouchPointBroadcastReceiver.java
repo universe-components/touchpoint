@@ -48,15 +48,16 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
             Dispatcher.loopCall((AIModelResponse.AgentAction) touchPoint, touchPoint.content, intent.getAction());
         }
         if (touchPoint instanceof AIModelResponse.AgentFinish) {
+            if (!AgentRouter.hasFromAgent(touchPoint.getHeader().getFromAgent())) {
+                tpReceiver.onReceive(touchPoint, mContext);
+                return;
+            }
             TouchPointContextManager.generateTouchPoint(
                     AIModelResponse.AgentFinish.class,
                     AgentRouter.buildChunk(
                             touchPoint.getHeader().getFromAgent(),
                             touchPoint.getHeader().getToAgent())
             ).finish();
-            if (!AgentRouter.hasFromAgent(touchPoint.getHeader().getFromAgent())) {
-                tpReceiver.onReceive(touchPoint, mContext);
-            }
         }
     }
 
