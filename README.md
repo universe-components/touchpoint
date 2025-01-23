@@ -62,7 +62,7 @@ class WeatherApplication : AgentApplication()
 
 定义获取天气的响应类
 ```kotlin
-data class WeatherResponse(val weather: String, val temperature: String, val humidity: String)
+data class WeatherResponse(val weather: String, val temperature: String)
 ```
 
 监听来自 `Entry Agent` 的Action，并返回天气信息。
