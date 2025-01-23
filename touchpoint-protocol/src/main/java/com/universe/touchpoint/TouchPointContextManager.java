@@ -3,25 +3,21 @@ package com.universe.touchpoint;
 import android.annotation.SuppressLint;
 import android.content.ContentProvider;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
-import com.qihoo360.replugin.RePlugin;
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.annotations.TouchPointListener;
 import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.channel.TouchPointChannelManager;
 import com.universe.touchpoint.channel.TouchPointReceiverManager;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.arp.AgentRouterManager;
+import com.universe.touchpoint.router.AgentRouterManager;
 import com.universe.touchpoint.provider.TouchPointContent;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
 import com.universe.touchpoint.provider.TouchPointProvider;
@@ -29,11 +25,9 @@ import com.universe.touchpoint.utils.ApkUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TouchPointContextManager {
 

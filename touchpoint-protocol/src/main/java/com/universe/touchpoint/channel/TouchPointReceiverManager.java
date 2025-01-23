@@ -1,7 +1,6 @@
 package com.universe.touchpoint.channel;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 
@@ -9,14 +8,12 @@ import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.Agent;
-import com.universe.touchpoint.AgentEntity;
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.TouchPointListener;
 import com.universe.touchpoint.channel.broadcast.TouchPointBroadcastReceiver;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.arp.AgentRouter;
+import com.universe.touchpoint.router.AgentRouter;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

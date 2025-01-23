@@ -11,7 +11,7 @@ import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.TouchPointListener;
 import com.universe.touchpoint.ai.AIModelResponse;
-import com.universe.touchpoint.arp.AgentRouter;
+import com.universe.touchpoint.router.AgentRouter;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
 

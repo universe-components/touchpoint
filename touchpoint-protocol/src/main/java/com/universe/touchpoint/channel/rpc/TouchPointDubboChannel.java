@@ -7,6 +7,7 @@ public class TouchPointDubboChannel implements TouchPointChannel {
 
     @Override
     public <T extends TouchPoint> boolean send(T touchpoint) {
+
         return false;
     }
 

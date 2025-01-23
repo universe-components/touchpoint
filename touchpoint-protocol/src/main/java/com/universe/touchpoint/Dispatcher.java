@@ -9,8 +9,8 @@ import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.ai.ChoiceParserFactory;
 import com.universe.touchpoint.ai.prompt.PromptBuilder;
 import com.universe.touchpoint.ai.AIModelSelector;
-import com.universe.touchpoint.arp.AgentRouteEntry;
-import com.universe.touchpoint.arp.AgentRouter;
+import com.universe.touchpoint.router.AgentRouteEntry;
+import com.universe.touchpoint.router.AgentRouter;
 
 public class Dispatcher {
 

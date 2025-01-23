@@ -15,7 +15,7 @@ import com.qihoo360.replugin.RePluginCallbacks;
 import com.qihoo360.replugin.RePluginConfig;
 import com.qihoo360.replugin.RePluginFramework;
 import com.qihoo360.replugin.RePluginHost;
-import com.universe.touchpoint.arp.AgentRouterManager;
+import com.universe.touchpoint.router.AgentRouterManager;
 
 public class AgentApplication extends Application {
 
