@@ -62,7 +62,7 @@ class WeatherApplication : AgentApplication()
 
 定义获取天气的响应类
 ```kotlin
-data class WeatherResponse(val weather: String, val temperature: String)
+data class WeatherResponse(val weather: String, val temperature: String, val humidity: String)
 ```
 
 监听来自 `Entry Agent` 的Action，并返回天气信息。
@@ -70,7 +70,7 @@ data class WeatherResponse(val weather: String, val temperature: String)
 @com.universe.touchpoint.annotations.TouchPointListener(fromAgent = "entry_agent")
 class WeathertListener : AgentActionListener<AgentAction, WeatherResponse> {
 
-    override fun onReceive(action: AgentAction, context: Context) : String {
+    override fun onReceive(action: AgentAction, context: Context) : WeatherResponse {
         val client = OkHttpClient()
 
         // 设置请求的 URL 和参数
@@ -97,12 +97,12 @@ class WeathertListener : AgentActionListener<AgentAction, WeatherResponse> {
             return if (weatherResponse != null) {
                 val weatherDescription = weatherResponse.weather[0].description
                 val temperature = weatherResponse.main.temp
-                "天气：$weatherDescription, 温度：$temperature°C"
+                WeatherResponse(weatherDescription, temperature.toString())
             } else {
-                "无法解析天气信息。"
+                throw RunTimeException("无法解析天气信息。")
             }
         } else {
-            return "无法获取天气信息，请检查城市名称是否正确。"
+            throw RunTimeException("无法获取天气信息，请检查城市名称是否正确。")
         }
     }
 
