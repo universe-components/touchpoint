@@ -128,9 +128,9 @@ textTouchPoint
 
 ```kotlin
 @com.universe.touchpoint.annotations.TouchPointListener(fromAgent = "font_touch_point")
-class FontListener : TouchPointListener<TextTouchPoint> {
+class FontListener : DefaultTouchPointListener<TextTouchPoint> {
 
-    override fun onReceive(textTouchPoint: TextTouchPoint, context: Context) {
+    override fun onReceive(textTouchPoint: TextTouchPoint, context: Context): Boolean {
         val memoActivity = (context as MainApplication).currentActivity as MemoActivity
         val memoEditView = memoActivity.findViewById<EditText>(R.id.memo_text_view)
 
@@ -138,6 +138,7 @@ class FontListener : TouchPointListener<TextTouchPoint> {
         if (textTouchPoint.fontSize != null && textTouchPoint.fontSize != 1f) {
             memoEditView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textTouchPoint.fontSize)
         }
+        return true
     }
         
 }

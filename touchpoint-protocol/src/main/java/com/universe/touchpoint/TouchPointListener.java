@@ -2,9 +2,8 @@ package com.universe.touchpoint;
 
 import android.content.Context;
 
-public interface TouchPointListener<T extends TouchPoint> {
+public interface TouchPointListener<T extends TouchPoint, R> {
 
-    void onReceive(T touchPoint, Context context);
-    String onAction(T action, Context context);
+    R onReceive(T touchPoint, Context context);
 
 }

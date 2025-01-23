@@ -10,18 +10,18 @@ import java.util.HashMap;
 
 public class TouchPointContext {
 
-    private final HashMap<String, TouchPointListener<?>> touchPointReceivers = new HashMap<>();
+    private final HashMap<String, TouchPointListener<?, ?>> touchPointReceivers = new HashMap<>();
     private final HashMap<String, ContentProvider> touchPointProviders = new HashMap<>();
 
-    public void putTouchPointReceiver(String filter, TouchPointListener<?> receiver) {
+    public void putTouchPointReceiver(String filter, TouchPointListener<?, ?> receiver) {
         touchPointReceivers.put(filter, receiver);
     }
 
-    public TouchPointListener<?> getTouchPointReceiver(String filter) {
+    public TouchPointListener<?, ?> getTouchPointReceiver(String filter) {
         return touchPointReceivers.get(filter);
     }
 
-    public HashMap<String, TouchPointListener<?>> getTouchPointReceivers() {
+    public HashMap<String, TouchPointListener<?, ?>> getTouchPointReceivers() {
         return touchPointReceivers;
     }
 

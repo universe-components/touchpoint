@@ -35,7 +35,7 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
         String name = Agent.getProperty("name");
         String ctxName = TouchPointHelper.touchPointPluginName(name);
         String filter = TouchPointHelper.touchPointFilterName(touchPoint.getHeader().getToAgent());
-        TouchPointListener<T> tpReceiver = (TouchPointListener<T>) TouchPointContextManager.getContext(ctxName).getTouchPointReceiver(filter);
+        TouchPointListener<T, ?> tpReceiver = (TouchPointListener<T, ?>) TouchPointContextManager.getContext(ctxName).getTouchPointReceiver(filter);
 
         if (!(touchPoint instanceof AIModelResponse.AgentAction)
                 && !(touchPoint instanceof AIModelResponse.AgentFinish)) {
@@ -43,7 +43,7 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
         }
 
         if (touchPoint instanceof AIModelResponse.AgentAction) {
-            String actionResult = tpReceiver.onAction(touchPoint, mContext);
+            String actionResult = tpReceiver.onReceive(touchPoint, mContext).toString();
             ((AIModelResponse.AgentAction) touchPoint).setObservation(actionResult);
             Dispatcher.loopCall((AIModelResponse.AgentAction) touchPoint, touchPoint.content, intent.getAction());
         }

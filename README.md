@@ -60,12 +60,17 @@ builder.run("我想查询上海天气");
 class WeatherApplication : AgentApplication()
 ```
 
+定义获取天气的响应类
+```kotlin
+data class WeatherResponse(val weather: String, val temperature: String)
+```
+
 监听来自 `Entry Agent` 的Action，并返回天气信息。
 ```kotlin
 @com.universe.touchpoint.annotations.TouchPointListener(fromAgent = "entry_agent")
-class WeathertListener : TouchPointListener<AgentAction> {
+class WeathertListener : AgentActionListener<AgentAction, WeatherResponse> {
 
-    override fun onAction(action: AgentAction, context: Context) : String {
+    override fun onReceive(action: AgentAction, context: Context) : String {
         val client = OkHttpClient()
 
         // 设置请求的 URL 和参数

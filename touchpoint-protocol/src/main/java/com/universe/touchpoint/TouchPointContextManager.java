@@ -92,9 +92,9 @@ public class TouchPointContextManager {
     @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     public static void registerTouchPointReceivers(Context appContext, boolean isPlugin, ConfigType configType) {
         try {
-            Bundle metaData = null;
+//            Bundle metaData = null;
             String name;
-            if (configType == ConfigType.XML) {
+            /* if (configType == ConfigType.XML) {
                 if (isPlugin) {
                     metaData = appContext.getApplicationInfo().metaData;
                     name = RePlugin.getPluginName();
@@ -104,9 +104,9 @@ public class TouchPointContextManager {
                     metaData = appInfo.metaData;
                     name = RePlugin.getHostName(appContext);
                 }
-            } else {
+            } else {*/
                 name = Agent.getProperty("name");
-            }
+//            }
 
             List<String> receiverClassList;
             List<Object> receiverFilterList;
