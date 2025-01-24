@@ -11,11 +11,11 @@ public class AIModelResponse {
         private String actionInput;
         private String thought;
         private String observation;
-        private String log;
 
         private TouchPoint actionInputValue;
 
         public AgentAction(String action, String actionInput, String thought) {
+            super();
             this.action = action;
             this.actionInput = actionInput;
             this.thought = thought;
@@ -78,6 +78,7 @@ public class AIModelResponse {
         private String output;
 
         public AgentFinish(String output) {
+            super();
             this.output = output;
         }
 
