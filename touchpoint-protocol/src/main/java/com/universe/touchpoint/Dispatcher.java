@@ -31,7 +31,6 @@ public class Dispatcher {
         String input = PromptBuilder.createPromptGenerator(modelType).generatePrompt(
                 AgentRouter.routeItems(Agent.getProperty("name")), action, content);
 
-        // 推理并获取choice，随机选择一个choice
         Map<C, List<R>> choices = AIModelFactory.callModel(input, modelType);
         ChoiceParser<C, R> choiceParser = ChoiceParserFactory.selectParser(modelType);
         Pair<List<AIModelResponse.AgentAction>, AIModelResponse.AgentFinish> answer = choiceParser.parse(choices);
