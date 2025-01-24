@@ -127,7 +127,7 @@ textTouchPoint
 2. 注解 `@TouchPointListener` 用于标识该类为触点监听器，`touchPointName` 属性用于指定监听的触点名称。
 
 ```kotlin
-@com.universe.touchpoint.annotations.TouchPointListener(fromAgent = "font_touch_point")
+@com.universe.touchpoint.annotations.TouchPointListener(fromAgent = {"font_touch_point"})
 class FontListener : DefaultTouchPointListener<TextTouchPoint> {
 
     override fun onReceive(textTouchPoint: TextTouchPoint, context: Context): Boolean {

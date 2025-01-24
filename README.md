@@ -67,7 +67,7 @@ data class WeatherResponse(val weather: String, val temperature: String)
 
 监听来自 `Entry Agent` 的Action，并返回天气信息。
 ```kotlin
-@com.universe.touchpoint.annotations.TouchPointListener(fromAgent = "entry_agent")
+@com.universe.touchpoint.annotations.TouchPointListener(fromAgent = {"entry_agent"})
 class WeathertListener : AgentActionListener<String, WeatherResponse> {
 
     override fun onReceive(city: String, context: Context) : WeatherResponse {
