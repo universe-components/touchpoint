@@ -8,21 +8,21 @@ import java.util.Map;
 
 public class ChoiceParserFactory {
 
-    private static ChoiceParser<?> choiceParser;
+    private static ChoiceParser<?, ?> choiceParser;
     private static final Object lock = new Object();
 
-    private static final Map<AIModelType, Class<? extends ChoiceParser<?>>> choiceParserMap = new HashMap<>();
+    private static final Map<AIModelType, Class<? extends ChoiceParser<?, ?>>> choiceParserMap = new HashMap<>();
     static {
         choiceParserMap.put(AIModelType.OPEN_AI, OpenAIChoiceParser.class);
         choiceParserMap.put(AIModelType.ANTHROPIC, AnthropicChoiceParser.class);
     }
 
-    public static <C> ChoiceParser<C> selectParser(AIModelType modelType) {
+    public static <C, R> ChoiceParser<C, R> selectParser(AIModelType modelType) {
         synchronized (lock) {
             if (choiceParser == null) {
                 try {
                     // 获取模型类类型
-                    Class<? extends ChoiceParser<?>> choiceParserClass = choiceParserMap.get(modelType);
+                    Class<? extends ChoiceParser<?, ?>> choiceParserClass = choiceParserMap.get(modelType);
                     if (choiceParserClass == null) {
                         throw new IllegalArgumentException("Unknown model type: " + modelType);
                     }
@@ -31,7 +31,7 @@ public class ChoiceParserFactory {
                     throw new IllegalArgumentException("Error creating choice parser for type: " + modelType, e);
                 }
             }
-            return (ChoiceParser<C>) choiceParser;
+            return (ChoiceParser<C, R>) choiceParser;
         }
     }
 

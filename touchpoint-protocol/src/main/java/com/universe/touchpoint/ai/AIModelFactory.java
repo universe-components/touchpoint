@@ -4,6 +4,7 @@ import com.universe.touchpoint.ai.models.Anthropic;
 import com.universe.touchpoint.ai.models.OpenAI;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AIModelFactory {
@@ -41,13 +42,13 @@ public class AIModelFactory {
         }
     }
 
-    public static <C, R> R callModel(String content, AIModelType modelType) {
+    public static <C, R> Map<C, List<R>> callModel(String content, AIModelType modelType) {
         // 获取模型实例
         AIModel<?, C, R> model = createModel(modelType);
         // 创建聊天对话
         model.createCompletion(content);
         // 执行推理并获取choice，随机选择一个choice
-        return model.selectChoice(model.predict());
+        return model.predict();
     }
 
 }

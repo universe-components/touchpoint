@@ -68,13 +68,13 @@ data class WeatherResponse(val weather: String, val temperature: String)
 监听来自 `Entry Agent` 的Action，并返回天气信息。
 ```kotlin
 @com.universe.touchpoint.annotations.TouchPointListener(fromAgent = "entry_agent")
-class WeathertListener : AgentActionListener<AgentAction, WeatherResponse> {
+class WeathertListener : AgentActionListener<String, WeatherResponse> {
 
-    override fun onReceive(action: AgentAction, context: Context) : WeatherResponse {
+    override fun onReceive(city: String, context: Context) : WeatherResponse {
         val client = OkHttpClient()
 
         // 设置请求的 URL 和参数
-        val url = "$BASE_URL?q=$action.input&appid=$WEATHER_API_KEY&units=metric&lang=zh_cn"
+        val url = "$BASE_URL?q=$city&appid=$WEATHER_API_KEY&units=metric&lang=zh_cn"
         
         // 创建请求对象
         val request = Request.Builder()

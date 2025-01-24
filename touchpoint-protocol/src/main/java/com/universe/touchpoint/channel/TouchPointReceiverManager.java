@@ -7,6 +7,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.helper.LogDebug;
+import com.universe.touchpoint.Action;
 import com.universe.touchpoint.Agent;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointContextManager;
@@ -16,7 +17,6 @@ import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.router.AgentRouter;
 
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 public class TouchPointReceiverManager {
 
@@ -33,20 +33,13 @@ public class TouchPointReceiverManager {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public void registerTouchPointReceiver(Context appContext, String name, String[] filters, String receiverClassName) {
+    public void registerTouchPointReceiver(Context appContext, String name, String[] filters, Action action) {
         try {
-            Class<?> tpInstanceReceiverClass = Class.forName(receiverClassName);
+            Class<?> tpInstanceReceiverClass = Class.forName(action.getName());
             TouchPointListener<?, ?> tpInstanceReceiver = (TouchPointListener<?, ?>) tpInstanceReceiverClass.getConstructor().newInstance();
 
-            Type[] interfaces = tpInstanceReceiverClass.getGenericInterfaces();
-            ParameterizedType parameterizedType = (ParameterizedType) interfaces[0];
-            Type actualType = parameterizedType.getActualTypeArguments()[0];
-
-            Class<?> touchPointClazz = Class.forName(actualType.getTypeName());
-            Class<? extends TouchPoint> touchPointClass = touchPointClazz.asSubclass(TouchPoint.class);
-
-            registerDefaultOrActionReceiver(appContext, filters, touchPointClass);
-            registerAgentFinishReceiver(appContext, filters, touchPointClass);
+            registerDefaultOrActionReceiver(appContext, filters, action.getInputClass());
+            registerAgentFinishReceiver(appContext, filters, action.getInputClass());
 
             registerContextReceiver(name, filters, tpInstanceReceiver);
         } catch (Exception e) {

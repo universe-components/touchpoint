@@ -12,15 +12,16 @@ import android.util.Pair;
 import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.helper.LogDebug;
+import com.universe.touchpoint.ai.AIModelManager;
 import com.universe.touchpoint.annotations.TouchPointListener;
 import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.channel.TouchPointChannelManager;
 import com.universe.touchpoint.channel.TouchPointReceiverManager;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.router.AgentRouterManager;
 import com.universe.touchpoint.provider.TouchPointContent;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
 import com.universe.touchpoint.provider.TouchPointProvider;
+import com.universe.touchpoint.router.AgentRouterManager;
 import com.universe.touchpoint.utils.ApkUtils;
 
 import java.lang.reflect.Method;
@@ -58,7 +59,7 @@ public class TouchPointContextManager {
 
         action.setHeader(
                 new TouchPoint.Header(Agent.getProperty("name"), name, channel));
-        action.setContent(content);
+        action.setGoal(content);
 
         return action;
     }
@@ -130,10 +131,11 @@ public class TouchPointContextManager {
                                 appContext,
                                 name,
                                 (String[]) receiverFilterList.get(i),
-                                receiverClassList.get(i)
+                                AIModelManager.getInstance().extractAndRegisterAction(
+                                        receiverClassList.get(i), (String[]) receiverFilterList.get(i), name)
                         );
-                        AgentRouterManager.registerRouteEntry((String[]) receiverFilterList.get(i), appContext);
                     }
+                    AgentRouterManager.registerRouteEntry((String[]) receiverFilterList.get(i), appContext);
                 }
             } else {
                 // 处理不匹配的情况，例如打印日志或抛出异常

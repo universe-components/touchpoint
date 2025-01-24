@@ -2,7 +2,6 @@ package com.universe.touchpoint.router;
 
 import com.universe.touchpoint.Agent;
 import com.universe.touchpoint.AgentEntity;
-import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.ai.AIModelResponse;
 
 import java.util.ArrayList;
@@ -32,12 +31,11 @@ public class AgentRouter {
         return null;
     }
 
-    public static <T extends TouchPoint> void addRoute(String fromAgent, AgentEntity toAgent, Class<T> sharedClass) {
+    public static void addRoute(String fromAgent, AgentEntity toAgent) {
         synchronized (lock) {
             AgentRouteEntry routeItem = new AgentRouteEntry();
             routeItem.setFromAgent(fromAgent);
             routeItem.setToAgent(toAgent);
-            routeItem.setSharedClass(sharedClass);
 
             if (!routeTable.containsKey(fromAgent)) {
                 routeTable.put(fromAgent, new ArrayList<>());

@@ -14,13 +14,13 @@ import java.lang.reflect.Field;
 public abstract class TouchPoint {
 
     private Header header = new Header();
-    public String content;
+    public String goal;
 
     protected TouchPoint() {
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setGoal(String goal) {
+        this.goal = goal;
     }
 
     public void setChannel(TouchPointChannel channel) {

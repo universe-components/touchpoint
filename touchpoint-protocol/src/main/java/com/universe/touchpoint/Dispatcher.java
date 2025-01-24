@@ -3,6 +3,7 @@ package com.universe.touchpoint;
 import android.util.Pair;
 
 import com.universe.touchpoint.ai.AIModelFactory;
+import com.universe.touchpoint.ai.AIModelManager;
 import com.universe.touchpoint.ai.AIModelResponse;
 import com.universe.touchpoint.ai.AIModelType;
 import com.universe.touchpoint.ai.ChoiceParser;
@@ -12,13 +13,16 @@ import com.universe.touchpoint.ai.AIModelSelector;
 import com.universe.touchpoint.router.AgentRouteEntry;
 import com.universe.touchpoint.router.AgentRouter;
 
+import java.util.List;
+import java.util.Map;
+
 public class Dispatcher {
 
     public static String dispatch(String content) {
         return loopCall(null, content, null);
     }
 
-    public static <C> String loopCall(AIModelResponse.AgentAction action, String content, String routeChunk) {
+    public static <C, R> String loopCall(AIModelResponse.AgentAction action, String content, String routeChunk) {
         AIModelType modelType = AIModelSelector.selectModel(content);
         if (modelType == null) {
             throw new RuntimeException("unknown model type");
@@ -28,11 +32,12 @@ public class Dispatcher {
                 AgentRouter.routeItems(Agent.getProperty("name")), action, content);
 
         // 推理并获取choice，随机选择一个choice
-        C choice = AIModelFactory.callModel(input, modelType);
-        ChoiceParser<C> choiceParser = ChoiceParserFactory.selectParser(modelType);
-        Pair<AIModelResponse.AgentAction, AIModelResponse.AgentFinish> answer = choiceParser.parse(choice);
+        Map<C, List<R>> choices = AIModelFactory.callModel(input, modelType);
+        ChoiceParser<C, R> choiceParser = ChoiceParserFactory.selectParser(modelType);
+        Pair<List<AIModelResponse.AgentAction>, AIModelResponse.AgentFinish> answer = choiceParser.parse(choices);
 
         TouchPoint touchPoint = null;
+        AIModelResponse.AgentAction nextAction = null;
         if (answer.second != null) {
             String[] routerItem = AgentRouter.splitChunk(routeChunk);
             touchPoint = TouchPointContextManager.generateTouchPoint(
@@ -41,10 +46,13 @@ public class Dispatcher {
                     content);
         }
         if (answer.first != null) {
-            AgentRouteEntry routeItem = AgentRouter.routeTo(answer.first);
+            nextAction = answer.first.get(answer.first.size() - 1);
+            AgentRouteEntry routeItem = AgentRouter.routeTo(nextAction);
             assert routeItem != null;
+            nextAction.setActionInputValue(
+                    AIModelManager.getInstance().paddingActionInput(nextAction, Agent.getProperty("name")));
             touchPoint = TouchPointContextManager.generateTouchPoint(
-                    answer.first,
+                    nextAction,
                     AgentRouter.buildChunk(routeItem),
                     content);
         }
@@ -55,7 +63,7 @@ public class Dispatcher {
             throw new RuntimeException("send target agent failed");
         }
 
-        loopCall(answer.first, content, null);
+        loopCall(nextAction, content, null);
         throw new RuntimeException("unknown error");
     }
 

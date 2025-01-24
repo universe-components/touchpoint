@@ -2,8 +2,11 @@ package com.universe.touchpoint.ai;
 
 import android.util.Pair;
 
-public interface ChoiceParser<T> {
+import java.util.List;
+import java.util.Map;
 
-    Pair<AIModelResponse.AgentAction, AIModelResponse.AgentFinish> parse(T choice);
+public interface ChoiceParser<C, R> {
+
+    Pair<List<AIModelResponse.AgentAction>, AIModelResponse.AgentFinish> parse(Map<C, List<R>> choices);
 
 }

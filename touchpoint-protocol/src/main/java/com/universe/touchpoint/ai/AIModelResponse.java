@@ -6,10 +6,14 @@ import com.universe.touchpoint.TouchPoint;
 public class AIModelResponse {
 
     public static class AgentAction extends TouchPoint {
+
         private String action;
         private String actionInput;
         private String thought;
         private String observation;
+        private String log;
+
+        private TouchPoint actionInputValue;
 
         public AgentAction(String action, String actionInput, String thought) {
             this.action = action;
@@ -47,6 +51,14 @@ public class AIModelResponse {
 
         public void setObservation(String observation) {
             this.observation = observation;
+        }
+
+        public TouchPoint getActionInputValue() {
+            return actionInputValue;
+        }
+
+        public void setActionInputValue(TouchPoint actionInputValue) {
+            this.actionInputValue = actionInputValue;
         }
 
         @NonNull

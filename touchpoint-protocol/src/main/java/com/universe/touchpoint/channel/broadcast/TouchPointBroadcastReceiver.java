@@ -43,9 +43,10 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
         }
 
         if (touchPoint instanceof AIModelResponse.AgentAction) {
-            String actionResult = tpReceiver.onReceive(touchPoint, mContext).toString();
+            String actionResult = tpReceiver.onReceive(
+                    (T) ((AIModelResponse.AgentAction) touchPoint).getActionInputValue(), mContext).toString();
             ((AIModelResponse.AgentAction) touchPoint).setObservation(actionResult);
-            Dispatcher.loopCall((AIModelResponse.AgentAction) touchPoint, touchPoint.content, intent.getAction());
+            Dispatcher.loopCall((AIModelResponse.AgentAction) touchPoint, touchPoint.goal, intent.getAction());
         }
         if (touchPoint instanceof AIModelResponse.AgentFinish) {
             if (!AgentRouter.hasFromAgent(touchPoint.getHeader().getFromAgent())) {

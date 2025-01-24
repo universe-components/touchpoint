@@ -18,7 +18,11 @@ public class AgentRouterBroadcastReceiver extends BroadcastReceiver {
         assert routeChunks != null;
         for (String routeChunk : routeChunks) {
             String[] routeChunkPair = AgentRouter.splitChunk(routeChunk);
-            AgentRouter.addRoute(routeChunkPair[0], new AgentEntity(routeChunkPair[1]), null);
+            try {
+                AgentRouter.addRoute(routeChunkPair[0], new AgentEntity(routeChunkPair[1]));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
