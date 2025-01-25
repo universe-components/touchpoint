@@ -59,6 +59,14 @@ builder.run("我想查询上海天气");
 @TouchPointAgent(name = "weather_agent", desc = "查询城市的天气信息")
 class WeatherApplication : AgentApplication()
 ```
+如果希望 `Weather Agent` 使用指定LLM，可以配置如下：
+```kotlin
+/**
+ * model默认使用o1
+ */
+@TouchPointAgent(name = "weather_agent", desc = "查询城市的天气信息", model = Model.GPT_4)
+class WeatherApplication : AgentApplication()
+```
 
 定义获取天气的响应类
 ```kotlin
@@ -67,7 +75,9 @@ data class WeatherResponse(val weather: String, val temperature: String)
 
 监听来自 `Entry Agent` 的Action，并返回天气信息。
 ```kotlin
-@com.universe.touchpoint.annotations.TouchPointListener(fromAgent = {"entry_agent"})
+@com.universe.touchpoint.annotations.TouchPointListener(
+    fromAgent = {"entry_agent"}, 
+    model = Model.GPT_4) // 指定模型, 默认使用o1
 class WeathertListener : AgentActionListener<String, WeatherResponse> {
 
     override fun onReceive(city: String, context: Context) : WeatherResponse {
