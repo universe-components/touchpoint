@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.universe.touchpoint.AgentEntity;
+import com.universe.touchpoint.agent.AgentEntity;
 import com.universe.touchpoint.TouchPointConstants;
 
 import java.util.ArrayList;

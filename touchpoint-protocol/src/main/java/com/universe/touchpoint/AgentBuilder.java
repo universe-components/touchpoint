@@ -1,11 +1,14 @@
 package com.universe.touchpoint;
 
+import com.universe.touchpoint.config.Model;
+import com.universe.touchpoint.config.Transport;
+
 public class AgentBuilder {
 
     private final AgentConfig config = new AgentConfig();
     private static AgentBuilder builder;
 
-    public static AgentBuilder createConfig(AgentConfig.Model model) {
+    public static AgentBuilder createConfig(Model model) {
         builder = new AgentBuilder();
         builder.config.setModel(model);
 
@@ -14,6 +17,11 @@ public class AgentBuilder {
 
     public AgentBuilder setModelApiKey(String apiKey) {
         config.setModelApiKey(apiKey);
+        return builder;
+    }
+
+    public AgentBuilder setTransportType(Transport transportType) {
+        config.setTransportType(transportType);
         return builder;
     }
 

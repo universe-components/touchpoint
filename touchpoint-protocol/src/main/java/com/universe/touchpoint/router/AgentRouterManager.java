@@ -8,7 +8,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.RePluginHost;
-import com.universe.touchpoint.Agent;
+import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.ApkUtils;
@@ -30,7 +30,7 @@ public class AgentRouterManager {
 
         Intent routerIntent = new Intent(routerAction);
         ArrayList<String> routeEntries = Arrays.stream(toAgents)
-                .map(agent -> AgentRouter.buildChunk(agent, Agent.getProperty("name")))
+                .map(agent -> AgentRouter.buildChunk(agent, Agent.getName()))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         routerIntent.putStringArrayListExtra(TouchPointConstants.TOUCH_POINT_ROUTER_EVENT_NAME, routeEntries);

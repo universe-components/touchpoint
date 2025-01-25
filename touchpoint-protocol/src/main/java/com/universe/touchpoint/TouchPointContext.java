@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.qihoo360.mobilesafe.api.AppVar;
 import com.qihoo360.replugin.RePlugin;
+import com.universe.touchpoint.agent.AgentActionMeta;
+import com.universe.touchpoint.api.TouchPointListener;
 
 import java.util.HashMap;
 
@@ -12,7 +14,7 @@ public class TouchPointContext {
 
     private final HashMap<String, TouchPointListener<?, ?>> touchPointReceivers = new HashMap<>();
     private final HashMap<String, ContentProvider> touchPointProviders = new HashMap<>();
-    private final HashMap<String, Action> touchPointActions = new HashMap<>();
+    private final HashMap<String, AgentActionMeta> touchPointActions = new HashMap<>();
 
     public void putTouchPointReceiver(String filter, TouchPointListener<?, ?> receiver) {
         touchPointReceivers.put(filter, receiver);
@@ -34,11 +36,11 @@ public class TouchPointContext {
         return touchPointProviders.get(uri);
     }
 
-    public void putTouchPointAction(String name, Action action) {
-        touchPointActions.put(name, action);
+    public void putTouchPointAction(String name, AgentActionMeta agentActionMeta) {
+        touchPointActions.put(name, agentActionMeta);
     }
 
-    public Action getTouchPointAction(String name) {
+    public AgentActionMeta getTouchPointAction(String name) {
         return touchPointActions.get(name);
     }
 

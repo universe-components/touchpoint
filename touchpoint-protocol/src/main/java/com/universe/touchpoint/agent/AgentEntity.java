@@ -1,4 +1,4 @@
-package com.universe.touchpoint;
+package com.universe.touchpoint.agent;
 
 public class AgentEntity {
 

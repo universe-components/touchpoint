@@ -1,4 +1,4 @@
-package com.universe.touchpoint;
+package com.universe.touchpoint.agent;
 
 import android.app.Application;
 import android.content.Context;
@@ -11,6 +11,7 @@ import com.qihoo360.replugin.RePluginEnv;
 import com.qihoo360.replugin.RePluginHost;
 import com.qihoo360.replugin.model.PluginInfo;
 import com.universe.touchpoint.annotations.TouchPointAgent;
+import com.universe.touchpoint.config.Model;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
 import java.util.Objects;
@@ -40,7 +41,15 @@ public class Agent {
         }
     }
 
-    public static String getProperty(String propertyName) {
+    public static String getName() {
+        return (String) getProperty("name");
+    }
+
+    public static Model getModel() {
+        return (Model) getProperty("model");
+    }
+
+    public static Object getProperty(String propertyName) {
         Context context = RePluginEnv.getPluginContext();
         if (context == null) {
             context = AppVar.sAppContext;
@@ -54,8 +63,7 @@ public class Agent {
             // 返回注解的属性值
             assert annotation != null;
             return Objects.requireNonNull(
-                    AnnotationUtils.getAnnotationValue(annotation, TouchPointAgent.class, propertyName))
-                    .toString();
+                    AnnotationUtils.getAnnotationValue(annotation, TouchPointAgent.class, propertyName));
         }
 
         return null;

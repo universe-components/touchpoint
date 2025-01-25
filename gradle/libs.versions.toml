@@ -1,7 +1,7 @@
 [versions]
 agp = "8.7.2"
 kotlin = "2.0.0"
-coreKtx = "1.10.1"
+coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -21,6 +21,7 @@ auto-value = "1.11.0"
 hilt = "2.55"
 openai = "0.11.5"
 anthropic = "0.1.0-alpha.8"
+dubbo = "3.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,9 +47,10 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 openai = { group = "com.openai", name = "openai-java", version.ref = "openai" }
 anthropic = { group = "com.anthropic", name = "anthropic-java", version.ref = "anthropic"}
+dubbo = { group = "org.apache.dubbo", name = "dubbo", version.ref = "dubbo" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.9.24" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 android-library = { id = "com.android.library", version.ref = "agp" }

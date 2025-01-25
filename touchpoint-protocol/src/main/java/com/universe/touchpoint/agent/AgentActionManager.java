@@ -1,11 +1,11 @@
-package com.universe.touchpoint.ai;
+package com.universe.touchpoint.agent;
 
 import android.os.Build;
 
 import com.qihoo360.replugin.helper.LogDebug;
-import com.universe.touchpoint.Action;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointContextManager;
+import com.universe.touchpoint.config.Model;
 import com.universe.touchpoint.router.AgentRouter;
 import com.universe.touchpoint.utils.ClassUtils;
 
@@ -13,21 +13,21 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public class AIModelManager {
+public class AgentActionManager {
 
-    private static AIModelManager modelManager;
+    private static AgentActionManager actionManager;
     private static final Object lock = new Object();
 
-    public static AIModelManager getInstance() {
+    public static AgentActionManager getInstance() {
         synchronized (lock) {
-            if (modelManager == null) {
-                modelManager = new AIModelManager();
+            if (actionManager == null) {
+                actionManager = new AgentActionManager();
             }
-            return modelManager;
+            return actionManager;
         }
     }
 
-    public Action extractAndRegisterAction(String receiverClassName, String[] filters, String agentName) {
+    public AgentActionMeta extractAndRegisterAction(String receiverClassName, String[] filters, Model model, String agentName) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(receiverClassName);
 
@@ -42,13 +42,13 @@ public class AIModelManager {
             Class<?> touchPointClazz = Class.forName(touchPointClassName);
             Class<? extends TouchPoint> touchPointClass = touchPointClazz.asSubclass(TouchPoint.class);
 
-            Action action = new Action(receiverClassName, touchPointClass);
+            AgentActionMeta agentActionMeta = new AgentActionMeta(receiverClassName, touchPointClass, model);
             for (String filter : filters) {
                 TouchPointContextManager.getContext(agentName).putTouchPointAction(
-                        AgentRouter.buildChunk(filter, agentName), action);
+                        AgentRouter.buildChunk(filter, agentName), agentActionMeta);
             }
 
-            return action;
+            return agentActionMeta;
         } catch (Exception e) {
             if (LogDebug.LOG) {
                 e.printStackTrace();
@@ -58,12 +58,12 @@ public class AIModelManager {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends TouchPoint> T paddingActionInput(AIModelResponse.AgentAction agentAction, String agentName) {
-        Action action = TouchPointContextManager.getContext(agentName).getTouchPointAction(agentAction.getAction());
-        Class<T> inputClass = (Class<T>) action.getInputClass();
+    public <T extends TouchPoint> T paddingActionInput(String actionName, String actionInput, String agentName) {
+        AgentActionMeta agentActionMeta = TouchPointContextManager.getContext(agentName).getTouchPointAction(actionName);
+        Class<T> inputClass = (Class<T>) agentActionMeta.getInputClass();
 
         // 分割输入
-        String[] actionInputs = agentAction.getActionInput().split("\\|");
+        String[] actionInputs = actionInput.split("\\|");
 
         try {
             T touchPointInstance = inputClass.getDeclaredConstructor().newInstance();

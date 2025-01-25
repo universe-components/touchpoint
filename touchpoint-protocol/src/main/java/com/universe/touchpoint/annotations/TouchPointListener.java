@@ -1,5 +1,7 @@
 package com.universe.touchpoint.annotations;
 
+import com.universe.touchpoint.config.Model;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -10,5 +12,7 @@ import java.lang.annotation.Target;
 public @interface TouchPointListener {
 
     String[] fromAgent();
+
+    Model model() default Model.o1;
 
 }

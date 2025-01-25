@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.universe.touchpoint"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 26
@@ -25,11 +25,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "21"
+        jvmTarget = "17"
     }
     packagingOptions {
         pickFirst("**")
@@ -81,6 +81,7 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.openai)
     api(libs.anthropic)
+    implementation(libs.dubbo)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

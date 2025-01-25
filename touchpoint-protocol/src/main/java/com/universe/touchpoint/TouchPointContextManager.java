@@ -12,11 +12,13 @@ import android.util.Pair;
 import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.helper.LogDebug;
-import com.universe.touchpoint.ai.AIModelManager;
+import com.universe.touchpoint.agent.Agent;
+import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.annotations.TouchPointListener;
 import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.channel.TouchPointChannelManager;
 import com.universe.touchpoint.channel.TouchPointReceiverManager;
+import com.universe.touchpoint.config.Model;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.provider.TouchPointContent;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
@@ -26,6 +28,7 @@ import com.universe.touchpoint.utils.ApkUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +40,7 @@ public class TouchPointContextManager {
 
     public static void initContext() {
         synchronized(lock) {
-            String name = Agent.getProperty("name");
+            String name = Agent.getName();
             String ctxName = TouchPointHelper.touchPointPluginName(name);
             contexts.put(ctxName, new TouchPointContext());
         }
@@ -58,7 +61,7 @@ public class TouchPointContextManager {
         TouchPointChannel channel = TouchPointChannelManager.defaultChannel(ctx);
 
         action.setHeader(
-                new TouchPoint.Header(Agent.getProperty("name"), name, channel));
+                new TouchPoint.Header(Agent.getName(), name, channel));
         action.setGoal(content);
 
         return action;
@@ -100,11 +103,12 @@ public class TouchPointContextManager {
                     name = RePlugin.getHostName(appContext);
                 }
             } else {*/
-                name = Agent.getProperty("name");
+                name = Agent.getName();
 //            }
 
             List<String> receiverClassList;
             List<Object> receiverFilterList;
+            Model actionModel;
             /* if (configType == ConfigType.XML) {
                 // 获取存储的字符串列表
                 String receiverClasses = metaData.getString(TouchPointConstants.TOUCH_POINT_RECEIVERS);
@@ -114,13 +118,16 @@ public class TouchPointContextManager {
                 assert receiverFilters != null;
                 receiverFilterList = Arrays.asList(receiverFilters.replace(" ", "").split(","));
             } else {*/
-                List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext, TouchPointListener.class, Collections.singletonList("fromAgent"), !isPlugin);
+                List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext, TouchPointListener.class, Arrays.asList("fromAgent", "model"), !isPlugin);
                 receiverClassList = receiverFilterPair.stream()
                         .map(pair -> pair.first)
                         .toList();
                 receiverFilterList = receiverFilterPair.stream()
                         .map(pair -> pair.second.get(0))
                         .toList();
+                actionModel = (Model) receiverFilterPair.stream()
+                        .map(pair -> pair.second.get(1))
+                        .toList().get(0);
 //            }
 
             if (receiverClassList.size() == receiverFilterList.size()) {
@@ -131,8 +138,8 @@ public class TouchPointContextManager {
                                 appContext,
                                 name,
                                 (String[]) receiverFilterList.get(i),
-                                AIModelManager.getInstance().extractAndRegisterAction(
-                                        receiverClassList.get(i), (String[]) receiverFilterList.get(i), name)
+                                AgentActionManager.getInstance().extractAndRegisterAction(
+                                        receiverClassList.get(i), (String[]) receiverFilterList.get(i), actionModel, name)
                         );
                     }
                     AgentRouterManager.registerRouteEntry((String[]) receiverFilterList.get(i), appContext);

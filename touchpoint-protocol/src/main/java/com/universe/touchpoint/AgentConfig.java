@@ -1,6 +1,8 @@
 package com.universe.touchpoint;
 
 import com.openai.models.ChatModel;
+import com.universe.touchpoint.config.Model;
+import com.universe.touchpoint.config.Transport;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +11,7 @@ public class AgentConfig {
 
     private Model model;
     private String modelApiKey;
+    private Transport transportType;
 
     public static final Map<Model, Object> modelConfigMap = new HashMap<>();
     static {
@@ -34,13 +37,12 @@ public class AgentConfig {
         this.modelApiKey = modelApiKey;
     }
 
-    public enum Model {
+    public Transport getTransportType() {
+        return transportType;
+    }
 
-        GPT_3_5,
-        GPT_4,
-        o1,
-        ClAUDE_3_5_SONNET
-
+    public void setTransportType(Transport transportType) {
+        this.transportType = transportType;
     }
 
 }

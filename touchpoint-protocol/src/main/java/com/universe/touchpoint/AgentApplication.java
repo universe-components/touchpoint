@@ -15,7 +15,10 @@ import com.qihoo360.replugin.RePluginCallbacks;
 import com.qihoo360.replugin.RePluginConfig;
 import com.qihoo360.replugin.RePluginFramework;
 import com.qihoo360.replugin.RePluginHost;
+import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.router.AgentRouterManager;
+
+import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 
 public class AgentApplication extends Application {
 
@@ -75,6 +78,13 @@ public class AgentApplication extends Application {
         }
 
         TouchPointContextManager.registerContentProvider(ctx);
+
+        // 初始化Dubbo
+        Transport transport = AgentBuilder.getBuilder().getConfig().getTransportType();
+        if (transport == Transport.DUBBO) {
+            DubboBootstrap bootstrap = DubboBootstrap.getInstance();
+            bootstrap.start();
+        }
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override

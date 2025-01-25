@@ -45,7 +45,7 @@ class EntryApplication : AgentApplication()
 在` Entry Agent` 中执行
 ```kotlin
 AgentBuilder builder = AgentBuilder
-    .createConfig(AgentConfig.Model.GPT_4) // 选择模型
+    .createConfig(Model.GPT_4) // 选择模型
     .setModelApiKey("My API Key") // 设置模型API Key
     .build();
 

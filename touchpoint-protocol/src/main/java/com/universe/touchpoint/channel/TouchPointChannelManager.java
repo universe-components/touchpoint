@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.universe.touchpoint.channel.broadcast.TouchPointBroadcastChannel;
 import com.universe.touchpoint.channel.eventbus.TouchPointEventBus;
+import com.universe.touchpoint.channel.rpc.TouchPointDubboChannel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ public class TouchPointChannelManager {
     static {
         channelMapping.put("broadcast", TouchPointBroadcastChannel.class);
         channelMapping.put("eventbus", TouchPointEventBus.class);
+        channelMapping.put("dubbo", TouchPointDubboChannel.class);
     }
 
     public static TouchPointChannel defaultChannel(Context context) {

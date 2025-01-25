@@ -2,9 +2,10 @@ package com.universe.touchpoint;
 
 import android.util.Pair;
 
+import com.universe.touchpoint.agent.Agent;
+import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.ai.AIModelFactory;
-import com.universe.touchpoint.ai.AIModelManager;
-import com.universe.touchpoint.ai.AIModelResponse;
 import com.universe.touchpoint.ai.AIModelType;
 import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.ai.ChoiceParserFactory;
@@ -22,21 +23,21 @@ public class Dispatcher {
         return loopCall(null, content, null);
     }
 
-    public static <C, R> String loopCall(AIModelResponse.AgentAction action, String content, String routeChunk) {
-        AIModelType modelType = AIModelSelector.selectModel(content);
+    public static <C, R> String loopCall(AgentAction action, String content, String routeChunk) {
+        AIModelType modelType = AIModelSelector.selectModel(content, action);
         if (modelType == null) {
             throw new RuntimeException("unknown model type");
         }
 
         String input = PromptBuilder.createPromptGenerator(modelType).generatePrompt(
-                AgentRouter.routeItems(Agent.getProperty("name")), action, content);
+                AgentRouter.routeItems(Agent.getName()), action, content);
 
         Map<C, List<R>> choices = AIModelFactory.callModel(input, modelType);
         ChoiceParser<C, R> choiceParser = ChoiceParserFactory.selectParser(modelType);
-        Pair<List<AIModelResponse.AgentAction>, AIModelResponse.AgentFinish> answer = choiceParser.parse(choices);
+        Pair<List<AgentAction>, AgentFinish> answer = choiceParser.parse(choices);
 
         TouchPoint touchPoint = null;
-        AIModelResponse.AgentAction nextAction = null;
+        AgentAction nextAction = null;
         if (answer.second != null) {
             String[] routerItem = AgentRouter.splitChunk(routeChunk);
             touchPoint = TouchPointContextManager.generateTouchPoint(
@@ -48,8 +49,6 @@ public class Dispatcher {
             nextAction = answer.first.get(answer.first.size() - 1);
             AgentRouteEntry routeItem = AgentRouter.routeTo(nextAction);
             assert routeItem != null;
-            nextAction.setActionInputValue(
-                    AIModelManager.getInstance().paddingActionInput(nextAction, Agent.getProperty("name")));
             touchPoint = TouchPointContextManager.generateTouchPoint(
                     nextAction,
                     AgentRouter.buildChunk(routeItem),

@@ -1,8 +1,8 @@
 package com.universe.touchpoint.router;
 
-import com.universe.touchpoint.Agent;
-import com.universe.touchpoint.AgentEntity;
-import com.universe.touchpoint.ai.AIModelResponse;
+import com.universe.touchpoint.agent.Agent;
+import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.agent.AgentEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,8 +15,8 @@ public class AgentRouter {
     private static final Object lock = new Object();
     protected final static Map<String, List<AgentRouteEntry>> routeTable = new HashMap<>();
 
-    public static AgentRouteEntry routeTo(AIModelResponse.AgentAction action) {
-        List<AgentRouteEntry> agentRouteEntries = routeTable.get(Agent.getProperty("name"));
+    public static AgentRouteEntry routeTo(AgentAction action) {
+        List<AgentRouteEntry> agentRouteEntries = routeTable.get(Agent.getName());
         if (agentRouteEntries == null || agentRouteEntries.isEmpty()) {
             return null;
         }

@@ -1,9 +1,10 @@
 package com.universe.touchpoint.ai.prompt.generators;
 
-import com.universe.touchpoint.ai.AIModelResponse;
+import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.router.AgentRouteEntry;
 import com.universe.touchpoint.ai.prompt.PromptGenerator;
 import com.universe.touchpoint.ai.prompt.template.OpenAITemplate;
+import com.universe.touchpoint.utils.ClassUtils;
 
 import java.util.List;
 
@@ -11,8 +12,7 @@ public class OpenAIPromptGenerator implements PromptGenerator {
 
 
     @Override
-    public String generatePrompt(List<AgentRouteEntry> agentRouteEntries,
-                                 AIModelResponse.AgentAction action, String question) {
+    public String generatePrompt(List<AgentRouteEntry> agentRouteEntries, AgentAction action, String question) {
         StringBuilder toolList = new StringBuilder();
         StringBuilder agentNames = new StringBuilder();
 
@@ -36,7 +36,7 @@ public class OpenAIPromptGenerator implements PromptGenerator {
                     .append("\nAction:")
                     .append(action.getAction())
                     .append("\nAction Input:")
-                    .append(action.getActionInput())
+                    .append(ClassUtils.getFieldValues(action.getActionInput()))
                     .append("\nObservation:")
                     .append(action.getObservation());
         }

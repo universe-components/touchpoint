@@ -1,9 +1,9 @@
-package com.universe.touchpoint.listener;
+package com.universe.touchpoint.api.listener;
 
 import android.content.Context;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.TouchPointListener;
+import com.universe.touchpoint.api.TouchPointListener;
 
 public interface DefaultTouchPointListener<T extends TouchPoint> extends TouchPointListener<T, Boolean> {
 

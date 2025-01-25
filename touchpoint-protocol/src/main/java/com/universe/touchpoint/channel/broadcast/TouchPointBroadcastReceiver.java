@@ -4,13 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.universe.touchpoint.Agent;
+import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.Dispatcher;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.TouchPointContextManager;
-import com.universe.touchpoint.TouchPointListener;
-import com.universe.touchpoint.ai.AIModelResponse;
+import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.agent.AgentFinish;
+import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.router.AgentRouter;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
@@ -32,29 +33,29 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
 
         T touchPoint = SerializeUtils.deserializeFromByteArray(touchPointBytes, tpClass);
 
-        String name = Agent.getProperty("name");
+        String name = Agent.getName();
         String ctxName = TouchPointHelper.touchPointPluginName(name);
         String filter = TouchPointHelper.touchPointFilterName(touchPoint.getHeader().getToAgent());
         TouchPointListener<T, ?> tpReceiver = (TouchPointListener<T, ?>) TouchPointContextManager.getContext(ctxName).getTouchPointReceiver(filter);
 
-        if (!(touchPoint instanceof AIModelResponse.AgentAction)
-                && !(touchPoint instanceof AIModelResponse.AgentFinish)) {
+        if (!(touchPoint instanceof AgentAction)
+                && !(touchPoint instanceof AgentFinish)) {
             tpReceiver.onReceive(touchPoint, mContext);
         }
 
-        if (touchPoint instanceof AIModelResponse.AgentAction) {
+        if (touchPoint instanceof AgentAction) {
             String actionResult = tpReceiver.onReceive(
-                    (T) ((AIModelResponse.AgentAction) touchPoint).getActionInputValue(), mContext).toString();
-            ((AIModelResponse.AgentAction) touchPoint).setObservation(actionResult);
-            Dispatcher.loopCall((AIModelResponse.AgentAction) touchPoint, touchPoint.goal, intent.getAction());
+                    (T) ((AgentAction) touchPoint).getActionInput(), mContext).toString();
+            ((AgentAction) touchPoint).setObservation(actionResult);
+            Dispatcher.loopCall((AgentAction) touchPoint, touchPoint.goal, intent.getAction());
         }
-        if (touchPoint instanceof AIModelResponse.AgentFinish) {
+        if (touchPoint instanceof AgentFinish) {
             if (!AgentRouter.hasFromAgent(touchPoint.getHeader().getFromAgent())) {
                 tpReceiver.onReceive(touchPoint, mContext);
                 return;
             }
             TouchPointContextManager.generateTouchPoint(
-                    AIModelResponse.AgentFinish.class,
+                    AgentFinish.class,
                     AgentRouter.buildChunk(
                             touchPoint.getHeader().getFromAgent(),
                             touchPoint.getHeader().getToAgent())
