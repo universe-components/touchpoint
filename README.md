@@ -121,7 +121,7 @@ class WeathertListener : AgentActionListener<String, WeatherResponse> {
 
 ## 高级用法
 
-（[如何自定义Agent编排？](./README_BASIC.md)）
+（[如何降级为非模型驱动Agent编排？](./README_BASIC.md)）
 
 ## RoadMap
 
