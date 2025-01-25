@@ -35,11 +35,11 @@ public class TouchPointReceiverManager {
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     public void registerTouchPointReceiver(Context appContext, String name, String[] filters, AgentActionMeta agentActionMeta) {
         try {
-            Class<?> tpInstanceReceiverClass = Class.forName(agentActionMeta.getName());
+            Class<?> tpInstanceReceiverClass = Class.forName(agentActionMeta.name());
             TouchPointListener<?, ?> tpInstanceReceiver = (TouchPointListener<?, ?>) tpInstanceReceiverClass.getConstructor().newInstance();
 
-            registerDefaultOrActionReceiver(appContext, filters, agentActionMeta.getInputClass());
-            registerAgentFinishReceiver(appContext, filters, agentActionMeta.getInputClass());
+            registerDefaultOrActionReceiver(appContext, filters, agentActionMeta.inputClass());
+            registerAgentFinishReceiver(appContext, filters, agentActionMeta.inputClass());
 
             registerContextReceiver(name, filters, tpInstanceReceiver);
         } catch (Exception e) {

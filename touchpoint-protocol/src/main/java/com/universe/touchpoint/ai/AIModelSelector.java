@@ -7,7 +7,7 @@ import com.universe.touchpoint.config.Model;
 public class AIModelSelector {
 
     public static AIModelType selectModel(String input, AgentAction action) {
-        Model modelFromAction = action.getMeta().getModel();
+        Model modelFromAction = action.getMeta().model();
         if (modelFromAction == null) {
             // 如果 action 中的模型为空，再检查 Agent 的模型
             Model model = Agent.getModel();

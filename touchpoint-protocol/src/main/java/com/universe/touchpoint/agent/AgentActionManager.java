@@ -60,7 +60,7 @@ public class AgentActionManager {
     @SuppressWarnings("unchecked")
     public <T extends TouchPoint> T paddingActionInput(String actionName, String actionInput, String agentName) {
         AgentActionMeta agentActionMeta = TouchPointContextManager.getContext(agentName).getTouchPointAction(actionName);
-        Class<T> inputClass = (Class<T>) agentActionMeta.getInputClass();
+        Class<T> inputClass = (Class<T>) agentActionMeta.inputClass();
 
         // 分割输入
         String[] actionInputs = actionInput.split("\\|");
