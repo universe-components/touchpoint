@@ -22,6 +22,7 @@ public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion
                 .apiKey(AgentBuilder
                         .getBuilder()
                         .getConfig()
+                        .getModelConfig()
                         .getModelApiKey())
                 .build());
     }
@@ -34,8 +35,8 @@ public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion
                         .content(content)
                         .build())
                 .model((ChatModel) Objects.requireNonNull(
-                        AgentConfig.modelConfigMap.get(
-                                AgentBuilder.getBuilder().getConfig().getModel())))
+                        AgentConfig.ModelConfig.modelConfigMap.get(
+                                AgentBuilder.getBuilder().getConfig().getModelConfig().getModel())))
                 .build();
 
         this.completions.add(client.chat().completions().create(params));

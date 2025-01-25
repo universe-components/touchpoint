@@ -22,6 +22,7 @@ public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
                 .apiKey(AgentBuilder
                         .getBuilder()
                         .getConfig()
+                        .getModelConfig()
                         .getModelApiKey())
                 .build());
     }
@@ -32,8 +33,8 @@ public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
                 .maxTokensToSample(1024L)
                 .prompt(content)
                 .model((Model) Objects.requireNonNull(
-                        AgentConfig.modelConfigMap.get(
-                                AgentBuilder.getBuilder().getConfig().getModel())))
+                        AgentConfig.ModelConfig.modelConfigMap.get(
+                                AgentBuilder.getBuilder().getConfig().getModelConfig().getModel())))
                 .build();
         this.completions.add(client.completions().create(params));
     }

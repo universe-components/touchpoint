@@ -8,15 +8,30 @@ public class AgentBuilder {
     private final AgentConfig config = new AgentConfig();
     private static AgentBuilder builder;
 
-    public static AgentBuilder createConfig(Model model) {
+    public static AgentBuilder model(Model model) {
         builder = new AgentBuilder();
-        builder.config.setModel(model);
+        builder.config.getModelConfig().setModel(model);
+        return builder;
+    }
 
+    public AgentBuilder transport(Transport transport) {
+        builder = new AgentBuilder();
+        builder.config.setTransportType(transport);
+        return builder;
+    }
+
+    public AgentBuilder setModel(Model model) {
+        config.getModelConfig().setModel(model);
+        return builder;
+    }
+
+    public AgentBuilder setTemperature(Float temperature) {
+        config.getModelConfig().setTemperature(temperature);
         return builder;
     }
 
     public AgentBuilder setModelApiKey(String apiKey) {
-        config.setModelApiKey(apiKey);
+        config.getModelConfig().setModelApiKey(apiKey);
         return builder;
     }
 

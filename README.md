@@ -45,8 +45,10 @@ class EntryApplication : AgentApplication()
 在` Entry Agent` 中执行
 ```kotlin
 AgentBuilder builder = AgentBuilder
-    .createConfig(Model.GPT_4) // 选择模型
+    .model(Model.GPT_4) // 选择模型
+    .setTemperature(0.0) // 设置温度
     .setModelApiKey("My API Key") // 设置模型API Key
+    .transport(Transport.DUBBO) // 设置传输方式，默认事件驱动
     .build();
 
 builder.run("我想查询上海天气");
