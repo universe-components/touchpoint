@@ -11,7 +11,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TouchPointListener {
 
-    String[] fromAgent();
+    String name();
+
+    String[] fromAgent() default {};
+
+    String[] fromAction() default {};
 
     Model model() default Model.o1;
 

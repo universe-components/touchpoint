@@ -106,7 +106,8 @@ public class TouchPointContextManager {
 //            }
 
             List<String> receiverClassList;
-            List<Object> receiverFilterList;
+            List<Object> receiverAgentFilterList;
+            List<Object> receiverActionFilterList;
             Model actionModel;
             /* if (configType == ConfigType.XML) {
                 // 获取存储的字符串列表
@@ -117,31 +118,36 @@ public class TouchPointContextManager {
                 assert receiverFilters != null;
                 receiverFilterList = Arrays.asList(receiverFilters.replace(" ", "").split(","));
             } else {*/
-                List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext, TouchPointListener.class, Arrays.asList("fromAgent", "model"), !isPlugin);
+                List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext,
+                        TouchPointListener.class, Arrays.asList("name", "fromAgent", "fromAction", "model"), !isPlugin);
                 receiverClassList = receiverFilterPair.stream()
                         .map(pair -> pair.first)
                         .toList();
-                receiverFilterList = receiverFilterPair.stream()
+                receiverAgentFilterList = receiverFilterPair.stream()
                         .map(pair -> pair.second.get(0))
                         .toList();
-                actionModel = (Model) receiverFilterPair.stream()
+                receiverActionFilterList = receiverFilterPair.stream()
                         .map(pair -> pair.second.get(1))
+                        .toList();
+                actionModel = (Model) receiverFilterPair.stream()
+                        .map(pair -> pair.second.get(2))
                         .toList().get(0);
 //            }
 
-            if (receiverClassList.size() == receiverFilterList.size()) {
+            if (receiverClassList.size() == receiverAgentFilterList.size()) {
                 for (int i = 0; i < receiverClassList.size(); i++) {
                     // 动态注册接收器，并传递相应的过滤器
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         TouchPointReceiverManager.getInstance().registerTouchPointReceiver(
                                 appContext,
                                 name,
-                                (String[]) receiverFilterList.get(i),
+                                (String[]) receiverAgentFilterList.get(i),
+                                (String[]) receiverActionFilterList.get(i),
                                 AgentActionManager.getInstance().extractAndRegisterAction(
-                                        receiverClassList.get(i), (String[]) receiverFilterList.get(i), actionModel, name)
+                                        receiverClassList.get(i), (String[]) receiverAgentFilterList.get(i), actionModel, name)
                         );
                     }
-                    AgentRouterManager.registerRouteEntry((String[]) receiverFilterList.get(i), appContext);
+                    AgentRouterManager.registerRouteEntry((String[]) receiverAgentFilterList.get(i), appContext);
                 }
             } else {
                 // 处理不匹配的情况，例如打印日志或抛出异常

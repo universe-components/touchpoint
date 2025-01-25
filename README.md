@@ -80,6 +80,7 @@ data class WeatherResponse(val weather: String, val temperature: String)
 监听来自 `Entry Agent` 的Action，并返回天气信息。
 ```kotlin
 @com.universe.touchpoint.annotations.TouchPointListener(
+    name = "weather_action",
     fromAgent = {"entry_agent"}, // 可以指定多个来源Agent
     model = Model.GPT_4) // 指定模型, 默认使用o1
 class WeathertListener : AgentActionListener<String, WeatherResponse> {
