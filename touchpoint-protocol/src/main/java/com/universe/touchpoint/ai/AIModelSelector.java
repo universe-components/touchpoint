@@ -25,13 +25,11 @@ public class AIModelSelector {
         Model model = (Model) Agent.getProperty("model", AIModel.class);
         if (model != null) {
             float temperature = (float) Agent.getProperty("temperature", AIModel.class);
-            // 根据 Agent.getModel() 返回相应的 AIModelType
-            return switch (model) {
-                case GPT_3_5, o1, GPT_4, NONE ->
-                        new AIModelConfig(model, temperature, AIModelType.OPEN_AI);
-                case ClAUDE_3_5_SONNET ->
-                        new AIModelConfig(model, action.getMeta().model().getTemperature(), AIModelType.ANTHROPIC);
-            };
+            return new AIModelConfig(
+                    model,
+                    temperature,
+                    model == Model.ClAUDE_3_5_SONNET ? AIModelType.ANTHROPIC : AIModelType.OPEN_AI
+            );
         }
 
         // 如果 Agent.getModel() 也为空，再检查 AgentBuilder 中的配置
