@@ -138,7 +138,7 @@ public class TouchPointContextManager {
                         .map(pair -> pair.second.get(2))
                         .toList();
                 List<Pair<String, List<Object>>> modelPair = ApkUtils.getClassNames(appContext,
-                        AIModel.class, Arrays.asList("value", "temperature"), !isPlugin);
+                        AIModel.class, Arrays.asList("name", "temperature"), !isPlugin);
                 actionModel = (Model) modelPair.stream()
                         .map(pair -> pair.second.get(0))
                         .toList()

@@ -68,7 +68,8 @@ class WeatherApplication : AgentApplication()
 /**
  * model默认使用o1
  */
-@TouchPointAgent(name = "weather_agent", desc = "查询城市的天气信息", model = Model.GPT_4)
+@TouchPointAgent(name = "weather_agent", desc = "查询城市的天气信息")
+@AIModel(name = Model.GPT_4, temperature = 0.0) // 指定模型, 默认使用o1
 class WeatherApplication : AgentApplication()
 ```
 
@@ -82,7 +83,8 @@ data class WeatherResponse(val weather: String, val temperature: String)
 @com.universe.touchpoint.annotations.TouchPointListener(
     name = "weather_action",
     fromAgent = {"entry_agent"}, // 可以指定多个来源Agent
-    model = Model.GPT_4) // 指定模型, 默认使用o1
+) 
+@AIModel(name = Model.GPT_4, temperature = 0.0) // 指定模型, 默认使用o1
 class WeathertListener : AgentActionListener<String, WeatherResponse> {
 
     override fun onReceive(city: String, context: Context) : WeatherResponse {
