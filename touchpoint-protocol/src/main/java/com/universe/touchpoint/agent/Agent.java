@@ -11,10 +11,9 @@ import com.qihoo360.replugin.RePluginEnv;
 import com.qihoo360.replugin.RePluginHost;
 import com.qihoo360.replugin.model.PluginInfo;
 import com.universe.touchpoint.annotations.TouchPointAgent;
-import com.universe.touchpoint.config.Model;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
-import java.util.Objects;
+import java.lang.annotation.Annotation;
 
 public class Agent {
 
@@ -42,14 +41,10 @@ public class Agent {
     }
 
     public static String getName() {
-        return (String) getProperty("name");
+        return (String) getProperty("name", TouchPointAgent.class);
     }
 
-    public static Model getModel() {
-        return (Model) getProperty("model");
-    }
-
-    public static Object getProperty(String propertyName) {
+    public static Object getProperty(String propertyName, Class<? extends Annotation> annotationClass) {
         Context context = RePluginEnv.getPluginContext();
         if (context == null) {
             context = AppVar.sAppContext;
@@ -57,13 +52,13 @@ public class Agent {
 
         Application application = (Application) context;
         Class<?> applicationClass = application.getClass();
-        if (applicationClass.isAnnotationPresent(TouchPointAgent.class)) {
+
+        // 检查传入的注解类是否存在于 applicationClass 中
+        if (applicationClass.isAnnotationPresent(annotationClass)) {
             // 获取注解实例
-            TouchPointAgent annotation = applicationClass.getAnnotation(TouchPointAgent.class);
+            Annotation annotation = applicationClass.getAnnotation(annotationClass);
             // 返回注解的属性值
-            assert annotation != null;
-            return Objects.requireNonNull(
-                    AnnotationUtils.getAnnotationValue(annotation, TouchPointAgent.class, propertyName));
+            return AnnotationUtils.getAnnotationValue(annotation, annotationClass, propertyName);
         }
 
         return null;

@@ -14,10 +14,12 @@ import androidx.annotation.RequiresApi;
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
+import com.universe.touchpoint.annotations.AIModel;
 import com.universe.touchpoint.annotations.TouchPointListener;
 import com.universe.touchpoint.channel.TouchPointChannel;
 import com.universe.touchpoint.channel.TouchPointChannelManager;
 import com.universe.touchpoint.channel.TouchPointReceiverManager;
+import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Model;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.provider.TouchPointContent;
@@ -110,6 +112,7 @@ public class TouchPointContextManager {
             List<Object> receiverActionFilterList;
             String actionName;
             Model actionModel;
+            float actionModelTemperature;
             /* if (configType == ConfigType.XML) {
                 // 获取存储的字符串列表
                 String receiverClasses = metaData.getString(TouchPointConstants.TOUCH_POINT_RECEIVERS);
@@ -120,7 +123,7 @@ public class TouchPointContextManager {
                 receiverFilterList = Arrays.asList(receiverFilters.replace(" ", "").split(","));
             } else {*/
                 List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext,
-                        TouchPointListener.class, Arrays.asList("name", "fromAgent", "fromAction", "model"), !isPlugin);
+                        TouchPointListener.class, Arrays.asList("name", "fromAgent", "fromAction"), !isPlugin);
                 receiverClassList = receiverFilterPair.stream()
                         .map(pair -> pair.first)
                         .toList();
@@ -134,8 +137,14 @@ public class TouchPointContextManager {
                 receiverActionFilterList = receiverFilterPair.stream()
                         .map(pair -> pair.second.get(2))
                         .toList();
-                actionModel = (Model) receiverFilterPair.stream()
-                        .map(pair -> pair.second.get(3))
+                List<Pair<String, List<Object>>> modelPair = ApkUtils.getClassNames(appContext,
+                        AIModel.class, Arrays.asList("value", "temperature"), !isPlugin);
+                actionModel = (Model) modelPair.stream()
+                        .map(pair -> pair.second.get(0))
+                        .toList()
+                        .get(0);
+                actionModelTemperature = (float) modelPair.stream()
+                        .map(pair -> pair.second.get(1))
                         .toList()
                         .get(0);
 //            }
@@ -150,7 +159,10 @@ public class TouchPointContextManager {
                                 (String[]) receiverAgentFilterList.get(i),
                                 (String[]) receiverActionFilterList.get(i),
                                 AgentActionManager.getInstance().extractAndRegisterAction(
-                                        receiverClassList.get(i), actionModel, actionName, name)
+                                        receiverClassList.get(i),
+                                        new AIModelConfig(actionModel, actionModelTemperature),
+                                        actionName,
+                                        name)
                         );
                     }
                     AgentRouterManager.registerRouteEntry((String[]) receiverAgentFilterList.get(i), appContext);

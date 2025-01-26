@@ -5,7 +5,7 @@ import android.os.Build;
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointContextManager;
-import com.universe.touchpoint.config.Model;
+import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.ClassUtils;
 
@@ -27,7 +27,7 @@ public class AgentActionManager {
         }
     }
 
-    public AgentActionMeta extractAndRegisterAction(String receiverClassName, Model model, String actionName, String agentName) {
+    public AgentActionMeta extractAndRegisterAction(String receiverClassName, AIModelConfig model, String actionName, String agentName) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(receiverClassName);
 

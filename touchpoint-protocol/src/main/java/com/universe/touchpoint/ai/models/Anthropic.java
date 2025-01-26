@@ -9,6 +9,7 @@ import com.universe.touchpoint.AgentBuilder;
 import com.universe.touchpoint.AgentConfig;
 import com.universe.touchpoint.ai.AIModel;
 import com.anthropic.client.AnthropicClient;
+import com.universe.touchpoint.config.AIModelConfig;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,14 +18,14 @@ import java.util.Objects;
 
 public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
 
-    public Anthropic() {
+    public Anthropic(AIModelConfig modelConfig) {
         super(AnthropicOkHttpClient.builder()
                 .apiKey(AgentBuilder
                         .getBuilder()
                         .getConfig()
                         .getModelConfig()
                         .getModelApiKey())
-                .build());
+                .build(), modelConfig);
     }
 
     @Override
@@ -33,8 +34,8 @@ public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
                 .maxTokensToSample(1024L)
                 .prompt(content)
                 .model((Model) Objects.requireNonNull(
-                        AgentConfig.ModelConfig.modelConfigMap.get(
-                                AgentBuilder.getBuilder().getConfig().getModelConfig().getModel())))
+                        AgentConfig.ModelConfig.modelConfigMap.get(config.getModel())))
+                .temperature(config.getTemperature())
                 .build();
         this.completions.add(client.completions().create(params));
     }
