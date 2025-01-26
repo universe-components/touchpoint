@@ -108,6 +108,7 @@ public class TouchPointContextManager {
             List<String> receiverClassList;
             List<Object> receiverAgentFilterList;
             List<Object> receiverActionFilterList;
+            String actionName;
             Model actionModel;
             /* if (configType == ConfigType.XML) {
                 // 获取存储的字符串列表
@@ -123,15 +124,20 @@ public class TouchPointContextManager {
                 receiverClassList = receiverFilterPair.stream()
                         .map(pair -> pair.first)
                         .toList();
-                receiverAgentFilterList = receiverFilterPair.stream()
+                actionName = (String) receiverFilterPair.stream()
                         .map(pair -> pair.second.get(0))
-                        .toList();
-                receiverActionFilterList = receiverFilterPair.stream()
+                        .toList()
+                        .get(0);
+                receiverAgentFilterList = receiverFilterPair.stream()
                         .map(pair -> pair.second.get(1))
                         .toList();
-                actionModel = (Model) receiverFilterPair.stream()
+                receiverActionFilterList = receiverFilterPair.stream()
                         .map(pair -> pair.second.get(2))
-                        .toList().get(0);
+                        .toList();
+                actionModel = (Model) receiverFilterPair.stream()
+                        .map(pair -> pair.second.get(3))
+                        .toList()
+                        .get(0);
 //            }
 
             if (receiverClassList.size() == receiverAgentFilterList.size()) {
@@ -144,7 +150,7 @@ public class TouchPointContextManager {
                                 (String[]) receiverAgentFilterList.get(i),
                                 (String[]) receiverActionFilterList.get(i),
                                 AgentActionManager.getInstance().extractAndRegisterAction(
-                                        receiverClassList.get(i), (String[]) receiverAgentFilterList.get(i), actionModel, name)
+                                        receiverClassList.get(i), actionModel, actionName, name)
                         );
                     }
                     AgentRouterManager.registerRouteEntry((String[]) receiverAgentFilterList.get(i), appContext);

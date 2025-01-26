@@ -9,6 +9,7 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.ai.ChoiceParser;
+import com.universe.touchpoint.helper.TouchPointHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,8 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
                                     action, actionInput.replaceAll("\"", "").trim(), Agent.getName()
                                 ),
                         thought,
-                        TouchPointContextManager.getContext(Agent.getName()).getTouchPointAction(action)));
+                        TouchPointContextManager.getContext(Agent.getName()).getTouchPointAction(
+                                TouchPointHelper.touchPointActionName(action, Agent.getName()))));
             }
         }
         // 返回 AgentAction

@@ -11,6 +11,10 @@ public class TouchPointHelper {
         return TouchPointConstants.TOUCH_POINT_FILTER_PREFIX + "." + filter;
     }
 
+    public static String touchPointActionName(String actionName, String agentName) {
+        return agentName + "." + actionName;
+    }
+
     public static String touchPointReceiverClassName(String type) {
         return String.format(TouchPointConstants.TOUCH_POINT_PKG + ".%sBroadcastReceiver", type);
     }
