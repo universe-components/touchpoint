@@ -40,6 +40,14 @@ public class Agent {
         }
     }
 
+    public static Context getContext() {
+        Context context = RePluginEnv.getPluginContext();
+        if (context == null) {
+            context = AppVar.sAppContext;
+        }
+        return context;
+    }
+
     public static String getName() {
         return (String) getProperty("name", TouchPointAgent.class);
     }

@@ -16,6 +16,10 @@ public class TouchPointConstants {
 
     public static final String TOUCH_POINT_ROUTER_EVENT_NAME = "route_entry";
 
+    public static final String TOUCH_POINT_TRANSPORT_CONFIG_FILTER_NAME = "transport_config_filter";
+
+    public static final String TOUCH_POINT_TRANSPORT_CONFIG_EVENT_NAME = "transport_config";
+
     public static final String AI_MODEL_API_KEY = "universe";
 
 }

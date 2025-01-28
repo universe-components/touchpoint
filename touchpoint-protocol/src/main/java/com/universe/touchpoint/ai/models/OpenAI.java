@@ -7,7 +7,6 @@ import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatCompletionUserMessageParam;
 import com.openai.models.ChatModel;
 import com.universe.touchpoint.AgentBuilder;
-import com.universe.touchpoint.AgentConfig;
 import com.universe.touchpoint.ai.AIModel;
 import com.universe.touchpoint.config.AIModelConfig;
 
@@ -24,7 +23,7 @@ public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion
                         .getBuilder()
                         .getConfig()
                         .getModelConfig()
-                        .getModelApiKey())
+                        .getApiKey())
                 .build(), modelConfig);
     }
 
@@ -36,7 +35,7 @@ public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion
                         .content(content)
                         .build())
                 .model((ChatModel) Objects.requireNonNull(
-                        AgentConfig.ModelConfig.modelConfigMap.get(config.getModel())))
+                        AIModelConfig.modelConfigMap.get(config.getModel())))
                 .temperature(config.getTemperature())
                 .build();
 

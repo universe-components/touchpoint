@@ -16,8 +16,14 @@ import com.qihoo360.replugin.RePluginConfig;
 import com.qihoo360.replugin.RePluginFramework;
 import com.qihoo360.replugin.RePluginHost;
 import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.TransportConfig;
+import com.universe.touchpoint.config.transport.rpc.DubboConfig;
+import com.universe.touchpoint.transport.TouchPointTransportConfigManager;
 import com.universe.touchpoint.router.AgentRouterManager;
 
+import org.apache.dubbo.common.constants.CommonConstants;
+import org.apache.dubbo.config.ProtocolConfig;
+import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 
 public class AgentApplication extends Application {
@@ -80,10 +86,17 @@ public class AgentApplication extends Application {
         TouchPointContextManager.registerContentProvider(ctx);
 
         // 初始化Dubbo
-        Transport transport = AgentBuilder.getBuilder().getConfig().getTransportType();
-        if (transport == Transport.DUBBO) {
-            DubboBootstrap bootstrap = DubboBootstrap.getInstance();
-            bootstrap.start();
+        TransportConfig<DubboConfig> config = TouchPointTransportConfigManager.config(Transport.DUBBO);
+        if (config != null) {
+            DubboBootstrap.getInstance()
+                    .application(config.config().getApplicationName())
+                    .registry(new RegistryConfig(config.config().getRegistryAddress()))
+                    .protocol(new ProtocolConfig(CommonConstants.TRIPLE, 50051))
+//                    .service(ServiceBuilder.newBuilder()
+//                            .interfaceClass(TouchPointDubboChannel.TouchPointService.class)
+//                            .ref(new TouchPointDubboProvider()).build())
+                    .start()
+                    .await();
         }
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {

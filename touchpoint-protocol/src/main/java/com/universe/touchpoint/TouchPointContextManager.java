@@ -15,10 +15,13 @@ import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.annotations.AIModel;
-import com.universe.touchpoint.annotations.TouchPointListener;
-import com.universe.touchpoint.channel.TouchPointChannel;
-import com.universe.touchpoint.channel.TouchPointChannelManager;
-import com.universe.touchpoint.channel.TouchPointReceiverManager;
+import com.universe.touchpoint.annotations.TouchPointAction;
+import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.TransportConfig;
+import com.universe.touchpoint.config.TransportConfigMeta;
+import com.universe.touchpoint.transport.TouchPointChannel;
+import com.universe.touchpoint.transport.TouchPointChannelManager;
+import com.universe.touchpoint.transport.TouchPointReceiverManager;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Model;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -33,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TouchPointContextManager {
 
@@ -59,10 +63,9 @@ public class TouchPointContextManager {
     public static <A extends TouchPoint> A generateTouchPoint(
             A action, String name, String content) {
         Context ctx = TouchPointContext.getAgentContext();
-        TouchPointChannel channel = TouchPointChannelManager.defaultChannel(ctx);
+        TouchPointChannel channel = TouchPointChannelManager.selectChannel(action, ctx);
 
-        action.setHeader(
-                new TouchPoint.Header(Agent.getName(), name, channel));
+        action.setHeader(new TouchPoint.Header(Agent.getName(), name, channel));
         action.setGoal(content);
 
         return action;
@@ -123,7 +126,7 @@ public class TouchPointContextManager {
                 receiverFilterList = Arrays.asList(receiverFilters.replace(" ", "").split(","));
             } else {*/
                 List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext,
-                        TouchPointListener.class, Arrays.asList("name", "fromAgent", "fromAction"), !isPlugin);
+                        TouchPointAction.class, Arrays.asList("name", "fromAgent", "fromAction"), !isPlugin);
                 receiverClassList = receiverFilterPair.stream()
                         .map(pair -> pair.first)
                         .toList();
@@ -151,6 +154,13 @@ public class TouchPointContextManager {
 
             if (receiverClassList.size() == receiverAgentFilterList.size()) {
                 for (int i = 0; i < receiverClassList.size(); i++) {
+                    Map<Transport, Object> transportConfigMap = ApkUtils.annotation2Config(
+                            Class.forName(receiverClassList.get(i)),
+                            TransportConfigMeta.annotation2Config,
+                            TransportConfigMeta.annotation2Type
+                    );
+                    Transport transportType = transportConfigMap.keySet().iterator().next();
+                    Object transportConfig = transportConfigMap.get(transportType);
                     // 动态注册接收器，并传递相应的过滤器
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         TouchPointReceiverManager.getInstance().registerTouchPointReceiver(
@@ -161,6 +171,9 @@ public class TouchPointContextManager {
                                 AgentActionManager.getInstance().extractAndRegisterAction(
                                         receiverClassList.get(i),
                                         new AIModelConfig(actionModel, actionModelTemperature),
+                                        new TransportConfig<>(
+                                                transportType,
+                                                transportConfig),
                                         actionName,
                                         name)
                         );

@@ -1,7 +1,5 @@
 package com.universe.touchpoint.annotations;
 
-import com.universe.touchpoint.config.Model;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -9,14 +7,12 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface TouchPointListener {
+public @interface TouchPointAction {
 
     String name();
 
     String[] fromAgent() default {};
 
     String[] fromAction() default {};
-
-    Model model() default Model.o1;
 
 }

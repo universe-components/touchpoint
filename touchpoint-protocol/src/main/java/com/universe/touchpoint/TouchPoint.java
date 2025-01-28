@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
-import com.universe.touchpoint.channel.TouchPointChannel;
+import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.provider.TouchPointContent;
 import com.universe.touchpoint.provider.TouchPointContentFactory;

@@ -50,7 +50,8 @@ AgentBuilder builder = AgentBuilder
     .model(Model.GPT_4) // 选择模型
     .setTemperature(0.0) // 设置温度
     .setModelApiKey("My API Key") // 设置模型API Key
-    .transport(Transport.DUBBO) // 设置传输方式，默认事件驱动
+    .dubbo() // 设置全局的Agent调用方式，默认事件驱动
+    .setRegistryAddress("127.0.0.1:2181") // 设置注册中心地址
     .build();
 
 builder.run("我想查询上海天气");
@@ -61,6 +62,7 @@ builder.run("我想查询上海天气");
 `WeatherApplication` 继承 `AgentApplication`
 ```kotlin
 @TouchPointAgent(name = "weather_agent", desc = "查询城市的天气信息")
+@Dubbo(applicationName = "weather_agent", registryAddress = "127.0.0.1:2181")
 class WeatherApplication : AgentApplication()
 ```
 如果希望 `Weather Agent` 使用指定LLM，可以配置如下：
@@ -80,7 +82,7 @@ data class WeatherResponse(val weather: String, val temperature: String)
 
 监听来自 `Entry Agent` 的Action，并返回天气信息。
 ```kotlin
-@com.universe.touchpoint.annotations.TouchPointListener(
+@com.universe.touchpoint.annotations.TouchPointAction(
     name = "weather_action",
     fromAgent = {"entry_agent"}, // 可以指定多个来源Agent
 ) 

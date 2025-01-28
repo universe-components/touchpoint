@@ -1,20 +1,18 @@
-package com.universe.touchpoint.channel.broadcast;
+package com.universe.touchpoint.transport.broadcast;
 
 import android.content.Context;
 import android.content.Intent;
 
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointConstants;
-import com.universe.touchpoint.channel.TouchPointChannel;
+import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
 
-public class TouchPointBroadcastChannel implements TouchPointChannel {
-
-    private final Context context;
+public class TouchPointBroadcastChannel extends TouchPointChannel {
 
     public TouchPointBroadcastChannel(Context context) {
-        this.context = context;
+        super(context);
     }
 
     @Override

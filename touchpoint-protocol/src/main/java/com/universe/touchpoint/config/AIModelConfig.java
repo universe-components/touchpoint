@@ -1,12 +1,27 @@
 package com.universe.touchpoint.config;
 
+import com.openai.models.ChatModel;
 import com.universe.touchpoint.ai.AIModelType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AIModelConfig {
 
-    private final Model model;
-    private final float temperature;
+    private Model model;
+    private float temperature;
+    private String apiKey;
     private AIModelType type;
+
+    public static final Map<Model, Object> modelConfigMap = new HashMap<>();
+    static {
+        modelConfigMap.put(Model.GPT_3_5, ChatModel.GPT_3_5_TURBO);
+        modelConfigMap.put(Model.GPT_4, ChatModel.GPT_4);
+        modelConfigMap.put(Model.o1, ChatModel.O1);
+        modelConfigMap.put(Model.ClAUDE_3_5_SONNET, com.anthropic.models.Model.CLAUDE_3_5_SONNET_LATEST);
+    }
+
+    public AIModelConfig() {}
 
     public AIModelConfig(Model model, float temperature, AIModelType type) {
         this.model = model;
@@ -29,8 +44,24 @@ public class AIModelConfig {
         return model;
     }
 
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
     public float getTemperature() {
         return temperature;
+    }
+
+    public void setTemperature(float temperature) {
+        this.temperature = temperature;
     }
 
     public AIModelType getType() {

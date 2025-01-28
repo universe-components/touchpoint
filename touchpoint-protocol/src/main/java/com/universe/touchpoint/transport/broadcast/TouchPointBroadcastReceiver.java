@@ -1,4 +1,4 @@
-package com.universe.touchpoint.channel.broadcast;
+package com.universe.touchpoint.transport.broadcast;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

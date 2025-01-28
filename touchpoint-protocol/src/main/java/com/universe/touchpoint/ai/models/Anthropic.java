@@ -6,7 +6,6 @@ import com.anthropic.models.CompletionCreateParams;
 import com.anthropic.models.Model;
 import com.google.common.collect.Lists;
 import com.universe.touchpoint.AgentBuilder;
-import com.universe.touchpoint.AgentConfig;
 import com.universe.touchpoint.ai.AIModel;
 import com.anthropic.client.AnthropicClient;
 import com.universe.touchpoint.config.AIModelConfig;
@@ -24,7 +23,7 @@ public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
                         .getBuilder()
                         .getConfig()
                         .getModelConfig()
-                        .getModelApiKey())
+                        .getApiKey())
                 .build(), modelConfig);
     }
 
@@ -34,7 +33,7 @@ public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
                 .maxTokensToSample(1024L)
                 .prompt(content)
                 .model((Model) Objects.requireNonNull(
-                        AgentConfig.ModelConfig.modelConfigMap.get(config.getModel())))
+                        AIModelConfig.modelConfigMap.get(config.getModel())))
                 .temperature(config.getTemperature())
                 .build();
         this.completions.add(client.completions().create(params));
