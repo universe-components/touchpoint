@@ -65,7 +65,7 @@ public class AgentBuilder {
 
     public AgentBuilder build() {
         if (config.getTransportConfig().config() != null) {
-            TouchPointTransportConfigManager.registerTransportConfig(config.getTransportConfig(), Agent.getContext());
+            TouchPointTransportConfigManager.registerAgentTransportConfig(config.getTransportConfig(), Agent.getContext());
         }
         return this;
     }

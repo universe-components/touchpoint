@@ -1,4 +1,4 @@
-package com.universe.touchpoint.transport;
+package com.universe.touchpoint;
 
 import android.content.Context;
 import android.content.IntentFilter;
@@ -7,11 +7,9 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.helper.LogDebug;
-import com.universe.touchpoint.TouchPointAction;
 import com.universe.touchpoint.agent.AgentActionMeta;
 import com.universe.touchpoint.agent.Agent;
-import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.TouchPointContextManager;
+import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
 import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastReceiver;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.router.AgentRouter;
@@ -19,22 +17,22 @@ import com.universe.touchpoint.router.AgentRouter;
 import java.lang.reflect.ParameterizedType;
 import java.util.stream.Stream;
 
-public class TouchPointReceiverManager {
+public class TouchPointRegistry {
 
     private static final Object mLock = new Object();
-    private static TouchPointReceiverManager mInstance;
+    private static TouchPointRegistry mInstance;
 
-    public static TouchPointReceiverManager getInstance() {
+    public static TouchPointRegistry getInstance() {
         synchronized (mLock) {
             if (mInstance == null) {
-                mInstance = new TouchPointReceiverManager();
+                mInstance = new TouchPointRegistry();
             }
             return mInstance;
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public void registerTouchPointReceiver(Context appContext, String name,
+    public void register(Context appContext, String name,
                                            String[] agentFilters, String[] actionFilters, AgentActionMeta agentActionMeta) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(agentActionMeta.name());
@@ -52,7 +50,10 @@ public class TouchPointReceiverManager {
                     Stream.of(agentFilters, actionFilters).flatMap(Stream::of).toArray(String[]::new),
                     agentActionMeta.inputClass());
 
-            registerContextReceiver(name, agentFilters, actionFilters, tpInstanceReceiver);
+            registerContextReceiver(
+                    name,
+                    Stream.of(agentFilters, actionFilters).flatMap(Stream::of).toArray(String[]::new),
+                    tpInstanceReceiver);
         } catch (Exception e) {
             if (LogDebug.LOG) {
                 e.printStackTrace();
@@ -77,18 +78,10 @@ public class TouchPointReceiverManager {
         appContext.registerReceiver(agentFinishReceiver, agentFinishFilter, Context.RECEIVER_EXPORTED);
     }
 
-    public void registerContextReceiver(String name, String[] agentFilters, String[] actionFilters, TouchPointAction tpInstanceReceiver) {
+    public void registerContextReceiver(String name, String[] filters, TouchPointAction tpInstanceReceiver) {
         String ctxName = TouchPointHelper.touchPointPluginName(name);
-        if (agentFilters != null) {
-            for (String filter : agentFilters) {
-                String filterAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
-                        filter, Agent.getName()
-                ));
-                TouchPointContextManager.getContext(ctxName).putTouchPointReceiver(filterAction, tpInstanceReceiver);
-            }
-        }
-        if (actionFilters != null) {
-            for (String filter : actionFilters) {
+        if (filters != null) {
+            for (String filter : filters) {
                 String filterAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
                         filter, Agent.getName()
                 ));

@@ -21,7 +21,6 @@ import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.config.TransportConfigMeta;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.transport.TouchPointChannelManager;
-import com.universe.touchpoint.transport.TouchPointReceiverManager;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Model;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -163,7 +162,7 @@ public class TouchPointContextManager {
                     Object transportConfig = transportConfigMap.get(transportType);
                     // 动态注册接收器，并传递相应的过滤器
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        TouchPointReceiverManager.getInstance().registerTouchPointReceiver(
+                        TouchPointRegistry.getInstance().register(
                                 appContext,
                                 name,
                                 (String[]) receiverAgentFilterList.get(i),

@@ -86,15 +86,12 @@ public class AgentApplication extends Application {
         TouchPointContextManager.registerContentProvider(ctx);
 
         // 初始化Dubbo
-        TransportConfig<DubboConfig> config = TouchPointTransportConfigManager.config(Transport.DUBBO);
+        TransportConfig<DubboConfig> config = TouchPointTransportConfigManager.agentConfig(Transport.DUBBO);
         if (config != null) {
             DubboBootstrap.getInstance()
                     .application(config.config().getApplicationName())
                     .registry(new RegistryConfig(config.config().getRegistryAddress()))
                     .protocol(new ProtocolConfig(CommonConstants.TRIPLE, 50051))
-//                    .service(ServiceBuilder.newBuilder()
-//                            .interfaceClass(TouchPointDubboChannel.TouchPointService.class)
-//                            .ref(new TouchPointDubboProvider()).build())
                     .start()
                     .await();
         }

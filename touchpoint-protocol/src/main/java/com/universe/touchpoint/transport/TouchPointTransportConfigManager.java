@@ -32,7 +32,7 @@ public class TouchPointTransportConfigManager {
         modelMap.put(AIModelType.ANTHROPIC, Anthropic.class);
     }
 
-    public static <T> TransportConfig<T> config(Transport transport) {
+    public static <T> TransportConfig<T> agentConfig(Transport transport) {
         try {
             Class<?> configClass = TransportConfigMeta.transport2Config.get(transport);
             assert configClass != null;
@@ -52,7 +52,7 @@ public class TouchPointTransportConfigManager {
         return (TransportConfig<T>) AgentBuilder.getBuilder().getConfig().getTransportConfig();
     }
 
-    public static <T> void registerTransportConfig(T transportConfig, Context context) {
+    public static <T> void registerAgentTransportConfig(T transportConfig, Context context) {
         String transportConfigAction = TouchPointHelper.touchPointFilterName(
                 TouchPointConstants.TOUCH_POINT_TRANSPORT_CONFIG_FILTER_NAME);
 

@@ -14,9 +14,9 @@ public class TouchPointTransportConfigBroadcastReceiver extends BroadcastReceive
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        byte[] transportConfig = intent.getByteArrayExtra(TouchPointConstants.TOUCH_POINT_TRANSPORT_CONFIG_EVENT_NAME);
+        byte[] agentTransportConfig = intent.getByteArrayExtra(TouchPointConstants.TOUCH_POINT_TRANSPORT_CONFIG_EVENT_NAME);
 
-        TransportConfig config = SerializeUtils.deserializeFromByteArray(transportConfig, TransportConfig.class);
+        TransportConfig config = SerializeUtils.deserializeFromByteArray(agentTransportConfig, TransportConfig.class);
         if (config != null && config.config() instanceof RPCConfig) {
             AgentBuilder.getBuilder().getConfig().setTransportConfig(config);
         }
