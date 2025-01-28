@@ -91,7 +91,7 @@ public class TouchPointContextManager {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-    public static void registerTouchPointReceivers(Context appContext, boolean isPlugin, ConfigType configType) {
+    public static void register(Context appContext, boolean isPlugin, ConfigType configType) {
         try {
 //            Bundle metaData = null;
             String name;
