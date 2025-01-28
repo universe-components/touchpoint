@@ -80,6 +80,7 @@ public class AgentApplication extends Application {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 TouchPointContextManager.register(ctx, isPlugin, ConfigType.ANNOTATION);
             }
+            TouchPointTransportConfigManager.registerTransportConfigReceiver(ctx);
             AgentRouterManager.registerRouterReceiver(ctx);
         }
 
