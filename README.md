@@ -82,7 +82,7 @@ data class WeatherResponse(val weather: String, val temperature: String)
 
 监听来自 `Entry Agent` 的Action，并返回天气信息。
 ```kotlin
-@com.universe.touchpoint.annotations.TouchPointAction(
+@TouchPointAction(
     name = "weather_action",
     fromAgent = {"entry_agent"}, // 可以指定多个来源Agent
 ) 
