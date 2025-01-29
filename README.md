@@ -52,7 +52,7 @@ AgentBuilder builder = AgentBuilder
     .model(Model.GPT_4) // 选择模型
     .setTemperature(0.0) // 设置温度
     .setModelApiKey("My API Key") // 设置模型API Key
-    .transport(Transport.DUBBO) // 设置全局的Agent调用方式，默认事件驱动
+    .transport(Transport.DUBBO) // 设置全局的Agent调用策略，默认事件驱动
     .setRegistryAddress("127.0.0.1:2181") // 设置注册中心地址
     .build();
 
