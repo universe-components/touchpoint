@@ -79,7 +79,7 @@ class WeatherApplication : AgentApplication()
 
 定义获取天气的响应类
 ```kotlin
-data class WeatherResponse(val weather: String, val temperature: String)
+data class WeatherResponse(val weather: String, val temperature: String) : TouchPoint()
 ```
 
 监听来自 `Entry Agent` 的Action，并返回天气信息。
@@ -93,6 +93,56 @@ data class WeatherResponse(val weather: String, val temperature: String)
 class WeathertListener : AgentActionListener<String, WeatherResponse> {
 
     override fun onReceive(city: String, context: Context) : WeatherResponse {
+        val client = OkHttpClient()
+
+        // 设置请求的 URL 和参数
+        val url = "$BASE_URL?q=$city&appid=$WEATHER_API_KEY&units=metric&lang=zh_cn"
+        
+        // 创建请求对象
+        val request = Request.Builder()
+            .url(url)
+            .build()
+    
+        // 发送请求并获取响应
+        val response: Response = client.newCall(request).execute()
+    
+        // 解析 JSON 响应
+        if (response.isSuccessful) {
+            val jsonResponse = response.body?.string()
+    
+            // 使用 Moshi 来解析 JSON
+            val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+            val jsonAdapter = moshi.adapter(WeatherResponse::class.java)
+    
+            val weatherResponse = jsonAdapter.fromJson(jsonResponse)
+    
+            return if (weatherResponse != null) {
+                val weatherDescription = weatherResponse.weather[0].description
+                val temperature = weatherResponse.main.temp
+                WeatherResponse(weatherDescription, temperature.toString())
+            } else {
+                throw RunTimeException("无法解析天气信息。")
+            }
+        } else {
+            throw RunTimeException("无法获取天气信息，请检查城市名称是否正确。")
+        }
+    }
+
+}
+```
+
+如果希望 `weather_action` 使用Dubbo协议，可以配置如下：
+```kotlin
+@TouchPointAction(
+    name = "weather_action",
+    fromAgent = {"entry_agent"}, // 可以指定多个来源Agent
+    taskProposers = {"entry_agent"} // 可以指定多个任务发起者
+) 
+@AIModel(name = Model.GPT_4, temperature = 0.0) // 指定模型, 默认使用o1
+@DubboService(interfaceClass = IWeatherService::class) //必须指定接口
+class WeatherService {
+
+    override fun query(city: String) : WeatherResponse {
         val client = OkHttpClient()
 
         // 设置请求的 URL 和参数
