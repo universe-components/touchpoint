@@ -1,7 +1,7 @@
 package com.universe.touchpoint.ai.prompt.generators;
 
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.router.AgentRouteEntry;
+import com.universe.touchpoint.config.ActionConfig;
 import com.universe.touchpoint.ai.prompt.PromptGenerator;
 import com.universe.touchpoint.ai.prompt.template.OpenAITemplate;
 import com.universe.touchpoint.utils.ClassUtils;
@@ -10,17 +10,16 @@ import java.util.List;
 
 public class OpenAIPromptGenerator implements PromptGenerator {
 
-
     @Override
-    public String generatePrompt(List<AgentRouteEntry> agentRouteEntries, AgentAction action, String question) {
+    public String generatePrompt(List<ActionConfig> actionConfigs, AgentAction action, String question) {
         StringBuilder toolList = new StringBuilder();
         StringBuilder agentNames = new StringBuilder();
 
-        for (AgentRouteEntry item : agentRouteEntries) {
-            toolList.append(item.getToAgent().getName())
+        for (ActionConfig actionConfig : actionConfigs) {
+            toolList.append(actionConfig.getName())
                     .append(": ")
-                    .append(item.getToAgent().getDescription()).append("\n");
-            agentNames.append(item.getToAgent().getName()).append(", ");
+                    .append(actionConfig.getDesc()).append("\n");
+            agentNames.append(actionConfig.getName()).append(", ");
         }
 
         // Remove trailing comma and space from agentNames

@@ -16,9 +16,12 @@ import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.annotations.AIModel;
 import com.universe.touchpoint.annotations.TouchPointAction;
+import com.universe.touchpoint.config.ActionConfig;
+import com.universe.touchpoint.config.ActionConfigMeta;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.config.TransportConfigMeta;
+import com.universe.touchpoint.task.TaskManager;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.transport.TouchPointChannelManager;
 import com.universe.touchpoint.config.AIModelConfig;
@@ -28,6 +31,7 @@ import com.universe.touchpoint.provider.TouchPointContent;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
 import com.universe.touchpoint.provider.TouchPointProvider;
 import com.universe.touchpoint.router.AgentRouterManager;
+import com.universe.touchpoint.utils.AnnotationUtils;
 import com.universe.touchpoint.utils.ApkUtils;
 
 import java.lang.reflect.Method;
@@ -36,6 +40,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class TouchPointContextManager {
 
@@ -109,12 +114,6 @@ public class TouchPointContextManager {
                 name = Agent.getName();
 //            }
 
-            List<String> receiverClassList;
-            List<Object> receiverAgentFilterList;
-            List<Object> receiverActionFilterList;
-            String actionName;
-            Model actionModel;
-            float actionModelTemperature;
             /* if (configType == ConfigType.XML) {
                 // 获取存储的字符串列表
                 String receiverClasses = metaData.getString(TouchPointConstants.TOUCH_POINT_RECEIVERS);
@@ -124,64 +123,47 @@ public class TouchPointContextManager {
                 assert receiverFilters != null;
                 receiverFilterList = Arrays.asList(receiverFilters.replace(" ", "").split(","));
             } else {*/
-                List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext,
+            List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext,
                         TouchPointAction.class, Arrays.asList("name", "fromAgent", "fromAction"), !isPlugin);
-                receiverClassList = receiverFilterPair.stream()
-                        .map(pair -> pair.first)
-                        .toList();
-                actionName = (String) receiverFilterPair.stream()
-                        .map(pair -> pair.second.get(0))
-                        .toList()
-                        .get(0);
-                receiverAgentFilterList = receiverFilterPair.stream()
-                        .map(pair -> pair.second.get(1))
-                        .toList();
-                receiverActionFilterList = receiverFilterPair.stream()
-                        .map(pair -> pair.second.get(2))
-                        .toList();
-                List<Pair<String, List<Object>>> modelPair = ApkUtils.getClassNames(appContext,
-                        AIModel.class, Arrays.asList("name", "temperature"), !isPlugin);
-                actionModel = (Model) modelPair.stream()
-                        .map(pair -> pair.second.get(0))
-                        .toList()
-                        .get(0);
-                actionModelTemperature = (float) modelPair.stream()
-                        .map(pair -> pair.second.get(1))
-                        .toList()
-                        .get(0);
-//            }
 
-            if (receiverClassList.size() == receiverAgentFilterList.size()) {
-                for (int i = 0; i < receiverClassList.size(); i++) {
-                    Map<Transport, Object> transportConfigMap = ApkUtils.annotation2Config(
-                            Class.forName(receiverClassList.get(i)),
-                            TransportConfigMeta.annotation2Config,
-                            TransportConfigMeta.annotation2Type
+            for (Pair<String, List<Object>> pair : receiverFilterPair) {
+                String clazz = pair.first;  // 获取 String
+                List<Object> properties = pair.second;  // 获取 List<Object>
+
+                Map<Transport, Object> transportConfigMap = AnnotationUtils.annotation2Config(
+                        Class.forName(clazz),
+                        TransportConfigMeta.annotation2Config,
+                        TransportConfigMeta.annotation2Type
+                );
+                Transport transportType = transportConfigMap.keySet().iterator().next();
+                Object transportConfig = transportConfigMap.get(transportType);
+                // 动态注册接收器，并传递相应的过滤器
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    Map<String, Object> annotationProperties = AnnotationUtils.getAnnotationValue(Class.forName(clazz), AIModel.class);
+                    TouchPointRegistry.getInstance().register(
+                            appContext,
+                            name,
+                            (String[]) properties.get(1),
+                            (String[]) properties.get(2),
+                            AgentActionManager.getInstance().extractAndRegisterAction(
+                                    clazz,
+                                    new AIModelConfig(
+                                            (Model) Objects.requireNonNull(annotationProperties.get("name")),
+                                            (float) annotationProperties.get("temperature")),
+                                    new TransportConfig<>(
+                                            transportType,
+                                            transportConfig),
+                                    (String) properties.get(0),
+                                    name)
                     );
-                    Transport transportType = transportConfigMap.keySet().iterator().next();
-                    Object transportConfig = transportConfigMap.get(transportType);
-                    // 动态注册接收器，并传递相应的过滤器
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        TouchPointRegistry.getInstance().register(
-                                appContext,
-                                name,
-                                (String[]) receiverAgentFilterList.get(i),
-                                (String[]) receiverActionFilterList.get(i),
-                                AgentActionManager.getInstance().extractAndRegisterAction(
-                                        receiverClassList.get(i),
-                                        new AIModelConfig(actionModel, actionModelTemperature),
-                                        new TransportConfig<>(
-                                                transportType,
-                                                transportConfig),
-                                        actionName,
-                                        name)
-                        );
-                    }
-                    AgentRouterManager.registerRouteEntry((String[]) receiverAgentFilterList.get(i), appContext);
                 }
-            } else {
-                // 处理不匹配的情况，例如打印日志或抛出异常
-                Log.e("ReceiverRegistration", "Receiver classes and filters list sizes do not match.");
+                AgentRouterManager.registerRouteEntry((String[]) properties.get(1), appContext);
+                ActionConfig actionConfig = (ActionConfig) AnnotationUtils.annotation2Config(
+                        Class.forName(clazz),
+                        ActionConfigMeta.annotation2Config
+                );
+                assert actionConfig != null;
+                TaskManager.registerTaskAction(actionConfig, appContext);
             }
         } catch (Exception e) {
             if (LogDebug.LOG) {

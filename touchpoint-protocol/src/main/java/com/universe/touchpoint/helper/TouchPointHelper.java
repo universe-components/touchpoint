@@ -11,6 +11,10 @@ public class TouchPointHelper {
         return TouchPointConstants.TOUCH_POINT_FILTER_PREFIX + "." + filter;
     }
 
+    public static String touchPointFilterName(String filter, String suffix) {
+        return TouchPointConstants.TOUCH_POINT_FILTER_PREFIX + "." + filter + "." + suffix;
+    }
+
     public static String touchPointActionName(String actionName, String agentName) {
         return agentName + "." + actionName;
     }

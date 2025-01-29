@@ -18,6 +18,7 @@ import com.qihoo360.replugin.RePluginHost;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
+import com.universe.touchpoint.task.TaskManager;
 import com.universe.touchpoint.transport.TouchPointTransportConfigManager;
 import com.universe.touchpoint.router.AgentRouterManager;
 
@@ -25,6 +26,8 @@ import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.config.ProtocolConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
+
+import kotlinx.coroutines.scheduling.Task;
 
 public class AgentApplication extends Application {
 
@@ -82,6 +85,7 @@ public class AgentApplication extends Application {
             }
             TouchPointTransportConfigManager.registerTransportConfigReceiver(ctx);
             AgentRouterManager.registerRouterReceiver(ctx);
+            TaskManager.registerTaskRegistry(ctx);
         }
 
         TouchPointContextManager.registerContentProvider(ctx);

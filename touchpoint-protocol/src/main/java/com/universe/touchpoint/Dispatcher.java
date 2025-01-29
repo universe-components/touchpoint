@@ -27,7 +27,8 @@ public class Dispatcher {
         AIModelConfig modelConfig = AIModelSelector.selectModel(content, action);
 
         String input = PromptBuilder.createPromptGenerator(modelConfig.getType()).generatePrompt(
-                AgentRouter.routeItems(Agent.getName()), action, content);
+                TouchPointContextManager.getContext(Agent.getName())
+                        .getTouchPointTaskActions(Agent.getName()), action, content);
 
         Map<C, List<R>> choices = AIModelFactory.callModel(input, modelConfig);
         ChoiceParser<C, R> choiceParser = ChoiceParserFactory.selectParser(modelConfig.getType());

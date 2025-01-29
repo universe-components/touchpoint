@@ -11,8 +11,12 @@ public @interface TouchPointAction {
 
     String name();
 
+    String desc();
+
     String[] fromAgent() default {};
 
     String[] fromAction() default {};
+
+    String[] taskProposer() default {};
 
 }

@@ -76,59 +76,6 @@ public class ApkUtils {
         return result;
     }
 
-    public static <T> Map<T, Object> annotation2Config(
-            Class<?> clazz,
-            Map<Class<? extends Annotation>, Class<?>> annotation2Config,
-            Map<Class<? extends Annotation>, T> annotation2Type
-    ) throws Exception {
-        Map<T, Object> configInstances = new HashMap<>();
-        annotation2Config(clazz, annotation2Config, configInstances, annotation2Type);
-
-        return configInstances;
-    }
-
-    public static <T> void annotation2Config(
-            Class<?> clazz,
-            Map<Class<? extends Annotation>, Class<?>> annotation2Config,
-            Map<T, Object> configInstances,
-            Map<Class<? extends Annotation>, T> annotation2Type
-    ) throws Exception {
-        // 获取类上的所有注解
-        for (Annotation annotation : clazz.getAnnotations()) {
-            Class<? extends Annotation> annotationType = annotation.annotationType();
-
-            // 如果 annotation2Config 中包含该注解类型，则处理
-            if (annotation2Config.containsKey(annotationType)) {
-                // 获取对应的配置类类型
-                Class<?> configClass = annotation2Config.get(annotationType);
-                // 获取或创建配置类实例
-                Object configInstance = configInstances.computeIfAbsent(
-                        annotation2Type.get(annotationType),
-                        cls -> {
-                            try {
-                                assert configClass != null;
-                                return configClass.getDeclaredConstructor().newInstance();
-                            } catch (Exception e) {
-                                throw new RuntimeException("Failed to create instance of " + cls, e);
-                            }
-                        });
-                // 将注解的属性赋值到配置类的成员变量
-                for (java.lang.reflect.Method method : annotationType.getDeclaredMethods()) {
-                    String propertyName = method.getName();
-                    Object value = method.invoke(annotation);
-                    try {
-                        assert configClass != null;
-                        Field field = configClass.getDeclaredField(propertyName);
-                        field.setAccessible(true);
-                        field.set(configInstance, value);
-                    } catch (NoSuchFieldException e) {
-                        // 忽略没有对应字段的属性
-                    }
-                }
-            }
-        }
-    }
-
     public static String getApkPath(Context context) {
         try {
             // 获取应用程序的包信息
