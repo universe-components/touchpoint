@@ -87,7 +87,7 @@ data class WeatherResponse(val weather: String, val temperature: String)
 @TouchPointAction(
     name = "weather_action",
     fromAgent = {"entry_agent"}, // 可以指定多个来源Agent
-    taskProposers = {"entry_agent"}
+    taskProposers = {"entry_agent"} // 可以指定多个任务发起者
 ) 
 @AIModel(name = Model.GPT_4, temperature = 0.0) // 指定模型, 默认使用o1
 class WeathertListener : AgentActionListener<String, WeatherResponse> {
