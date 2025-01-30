@@ -14,11 +14,11 @@ import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.annotations.AIModel;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.ActionConfig;
-import com.universe.touchpoint.config.ActionMappingConfig;
+import com.universe.touchpoint.config.mapping.ActionConfigMapping;
 import com.universe.touchpoint.config.Model;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
-import com.universe.touchpoint.config.TransportMappingConfig;
+import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.TransportRegion;
@@ -88,8 +88,8 @@ public class TouchPointRegistry {
 
                 Map<Transport, Object> transportConfigMap = AnnotationUtils.annotation2Config(
                         Class.forName(clazz),
-                        TransportMappingConfig.annotation2Config,
-                        TransportMappingConfig.annotation2Type
+                        TransportConfigMapping.annotation2Config,
+                        TransportConfigMapping.annotation2Type
                 );
                 Transport transportType = transportConfigMap.keySet().iterator().next();
                 Object transportConfig = transportConfigMap.get(transportType);
@@ -116,7 +116,7 @@ public class TouchPointRegistry {
                 AgentRouterManager.registerRouteEntry((String[]) properties.get(1), appContext);
                 ActionConfig actionConfig = (ActionConfig) AnnotationUtils.annotation2Config(
                         Class.forName(clazz),
-                        ActionMappingConfig.annotation2Config
+                        ActionConfigMapping.annotation2Config
                 );
                 assert actionConfig != null;
                 TaskManager.registerTaskAction(actionConfig, appContext);

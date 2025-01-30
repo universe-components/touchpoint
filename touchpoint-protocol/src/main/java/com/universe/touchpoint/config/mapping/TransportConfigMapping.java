@@ -1,5 +1,6 @@
-package com.universe.touchpoint.config;
+package com.universe.touchpoint.config.mapping;
 
+import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 
 import org.apache.dubbo.config.annotation.DubboService;
@@ -8,7 +9,7 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TransportMappingConfig {
+public class TransportConfigMapping {
 
     public static final Map<Transport, Class<?>> transport2Config = new HashMap<>();
     public static final Map<Class<? extends Annotation>, Class<?>> annotation2Config = new HashMap<>();
