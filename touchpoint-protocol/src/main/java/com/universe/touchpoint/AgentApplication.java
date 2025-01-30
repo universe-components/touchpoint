@@ -18,6 +18,7 @@ import com.qihoo360.replugin.RePluginHost;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
+import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
 import com.universe.touchpoint.driver.TaskManager;
 import com.universe.touchpoint.transport.TouchPointTransportConfigManager;
@@ -76,6 +77,8 @@ public class AgentApplication extends Application {
             ctx = RePlugin.getPluginContext();
             isPlugin = true;
         }
+
+        TouchPointMemory.initialize();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
