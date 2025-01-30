@@ -10,6 +10,9 @@ import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.DriverRegion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,7 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
                 String actionInput = matcher.group(3) == null ? "" : Objects.requireNonNull(matcher.group(2)).trim();
                 String thought = matcher.group(1) == null ? "" : Objects.requireNonNull(matcher.group(1)).trim();
 
+                DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
                 agentActions.add(new AgentAction(
                         action,
                         AgentActionManager
@@ -58,7 +62,7 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
                                     action, actionInput.replaceAll("\"", "").trim(), Agent.getName()
                                 ),
                         thought,
-                        TouchPointContextManager.getContext(Agent.getName()).getTouchPointAction(
+                        driverRegion.getTouchPointAction(
                                 TouchPointHelper.touchPointActionName(action, Agent.getName()))));
             }
         }

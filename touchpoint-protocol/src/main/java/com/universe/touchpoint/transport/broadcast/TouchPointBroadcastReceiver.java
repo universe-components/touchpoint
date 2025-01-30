@@ -12,6 +12,9 @@ import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.api.TouchPointListener;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.TransportRegion;
 import com.universe.touchpoint.router.AgentRouter;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
@@ -33,10 +36,10 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
 
         T touchPoint = SerializeUtils.deserializeFromByteArray(touchPointBytes, tpClass);
 
-        String name = Agent.getName();
-        String ctxName = TouchPointHelper.touchPointPluginName(name);
         String filter = TouchPointHelper.touchPointFilterName(touchPoint.getHeader().getToAgent());
-        TouchPointListener<T, ?> tpReceiver = (TouchPointListener<T, ?>) TouchPointContextManager.getContext(ctxName).getTouchPointReceiver(filter);
+
+        TransportRegion transportRegion = TouchPointMemory.getRegion(Region.TRANSPORT);
+        TouchPointListener<T, ?> tpReceiver = (TouchPointListener<T, ?>) transportRegion.getTouchPointReceiver(filter);
 
         if (!(touchPoint instanceof AgentAction)
                 && !(touchPoint instanceof AgentFinish)) {

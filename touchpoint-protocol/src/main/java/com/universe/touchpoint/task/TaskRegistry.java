@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.universe.touchpoint.TouchPointConstants;
-import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.config.ActionConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.DriverRegion;
 import com.universe.touchpoint.utils.SerializeUtils;
 
 public class TaskRegistry extends BroadcastReceiver {
@@ -19,8 +21,9 @@ public class TaskRegistry extends BroadcastReceiver {
                 TouchPointConstants.TOUCH_POINT_TASK_EVENT_NAME, Agent.getName()));
 
         if (action != null) {
-            TouchPointContextManager.getContext(Agent.getName())
-                    .addTouchPointTaskAction(SerializeUtils.deserializeFromByteArray(action, ActionConfig.class));
+            DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
+            driverRegion.addTouchPointTaskAction(
+                    SerializeUtils.deserializeFromByteArray(action, ActionConfig.class));
         }
     }
 

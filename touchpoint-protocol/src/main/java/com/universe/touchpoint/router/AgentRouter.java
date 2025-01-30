@@ -3,6 +3,10 @@ package com.universe.touchpoint.router;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentEntity;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.TouchPointRegion;
+import com.universe.touchpoint.memory.regions.RouteRegion;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,10 +17,10 @@ import java.util.Objects;
 public class AgentRouter {
 
     private static final Object lock = new Object();
-    protected final static Map<String, List<AgentRouteEntry>> routeTable = new HashMap<>();
 
     public static AgentRouteEntry routeTo(AgentAction action) {
-        List<AgentRouteEntry> agentRouteEntries = routeTable.get(Agent.getName());
+        RouteRegion routeRegion = TouchPointMemory.getRegion(Region.ROUTE);
+        List<AgentRouteEntry> agentRouteEntries = routeRegion.getRouteItems(Agent.getName());
         if (agentRouteEntries == null || agentRouteEntries.isEmpty()) {
             return null;
         }
@@ -37,11 +41,8 @@ public class AgentRouter {
             routeItem.setFromAgent(fromAgent);
             routeItem.setToAgent(toAgent);
 
-            if (!routeTable.containsKey(fromAgent)) {
-                routeTable.put(fromAgent, new ArrayList<>());
-            }
-
-            Objects.requireNonNull(routeTable.get(fromAgent)).add(routeItem);
+            RouteRegion routeRegion = TouchPointMemory.getRegion(Region.ROUTE);
+            routeRegion.addRouteItem(fromAgent, routeItem);
         }
     }
 
@@ -57,12 +58,9 @@ public class AgentRouter {
         return chunk.split("->");
     }
 
-    public static List<AgentRouteEntry> routeItems(String fromAgent) {
-        return routeTable.getOrDefault(fromAgent, new ArrayList<>());
-    }
-
     public static boolean hasFromAgent(String toAgent) {
-        for (List<AgentRouteEntry> routeItems : routeTable.values()) {
+        RouteRegion routeRegion = TouchPointMemory.getRegion(Region.ROUTE);
+        for (List<AgentRouteEntry> routeItems : routeRegion.getAllRouteItems()) {
             for (AgentRouteEntry routeItem : routeItems) {
                 if (routeItem.getToAgent().getName().equals(toAgent)) {
                     return true;

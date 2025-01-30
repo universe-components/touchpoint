@@ -18,6 +18,7 @@ import com.qihoo360.replugin.RePluginHost;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
+import com.universe.touchpoint.provider.TouchPointContentFactory;
 import com.universe.touchpoint.task.TaskManager;
 import com.universe.touchpoint.transport.TouchPointTransportConfigManager;
 import com.universe.touchpoint.router.AgentRouterManager;
@@ -78,17 +79,16 @@ public class AgentApplication extends Application {
             isPlugin = true;
         }
 
-        TouchPointContextManager.initContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                TouchPointContextManager.register(ctx, isPlugin, ConfigType.ANNOTATION);
+                TouchPointRegistry.getInstance().register(ctx, isPlugin, ConfigType.ANNOTATION);
             }
             TouchPointTransportConfigManager.registerTransportConfigReceiver(ctx);
             AgentRouterManager.registerRouterReceiver(ctx);
             TaskManager.registerTaskRegistry(ctx);
         }
 
-        TouchPointContextManager.registerContentProvider(ctx);
+        TouchPointContentFactory.registerContentProvider(ctx);
 
         // 初始化Dubbo
         TransportConfig<DubboConfig> config = TouchPointTransportConfigManager.agentConfig(Transport.DUBBO);

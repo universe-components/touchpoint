@@ -8,6 +8,9 @@ import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.DriverRegion;
 import com.universe.touchpoint.utils.ClassUtils;
 
 import java.lang.reflect.Field;
@@ -49,7 +52,8 @@ public class AgentActionManager {
             Class<? extends TouchPoint> touchPointClass = touchPointClazz.asSubclass(TouchPoint.class);
 
             AgentActionMeta agentActionMeta = new AgentActionMeta(receiverClassName, touchPointClass, model, transportConfig);
-            TouchPointContextManager.getContext(agentName).putTouchPointAction(
+            DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
+            driverRegion.putTouchPointAction(
                     TouchPointHelper.touchPointActionName(actionName, agentName), agentActionMeta);
 
             return agentActionMeta;
@@ -63,8 +67,8 @@ public class AgentActionManager {
 
     @SuppressWarnings("unchecked")
     public <T extends TouchPoint> T paddingActionInput(String actionName, String actionInput, String agentName) {
-        AgentActionMeta agentActionMeta = TouchPointContextManager.getContext(agentName).getTouchPointAction(
-                TouchPointHelper.touchPointActionName(actionName, agentName));
+        DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
+        AgentActionMeta agentActionMeta = driverRegion.getTouchPointAction(TouchPointHelper.touchPointActionName(actionName, agentName));
         Class<T> inputClass = (Class<T>) agentActionMeta.inputClass();
 
         // 分割输入

@@ -11,6 +11,9 @@ import com.universe.touchpoint.ai.ChoiceParserFactory;
 import com.universe.touchpoint.ai.prompt.PromptBuilder;
 import com.universe.touchpoint.ai.AIModelSelector;
 import com.universe.touchpoint.config.AIModelConfig;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.DriverRegion;
 import com.universe.touchpoint.router.AgentRouteEntry;
 import com.universe.touchpoint.router.AgentRouter;
 
@@ -26,9 +29,9 @@ public class Dispatcher {
     public static <C, R> String loopCall(AgentAction action, String content, String routeChunk) {
         AIModelConfig modelConfig = AIModelSelector.selectModel(content, action);
 
+        DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
         String input = PromptBuilder.createPromptGenerator(modelConfig.getType()).generatePrompt(
-                TouchPointContextManager.getContext(Agent.getName())
-                        .getTouchPointTaskActions(Agent.getName()), action, content);
+                driverRegion.getTouchPointTaskActions(Agent.getName()), action, content);
 
         Map<C, List<R>> choices = AIModelFactory.callModel(input, modelConfig);
         ChoiceParser<C, R> choiceParser = ChoiceParserFactory.selectParser(modelConfig.getType());
