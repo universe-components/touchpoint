@@ -10,9 +10,8 @@ import java.util.Map;
 
 public class AgentConfig {
 
-    private final AIModelConfig modelConfig = new AIModelConfig();
+    private AIModelConfig modelConfig = new AIModelConfig();
     private TransportConfig<?> transportConfig;
-    private Transport transportType;
 
     private final Map<Transport, Class<?>> transportConfigMap = new HashMap<>();
     {
@@ -23,20 +22,16 @@ public class AgentConfig {
         return modelConfig;
     }
 
+    public void setModelConfig(AIModelConfig modelConfig) {
+        this.modelConfig = modelConfig;
+    }
+
     public TransportConfig<?> getTransportConfig() {
         return transportConfig;
     }
 
     public void setTransportConfig(TransportConfig<?> transportConfig) {
         this.transportConfig = transportConfig;
-    }
-
-    public Transport getTransportType() {
-        return transportType;
-    }
-
-    public void setTransportType(Transport transportType) {
-        this.transportType = transportType;
     }
 
     public Map<Transport, Class<?>> getTransportConfigMap() {

@@ -18,11 +18,12 @@ import com.qihoo360.replugin.RePluginHost;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
+import com.universe.touchpoint.driver.AIModelRegistry;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
-import com.universe.touchpoint.driver.TaskManager;
-import com.universe.touchpoint.transport.TouchPointTransportConfigManager;
-import com.universe.touchpoint.router.AgentRouterManager;
+import com.universe.touchpoint.driver.TaskActionRegistry;
+import com.universe.touchpoint.transport.TouchPointTransportConfigRegistry;
+import com.universe.touchpoint.router.AgentRouterRegistry;
 
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.config.ProtocolConfig;
@@ -82,17 +83,18 @@ public class AgentApplication extends Application {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                TouchPointRegistry.getInstance().register(ctx, isPlugin, ConfigType.ANNOTATION);
+                TouchPointRegistryCenter.getInstance().register(ctx, isPlugin, ConfigType.ANNOTATION);
             }
-            TouchPointTransportConfigManager.registerTransportConfigReceiver(ctx);
-            AgentRouterManager.registerRouterReceiver(ctx);
-            TaskManager.registerTaskRegistry(ctx);
+            TouchPointRegistryFactory.getInstance(TouchPointTransportConfigRegistry.class).registerReceiver(ctx);
+            TouchPointRegistryFactory.getInstance(AIModelRegistry.class).registerReceiver(ctx);
+            TouchPointRegistryFactory.getInstance(AgentRouterRegistry.class).registerReceiver(ctx);
+            TouchPointRegistryFactory.getInstance(TaskActionRegistry.class).registerReceiver(ctx);
         }
 
         TouchPointContentFactory.registerContentProvider(ctx);
 
         // 初始化Dubbo
-        TransportConfig<DubboConfig> config = TouchPointTransportConfigManager.agentConfig(Transport.DUBBO);
+        TransportConfig<DubboConfig> config = TouchPointTransportConfigRegistry.agentConfig(Transport.DUBBO);
         if (config != null) {
             DubboBootstrap.getInstance()
                     .application(config.config().getApplicationName())

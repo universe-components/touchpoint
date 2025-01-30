@@ -20,6 +20,10 @@ public class TouchPointConstants {
 
     public static final String TOUCH_POINT_TRANSPORT_CONFIG_EVENT_NAME = "transport_config";
 
+    public static final String TOUCH_POINT_AI_MODEL_CONFIG_FILTER_NAME = "ai_model_filter";
+
+    public static final String TOUCH_POINT_AI_MODEL_CONFIG_EVENT_NAME = "ai_model";
+
     public static final String TOUCH_POINT_TASK_FILTER = "task";
 
     public static final String TOUCH_POINT_TASK_EVENT_NAME = "task_action";

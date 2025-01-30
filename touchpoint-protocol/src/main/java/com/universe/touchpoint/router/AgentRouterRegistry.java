@@ -8,6 +8,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.RePluginHost;
+import com.universe.touchpoint.TouchPointRegistry;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -17,9 +18,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class AgentRouterManager {
+public class AgentRouterRegistry implements TouchPointRegistry<String[]> {
 
-    public static void registerRouteEntry(String[] toAgents, Context context) {
+    @Override
+    public void register(String[] toAgents, Context context) {
         String apkPath = ApkUtils.getApkPath(context);
         assert apkPath != null;
         RePluginHost.install(apkPath);
@@ -39,7 +41,8 @@ public class AgentRouterManager {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public static void registerRouterReceiver(Context context) {
+    @Override
+    public void registerReceiver(Context context) {
         IntentFilter filter = new IntentFilter(
                 TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME));
         context.registerReceiver(new AgentRouterBroadcastReceiver(), filter, Context.RECEIVER_EXPORTED);

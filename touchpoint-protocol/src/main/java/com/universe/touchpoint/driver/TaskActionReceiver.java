@@ -13,7 +13,7 @@ import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.DriverRegion;
 import com.universe.touchpoint.utils.SerializeUtils;
 
-public class TaskRegistry extends BroadcastReceiver {
+public class TaskActionReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {

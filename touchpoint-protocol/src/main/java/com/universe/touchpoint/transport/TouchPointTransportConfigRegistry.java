@@ -3,34 +3,24 @@ package com.universe.touchpoint.transport;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import com.universe.touchpoint.AgentBuilder;
+import com.universe.touchpoint.TouchPointRegistry;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.Agent;
-import com.universe.touchpoint.ai.AIModel;
-import com.universe.touchpoint.ai.AIModelType;
-import com.universe.touchpoint.ai.models.Anthropic;
-import com.universe.touchpoint.ai.models.OpenAI;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.RouteRegion;
+import com.universe.touchpoint.router.AgentRouteEntry;
 import com.universe.touchpoint.utils.SerializeUtils;
 
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-public class TouchPointTransportConfigManager {
-
-    private static final Map<AIModelType, Class<? extends AIModel<?, ?, ?>>> modelMap = new HashMap<>();
-    static {
-        modelMap.put(AIModelType.OPEN_AI, OpenAI.class);
-        modelMap.put(AIModelType.ANTHROPIC, Anthropic.class);
-    }
+public class TouchPointTransportConfigRegistry<C> implements TouchPointRegistry<TransportConfig<C>> {
 
     public static <T> TransportConfig<T> agentConfig(Transport transport) {
         try {
@@ -52,21 +42,30 @@ public class TouchPointTransportConfigManager {
         return (TransportConfig<T>) AgentBuilder.getBuilder().getConfig().getTransportConfig();
     }
 
-    public static <T> void registerAgentTransportConfig(T transportConfig, Context context) {
-        String transportConfigAction = TouchPointHelper.touchPointFilterName(
-                TouchPointConstants.TOUCH_POINT_TRANSPORT_CONFIG_FILTER_NAME);
+    @Override
+    public void register(TransportConfig<C> config, Context context) {
+        RouteRegion routeRegion = TouchPointMemory.getRegion(Region.ROUTE);
+        List<AgentRouteEntry> routeEntries = routeRegion.getRouteItems(Agent.getName());
 
-        Intent transportConfigIntent = new Intent(transportConfigAction);
-        transportConfigIntent.putExtra(TouchPointConstants.TOUCH_POINT_TRANSPORT_CONFIG_EVENT_NAME,
-                SerializeUtils.serializeToByteArray(transportConfig));
+        for (AgentRouteEntry entry : routeEntries) {
+            String transportConfigAction = TouchPointHelper.touchPointFilterName(
+                    TouchPointConstants.TOUCH_POINT_TRANSPORT_CONFIG_FILTER_NAME,
+                    entry.getToAgent().getName());
 
-        context.sendBroadcast(transportConfigIntent);
+            Intent transportConfigIntent = new Intent(transportConfigAction);
+            transportConfigIntent.putExtra(TouchPointConstants.TOUCH_POINT_TRANSPORT_CONFIG_EVENT_NAME,
+                    SerializeUtils.serializeToByteArray(config));
+
+            context.sendBroadcast(transportConfigIntent);
+        }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public static void registerTransportConfigReceiver(Context context) {
+    @Override
+    public void registerReceiver(Context context) {
         IntentFilter filter = new IntentFilter(
-                TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TRANSPORT_CONFIG_FILTER_NAME));
+                TouchPointHelper.touchPointFilterName(
+                        TouchPointConstants.TOUCH_POINT_TRANSPORT_CONFIG_FILTER_NAME,
+                        Agent.getName()));
         context.registerReceiver(new TouchPointTransportConfigBroadcastReceiver(), filter, Context.RECEIVER_EXPORTED);
     }
 

@@ -7,30 +7,33 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.universe.touchpoint.TouchPointRegistry;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.config.ActionConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
 
-public class TaskManager {
+public class TaskActionRegistry implements TouchPointRegistry<ActionConfig> {
 
-    public static void registerTaskAction(ActionConfig actionConfig, Context context) {
-        for (int i = 0; i < actionConfig.getTaskProposers().length; i++) {
+    @Override
+    public void register(ActionConfig config, Context context) {
+        for (int i = 0; i < config.getTaskProposers().length; i++) {
             Intent taskIntent = new Intent(TouchPointHelper.touchPointFilterName(
-                    TouchPointConstants.TOUCH_POINT_TASK_FILTER, actionConfig.getTaskProposers()[i]));
+                    TouchPointConstants.TOUCH_POINT_TASK_FILTER, config.getTaskProposers()[i]));
 
             taskIntent.putExtra(TouchPointConstants.TOUCH_POINT_TASK_EVENT_NAME,
-                    SerializeUtils.serializeToByteArray(actionConfig));
+                    SerializeUtils.serializeToByteArray(config));
             context.sendBroadcast(taskIntent);
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public static void registerTaskRegistry(Context context) {
+    @Override
+    public void registerReceiver(Context context) {
         IntentFilter filter = new IntentFilter(
                 TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME, Agent.getName()));
-        context.registerReceiver(new TaskRegistry(), filter, Context.RECEIVER_EXPORTED);
+        context.registerReceiver(new TaskActionReceiver(), filter, Context.RECEIVER_EXPORTED);
     }
 
 }

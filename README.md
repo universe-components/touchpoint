@@ -20,6 +20,10 @@
 
 - **多种LLM：** 支持多种LLM，如GPT-3、GPT-3.5、GPT-4、Claude-3、Claude-3.5等。
 
+## 架构
+
+![Architecture Diagram](architecture.png)
+
 ## 使用指南
 
 ### 导入依赖

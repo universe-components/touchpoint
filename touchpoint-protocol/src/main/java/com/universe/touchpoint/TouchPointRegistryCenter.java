@@ -1,0 +1,191 @@
+package com.universe.touchpoint;
+
+import android.content.Context;
+import android.content.IntentFilter;
+import android.os.Build;
+import android.util.Pair;
+
+import androidx.annotation.RequiresApi;
+
+import com.qihoo360.replugin.helper.LogDebug;
+import com.universe.touchpoint.agent.AgentActionManager;
+import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.Agent;
+import com.universe.touchpoint.annotations.AIModel;
+import com.universe.touchpoint.config.AIModelConfig;
+import com.universe.touchpoint.config.ActionConfig;
+import com.universe.touchpoint.config.mapping.ActionConfigMapping;
+import com.universe.touchpoint.config.Model;
+import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.TransportConfig;
+import com.universe.touchpoint.config.mapping.TransportConfigMapping;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.TransportRegion;
+import com.universe.touchpoint.router.AgentRouterRegistry;
+import com.universe.touchpoint.driver.TaskActionRegistry;
+import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
+import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastReceiver;
+import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.router.AgentRouter;
+import com.universe.touchpoint.utils.AnnotationUtils;
+import com.universe.touchpoint.utils.ApkUtils;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Stream;
+
+public class TouchPointRegistryCenter {
+
+    private static final Object mLock = new Object();
+    private static TouchPointRegistryCenter mInstance;
+
+    public static TouchPointRegistryCenter getInstance() {
+        synchronized (mLock) {
+            if (mInstance == null) {
+                mInstance = new TouchPointRegistryCenter();
+            }
+            return mInstance;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+    public void register(Context appContext, boolean isPlugin, ConfigType configType) {
+        try {
+//            Bundle metaData = null;
+            String name;
+            /* if (configType == ConfigType.XML) {
+                if (isPlugin) {
+                    metaData = appContext.getApplicationInfo().metaData;
+                    name = RePlugin.getPluginName();
+                } else {
+                    ApplicationInfo appInfo = appContext.getPackageManager().getApplicationInfo(
+                            appContext.getPackageName(), PackageManager.GET_META_DATA);
+                    metaData = appInfo.metaData;
+                    name = RePlugin.getHostName(appContext);
+                }
+            } else {*/
+            name = Agent.getName();
+//            }
+
+            /* if (configType == ConfigType.XML) {
+                // 获取存储的字符串列表
+                String receiverClasses = metaData.getString(TouchPointConstants.TOUCH_POINT_RECEIVERS);
+                String receiverFilters = metaData.getString(TouchPointConstants.TOUCH_POINT_RECEIVER_FILTERS);
+                assert receiverClasses != null;
+                receiverClassList = Arrays.asList(receiverClasses.replace(" ", "").split(","));
+                assert receiverFilters != null;
+                receiverFilterList = Arrays.asList(receiverFilters.replace(" ", "").split(","));
+            } else {*/
+            List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext,
+                    com.universe.touchpoint.annotations.TouchPointAction.class, Arrays.asList("name", "fromAgent", "fromAction"), !isPlugin);
+
+            for (Pair<String, List<Object>> pair : receiverFilterPair) {
+                String clazz = pair.first;  // 获取 String
+                List<Object> properties = pair.second;  // 获取 List<Object>
+
+                Map<Transport, Object> transportConfigMap = AnnotationUtils.annotation2Config(
+                        Class.forName(clazz),
+                        TransportConfigMapping.annotation2Config,
+                        TransportConfigMapping.annotation2Type
+                );
+                Transport transportType = transportConfigMap.keySet().iterator().next();
+                Object transportConfig = transportConfigMap.get(transportType);
+                // 动态注册接收器，并传递相应的过滤器
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    Map<String, Object> annotationProperties = AnnotationUtils.getAnnotationValue(Class.forName(clazz), AIModel.class);
+                    register(
+                            appContext,
+                            name,
+                            (String[]) properties.get(1),
+                            (String[]) properties.get(2),
+                            AgentActionManager.getInstance().extractAndRegisterAction(
+                                    clazz,
+                                    new AIModelConfig(
+                                            (Model) Objects.requireNonNull(annotationProperties.get("name")),
+                                            (float) annotationProperties.get("temperature")),
+                                    new TransportConfig<>(
+                                            transportType,
+                                            transportConfig),
+                                    (String) properties.get(0),
+                                    name)
+                    );
+                }
+                TouchPointRegistryFactory.getInstance(AgentRouterRegistry.class).register((String[]) properties.get(1), appContext);
+                ActionConfig actionConfig = (ActionConfig) AnnotationUtils.annotation2Config(
+                        Class.forName(clazz),
+                        ActionConfigMapping.annotation2Config
+                );
+                assert actionConfig != null;
+                TouchPointRegistryFactory.getInstance(TaskActionRegistry.class).register(actionConfig, appContext);
+            }
+        } catch (Exception e) {
+            if (LogDebug.LOG) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public void register(Context appContext, String name,
+                                           String[] agentFilters, String[] actionFilters, AgentActionMetaInfo agentActionMetaInfo) {
+        try {
+            Class<?> tpInstanceReceiverClass = Class.forName(agentActionMetaInfo.name());
+            TouchPointAction tpInstanceReceiver = (TouchPointAction) tpInstanceReceiverClass.getConstructor().newInstance();
+
+            TouchPointTransportRegistryFactory
+                    .createRegistry(agentActionMetaInfo.transportConfig().transportType())
+                    .register(
+                            appContext,
+                            agentActionMetaInfo,
+                            Stream.of(agentFilters, actionFilters).flatMap(Stream::of).toArray(String[]::new));
+
+            registerAgentFinishReceiver(
+                    appContext,
+                    Stream.of(agentFilters, actionFilters).flatMap(Stream::of).toArray(String[]::new),
+                    agentActionMetaInfo.inputClass());
+
+            registerContextReceiver(
+                    name,
+                    Stream.of(agentFilters, actionFilters).flatMap(Stream::of).toArray(String[]::new),
+                    tpInstanceReceiver);
+        } catch (Exception e) {
+            if (LogDebug.LOG) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public void registerAgentFinishReceiver(Context appContext,
+                                            String[] filters, Class<? extends TouchPoint> touchPointClass) {
+        TouchPointBroadcastReceiver<? extends TouchPoint> agentFinishReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
+
+        IntentFilter agentFinishFilter = new IntentFilter();
+        if (filters != null) {
+            for (String filter : filters) {
+                String agentFinishAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
+                        Agent.getName(), filter
+                ));
+                agentFinishFilter.addAction(agentFinishAction);
+            }
+        }
+        appContext.registerReceiver(agentFinishReceiver, agentFinishFilter, Context.RECEIVER_EXPORTED);
+    }
+
+    public void registerContextReceiver(String name, String[] filters, TouchPointAction tpInstanceReceiver) {
+        String ctxName = TouchPointHelper.touchPointPluginName(name);
+        if (filters != null) {
+            for (String filter : filters) {
+                String filterAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
+                        filter, Agent.getName()
+                ));
+                TransportRegion transportRegion = TouchPointMemory.getRegion(Region.TRANSPORT);
+                transportRegion.putTouchPointReceiver(filterAction, tpInstanceReceiver);
+            }
+        }
+    }
+
+}
