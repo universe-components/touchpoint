@@ -28,8 +28,6 @@ import org.apache.dubbo.config.ProtocolConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 
-import kotlinx.coroutines.scheduling.Task;
-
 public class AgentApplication extends Application {
 
     private Activity currentActivity;

@@ -4,7 +4,6 @@ import android.os.Build;
 
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;

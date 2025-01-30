@@ -5,14 +5,9 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentEntity;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.TouchPointRegion;
 import com.universe.touchpoint.memory.regions.RouteRegion;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class AgentRouter {
 

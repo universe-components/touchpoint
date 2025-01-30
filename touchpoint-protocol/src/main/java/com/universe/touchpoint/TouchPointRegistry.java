@@ -1,10 +1,7 @@
 package com.universe.touchpoint;
 
-import android.annotation.SuppressLint;
-import android.content.ContentProvider;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.content.pm.ProviderInfo;
 import android.os.Build;
 import android.util.Pair;
 
@@ -25,7 +22,6 @@ import com.universe.touchpoint.config.TransportConfigMeta;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.TransportRegion;
-import com.universe.touchpoint.provider.TouchPointProvider;
 import com.universe.touchpoint.router.AgentRouterManager;
 import com.universe.touchpoint.task.TaskManager;
 import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
@@ -35,9 +31,6 @@ import com.universe.touchpoint.router.AgentRouter;
 import com.universe.touchpoint.utils.AnnotationUtils;
 import com.universe.touchpoint.utils.ApkUtils;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
