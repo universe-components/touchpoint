@@ -19,7 +19,7 @@ import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
-import com.universe.touchpoint.task.TaskManager;
+import com.universe.touchpoint.driver.TaskManager;
 import com.universe.touchpoint.transport.TouchPointTransportConfigManager;
 import com.universe.touchpoint.router.AgentRouterManager;
 
