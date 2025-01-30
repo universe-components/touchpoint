@@ -4,7 +4,7 @@ import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.TransportConfig;
 
-public record AgentActionMeta(
+public record AgentActionMetaInfo(
         String name,
         Class<? extends TouchPoint> inputClass,
         AIModelConfig model,

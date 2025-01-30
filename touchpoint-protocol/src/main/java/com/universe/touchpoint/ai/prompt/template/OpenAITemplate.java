@@ -8,9 +8,9 @@ public class OpenAITemplate {
             
             Question: the input question you must answer
             Thought: you should always think about what to do
-            Action: the agentActionMeta to take, should be one of [{agent_names}]
-            Action Input: the input to the agentActionMeta
-            Observation: the result of the agentActionMeta
+            Action: the agentActionMetaInfo to take, should be one of [{agent_names}]
+            Action Input: the input to the agentActionMetaInfo
+            Observation: the result of the agentActionMetaInfo
             ... (this Thought/Action/Action Input/Observation can repeat N times)
             Thought: I now know the final answer
             Final Answer: the final answer to the original input question""";

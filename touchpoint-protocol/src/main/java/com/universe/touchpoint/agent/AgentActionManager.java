@@ -30,7 +30,7 @@ public class AgentActionManager {
         }
     }
 
-    public <T> AgentActionMeta extractAndRegisterAction(
+    public <T> AgentActionMetaInfo extractAndRegisterAction(
             String receiverClassName,
             AIModelConfig model,
             TransportConfig<T> transportConfig,
@@ -50,12 +50,12 @@ public class AgentActionManager {
             Class<?> touchPointClazz = Class.forName(touchPointClassName);
             Class<? extends TouchPoint> touchPointClass = touchPointClazz.asSubclass(TouchPoint.class);
 
-            AgentActionMeta agentActionMeta = new AgentActionMeta(receiverClassName, touchPointClass, model, transportConfig);
+            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(receiverClassName, touchPointClass, model, transportConfig);
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
             driverRegion.putTouchPointAction(
-                    TouchPointHelper.touchPointActionName(actionName, agentName), agentActionMeta);
+                    TouchPointHelper.touchPointActionName(actionName, agentName), agentActionMetaInfo);
 
-            return agentActionMeta;
+            return agentActionMetaInfo;
         } catch (Exception e) {
             if (LogDebug.LOG) {
                 e.printStackTrace();
@@ -67,8 +67,8 @@ public class AgentActionManager {
     @SuppressWarnings("unchecked")
     public <T extends TouchPoint> T paddingActionInput(String actionName, String actionInput, String agentName) {
         DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
-        AgentActionMeta agentActionMeta = driverRegion.getTouchPointAction(TouchPointHelper.touchPointActionName(actionName, agentName));
-        Class<T> inputClass = (Class<T>) agentActionMeta.inputClass();
+        AgentActionMetaInfo agentActionMetaInfo = driverRegion.getTouchPointAction(TouchPointHelper.touchPointActionName(actionName, agentName));
+        Class<T> inputClass = (Class<T>) agentActionMetaInfo.inputClass();
 
         // 分割输入
         String[] actionInputs = actionInput.split("\\|");

@@ -6,7 +6,7 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActionConfigMeta {
+public class ActionMappingConfig {
 
     public static final Map<Class<? extends Annotation>, Class<?>> annotation2Config = new HashMap<>();
     static {

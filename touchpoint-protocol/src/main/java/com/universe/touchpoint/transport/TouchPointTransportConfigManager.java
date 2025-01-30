@@ -16,7 +16,7 @@ import com.universe.touchpoint.ai.models.Anthropic;
 import com.universe.touchpoint.ai.models.OpenAI;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
-import com.universe.touchpoint.config.TransportConfigMeta;
+import com.universe.touchpoint.config.TransportMappingConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
 
@@ -34,7 +34,7 @@ public class TouchPointTransportConfigManager {
 
     public static <T> TransportConfig<T> agentConfig(Transport transport) {
         try {
-            Class<?> configClass = TransportConfigMeta.transport2Config.get(transport);
+            Class<?> configClass = TransportMappingConfig.transport2Config.get(transport);
             assert configClass != null;
             String annotationClassName = "com.universe.touchpoint.annotations." + configClass.getSimpleName();
             Class<?> annotationClass = Class.forName(annotationClassName);

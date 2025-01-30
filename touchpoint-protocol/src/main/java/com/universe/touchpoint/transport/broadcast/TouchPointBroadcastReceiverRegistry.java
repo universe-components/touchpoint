@@ -5,7 +5,7 @@ import android.content.IntentFilter;
 
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.Agent;
-import com.universe.touchpoint.agent.AgentActionMeta;
+import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.router.AgentRouter;
 import com.universe.touchpoint.transport.TouchPointTransportRegistry;
@@ -13,9 +13,9 @@ import com.universe.touchpoint.transport.TouchPointTransportRegistry;
 public class TouchPointBroadcastReceiverRegistry implements TouchPointTransportRegistry {
 
     @Override
-    public void register(Context context, AgentActionMeta agentActionMeta, String[] filters) {
+    public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String[] filters) {
         TouchPointBroadcastReceiver<? extends TouchPoint> tpReceiver = new TouchPointBroadcastReceiver<>(
-                agentActionMeta.inputClass(), context);
+                agentActionMetaInfo.inputClass(), context);
 
         IntentFilter intentFilter = new IntentFilter();
         if (filters != null) {

@@ -9,16 +9,16 @@ import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.agent.AgentActionManager;
-import com.universe.touchpoint.agent.AgentActionMeta;
+import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.annotations.AIModel;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.ActionConfig;
-import com.universe.touchpoint.config.ActionConfigMeta;
+import com.universe.touchpoint.config.ActionMappingConfig;
 import com.universe.touchpoint.config.Model;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
-import com.universe.touchpoint.config.TransportConfigMeta;
+import com.universe.touchpoint.config.TransportMappingConfig;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.TransportRegion;
@@ -88,8 +88,8 @@ public class TouchPointRegistry {
 
                 Map<Transport, Object> transportConfigMap = AnnotationUtils.annotation2Config(
                         Class.forName(clazz),
-                        TransportConfigMeta.annotation2Config,
-                        TransportConfigMeta.annotation2Type
+                        TransportMappingConfig.annotation2Config,
+                        TransportMappingConfig.annotation2Type
                 );
                 Transport transportType = transportConfigMap.keySet().iterator().next();
                 Object transportConfig = transportConfigMap.get(transportType);
@@ -116,7 +116,7 @@ public class TouchPointRegistry {
                 AgentRouterManager.registerRouteEntry((String[]) properties.get(1), appContext);
                 ActionConfig actionConfig = (ActionConfig) AnnotationUtils.annotation2Config(
                         Class.forName(clazz),
-                        ActionConfigMeta.annotation2Config
+                        ActionMappingConfig.annotation2Config
                 );
                 assert actionConfig != null;
                 TaskManager.registerTaskAction(actionConfig, appContext);
@@ -130,22 +130,22 @@ public class TouchPointRegistry {
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     public void register(Context appContext, String name,
-                                           String[] agentFilters, String[] actionFilters, AgentActionMeta agentActionMeta) {
+                                           String[] agentFilters, String[] actionFilters, AgentActionMetaInfo agentActionMetaInfo) {
         try {
-            Class<?> tpInstanceReceiverClass = Class.forName(agentActionMeta.name());
+            Class<?> tpInstanceReceiverClass = Class.forName(agentActionMetaInfo.name());
             TouchPointAction tpInstanceReceiver = (TouchPointAction) tpInstanceReceiverClass.getConstructor().newInstance();
 
             TouchPointTransportRegistryFactory
-                    .createRegistry(agentActionMeta.transportConfig().transportType())
+                    .createRegistry(agentActionMetaInfo.transportConfig().transportType())
                     .register(
                             appContext,
-                            agentActionMeta,
+                            agentActionMetaInfo,
                             Stream.of(agentFilters, actionFilters).flatMap(Stream::of).toArray(String[]::new));
 
             registerAgentFinishReceiver(
                     appContext,
                     Stream.of(agentFilters, actionFilters).flatMap(Stream::of).toArray(String[]::new),
-                    agentActionMeta.inputClass());
+                    agentActionMetaInfo.inputClass());
 
             registerContextReceiver(
                     name,

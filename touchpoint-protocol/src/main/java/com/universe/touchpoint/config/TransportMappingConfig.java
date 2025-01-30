@@ -8,7 +8,7 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TransportConfigMeta {
+public class TransportMappingConfig {
 
     public static final Map<Transport, Class<?>> transport2Config = new HashMap<>();
     public static final Map<Class<? extends Annotation>, Class<?>> annotation2Config = new HashMap<>();

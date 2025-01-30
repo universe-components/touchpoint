@@ -8,9 +8,9 @@ public class AgentAction extends TouchPoint {
     private String thought;
     private String observation;
     private TouchPoint actionInput;
-    private AgentActionMeta meta;
+    private AgentActionMetaInfo meta;
 
-    public AgentAction(String action, TouchPoint actionInput, String thought, AgentActionMeta meta) {
+    public AgentAction(String action, TouchPoint actionInput, String thought, AgentActionMetaInfo meta) {
         super();
         this.action = action;
         this.actionInput = actionInput;
@@ -50,11 +50,11 @@ public class AgentAction extends TouchPoint {
         this.actionInput = actionInput;
     }
 
-    public void setMeta(AgentActionMeta meta) {
+    public void setMeta(AgentActionMetaInfo meta) {
         this.meta = meta;
     }
 
-    public AgentActionMeta getMeta() {
+    public AgentActionMetaInfo getMeta() {
         return meta;
     }
 
