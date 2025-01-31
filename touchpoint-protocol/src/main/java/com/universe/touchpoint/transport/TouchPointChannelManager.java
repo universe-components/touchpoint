@@ -40,8 +40,8 @@ public class TouchPointChannelManager {
                 try {
                     return (TouchPointChannel) Objects.requireNonNull(
                             channelMapping.get(transport))
-                            .getConstructor(config.getClass())
-                            .newInstance(config);
+                            .getConstructor(Context.class, config.getClass())
+                            .newInstance(context, config);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
