@@ -27,24 +27,28 @@ public class AgentRouterReporter extends ActionReporter<String[]> {
         RePluginHost.install(apkPath);
 
         // 发送路由更新广播
-        String routerAction = TouchPointHelper.touchPointFilterName(
-                TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME);
+        for (String toAgent : toAgents) {
+            String routerAction = TouchPointHelper.touchPointFilterName(
+                    TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME, toAgent);
 
-        Intent routerIntent = new Intent(routerAction);
-        ArrayList<String> routeEntries = Arrays.stream(toAgents)
-                .map(agent -> AgentRouter.buildChunk(agent, Agent.getName()))
-                .collect(Collectors.toCollection(ArrayList::new));
+            Intent routerIntent = new Intent(routerAction);
+            ArrayList<String> routeEntries = Arrays.stream(toAgents)
+                    .map(agent -> AgentRouter.buildChunk(agent, Agent.getName()))
+                    .collect(Collectors.toCollection(ArrayList::new));
 
-        routerIntent.putStringArrayListExtra(TouchPointConstants.TOUCH_POINT_ROUTER_EVENT_NAME, routeEntries);
+            routerIntent.putStringArrayListExtra(TouchPointConstants.TOUCH_POINT_ROUTER_EVENT_NAME, routeEntries);
 
-        context.sendBroadcast(routerIntent);
+            context.sendBroadcast(routerIntent);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public void registerReceiver(Context context) {
         IntentFilter filter = new IntentFilter(
-                TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME));
+                TouchPointHelper.touchPointFilterName(
+                        TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME,
+                        Agent.getName()));
         context.registerReceiver(new AgentRouterBroadcastReceiver(), filter, Context.RECEIVER_EXPORTED);
     }
 

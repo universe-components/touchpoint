@@ -1,5 +1,9 @@
 package com.universe.touchpoint.config;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class ActionConfig {
 
     private String name;
@@ -26,6 +30,17 @@ public class ActionConfig {
 
     public String[] getTaskProposers() {
         return taskProposers;
+    }
+
+    public Set<String> getAllPredecessors() {
+        Set<String> predecessors = new HashSet<>();
+        if (fromAgent != null) {
+            predecessors.addAll(Arrays.asList(fromAgent));
+        }
+        if (fromAction != null) {
+            predecessors.addAll(Arrays.asList(fromAction));
+        }
+        return predecessors;
     }
 
 }

@@ -13,9 +13,6 @@ import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.config.ActionConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.memory.Region;
-import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.DriverRegion;
 import com.universe.touchpoint.utils.SerializeUtils;
 
 public class TaskActionReporter extends ActionReporter<ActionConfig> {
@@ -48,9 +45,11 @@ public class TaskActionReporter extends ActionReporter<ActionConfig> {
                     TouchPointConstants.TOUCH_POINT_TASK_EVENT_NAME, Agent.getName()));
 
             if (action != null) {
-                DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
-                driverRegion.addTouchPointTaskAction(
+//                DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
+                ActionGraph.getInstance().addActionConfig(
                         SerializeUtils.deserializeFromByteArray(action, ActionConfig.class));
+//                driverRegion.addTouchPointTaskAction(
+//                        SerializeUtils.deserializeFromByteArray(action, ActionConfig.class));
             }
         }
 

@@ -22,7 +22,6 @@ import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.TransportRegion;
-import com.universe.touchpoint.driver.TaskActionReporter;
 import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
 import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastReceiver;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -118,7 +117,7 @@ public class TouchPointRegistryCenter {
                         ActionConfigMapping.annotation2Config
                 );
                 assert actionConfig != null;
-                new TaskActionReporter().report(actionConfig, appContext);
+                ActionReporter.getInstance("taskAction").report(actionConfig, appContext);
             }
         } catch (Exception e) {
             if (LogDebug.LOG) {
