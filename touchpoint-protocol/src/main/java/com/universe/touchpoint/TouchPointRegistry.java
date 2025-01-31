@@ -2,9 +2,8 @@ package com.universe.touchpoint;
 
 import android.content.Context;
 
-public interface TouchPointRegistry<C> {
+public interface TouchPointRegistry {
 
-    void register(C config, Context context);
     void registerReceiver(Context context);
 
 }

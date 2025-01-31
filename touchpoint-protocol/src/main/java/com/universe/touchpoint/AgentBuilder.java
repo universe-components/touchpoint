@@ -5,8 +5,6 @@ import com.universe.touchpoint.config.transport.RPCConfig;
 import com.universe.touchpoint.config.Model;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
-import com.universe.touchpoint.driver.AIModelRegistry;
-import com.universe.touchpoint.transport.TouchPointTransportConfigRegistry;
 
 public class AgentBuilder {
 
@@ -64,12 +62,12 @@ public class AgentBuilder {
         return this;
     }
 
-    public AgentBuilder build() {
+    public <C> AgentBuilder build() {
         if (config.getTransportConfig().config() != null) {
-            TouchPointRegistryFactory.getInstance(TouchPointTransportConfigRegistry.class).register(config.getTransportConfig(), Agent.getContext());
+            AgentBroadcaster.getInstance("transportConfig").send(config.getTransportConfig(), Agent.getContext());
         }
         if (config.getModelConfig().getModel() != null) {
-            TouchPointRegistryFactory.getInstance(AIModelRegistry.class).register(config.getModelConfig(), Agent.getContext());
+            AgentBroadcaster.getInstance("aiModel").send(config.getModelConfig(), Agent.getContext());
         }
         return this;
     }

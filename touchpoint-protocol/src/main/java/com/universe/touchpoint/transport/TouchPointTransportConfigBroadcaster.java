@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import com.universe.touchpoint.AgentBuilder;
-import com.universe.touchpoint.TouchPointRegistry;
+import com.universe.touchpoint.AgentBroadcaster;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.config.Transport;
@@ -20,7 +20,7 @@ import com.universe.touchpoint.utils.SerializeUtils;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-public class TouchPointTransportConfigRegistry<C> implements TouchPointRegistry<TransportConfig<C>> {
+public class TouchPointTransportConfigBroadcaster<C> extends AgentBroadcaster<TransportConfig<C>> {
 
     public static <T> TransportConfig<T> agentConfig(Transport transport) {
         try {
@@ -43,7 +43,7 @@ public class TouchPointTransportConfigRegistry<C> implements TouchPointRegistry<
     }
 
     @Override
-    public void register(TransportConfig<C> config, Context context) {
+    public void send(TransportConfig<C> config, Context context) {
         RouteRegion routeRegion = TouchPointMemory.getRegion(Region.ROUTE);
         List<AgentRouteEntry> routeEntries = routeRegion.getRouteItems(Agent.getName());
 

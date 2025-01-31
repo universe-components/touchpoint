@@ -1,10 +1,12 @@
 package com.universe.touchpoint.driver;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.universe.touchpoint.TouchPointRegistry;
+import com.universe.touchpoint.AgentBuilder;
+import com.universe.touchpoint.AgentBroadcaster;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.config.AIModelConfig;
@@ -17,10 +19,10 @@ import com.universe.touchpoint.utils.SerializeUtils;
 
 import java.util.List;
 
-public class AIModelRegistry implements TouchPointRegistry<AIModelConfig> {
+public class AIModelBroadcaster extends AgentBroadcaster<AIModelConfig> {
 
     @Override
-    public void register(AIModelConfig config, Context context) {
+    public void send(AIModelConfig config, Context context) {
         RouteRegion routeRegion = TouchPointMemory.getRegion(Region.ROUTE);
         List<AgentRouteEntry> routeEntries = routeRegion.getRouteItems(Agent.getName());
 
@@ -44,6 +46,20 @@ public class AIModelRegistry implements TouchPointRegistry<AIModelConfig> {
                         TouchPointConstants.TOUCH_POINT_AI_MODEL_CONFIG_FILTER_NAME,
                         Agent.getName()));
         context.registerReceiver(new AIModelReceiver(), filter, Context.RECEIVER_EXPORTED);
+    }
+
+    public static class AIModelReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            byte[] aiModelConfig = intent.getByteArrayExtra(TouchPointConstants.TOUCH_POINT_AI_MODEL_CONFIG_EVENT_NAME);
+
+            AIModelConfig config = SerializeUtils.deserializeFromByteArray(aiModelConfig, AIModelConfig.class);
+            if (config != null) {
+                AgentBuilder.getBuilder().getConfig().setModelConfig(config);
+            }
+        }
+
     }
 
 }
