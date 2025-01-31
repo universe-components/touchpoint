@@ -71,7 +71,7 @@ public class ActionGraph {
         return Collections.emptyList();
     }
 
-    // 获取一个节点的后置节点（根据fromAgent的指向）
+    // 获取一个节点的后置节点
     public List<ActionConfig> getSuccessors(String name) {
         List<ActionConfig> successors = graph.getOrDefault(name, Collections.emptyList());
         assert successors != null;

@@ -45,11 +45,8 @@ public class TaskActionReporter extends ActionReporter<ActionConfig> {
                     TouchPointConstants.TOUCH_POINT_TASK_EVENT_NAME, Agent.getName()));
 
             if (action != null) {
-//                DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
                 ActionGraph.getInstance().addActionConfig(
                         SerializeUtils.deserializeFromByteArray(action, ActionConfig.class));
-//                driverRegion.addTouchPointTaskAction(
-//                        SerializeUtils.deserializeFromByteArray(action, ActionConfig.class));
             }
         }
 
