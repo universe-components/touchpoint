@@ -10,7 +10,7 @@ import com.universe.touchpoint.config.transport.RPCConfig;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.utils.SerializeUtils;
 
-public class TouchPointTransportConfigBroadcastReceiver extends BroadcastReceiver {
+public class TouchPointTransportConfigReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
