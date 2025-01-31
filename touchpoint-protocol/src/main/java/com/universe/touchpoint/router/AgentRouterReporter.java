@@ -21,18 +21,18 @@ import java.util.stream.Collectors;
 public class AgentRouterReporter extends ActionReporter<String[]> {
 
     @Override
-    public void report(String[] toAgents, Context context) {
+    public void report(String[] fromAgents, Context context) {
         String apkPath = ApkUtils.getApkPath(context);
         assert apkPath != null;
         RePluginHost.install(apkPath);
 
         // 发送路由更新广播
-        for (String toAgent : toAgents) {
+        for (String toAgent : fromAgents) {
             String routerAction = TouchPointHelper.touchPointFilterName(
                     TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME, toAgent);
 
             Intent routerIntent = new Intent(routerAction);
-            ArrayList<String> routeEntries = Arrays.stream(toAgents)
+            ArrayList<String> routeEntries = Arrays.stream(fromAgents)
                     .map(agent -> AgentRouter.buildChunk(agent, Agent.getName()))
                     .collect(Collectors.toCollection(ArrayList::new));
 
@@ -49,7 +49,7 @@ public class AgentRouterReporter extends ActionReporter<String[]> {
                 TouchPointHelper.touchPointFilterName(
                         TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME,
                         Agent.getName()));
-        context.registerReceiver(new AgentRouterBroadcastReceiver(), filter, Context.RECEIVER_EXPORTED);
+        context.registerReceiver(new AgentRouterReceiver(), filter, Context.RECEIVER_EXPORTED);
     }
 
 }

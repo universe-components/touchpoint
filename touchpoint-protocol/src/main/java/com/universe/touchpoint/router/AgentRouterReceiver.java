@@ -9,7 +9,7 @@ import com.universe.touchpoint.TouchPointConstants;
 
 import java.util.ArrayList;
 
-public class AgentRouterBroadcastReceiver extends BroadcastReceiver {
+public class AgentRouterReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
