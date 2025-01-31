@@ -13,9 +13,9 @@ public @interface TouchPointAction {
 
     String desc();
 
-    String[] fromAgent() default {};
+    String[] fromAgents() default {};
 
-    String[] fromAction() default {};
+    String[] fromActions() default {};
 
     String[] taskProposer() default {};
 

@@ -78,7 +78,7 @@ public class TouchPointRegistryCenter {
                 receiverFilterList = Arrays.asList(receiverFilters.replace(" ", "").split(","));
             } else {*/
             List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext,
-                    com.universe.touchpoint.annotations.TouchPointAction.class, Arrays.asList("name", "fromAgent", "fromAction"), !isPlugin);
+                    com.universe.touchpoint.annotations.TouchPointAction.class, Arrays.asList("name", "fromAgents", "fromActions"), !isPlugin);
 
             for (Pair<String, List<Object>> pair : receiverFilterPair) {
                 String clazz = pair.first;  // 获取 String

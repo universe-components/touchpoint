@@ -8,8 +8,8 @@ public class ActionConfig {
 
     private String name;
     private String desc;
-    private String[] fromAgent;
-    private String[] fromAction;
+    private String[] fromAgents;
+    private String[] fromActions;
     private String[] taskProposers;
 
     public String getName() {
@@ -20,12 +20,12 @@ public class ActionConfig {
         return desc;
     }
 
-    public String[] getFromAgent() {
-        return fromAgent;
+    public String[] getFromAgents() {
+        return fromAgents;
     }
 
-    public String[] getFromAction() {
-        return fromAction;
+    public String[] getFromActions() {
+        return fromActions;
     }
 
     public String[] getTaskProposers() {
@@ -34,11 +34,11 @@ public class ActionConfig {
 
     public Set<String> getAllPredecessors() {
         Set<String> predecessors = new HashSet<>();
-        if (fromAgent != null) {
-            predecessors.addAll(Arrays.asList(fromAgent));
+        if (fromAgents != null) {
+            predecessors.addAll(Arrays.asList(fromAgents));
         }
-        if (fromAction != null) {
-            predecessors.addAll(Arrays.asList(fromAction));
+        if (fromActions != null) {
+            predecessors.addAll(Arrays.asList(fromActions));
         }
         return predecessors;
     }
