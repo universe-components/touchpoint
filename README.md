@@ -90,7 +90,8 @@ data class WeatherResponse(val weather: String, val temperature: String) : Touch
 ```kotlin
 @TouchPointAction(
     name = "weather_action",
-    fromAgent = {"entry_agent"}, // 可以指定多个来源Agent
+    fromAgents = {"entry_agent"}, // 可以指定多个来源Agent
+    fromActions = {""} // 可以指定多个来源Action
     taskProposers = {"entry_agent"} // 可以指定多个任务发起者
 ) 
 @AIModel(name = Model.GPT_4, temperature = 0.0) // 指定模型, 默认使用o1
