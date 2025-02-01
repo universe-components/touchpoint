@@ -83,7 +83,7 @@ public class AgentApplication extends Application {
                 TouchPointRegistryCenter.getInstance().register(ctx, isPlugin, ConfigType.ANNOTATION);
             }
         }
-        //Todo Maybe remove this
+        //Todo Maybe remove this in the future
         TouchPointContentFactory.registerContentProvider(ctx);
 
         // 初始化Dubbo
