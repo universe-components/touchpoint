@@ -79,6 +79,13 @@ public class Agent {
         return applicationClass.isAnnotationPresent(annotationClass);
     }
 
+    public static Class<?> getApplicationClass() {
+        Context context = Agent.getContext();
+
+        Application application = (Application) context;
+        return application.getClass();
+    }
+
     public static Context fetchContext(String name) {
         return Factory.queryPluginContext(name);
     }

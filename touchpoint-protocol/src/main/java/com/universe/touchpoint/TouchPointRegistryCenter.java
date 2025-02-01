@@ -10,12 +10,11 @@ import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.agent.Agent;
-import com.universe.touchpoint.annotations.AIModel;
 import com.universe.touchpoint.annotations.TaskProposer;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.ActionConfig;
+import com.universe.touchpoint.config.mapping.AIModelConfigMapping;
 import com.universe.touchpoint.config.mapping.ActionConfigMapping;
-import com.universe.touchpoint.config.Model;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
@@ -27,7 +26,6 @@ import com.universe.touchpoint.utils.ApkUtils;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 public class TouchPointRegistryCenter {
@@ -72,6 +70,20 @@ public class TouchPointRegistryCenter {
                 assert receiverFilters != null;
                 receiverFilterList = Arrays.asList(receiverFilters.replace(" ", "").split(","));
             } else {*/
+
+            if (Agent.isAnnotationPresent(TaskProposer.class)) {
+                AIModelConfig aiModelConfig = (AIModelConfig) AnnotationUtils.annotation2Config(
+                        Agent.getApplicationClass(), AIModelConfigMapping.annotation2Config);
+                TransportConfig<?> transportConfigWrapper = (TransportConfig<?>) AnnotationUtils.annotation2Config(
+                        Agent.getApplicationClass(), TransportConfigMapping.annotation2Config);
+
+                AgentBuilder.getBuilder().getConfig().setModelConfig(aiModelConfig);
+                AgentBuilder.getBuilder().getConfig().setTransportConfig(transportConfigWrapper);
+
+                AgentBroadcaster.getInstance("aiModel").send(aiModelConfig, appContext);
+                AgentBroadcaster.getInstance("transportConfig").send(transportConfigWrapper, appContext);
+            }
+
             List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext,
                     com.universe.touchpoint.annotations.TouchPointAction.class, Arrays.asList("name", "fromAgents", "fromActions"), !isPlugin);
 
@@ -86,14 +98,16 @@ public class TouchPointRegistryCenter {
                 );
                 Transport transportType = transportConfigMap.keySet().iterator().next();
                 Object transportConfig = transportConfigMap.get(transportType);
-                Map<String, Object> aiModelProperties = AnnotationUtils.getAnnotationValue(Class.forName(clazz), AIModel.class);
+                AIModelConfig aiModelConfig = (AIModelConfig) AnnotationUtils.annotation2Config(
+                        Class.forName(clazz), AIModelConfigMapping.annotation2Config);
                 String[] filters = Stream.of((String[]) properties.get(1), (String[]) properties.get(2)).flatMap(Stream::of).toArray(String[]::new);
 
+                /*
+                * Local Registry
+                 */
                 AgentActionMetaInfo actionMetaInfo = AgentActionManager.getInstance().extractAndRegisterAction(
                         clazz,
-                        new AIModelConfig(
-                                (Model) Objects.requireNonNull(aiModelProperties.get("name")),
-                                (float) aiModelProperties.get("temperature")),
+                        aiModelConfig,
                         new TransportConfig<>(
                                 transportType,
                                 transportConfig),
@@ -115,6 +129,9 @@ public class TouchPointRegistryCenter {
 
                 TouchPointChannelManager.registerContextReceiver(filters, actionMetaInfo);
 
+                /*
+                    report data to proposer
+                 */
                 ActionConfig actionConfig = (ActionConfig) AnnotationUtils.annotation2Config(
                         Class.forName(clazz),
                         ActionConfigMapping.annotation2Config
@@ -122,23 +139,12 @@ public class TouchPointRegistryCenter {
                 assert actionConfig != null;
                 ActionReporter.getInstance("taskAction").report(actionConfig, appContext);
                 ActionReporter.getInstance("router").report((String[]) properties.get(1), appContext);
-
-                if (Agent.isAnnotationPresent(TaskProposer.class)) {
-                    AgentBroadcaster.getInstance("transportConfig").send(
-                            new TransportConfig<>(transportType, transportConfig), appContext);
-                    AgentBroadcaster.getInstance("aiModel").send(
-                            new AIModelConfig(
-                                    (Model) aiModelProperties.get("name"),
-                                    (Float) aiModelProperties.get("temperature"),
-                                    String.valueOf(aiModelProperties.get("apiKey"))
-                            ), appContext);
-                }
-
-                ActionReporter.getInstance("taskAction").registerReceiver(appContext);
-                AgentBroadcaster.getInstance("aiModel").registerReceiver(appContext);
-                AgentBroadcaster.getInstance("transportConfig").registerReceiver(appContext);
-                ActionReporter.getInstance("router").registerReceiver(appContext);
             }
+
+            ActionReporter.getInstance("taskAction").registerReceiver(appContext);
+            AgentBroadcaster.getInstance("aiModel").registerReceiver(appContext);
+            AgentBroadcaster.getInstance("transportConfig").registerReceiver(appContext);
+            ActionReporter.getInstance("router").registerReceiver(appContext);
         } catch (Exception e) {
             if (LogDebug.LOG) {
                 e.printStackTrace();
