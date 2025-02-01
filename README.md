@@ -54,7 +54,7 @@ class EntryApplication : AgentApplication()
 ```kotlin
 AgentBuilder builder = AgentBuilder
     .model(Model.GPT_4) // 选择模型
-    .setTemperature(0.0) // 设置温度
+    .setTemperature(0.0f) // 设置温度
     .setModelApiKey("My API Key") // 设置模型API Key
     .transport(Transport.DUBBO) // 设置全局的Agent调用策略，默认事件驱动
     .setRegistryAddress("127.0.0.1:2181") // 设置注册中心地址
@@ -77,7 +77,7 @@ class WeatherApplication : AgentApplication()
  * model默认使用o1
  */
 @TouchPointAgent(name = "weather_agent", desc = "查询城市的天气信息")
-@AIModel(name = Model.GPT_4, temperature = 0.0) // 指定模型, 默认使用o1
+@AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 class WeatherApplication : AgentApplication()
 ```
 
@@ -94,7 +94,7 @@ data class WeatherResponse(val weather: String, val temperature: String) : Touch
     fromActions = {""} // 可以指定多个来源Action
     taskProposers = {"entry_agent"} // 可以指定多个任务发起者
 ) 
-@AIModel(name = Model.GPT_4, temperature = 0.0) // 指定模型, 默认使用o1
+@AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 class WeathertListener : AgentActionListener<String, WeatherResponse> {
 
     override fun onReceive(city: String, context: Context) : WeatherResponse {
@@ -143,7 +143,7 @@ class WeathertListener : AgentActionListener<String, WeatherResponse> {
     fromAgent = {"entry_agent"}, // 可以指定多个来源Agent
     taskProposers = {"entry_agent"} // 可以指定多个任务发起者
 ) 
-@AIModel(name = Model.GPT_4, temperature = 0.0) // 指定模型, 默认使用o1
+@AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 @DubboService(interfaceClass = IWeatherService::class) //必须指定接口
 class WeatherService {
 
