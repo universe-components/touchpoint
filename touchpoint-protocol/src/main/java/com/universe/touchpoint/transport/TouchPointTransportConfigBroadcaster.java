@@ -26,7 +26,7 @@ public class TouchPointTransportConfigBroadcaster<C> extends AgentBroadcaster<Tr
         try {
             Class<?> configClass = TransportConfigMapping.transport2Config.get(transport);
             assert configClass != null;
-            String annotationClassName = "com.universe.touchpoint.annotations." + configClass.getSimpleName();
+            String annotationClassName = "com.universe.touchpoint.annotations." + configClass.getSimpleName().replace("Config", "");
             Class<?> annotationClass = Class.forName(annotationClassName);
 
             String applicationName = (String) Agent.getProperty("applicationName", (Class<Annotation>) annotationClass);
@@ -38,6 +38,9 @@ public class TouchPointTransportConfigBroadcaster<C> extends AgentBroadcaster<Tr
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+        if (AgentBuilder.getBuilder() == null) {
+            return null;
         }
         return (TransportConfig<T>) AgentBuilder.getBuilder().getConfig().getTransportConfig();
     }

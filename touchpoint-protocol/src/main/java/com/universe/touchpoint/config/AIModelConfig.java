@@ -30,13 +30,18 @@ public class AIModelConfig {
     }
 
     public AIModelConfig(Model model, float temperature) {
+        this(model, temperature, (String) null);
+    }
+
+    public AIModelConfig(Model model, float temperature, String apiKey) {
         this.model = model;
         this.temperature = temperature;
+        this.apiKey = apiKey;
         switch (model) {
             case GPT_3_5, o1, GPT_4, NONE ->
-                this.type = AIModelType.OPEN_AI;
+                    this.type = AIModelType.OPEN_AI;
             case ClAUDE_3_5_SONNET ->
-                this.type = AIModelType.ANTHROPIC;
+                    this.type = AIModelType.ANTHROPIC;
         }
     }
 

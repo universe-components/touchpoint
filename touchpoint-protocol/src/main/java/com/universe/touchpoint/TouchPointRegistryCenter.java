@@ -11,6 +11,7 @@ import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.annotations.AIModel;
+import com.universe.touchpoint.annotations.TaskProposer;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.ActionConfig;
 import com.universe.touchpoint.config.mapping.ActionConfigMapping;
@@ -85,14 +86,14 @@ public class TouchPointRegistryCenter {
                 );
                 Transport transportType = transportConfigMap.keySet().iterator().next();
                 Object transportConfig = transportConfigMap.get(transportType);
-                Map<String, Object> annotationProperties = AnnotationUtils.getAnnotationValue(Class.forName(clazz), AIModel.class);
+                Map<String, Object> aiModelProperties = AnnotationUtils.getAnnotationValue(Class.forName(clazz), AIModel.class);
                 String[] filters = Stream.of((String[]) properties.get(1), (String[]) properties.get(2)).flatMap(Stream::of).toArray(String[]::new);
 
                 AgentActionMetaInfo actionMetaInfo = AgentActionManager.getInstance().extractAndRegisterAction(
                         clazz,
                         new AIModelConfig(
-                                (Model) Objects.requireNonNull(annotationProperties.get("name")),
-                                (float) annotationProperties.get("temperature")),
+                                (Model) Objects.requireNonNull(aiModelProperties.get("name")),
+                                (float) aiModelProperties.get("temperature")),
                         new TransportConfig<>(
                                 transportType,
                                 transportConfig),
@@ -121,6 +122,17 @@ public class TouchPointRegistryCenter {
                 assert actionConfig != null;
                 ActionReporter.getInstance("taskAction").report(actionConfig, appContext);
                 ActionReporter.getInstance("router").report((String[]) properties.get(1), appContext);
+
+                if (Agent.isAnnotationPresent(TaskProposer.class)) {
+                    AgentBroadcaster.getInstance("transportConfig").send(
+                            new TransportConfig<>(transportType, transportConfig), appContext);
+                    AgentBroadcaster.getInstance("aiModel").send(
+                            new AIModelConfig(
+                                    (Model) aiModelProperties.get("name"),
+                                    (Float) aiModelProperties.get("temperature"),
+                                    String.valueOf(aiModelProperties.get("apiKey"))
+                            ), appContext);
+                }
 
                 ActionReporter.getInstance("taskAction").registerReceiver(appContext);
                 AgentBroadcaster.getInstance("aiModel").registerReceiver(appContext);

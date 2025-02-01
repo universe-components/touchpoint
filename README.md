@@ -47,20 +47,15 @@ dependencies {
 `EntryApplication` 继承 `AgentApplication`
 ```kotlin
 @TouchPointAgent(name = "entry_agent")
+@TaskProposer // 是否任务发起者，添加该注解表示该Agent是任务发起者
+@AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 可选的全局配置，指定模型, 默认使用o1
+@Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // 可选的全局配置，指定dubbo应用名和注册中心地址
 class EntryApplication : AgentApplication()
 ```
 
 在` Entry Agent` 中执行
 ```kotlin
-AgentBuilder builder = AgentBuilder
-    .model(Model.GPT_4) // 选择模型
-    .setTemperature(0.0f) // 设置温度
-    .setModelApiKey("My API Key") // 设置模型API Key
-    .transport(Transport.DUBBO) // 设置全局的Agent调用策略，默认事件驱动
-    .setRegistryAddress("127.0.0.1:2181") // 设置注册中心地址
-    .build();
-
-builder.run("我想查询上海天气");
+AgentBuilder.getBuilder().run("我想查询上海天气");
 ```
 
 #### Weather Agent
@@ -68,7 +63,7 @@ builder.run("我想查询上海天气");
 `WeatherApplication` 继承 `AgentApplication`
 ```kotlin
 @TouchPointAgent(name = "weather_agent", desc = "查询城市的天气信息")
-@Dubbo(applicationName = "weather_agent", registryAddress = "127.0.0.1:2181")
+@Dubbo(applicationName = "weather_agent", registryAddress = "127.0.0.1:2181") // 可选，指定dubbo应用名和注册中心地址
 class WeatherApplication : AgentApplication()
 ```
 如果希望 `Weather Agent` 使用指定LLM，可以配置如下：
