@@ -15,13 +15,13 @@ import java.lang.reflect.Method;
 public class TouchPointContextManager {
 
     public static <T extends TouchPoint> T generateTouchPoint(Class<T> tpClass, String name) {
-        Context ctx = TouchPointContext.getAgentContext();
+        Context ctx = Agent.getContext();
         return generateTouchPoint(tpClass, name, ctx);
     }
 
     public static <A extends TouchPoint> A generateTouchPoint(
             A action, String name, String content) {
-        Context ctx = TouchPointContext.getAgentContext();
+        Context ctx = Agent.getContext();
         TouchPointChannel channel = TouchPointChannelManager.selectChannel(action, ctx);
 
         action.setHeader(new TouchPoint.Header(Agent.getName(), name, channel));
@@ -56,7 +56,7 @@ public class TouchPointContextManager {
                 filter);
         TouchPointContent touchPointContent = TouchPointContentFactory.createContent(
                 Uri.parse(contentProviderUri),
-                TouchPointContext.getAgentContext());
+                Agent.getContext());
 
         return touchPointContent.query(clazz);
     }

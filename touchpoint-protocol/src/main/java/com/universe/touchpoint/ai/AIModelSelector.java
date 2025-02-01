@@ -11,14 +11,16 @@ public class AIModelSelector {
 
     public static AIModelConfig selectModel(String input, AgentAction action) {
         // 首先检查 action 中的模型
-        Model modelFromAction = action.getMeta().model().getModel();
-        if (modelFromAction != null) {
-            // 如果 action 中有模型，则直接使用该模型
-            return new AIModelConfig(
-                    modelFromAction,
-                    action.getMeta().model().getTemperature(),
-                    modelFromAction == Model.ClAUDE_3_5_SONNET ? AIModelType.ANTHROPIC : AIModelType.OPEN_AI
-            );
+        if (action != null) {
+            Model modelFromAction = action.getMeta().model().getModel();
+            if (modelFromAction != null) {
+                // 如果 action 中有模型，则直接使用该模型
+                return new AIModelConfig(
+                        modelFromAction,
+                        action.getMeta().model().getTemperature(),
+                        modelFromAction == Model.ClAUDE_3_5_SONNET ? AIModelType.ANTHROPIC : AIModelType.OPEN_AI
+                );
+            }
         }
 
         // 如果 action 中没有模型，再检查 Agent 的模型

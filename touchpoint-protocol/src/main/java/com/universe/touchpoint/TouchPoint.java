@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
+import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.provider.TouchPointContent;
@@ -71,7 +72,7 @@ public abstract class TouchPoint {
         try {
             String contentProviderUri = TouchPointHelper.touchPointContentProviderUri(
                     TouchPointConstants.CONTENT_PROVIDER_PREFIX, header.toAgent);
-            TouchPointContent touchPointContent = TouchPointContentFactory.createContent(Uri.parse(contentProviderUri), TouchPointContext.getAgentContext());
+            TouchPointContent touchPointContent = TouchPointContentFactory.createContent(Uri.parse(contentProviderUri), Agent.getContext());
             boolean rs = touchPointContent.insertOrUpdate(this);
             if (!rs) {
                 throw new RuntimeException("insertOrUpdate failed");

@@ -10,7 +10,6 @@ import com.qihoo360.mobilesafe.api.AppVar;
 import com.qihoo360.replugin.RePluginEnv;
 import com.qihoo360.replugin.RePluginHost;
 import com.qihoo360.replugin.model.PluginInfo;
-import com.universe.touchpoint.TouchPointContext;
 import com.universe.touchpoint.annotations.TouchPointAgent;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
@@ -54,7 +53,7 @@ public class Agent {
     }
 
     public static Object getProperty(String propertyName, Class<? extends Annotation> annotationClass) {
-        Context context = TouchPointContext.getAgentContext();
+        Context context = Agent.getContext();
 
         Application application = (Application) context;
         Class<?> applicationClass = application.getClass();
@@ -71,7 +70,7 @@ public class Agent {
     }
 
     public static boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
-        Context context = TouchPointContext.getAgentContext();
+        Context context = Agent.getContext();
 
         Application application = (Application) context;
         Class<?> applicationClass = application.getClass();
