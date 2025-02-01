@@ -82,12 +82,8 @@ public class AgentApplication extends Application {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 TouchPointRegistryCenter.getInstance().register(ctx, isPlugin, ConfigType.ANNOTATION);
             }
-            AgentBroadcaster.getInstance("transportConfig").registerReceiver(ctx);
-            AgentBroadcaster.getInstance("aiModel").registerReceiver(ctx);
-            ActionReporter.getInstance("router").registerReceiver(ctx);
-            ActionReporter.getInstance("taskAction").registerReceiver(ctx);
         }
-
+        //Todo Maybe remove this
         TouchPointContentFactory.registerContentProvider(ctx);
 
         // 初始化Dubbo

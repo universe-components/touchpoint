@@ -1,6 +1,10 @@
 package com.universe.touchpoint.agent;
 
+import android.content.Context;
+import android.content.IntentFilter;
 import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.TouchPoint;
@@ -10,6 +14,8 @@ import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.DriverRegion;
+import com.universe.touchpoint.router.AgentRouter;
+import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastReceiver;
 import com.universe.touchpoint.utils.ClassUtils;
 
 import java.lang.reflect.Field;
@@ -62,6 +68,23 @@ public class AgentActionManager {
             }
         }
         return null;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public void registerAgentFinishReceiver(Context appContext,
+                                            String[] filters, Class<? extends TouchPoint> touchPointClass) {
+        TouchPointBroadcastReceiver<? extends TouchPoint> agentFinishReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
+
+        IntentFilter agentFinishFilter = new IntentFilter();
+        if (filters != null) {
+            for (String filter : filters) {
+                String agentFinishAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
+                        Agent.getName(), filter
+                ));
+                agentFinishFilter.addAction(agentFinishAction);
+            }
+        }
+        appContext.registerReceiver(agentFinishReceiver, agentFinishFilter, Context.RECEIVER_EXPORTED);
     }
 
     @SuppressWarnings("unchecked")

@@ -3,11 +3,10 @@ package com.universe.touchpoint.api.listener;
 import android.content.Context;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.api.TouchPointListener;
 
-public interface AgentActionListener<R extends TouchPoint> extends TouchPointListener<AgentAction, R> {
+public interface AgentActionListener<Req extends TouchPoint, Resp extends TouchPoint> extends TouchPointListener<Req, Resp> {
 
-    R onReceive(AgentAction action, Context context);
+    Resp onReceive(Req action, Context context);
 
 }

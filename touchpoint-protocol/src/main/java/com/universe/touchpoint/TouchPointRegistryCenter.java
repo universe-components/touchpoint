@@ -1,7 +1,6 @@
 package com.universe.touchpoint;
 
 import android.content.Context;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.util.Pair;
 
@@ -19,13 +18,8 @@ import com.universe.touchpoint.config.Model;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
-import com.universe.touchpoint.memory.Region;
-import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.TransportRegion;
+import com.universe.touchpoint.transport.TouchPointChannelManager;
 import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
-import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastReceiver;
-import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.router.AgentRouter;
 import com.universe.touchpoint.utils.AnnotationUtils;
 import com.universe.touchpoint.utils.ApkUtils;
 
@@ -91,97 +85,51 @@ public class TouchPointRegistryCenter {
                 );
                 Transport transportType = transportConfigMap.keySet().iterator().next();
                 Object transportConfig = transportConfigMap.get(transportType);
-                // 动态注册接收器，并传递相应的过滤器
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    Map<String, Object> annotationProperties = AnnotationUtils.getAnnotationValue(Class.forName(clazz), AIModel.class);
-                    register(
+                Map<String, Object> annotationProperties = AnnotationUtils.getAnnotationValue(Class.forName(clazz), AIModel.class);
+                String[] filters = Stream.of((String[]) properties.get(1), (String[]) properties.get(2)).flatMap(Stream::of).toArray(String[]::new);
+
+                AgentActionMetaInfo actionMetaInfo = AgentActionManager.getInstance().extractAndRegisterAction(
+                        clazz,
+                        new AIModelConfig(
+                                (Model) Objects.requireNonNull(annotationProperties.get("name")),
+                                (float) annotationProperties.get("temperature")),
+                        new TransportConfig<>(
+                                transportType,
+                                transportConfig),
+                        (String) properties.get(0),
+                        name);
+
+                AgentActionManager.getInstance().registerAgentFinishReceiver(
+                        appContext,
+                        filters,
+                        actionMetaInfo.inputClass());
+
+                TouchPointTransportRegistryFactory
+                        .createRegistry(actionMetaInfo.transportConfig().transportType())
+                        .register(
                             appContext,
-                            name,
-                            (String[]) properties.get(1),
-                            (String[]) properties.get(2),
-                            AgentActionManager.getInstance().extractAndRegisterAction(
-                                    clazz,
-                                    new AIModelConfig(
-                                            (Model) Objects.requireNonNull(annotationProperties.get("name")),
-                                            (float) annotationProperties.get("temperature")),
-                                    new TransportConfig<>(
-                                            transportType,
-                                            transportConfig),
-                                    (String) properties.get(0),
-                                    name)
-                    );
-                }
-                ActionReporter.getInstance("router").report((String[]) properties.get(1), appContext);
+                            actionMetaInfo,
+                            filters
+                        );
+
+                TouchPointChannelManager.registerContextReceiver(filters, actionMetaInfo);
+
                 ActionConfig actionConfig = (ActionConfig) AnnotationUtils.annotation2Config(
                         Class.forName(clazz),
                         ActionConfigMapping.annotation2Config
                 );
                 assert actionConfig != null;
                 ActionReporter.getInstance("taskAction").report(actionConfig, appContext);
+                ActionReporter.getInstance("router").report((String[]) properties.get(1), appContext);
+
+                ActionReporter.getInstance("taskAction").registerReceiver(appContext);
+                AgentBroadcaster.getInstance("aiModel").registerReceiver(appContext);
+                AgentBroadcaster.getInstance("transportConfig").registerReceiver(appContext);
+                ActionReporter.getInstance("router").registerReceiver(appContext);
             }
         } catch (Exception e) {
             if (LogDebug.LOG) {
                 e.printStackTrace();
-            }
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public void register(Context appContext, String name,
-                                           String[] agentFilters, String[] actionFilters, AgentActionMetaInfo agentActionMetaInfo) {
-        try {
-            Class<?> tpInstanceReceiverClass = Class.forName(agentActionMetaInfo.name());
-            TouchPointAction tpInstanceReceiver = (TouchPointAction) tpInstanceReceiverClass.getConstructor().newInstance();
-
-            TouchPointTransportRegistryFactory
-                    .createRegistry(agentActionMetaInfo.transportConfig().transportType())
-                    .register(
-                            appContext,
-                            agentActionMetaInfo,
-                            Stream.of(agentFilters, actionFilters).flatMap(Stream::of).toArray(String[]::new));
-
-            registerAgentFinishReceiver(
-                    appContext,
-                    Stream.of(agentFilters, actionFilters).flatMap(Stream::of).toArray(String[]::new),
-                    agentActionMetaInfo.inputClass());
-
-            registerContextReceiver(
-                    name,
-                    Stream.of(agentFilters, actionFilters).flatMap(Stream::of).toArray(String[]::new),
-                    tpInstanceReceiver);
-        } catch (Exception e) {
-            if (LogDebug.LOG) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public void registerAgentFinishReceiver(Context appContext,
-                                            String[] filters, Class<? extends TouchPoint> touchPointClass) {
-        TouchPointBroadcastReceiver<? extends TouchPoint> agentFinishReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
-
-        IntentFilter agentFinishFilter = new IntentFilter();
-        if (filters != null) {
-            for (String filter : filters) {
-                String agentFinishAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
-                        Agent.getName(), filter
-                ));
-                agentFinishFilter.addAction(agentFinishAction);
-            }
-        }
-        appContext.registerReceiver(agentFinishReceiver, agentFinishFilter, Context.RECEIVER_EXPORTED);
-    }
-
-    public void registerContextReceiver(String name, String[] filters, TouchPointAction tpInstanceReceiver) {
-        String ctxName = TouchPointHelper.touchPointPluginName(name);
-        if (filters != null) {
-            for (String filter : filters) {
-                String filterAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
-                        filter, Agent.getName()
-                ));
-                TransportRegion transportRegion = TouchPointMemory.getRegion(Region.TRANSPORT);
-                transportRegion.putTouchPointReceiver(filterAction, tpInstanceReceiver);
             }
         }
     }

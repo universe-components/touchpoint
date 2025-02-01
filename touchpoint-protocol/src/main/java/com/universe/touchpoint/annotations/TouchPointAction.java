@@ -17,6 +17,6 @@ public @interface TouchPointAction {
 
     String[] fromActions() default {};
 
-    String[] taskProposer() default {};
+    String[] taskProposers() default {};
 
 }
