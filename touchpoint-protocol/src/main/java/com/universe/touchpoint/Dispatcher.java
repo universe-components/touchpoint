@@ -46,6 +46,7 @@ public class Dispatcher {
                     answer.second,
                     AgentRouter.buildChunk(routerItem[1], routerItem[0]),
                     content);
+            assert action != null;
             if (action.getMeta().transportConfig().transportType() != null) {
                 return touchPoint.toString();
             }
