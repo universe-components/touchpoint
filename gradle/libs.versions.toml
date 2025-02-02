@@ -19,8 +19,8 @@ incap = "1.0.0"
 auto-service = "1.1.1"
 auto-value = "1.11.0"
 hilt = "2.55"
-openai = "0.11.5"
-anthropic = "0.1.0-alpha.8"
+openai = "0.20.0"
+anthropic = "0.1.0"
 dubbo = "3.3.0"
 
 [libraries]

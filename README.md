@@ -58,7 +58,7 @@ class EntryApplication : AgentApplication()
 ```kotlin
 AgentBuilder builder = AgentBuilder
     .model(Model.GPT_4) // 选择模型
-    .setTemperature(0.0) // 设置温度
+    .setTemperature(0.0f) // 设置温度
     .setModelApiKey("My API Key") // 设置模型API Key
     .build();
 

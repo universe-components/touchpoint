@@ -4,7 +4,6 @@ import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.ChatCompletion;
 import com.openai.models.ChatCompletionCreateParams;
-import com.openai.models.ChatCompletionUserMessageParam;
 import com.openai.models.ChatModel;
 import com.universe.touchpoint.AgentBuilder;
 import com.universe.touchpoint.ai.AIModel;
@@ -30,10 +29,7 @@ public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion
     @Override
     public void createCompletion(String content) {
         ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
-                .addMessage(ChatCompletionUserMessageParam.builder()
-                        .role(ChatCompletionUserMessageParam.Role.USER)
-                        .content(content)
-                        .build())
+                .addUserMessage(content)
                 .model((ChatModel) Objects.requireNonNull(
                         AIModelConfig.modelConfigMap.get(config.getModel())))
                 .temperature(config.getTemperature())
