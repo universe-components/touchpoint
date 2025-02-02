@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.universe.touchpoint.AgentBroadcaster;
+import com.universe.touchpoint.AgentBuilder;
 import com.universe.touchpoint.agent.AgentEntity;
 import com.universe.touchpoint.TouchPointConstants;
 
@@ -20,6 +22,8 @@ public class AgentRouterReceiver extends BroadcastReceiver {
             String[] routeChunkPair = AgentRouter.splitChunk(routeChunk);
             try {
                 AgentRouter.addRoute(routeChunkPair[0], new AgentEntity(routeChunkPair[1]));
+                AgentBroadcaster.getInstance("transportConfig").send(
+                        AgentBuilder.getBuilder().getConfig().getTransportConfig(), context);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

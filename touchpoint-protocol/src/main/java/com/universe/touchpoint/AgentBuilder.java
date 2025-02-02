@@ -29,10 +29,7 @@ public class AgentBuilder {
         return this;
     }
 
-    public <C> AgentBuilder build() {
-        if (config.getTransportConfig().config() != null) {
-            AgentBroadcaster.getInstance("transportConfig").send(config.getTransportConfig(), Agent.getContext());
-        }
+    public AgentBuilder build() {
         if (config.getModelConfig().getModel() != null) {
             AgentBroadcaster.getInstance("aiModel").send(config.getModelConfig(), Agent.getContext());
         }

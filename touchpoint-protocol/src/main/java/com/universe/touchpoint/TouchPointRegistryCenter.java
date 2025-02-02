@@ -72,16 +72,10 @@ public class TouchPointRegistryCenter {
             } else {*/
 
             if (Agent.isAnnotationPresent(TaskProposer.class)) {
-                AIModelConfig aiModelConfig = (AIModelConfig) AnnotationUtils.annotation2Config(
-                        Agent.getApplicationClass(), AIModelConfigMapping.annotation2Config);
                 TransportConfig<?> transportConfigWrapper = (TransportConfig<?>) AnnotationUtils.annotation2Config(
                         Agent.getApplicationClass(), TransportConfigMapping.annotation2Config);
 
-                AgentBuilder.getBuilder().getConfig().setModelConfig(aiModelConfig);
                 AgentBuilder.getBuilder().getConfig().setTransportConfig(transportConfigWrapper);
-
-                AgentBroadcaster.getInstance("aiModel").send(aiModelConfig, appContext);
-                AgentBroadcaster.getInstance("transportConfig").send(transportConfigWrapper, appContext);
             }
 
             List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(appContext,
