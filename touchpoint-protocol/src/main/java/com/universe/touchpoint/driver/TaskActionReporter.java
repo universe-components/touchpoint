@@ -8,7 +8,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.universe.touchpoint.ActionReporter;
+import com.universe.touchpoint.AgentReporter;
 import com.universe.touchpoint.AgentSocket;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.Agent;
@@ -16,7 +16,7 @@ import com.universe.touchpoint.config.ActionConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
 
-public class TaskActionReporter extends ActionReporter<ActionConfig> {
+public class TaskActionReporter extends AgentReporter<ActionConfig> {
 
     @Override
     public void report(ActionConfig config, Context context) {

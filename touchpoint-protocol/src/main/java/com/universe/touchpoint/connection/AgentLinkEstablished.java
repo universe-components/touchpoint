@@ -2,7 +2,7 @@ package com.universe.touchpoint.connection;
 
 import android.content.Context;
 
-import com.universe.touchpoint.ActionReporter;
+import com.universe.touchpoint.AgentReporter;
 import com.universe.touchpoint.AgentSocket;
 import com.universe.touchpoint.AgentConnection;
 import com.universe.touchpoint.config.ActionConfig;
@@ -23,7 +23,7 @@ public class AgentLinkEstablished implements AgentConnection {
             throw new RuntimeException(e);
         }
         assert actionConfig != null;
-        ActionReporter.getInstance("taskAction").report(actionConfig, context);
+        AgentReporter.getInstance("taskAction").report(actionConfig, context);
         connection.setState(new AgentEstablished());
     }
 

@@ -33,7 +33,7 @@ public class AgentSocket {
         String apkPath = ApkUtils.getApkPath(context);
         assert apkPath != null;
         RePluginHost.install(apkPath);
-        ActionReporter.getInstance("router").report(receiverFilterPair, context);
+        AgentReporter.getInstance("router").report(receiverFilterPair, context);
     }
 
     public void changeState(Context context) {

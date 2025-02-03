@@ -102,10 +102,10 @@ public class AgentRegistry {
     }
 
     public void registerReceivers(Context context) {
-        ActionReporter.getInstance("taskAction").registerReceiver(context);
+        AgentReporter.getInstance("taskAction").registerReceiver(context);
         AgentBroadcaster.getInstance("aiModel").registerReceiver(context);
         AgentBroadcaster.getInstance("transportConfig").registerReceiver(context);
-        ActionReporter.getInstance("router").registerReceiver(context);
+        AgentReporter.getInstance("router").registerReceiver(context);
     }
 
 }

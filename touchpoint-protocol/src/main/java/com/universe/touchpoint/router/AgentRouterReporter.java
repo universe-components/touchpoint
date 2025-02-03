@@ -8,7 +8,7 @@ import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
-import com.universe.touchpoint.ActionReporter;
+import com.universe.touchpoint.AgentReporter;
 import com.universe.touchpoint.AgentSocket;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.TouchPointConstants;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AgentRouterReporter extends ActionReporter<List<Pair<String, List<Object>>>> {
+public class AgentRouterReporter extends AgentReporter<List<Pair<String, List<Object>>>> {
 
     @Override
     public void report(List<Pair<String, List<Object>>> receiverFilterPair, Context context) {
