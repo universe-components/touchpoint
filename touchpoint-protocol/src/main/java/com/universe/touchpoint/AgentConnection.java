@@ -4,7 +4,7 @@ import android.content.Context;
 
 public interface AgentConnection {
 
-    void onStateChange(AgentSocket connection, Context context);
-    void onStateChange(AgentSocket connection, String actionClassName, Context context);
+    void onStateChange(AgentSocket socket, Context context);
+    void onStateChange(AgentSocket socket, String actionClassName, Context context);
 
 }

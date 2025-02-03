@@ -9,11 +9,11 @@ import com.universe.touchpoint.AgentConnection;
 public class AgentEstablished implements AgentConnection {
 
     @Override
-    public void onStateChange(AgentSocket connection, String actionClassName, Context context) {
+    public void onStateChange(AgentSocket socket, String actionClassName, Context context) {
     }
 
     @Override
-    public void onStateChange(AgentSocket connection, Context context) {
+    public void onStateChange(AgentSocket socket, Context context) {
         Log.i("AgentEstablished", "agent connected");
     }
 

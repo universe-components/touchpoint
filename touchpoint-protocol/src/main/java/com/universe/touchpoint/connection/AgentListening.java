@@ -10,14 +10,14 @@ import com.universe.touchpoint.AgentSocket;
 public class AgentListening implements AgentConnection {
 
     @Override
-    public void onStateChange(AgentSocket connection, Context context) {
+    public void onStateChange(AgentSocket socket, Context context) {
         AgentBroadcaster.getInstance("transportConfig").send(
                 AgentBuilder.getBuilder().getConfig().getTransportConfig(), context);
-        connection.setState(new AgentLinkEstablished());
+        socket.setState(new AgentLinkEstablished());
     }
 
     @Override
-    public void onStateChange(AgentSocket connection, String actionClassName, Context context) {
+    public void onStateChange(AgentSocket socket, String actionClassName, Context context) {
     }
 
 }

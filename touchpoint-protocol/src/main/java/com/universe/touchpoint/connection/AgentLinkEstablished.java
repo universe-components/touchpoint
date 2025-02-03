@@ -12,7 +12,7 @@ import com.universe.touchpoint.utils.AnnotationUtils;
 public class AgentLinkEstablished implements AgentConnection {
 
     @Override
-    public void onStateChange(AgentSocket connection, String actionClassName, Context context) {
+    public void onStateChange(AgentSocket socket, String actionClassName, Context context) {
         ActionConfig actionConfig;
         try {
             actionConfig = (ActionConfig) AnnotationUtils.annotation2Config(
@@ -24,11 +24,11 @@ public class AgentLinkEstablished implements AgentConnection {
         }
         assert actionConfig != null;
         AgentReporter.getInstance("taskAction").report(actionConfig, context);
-        connection.setState(new AgentEstablished());
+        socket.setState(new AgentEstablished());
     }
 
     @Override
-    public void onStateChange(AgentSocket connection, Context context) {
+    public void onStateChange(AgentSocket socket, Context context) {
     }
 
 }
