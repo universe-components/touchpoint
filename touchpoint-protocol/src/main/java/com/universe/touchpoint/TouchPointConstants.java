@@ -28,6 +28,10 @@ public class TouchPointConstants {
 
     public static final String TOUCH_POINT_TASK_EVENT_NAME = "task_action";
 
+    public static final String TOUCH_POINT_CLEAN_FILTER = "clean";
+
+    public static final String TOUCH_POINT_CLEAN_EVENT_NAME = "clean_event";
+
     public static final String AI_MODEL_API_KEY = "universe";
 
 }

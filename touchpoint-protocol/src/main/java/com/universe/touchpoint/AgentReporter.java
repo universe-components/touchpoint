@@ -18,6 +18,7 @@ public abstract class AgentReporter<D> implements TouchPointRegistry {
     static {
         reporterMap.put("router", AgentRouterReporter.class);
         reporterMap.put("taskAction", TaskActionReporter.class);
+        reporterMap.put("clean", AgentCleaner.class);
     }
 
     public static <D> AgentReporter<D> getInstance(String type) {

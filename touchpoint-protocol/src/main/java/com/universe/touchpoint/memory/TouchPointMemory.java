@@ -24,4 +24,8 @@ public class TouchPointMemory {
         return (R) regions.get(region);
     }
 
+    public static void clear() {
+        regions.clear();
+    }
+
 }

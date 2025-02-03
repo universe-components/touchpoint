@@ -15,6 +15,7 @@ public class AgentEstablished implements AgentConnection {
     @Override
     public void onStateChange(AgentSocket socket, Context context) {
         Log.i("AgentEstablished", "agent connected");
+        socket.setState(new AgentClosed());
     }
 
 }

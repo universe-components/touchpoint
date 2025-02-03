@@ -83,4 +83,9 @@ public class ActionGraph {
         return actionConfigCache.values();
     }
 
+    public void clear() {
+        graph.clear();
+        actionConfigCache.clear();
+    }
+
 }

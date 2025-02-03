@@ -36,6 +36,14 @@ public class AgentSocket {
         AgentReporter.getInstance("router").report(receiverFilterPair, context);
     }
 
+    public void disconnect(Context context) {
+        String apkPath = ApkUtils.getApkPath(context);
+        assert apkPath != null;
+        RePluginHost.uninstall(apkPath);
+
+        AgentReporter.getInstance("clean").report(AgentCleaner.AgentClean.ALL, context);
+    }
+
     public void changeState(Context context) {
         state.onStateChange(this, context);
     }
