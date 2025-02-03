@@ -9,7 +9,6 @@ import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.driver.ActionGraph;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.router.AgentRouterReceiver;
 
 public class AgentCleaner extends AgentReporter<AgentCleaner.AgentClean> {
 
@@ -30,7 +29,7 @@ public class AgentCleaner extends AgentReporter<AgentCleaner.AgentClean> {
                         TouchPointConstants.TOUCH_POINT_CLEAN_FILTER,
                         Agent.getName()));
         context.registerReceiver(
-                new AgentRouterReceiver(AgentSocket.getInstance()), filter, Context.RECEIVER_EXPORTED);
+                new AgentCleanerReceiver(AgentSocket.getInstance()), filter, Context.RECEIVER_EXPORTED);
     }
 
     public static class AgentCleanerReceiver extends BroadcastReceiver {
