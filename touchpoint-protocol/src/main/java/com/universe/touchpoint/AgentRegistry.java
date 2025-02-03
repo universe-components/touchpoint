@@ -56,34 +56,37 @@ public class AgentRegistry {
             Map<Transport, Object> transportConfigMap;
             try {
                 transportConfigMap = AnnotationUtils.annotation2Config(
-                        Class.forName(clazz),
-                        TransportConfigMapping.annotation2Config,
-                        TransportConfigMapping.annotation2Type
-                );
+                                        Class.forName(clazz),
+                                        TransportConfigMapping.annotation2Config,
+                                        TransportConfigMapping.annotation2Type
+                                    );
 
                 Transport transportType = transportConfigMap.keySet().iterator().next();
                 Object transportConfig = transportConfigMap.get(transportType);
                 AIModelConfig aiModelConfig = (AIModelConfig) AnnotationUtils.annotation2Config(
-                        Class.forName(clazz), AIModelConfigMapping.annotation2Config);
+                                                                    Class.forName(clazz),
+                                                                    AIModelConfigMapping.annotation2Config);
                 String[] filters = Stream.of((String[]) properties.get(1), (String[]) properties.get(2)).flatMap(Stream::of).toArray(String[]::new);
 
                 /*
                  * Local Registry
                  */
-                AgentActionMetaInfo actionMetaInfo = AgentActionManager.getInstance().extractAndRegisterAction(
-                        clazz,
-                        aiModelConfig,
-                        new TransportConfig<>(
-                                transportType,
-                                transportConfig),
-                        (String) properties.get(0),
-                        Agent.getName());
+                AgentActionMetaInfo actionMetaInfo = AgentActionManager.getInstance()
+                        .extractAndRegisterAction(
+                            clazz,
+                            aiModelConfig,
+                            new TransportConfig<>(
+                                    transportType,
+                                    transportConfig),
+                            (String) properties.get(0),
+                            Agent.getName());
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    AgentActionManager.getInstance().registerAgentFinishReceiver(
-                            appContext,
-                            filters,
-                            actionMetaInfo.inputClass());
+                    AgentActionManager.getInstance()
+                            .registerAgentFinishReceiver(
+                                appContext,
+                                filters,
+                                actionMetaInfo.inputClass());
                 }
 
                 TouchPointTransportRegistryFactory
