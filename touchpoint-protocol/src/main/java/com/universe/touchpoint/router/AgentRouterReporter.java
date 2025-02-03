@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
+import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.RePluginHost;
 import com.universe.touchpoint.ActionReporter;
+import com.universe.touchpoint.AgentSocket;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -16,29 +18,32 @@ import com.universe.touchpoint.utils.ApkUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
-public class AgentRouterReporter extends ActionReporter<String[]> {
+public class AgentRouterReporter extends ActionReporter<List<Pair<String, List<Object>>>> {
 
     @Override
-    public void report(String[] fromAgents, Context context) {
+    public void report(List<Pair<String, List<Object>>> receiverFilterPair, Context context) {
         String apkPath = ApkUtils.getApkPath(context);
         assert apkPath != null;
         RePluginHost.install(apkPath);
 
-        // 发送路由更新广播
-        for (String toAgent : fromAgents) {
-            String routerAction = TouchPointHelper.touchPointFilterName(
-                    TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME, toAgent);
+        for (Pair<String, List<Object>> pair : receiverFilterPair) {
+            for (String fromAgent : (String[]) pair.second.get(1)) {
+                // 发送路由更新广播
+                String routerAction = TouchPointHelper.touchPointFilterName(
+                        TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME, fromAgent);
 
-            Intent routerIntent = new Intent(routerAction);
-            ArrayList<String> routeEntries = Arrays.stream(fromAgents)
-                    .map(agent -> AgentRouter.buildChunk(agent, Agent.getName()))
-                    .collect(Collectors.toCollection(ArrayList::new));
+                Intent routerIntent = new Intent(routerAction);
+                ArrayList<String> routeEntries = Arrays.stream((String[]) pair.second.get(1))
+                        .map(agent -> AgentRouter.buildChunk(agent, Agent.getName()) + "||" + pair.first)
+                        .collect(Collectors.toCollection(ArrayList::new));
 
-            routerIntent.putStringArrayListExtra(TouchPointConstants.TOUCH_POINT_ROUTER_EVENT_NAME, routeEntries);
+                routerIntent.putStringArrayListExtra(TouchPointConstants.TOUCH_POINT_ROUTER_EVENT_NAME, routeEntries);
 
-            context.sendBroadcast(routerIntent);
+                context.sendBroadcast(routerIntent);
+            }
         }
     }
 
@@ -49,7 +54,8 @@ public class AgentRouterReporter extends ActionReporter<String[]> {
                 TouchPointHelper.touchPointFilterName(
                         TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME,
                         Agent.getName()));
-        context.registerReceiver(new AgentRouterReceiver(), filter, Context.RECEIVER_EXPORTED);
+        context.registerReceiver(
+                new AgentRouterReceiver(AgentSocket.getInstance()), filter, Context.RECEIVER_EXPORTED);
     }
 
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import com.universe.touchpoint.AgentBuilder;
 import com.universe.touchpoint.AgentBroadcaster;
+import com.universe.touchpoint.AgentSocket;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.config.Transport;
@@ -69,7 +70,10 @@ public class TouchPointTransportConfigBroadcaster<C> extends AgentBroadcaster<Tr
                 TouchPointHelper.touchPointFilterName(
                         TouchPointConstants.TOUCH_POINT_TRANSPORT_CONFIG_FILTER_NAME,
                         Agent.getName()));
-        context.registerReceiver(new TouchPointTransportConfigReceiver(), filter, Context.RECEIVER_EXPORTED);
+        context.registerReceiver(
+                new TouchPointTransportConfigReceiver(AgentSocket.getInstance()),
+                filter,
+                Context.RECEIVER_EXPORTED);
     }
 
 }

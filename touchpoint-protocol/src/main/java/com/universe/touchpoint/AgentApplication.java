@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
@@ -21,11 +22,15 @@ import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
 import com.universe.touchpoint.transport.TouchPointTransportConfigBroadcaster;
+import com.universe.touchpoint.utils.ApkUtils;
 
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.config.ProtocolConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class AgentApplication extends Application {
 
@@ -78,9 +83,18 @@ public class AgentApplication extends Application {
 
         TouchPointMemory.initialize();
 
+        List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(
+                ctx,
+                com.universe.touchpoint.annotations.TouchPointAction.class,
+                Arrays.asList("name", "fromAgents", "fromActions"),
+                !isPlugin
+        );
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                TouchPointRegistryCenter.getInstance().register(ctx, isPlugin, ConfigType.ANNOTATION);
+                AgentRegistry.getInstance().registerProposer();
+                AgentRegistry.getInstance().registerActions(ctx, receiverFilterPair, isPlugin, ConfigType.ANNOTATION);
+                AgentRegistry.getInstance().registerReceivers(ctx);
             }
         }
         //Todo Maybe remove this in the future
@@ -96,6 +110,8 @@ public class AgentApplication extends Application {
                     .start()
                     .await();
         }
+
+        AgentSocket.getInstance().connect(ctx, receiverFilterPair);
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override

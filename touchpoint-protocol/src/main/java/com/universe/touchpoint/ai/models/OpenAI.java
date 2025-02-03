@@ -9,6 +9,8 @@ import com.universe.touchpoint.AgentBuilder;
 import com.universe.touchpoint.ai.AIModel;
 import com.universe.touchpoint.config.AIModelConfig;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,7 @@ public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion
 
     public OpenAI(AIModelConfig modelConfig) {
         super(OpenAIOkHttpClient.builder()
+                .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890)))
                 .apiKey(AgentBuilder
                         .getBuilder()
                         .getConfig()

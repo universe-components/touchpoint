@@ -9,6 +9,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.universe.touchpoint.ActionReporter;
+import com.universe.touchpoint.AgentSocket;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.config.ActionConfig;
@@ -34,10 +35,16 @@ public class TaskActionReporter extends ActionReporter<ActionConfig> {
     public void registerReceiver(Context context) {
         IntentFilter filter = new IntentFilter(
                 TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME, Agent.getName()));
-        context.registerReceiver(new TaskActionReceiver(), filter, Context.RECEIVER_EXPORTED);
+        context.registerReceiver(new TaskActionReceiver(AgentSocket.getInstance()), filter, Context.RECEIVER_EXPORTED);
     }
 
     public static class TaskActionReceiver extends BroadcastReceiver {
+
+        private final AgentSocket socket;
+
+        public TaskActionReceiver(AgentSocket socket) {
+            this.socket = socket;
+        }
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -47,6 +54,7 @@ public class TaskActionReporter extends ActionReporter<ActionConfig> {
             if (action != null) {
                 ActionGraph.getInstance().addActionConfig(
                         SerializeUtils.deserializeFromByteArray(action, ActionConfig.class));
+                socket.changeState(context);
             }
         }
 
