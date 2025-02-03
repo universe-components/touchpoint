@@ -8,13 +8,11 @@ import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
-import com.qihoo360.replugin.RePluginHost;
 import com.universe.touchpoint.ActionReporter;
 import com.universe.touchpoint.AgentSocket;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.utils.ApkUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,10 +23,6 @@ public class AgentRouterReporter extends ActionReporter<List<Pair<String, List<O
 
     @Override
     public void report(List<Pair<String, List<Object>>> receiverFilterPair, Context context) {
-        String apkPath = ApkUtils.getApkPath(context);
-        assert apkPath != null;
-        RePluginHost.install(apkPath);
-
         for (Pair<String, List<Object>> pair : receiverFilterPair) {
             for (String fromAgent : (String[]) pair.second.get(1)) {
                 // 发送路由更新广播

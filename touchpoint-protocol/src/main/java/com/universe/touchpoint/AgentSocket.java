@@ -3,7 +3,9 @@ package com.universe.touchpoint;
 import android.content.Context;
 import android.util.Pair;
 
+import com.qihoo360.replugin.RePluginHost;
 import com.universe.touchpoint.connection.AgentListening;
+import com.universe.touchpoint.utils.ApkUtils;
 
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class AgentSocket {
     }
 
     public void connect(Context context, List<Pair<String, List<Object>>> receiverFilterPair) {
+        String apkPath = ApkUtils.getApkPath(context);
+        assert apkPath != null;
+        RePluginHost.install(apkPath);
         ActionReporter.getInstance("router").report(receiverFilterPair, context);
     }
 
