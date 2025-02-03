@@ -29,4 +29,8 @@ public class TouchPointBroadcastReceiverRegistry implements TouchPointTransportR
         context.registerReceiver(tpReceiver, intentFilter, Context.RECEIVER_EXPORTED);
     }
 
+    @Override
+    public void init(Context context, Object transportConfig) {
+    }
+
 }

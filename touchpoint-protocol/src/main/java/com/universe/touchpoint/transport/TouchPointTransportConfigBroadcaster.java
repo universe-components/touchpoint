@@ -16,34 +16,36 @@ import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.RouteRegion;
 import com.universe.touchpoint.router.AgentRouteEntry;
+import com.universe.touchpoint.utils.AnnotationUtils;
 import com.universe.touchpoint.utils.SerializeUtils;
 
-import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class TouchPointTransportConfigBroadcaster<C> extends AgentBroadcaster<TransportConfig<C>> {
 
-    public static <T> TransportConfig<T> agentConfig(Transport transport) {
+    public static <T> Map<Transport, T> agentConfig() {
         try {
-            Class<?> configClass = TransportConfigMapping.transport2Config.get(transport);
-            assert configClass != null;
-            String annotationClassName = "com.universe.touchpoint.annotations." + configClass.getSimpleName().replace("Config", "");
-            Class<?> annotationClass = Class.forName(annotationClassName);
+            Map<Transport, T> transportConfigMap = (Map<Transport, T>) AnnotationUtils.annotation2Config(
+                    Agent.getApplicationClass(),
+                    TransportConfigMapping.annotation2Config,
+                    TransportConfigMapping.annotation2Type);
 
-            String applicationName = (String) Agent.getProperty("applicationName", (Class<Annotation>) annotationClass);
-            if (applicationName != null) {
-                String registryAddress = (String) Agent.getProperty("registryAddress", (Class<Annotation>) annotationClass);
-                return (TransportConfig<T>) new TransportConfig<>(
-                        transport,
-                        configClass.getDeclaredConstructor(String.class, String.class).newInstance(applicationName, registryAddress));
+            if (!transportConfigMap.isEmpty()) {
+                return transportConfigMap;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         if (AgentBuilder.getBuilder() == null) {
             return null;
         }
-        return (TransportConfig<T>) AgentBuilder.getBuilder().getConfig().getTransportConfig();
+
+        return (Map<Transport, T>) Collections.singletonMap(
+                AgentBuilder.getBuilder().getConfig().getTransportConfig().transportType(),
+                AgentBuilder.getBuilder().getConfig().getTransportConfig().config());
     }
 
     @Override

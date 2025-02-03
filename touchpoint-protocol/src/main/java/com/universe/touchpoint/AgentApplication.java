@@ -17,20 +17,15 @@ import com.qihoo360.replugin.RePluginConfig;
 import com.qihoo360.replugin.RePluginFramework;
 import com.qihoo360.replugin.RePluginHost;
 import com.universe.touchpoint.config.Transport;
-import com.universe.touchpoint.config.TransportConfig;
-import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
 import com.universe.touchpoint.transport.TouchPointTransportConfigBroadcaster;
+import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
 import com.universe.touchpoint.utils.ApkUtils;
-
-import org.apache.dubbo.common.constants.CommonConstants;
-import org.apache.dubbo.config.ProtocolConfig;
-import org.apache.dubbo.config.RegistryConfig;
-import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class AgentApplication extends Application {
 
@@ -101,14 +96,12 @@ public class AgentApplication extends Application {
         TouchPointContentFactory.registerContentProvider(ctx);
 
         // 初始化Dubbo
-        TransportConfig<DubboConfig> config = TouchPointTransportConfigBroadcaster.agentConfig(Transport.DUBBO);
-        if (config != null) {
-            DubboBootstrap.getInstance()
-                    .application(config.config().getApplicationName())
-                    .registry(new RegistryConfig(config.config().getRegistryAddress()))
-                    .protocol(new ProtocolConfig(CommonConstants.TRIPLE, 50051))
-                    .start()
-                    .await();
+        Map<Transport, Object> transportConfig = TouchPointTransportConfigBroadcaster.agentConfig();
+        if (transportConfig != null) {
+            Transport transportType = transportConfig.keySet().iterator().next();
+            TouchPointTransportRegistryFactory
+                    .createRegistry(transportType)
+                    .init(ctx, transportConfig.get(transportType));
         }
 
         AgentSocket.getInstance().connect(ctx, receiverFilterPair);

@@ -6,10 +6,23 @@ import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 import com.universe.touchpoint.transport.TouchPointTransportRegistry;
 
+import org.apache.dubbo.common.constants.CommonConstants;
+import org.apache.dubbo.config.ProtocolConfig;
+import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.config.bootstrap.builders.ServiceBuilder;
 
 public class TouchPointDubboRegistry implements TouchPointTransportRegistry {
+
+    @Override
+    public void init(Context context, Object transportConfig) {
+        DubboBootstrap.getInstance()
+                .application(((DubboConfig) transportConfig).getApplicationName())
+                .registry(new RegistryConfig(((DubboConfig) transportConfig).getRegistryAddress()))
+                .protocol(new ProtocolConfig(CommonConstants.TRIPLE, 50051))
+                .start()
+                .await();
+    }
 
     @Override
     public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String[] filters) {
