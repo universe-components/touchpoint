@@ -11,7 +11,7 @@ import com.universe.touchpoint.utils.AnnotationUtils;
 public class TaskReadyHandler implements AgentSocketStateHandler<ActionConfig> {
 
     @Override
-    public ActionConfig onStateChange(Object actionCtx, Context context) {
+    public ActionConfig onStateChange(Object actionCtx, Context context, String task) {
         try {
             return (ActionConfig) AnnotationUtils.annotation2Config(
                     Class.forName(((TaskActionContext) actionCtx).getActionName()),

@@ -10,7 +10,7 @@ import com.universe.touchpoint.socket.AgentSocketStateHandler;
 public class TransportConfigDistributedHandler implements AgentSocketStateHandler<Boolean> {
 
     @Override
-    public Boolean onStateChange(Object transportConfig, Context context) {
+    public Boolean onStateChange(Object transportConfig, Context context, String task) {
         TransportConfig<?> config = (TransportConfig<?>) transportConfig;
         if (config != null && config.config() instanceof RPCConfig) {
             AgentBuilder.getBuilder().getConfig().setTransportConfig(config);

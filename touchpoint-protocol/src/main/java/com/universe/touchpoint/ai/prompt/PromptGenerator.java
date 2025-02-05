@@ -1,12 +1,12 @@
 package com.universe.touchpoint.ai.prompt;
 
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.config.ActionConfig;
+import com.universe.touchpoint.agent.AgentActionMetaInfo;
 
 import java.util.List;
 
 public interface PromptGenerator {
 
-    String generatePrompt(List<ActionConfig> taskActions, AgentAction action, String question);
+    String generatePrompt(List<AgentActionMetaInfo> taskActions, AgentAction action, String question);
 
 }

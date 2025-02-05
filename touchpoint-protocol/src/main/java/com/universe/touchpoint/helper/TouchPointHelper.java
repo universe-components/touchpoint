@@ -19,6 +19,11 @@ public class TouchPointHelper {
         return agentName + "." + actionName;
     }
 
+    public static String extractSuffixFromFilter(String filter) {
+        int index = filter.lastIndexOf(".");
+        return filter.substring(index + 1);
+    }
+
     public static String touchPointReceiverClassName(String type) {
         return String.format(TouchPointConstants.TOUCH_POINT_PKG + ".%sBroadcastReceiver", type);
     }

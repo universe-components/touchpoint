@@ -9,7 +9,7 @@ import com.universe.touchpoint.socket.AgentSocketStateHandler;
 public class AIModelDistributedHandler implements AgentSocketStateHandler<Boolean> {
 
     @Override
-    public Boolean onStateChange(Object aiModelConfig, Context context) {
+    public Boolean onStateChange(Object aiModelConfig, Context context, String task) {
         if (aiModelConfig != null) {
             AgentBuilder.getBuilder().getConfig().setModelConfig((AIModelConfig) aiModelConfig);
         }

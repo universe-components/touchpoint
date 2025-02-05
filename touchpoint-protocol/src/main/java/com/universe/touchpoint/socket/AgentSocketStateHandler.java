@@ -4,6 +4,6 @@ import android.content.Context;
 
 public interface AgentSocketStateHandler<O> {
 
-    O onStateChange(Object input, Context context);
+    O onStateChange(Object input, Context context, String filterSuffix);
 
 }

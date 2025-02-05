@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 public class TaskParticipant {
 
-    public static void registerActions(Context appContext, List<Pair<String, List<Object>>> receiverFilterPair, boolean isPlugin, ConfigType configType) {
+    public static void registerActions(Context appContext, List<Pair<String, List<Object>>> receiverFilterPair) {
         for (Pair<String, List<Object>> pair : receiverFilterPair) {
             String clazz = pair.first;  // 获取 String
             List<Object> properties = pair.second;  // 获取 List<Object>
@@ -46,7 +46,7 @@ public class TaskParticipant {
                 AIModelConfig aiModelConfig = (AIModelConfig) AnnotationUtils.annotation2Config(
                                                                     Class.forName(clazz),
                                                                     AIModelConfigMapping.annotation2Config);
-                String[] filters = Stream.of((String[]) properties.get(1), (String[]) properties.get(2)).flatMap(Stream::of).toArray(String[]::new);
+                String[] filters = Stream.of((String[]) properties.get(2), (String[]) properties.get(3)).flatMap(Stream::of).toArray(String[]::new);
 
                 /*
                  * Local Registry
@@ -59,6 +59,7 @@ public class TaskParticipant {
                                     transportType,
                                     transportConfig),
                             (String) properties.get(0),
+                            (String) properties.get(1),
                             Agent.getName());
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -85,7 +86,6 @@ public class TaskParticipant {
     }
 
     public static void listenRoutes(Context context, List<Pair<String, List<Object>>> receiverFilterPair) {
-//        AgentBroadcaster.getInstance("aiModel").registerReceiver(context, Agent.getName());
         for (Pair<String, List<Object>> pair : receiverFilterPair) {
             List<Object> properties = pair.second;
             for (String task : (String[]) properties.get(3)) {
@@ -104,7 +104,6 @@ public class TaskParticipant {
             for (String task : (String[]) properties.get(3)) {
                 TaskActionContext actionContext = new TaskActionContext(pair.first, task);
                 AgentSocketStateMachine.getInstance().registerReceiver(context, actionContext);
-//                AgentBroadcaster.getInstance("transportConfig").registerReceiver(context, actionContext);
             }
         }
     }

@@ -41,6 +41,7 @@ public class AgentActionManager {
             AIModelConfig model,
             TransportConfig<T> transportConfig,
             String actionName,
+            String actionDesc,
             String agentName) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(receiverClassName);
@@ -56,7 +57,7 @@ public class AgentActionManager {
             Class<?> touchPointClazz = Class.forName(touchPointClassName);
             Class<? extends TouchPoint> touchPointClass = touchPointClazz.asSubclass(TouchPoint.class);
 
-            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(receiverClassName, touchPointClass, model, transportConfig);
+            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, touchPointClass, model, transportConfig);
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
             driverRegion.putTouchPointAction(
                     TouchPointHelper.touchPointActionName(actionName, agentName), agentActionMetaInfo);

@@ -62,7 +62,7 @@ public class TouchPointChannelManager {
 
     public static void registerContextReceiver(String[] filters, AgentActionMetaInfo agentActionMetaInfo) {
         try {
-            Class<?> tpInstanceReceiverClass = Class.forName(agentActionMetaInfo.name());
+            Class<?> tpInstanceReceiverClass = Class.forName(agentActionMetaInfo.className());
             TouchPointAction tpInstanceReceiver = (TouchPointAction) tpInstanceReceiverClass.getConstructor().newInstance();
             registerContextReceiver(filters, tpInstanceReceiver);
         } catch (Exception e) {

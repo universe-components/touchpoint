@@ -11,9 +11,9 @@ import com.universe.touchpoint.driver.ActionGraph;
 public class TaskParticipantReadyHandler implements AgentSocketStateHandler<TransportConfig<?>> {
 
     @Override
-    public TransportConfig<?> onStateChange(Object actionConfig, Context context) {
+    public TransportConfig<?> onStateChange(Object actionConfig, Context context, String task) {
         if (actionConfig != null) {
-            ActionGraph.getInstance().addActionConfig((ActionConfig) actionConfig);
+            ActionGraph.getInstance().addActionConfig((ActionConfig) actionConfig, task);
         }
         return AgentBuilder.getBuilder().getConfig().getTransportConfig();
     }

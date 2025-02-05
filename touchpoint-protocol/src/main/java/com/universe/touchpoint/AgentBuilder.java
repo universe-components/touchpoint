@@ -48,7 +48,7 @@ public class AgentBuilder {
     }
 
     public String run(String content) {
-        return Dispatcher.dispatch(content);
+        return Dispatcher.dispatch(content, config.getTask());
     }
 
     public static AgentBuilder getBuilder() {

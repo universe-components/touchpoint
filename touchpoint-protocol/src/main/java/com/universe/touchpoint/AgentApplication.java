@@ -81,7 +81,7 @@ public class AgentApplication extends Application {
         List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(
                 ctx,
                 com.universe.touchpoint.annotations.TouchPointAction.class,
-                Arrays.asList("name", "toAgents", "toActions", "tasks"),
+                Arrays.asList("name", "desc", "toAgents", "toActions", "tasks"),
                 !isPlugin
         );
 
@@ -89,7 +89,7 @@ public class AgentApplication extends Application {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 TaskProposer.init(ctx);
 
-                TaskParticipant.registerActions(ctx, receiverFilterPair, isPlugin, ConfigType.ANNOTATION);
+                TaskParticipant.registerActions(ctx, receiverFilterPair);
                 TaskParticipant.listenTasks(ctx, receiverFilterPair);
                 TaskParticipant.listenRoutes(ctx, receiverFilterPair);
             }

@@ -16,6 +16,7 @@ import com.universe.touchpoint.utils.SerializeUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
@@ -31,6 +32,14 @@ public class AgentSocketStateMachine {
             }
             return mInstance;
         }
+    }
+
+    public void start(Context context, String task) {
+        send(
+            new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.TASK_READY),
+            context,
+            task
+        );
     }
 
     public void send(AgentSocketStateContext<?> stateContext, Context context, String filterSuffix) {
@@ -85,9 +94,10 @@ public class AgentSocketStateMachine {
                 }
                 AgentSocketState nextState = AgentSocketState.next(stateContext.getSocketState());
                 if (nextState != null) {
+                    String filterSuffix = TouchPointHelper.extractSuffixFromFilter(Objects.requireNonNull(intent.getAction()));
                     AgentSocketStateMachine.getInstance().send(new AgentSocketStateContext<>(
-                            nextState, stateHandler.onStateChange(ctx, appContext)
-                    ), appContext, context.getBelongTask());
+                            nextState, stateHandler.onStateChange(ctx, appContext, filterSuffix)
+                    ), appContext, filterSuffix);
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);

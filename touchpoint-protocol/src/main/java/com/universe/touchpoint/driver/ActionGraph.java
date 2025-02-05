@@ -1,6 +1,5 @@
 package com.universe.touchpoint.driver;
 
-import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.config.ActionConfig;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.Set;
 public class ActionGraph {
 
     // 图的缓存结构：将节点映射为后置节点列表
-    private final Map<String, List<ActionConfig>> graph = new HashMap<>();
+    private final Map<String, List<String>> graph = new HashMap<>();
     private final Map<String, ActionConfig> actionConfigCache = new HashMap<>();
 
     // 单例实例
@@ -36,28 +35,40 @@ public class ActionGraph {
     }
 
     // 添加ActionConfig到图中
-    public void addActionConfig(ActionConfig actionConfig) {
+    public void addActionConfig(ActionConfig actionConfig, String root) {
         String name = actionConfig.getName();
 
         // 缓存ActionConfig对象
         actionConfigCache.put(name, actionConfig);
 
+        if (!containsActionConfig(name)) {
+            List<String> predecessors = graph.computeIfAbsent(root, k -> new ArrayList<>());
+            predecessors.add(name);
+        } else {
+            List<String> predecessors = graph.get(root);
+            assert predecessors!= null;
+            predecessors.remove(actionConfig.getName()); // 删除之前的后置节点
+        }
+
         // 获取所有后置节点，合并toAgents和toActions
         Set<String> toNodes = actionConfig.getAllSuccessors();
 
-        // 为每个后置节点添加到图中
-        for (String node : toNodes) {
-            // 获取当前后置节点的ActionConfig对象
-            List<ActionConfig> predecessors = graph.computeIfAbsent(node, k -> new ArrayList<>());
-            predecessors.add(actionConfig);
+        List<String> predecessors = graph.computeIfAbsent(name, k -> new ArrayList<>());
+        predecessors.addAll(toNodes);
+    }
+
+    public boolean containsActionConfig(String actionName) {
+        for (List<String> successors : graph.values()) {
+            if (successors.contains(actionName)) {
+                return true;
+            }
         }
+        return false;
     }
 
     // 获取一个节点的后置节点（合并toAgents和toActions）
-    public List<ActionConfig> getSuccessors(String name) {
-        List<ActionConfig> successors = graph.getOrDefault(name, Collections.emptyList());
-        assert successors != null;
-        return successors.isEmpty() ? graph.getOrDefault(Agent.getName(), Collections.emptyList()) : successors;
+    public List<String> getSuccessors(String name) {
+        return graph.getOrDefault(name, Collections.emptyList());
     }
 
     // 获取图中的所有节点
