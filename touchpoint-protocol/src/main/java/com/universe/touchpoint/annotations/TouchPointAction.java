@@ -13,10 +13,10 @@ public @interface TouchPointAction {
 
     String desc();
 
-    String[] fromAgents() default {};
+    String[] toAgents() default {};
 
-    String[] fromActions() default {};
+    String[] toActions() default {};
 
-    String[] taskProposers() default {};
+    String[] tasks() default {};
 
 }

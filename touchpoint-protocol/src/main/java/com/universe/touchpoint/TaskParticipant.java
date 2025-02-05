@@ -7,48 +7,28 @@ import android.util.Pair;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
-import com.universe.touchpoint.annotations.TaskProposer;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.config.mapping.AIModelConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
+import com.universe.touchpoint.context.TaskActionContext;
+import com.universe.touchpoint.router.AgentRouter;
+import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.transport.TouchPointChannelManager;
 import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class AgentRegistry {
+public class TaskParticipant {
 
-    private static final Object mLock = new Object();
-    private static AgentRegistry mInstance;
-
-    public static AgentRegistry getInstance() {
-        synchronized (mLock) {
-            if (mInstance == null) {
-                mInstance = new AgentRegistry();
-            }
-            return mInstance;
-        }
-    }
-
-    public void registerProposer() {
-        if (Agent.isAnnotationPresent(TaskProposer.class)) {
-            TransportConfig<?> transportConfigWrapper;
-            try {
-                transportConfigWrapper = (TransportConfig<?>) AnnotationUtils.annotation2Config(
-                        Agent.getApplicationClass(), TransportConfigMapping.annotation2Config);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            AgentBuilder.getBuilder().getConfig().setTransportConfig(transportConfigWrapper);
-        }
-    }
-
-    public void registerActions(Context appContext, List<Pair<String, List<Object>>> receiverFilterPair, boolean isPlugin, ConfigType configType) {
+    public static void registerActions(Context appContext, List<Pair<String, List<Object>>> receiverFilterPair, boolean isPlugin, ConfigType configType) {
         for (Pair<String, List<Object>> pair : receiverFilterPair) {
             String clazz = pair.first;  // 获取 String
             List<Object> properties = pair.second;  // 获取 List<Object>
@@ -104,11 +84,29 @@ public class AgentRegistry {
         }
     }
 
-    public void registerReceivers(Context context) {
-        AgentReporter.getInstance("taskAction").registerReceiver(context);
-        AgentBroadcaster.getInstance("aiModel").registerReceiver(context);
-        AgentBroadcaster.getInstance("transportConfig").registerReceiver(context);
-        AgentReporter.getInstance("router").registerReceiver(context);
+    public static void listenRoutes(Context context, List<Pair<String, List<Object>>> receiverFilterPair) {
+//        AgentBroadcaster.getInstance("aiModel").registerReceiver(context, Agent.getName());
+        for (Pair<String, List<Object>> pair : receiverFilterPair) {
+            List<Object> properties = pair.second;
+            for (String task : (String[]) properties.get(3)) {
+                ArrayList<String> routeEntries = Arrays.stream((String[]) pair.second.get(1))
+                        .map(agent -> AgentRouter.buildChunk(agent, Agent.getName()))
+                        .collect(Collectors.toCollection(ArrayList::new));
+                TaskActionContext actionContext = new TaskActionContext(pair.first, task, routeEntries);
+                AgentReporter.getInstance("router").registerReceiver(context, actionContext);
+            }
+        }
+    }
+
+    public static void listenTasks(Context context, List<Pair<String, List<Object>>> receiverFilterPair) {
+        for (Pair<String, List<Object>> pair : receiverFilterPair) {
+            List<Object> properties = pair.second;  // 获取 List<Object>
+            for (String task : (String[]) properties.get(3)) {
+                TaskActionContext actionContext = new TaskActionContext(pair.first, task);
+                AgentSocketStateMachine.getInstance().registerReceiver(context, actionContext);
+//                AgentBroadcaster.getInstance("transportConfig").registerReceiver(context, actionContext);
+            }
+        }
     }
 
 }

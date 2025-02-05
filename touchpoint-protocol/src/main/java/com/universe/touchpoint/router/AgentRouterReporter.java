@@ -3,13 +3,11 @@ package com.universe.touchpoint.router;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.util.Pair;
 
-import androidx.annotation.RequiresApi;
-
+import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.AgentReporter;
-import com.universe.touchpoint.AgentSocket;
+import com.universe.touchpoint.context.TaskActionContext;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -41,15 +39,14 @@ public class AgentRouterReporter extends AgentReporter<List<Pair<String, List<Ob
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
-    public void registerReceiver(Context context) {
+    public <C extends AgentContext> void registerReceiver(Context appContext, C context) {
+        ((TaskActionContext) context).getRoutes();
         IntentFilter filter = new IntentFilter(
                 TouchPointHelper.touchPointFilterName(
                         TouchPointConstants.TOUCH_POINT_ROUTER_FILTER_NAME,
-                        Agent.getName()));
-        context.registerReceiver(
-                new AgentRouterReceiver(AgentSocket.getInstance()), filter, Context.RECEIVER_EXPORTED);
+                        context.getBelongTask()));
+        appContext.registerReceiver(new AgentRouterReceiver(), filter, Context.RECEIVER_EXPORTED);
     }
 
 }

@@ -16,17 +16,9 @@ public class TouchPointConstants {
 
     public static final String TOUCH_POINT_ROUTER_EVENT_NAME = "route_entry";
 
-    public static final String TOUCH_POINT_TRANSPORT_CONFIG_FILTER_NAME = "transport_config_filter";
+    public static final String TOUCH_POINT_TASK_STATE_FILTER = "task_state";
 
-    public static final String TOUCH_POINT_TRANSPORT_CONFIG_EVENT_NAME = "transport_config";
-
-    public static final String TOUCH_POINT_AI_MODEL_CONFIG_FILTER_NAME = "ai_model_filter";
-
-    public static final String TOUCH_POINT_AI_MODEL_CONFIG_EVENT_NAME = "ai_model";
-
-    public static final String TOUCH_POINT_TASK_FILTER = "task";
-
-    public static final String TOUCH_POINT_TASK_EVENT_NAME = "task_action";
+    public static final String TOUCH_POINT_TASK_STATE_EVENT = "task_state_event";
 
     public static final String TOUCH_POINT_CLEAN_FILTER = "clean";
 

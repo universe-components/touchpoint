@@ -2,11 +2,19 @@ package com.universe.touchpoint;
 
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.config.Model;
+import com.universe.touchpoint.socket.AgentSocketState;
+import com.universe.touchpoint.socket.AgentSocketStateMachine;
 
 public class AgentBuilder {
 
     private final AgentConfig config = new AgentConfig();
     private static AgentBuilder builder;
+
+    public static AgentBuilder task(String task) {
+        builder = new AgentBuilder();
+        builder.config.setTask(task);
+        return builder;
+    }
 
     public static AgentBuilder model(Model model) {
         builder = new AgentBuilder();
@@ -31,7 +39,10 @@ public class AgentBuilder {
 
     public AgentBuilder build() {
         if (config.getModelConfig().getModel() != null) {
-            AgentBroadcaster.getInstance("aiModel").send(config.getModelConfig(), Agent.getContext());
+            AgentSocketStateMachine.getInstance().send(
+                    new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.AI_MODEL_DISTRIBUTED, config.getModelConfig()),
+                    Agent.getContext(),
+                    config.getTask());
         }
         return this;
     }

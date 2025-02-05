@@ -16,10 +16,10 @@ import com.qihoo360.replugin.RePluginCallbacks;
 import com.qihoo360.replugin.RePluginConfig;
 import com.qihoo360.replugin.RePluginFramework;
 import com.qihoo360.replugin.RePluginHost;
+import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
-import com.universe.touchpoint.transport.TouchPointTransportConfigBroadcaster;
 import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
 import com.universe.touchpoint.utils.ApkUtils;
 
@@ -81,30 +81,29 @@ public class AgentApplication extends Application {
         List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(
                 ctx,
                 com.universe.touchpoint.annotations.TouchPointAction.class,
-                Arrays.asList("name", "fromAgents", "fromActions"),
+                Arrays.asList("name", "toAgents", "toActions", "tasks"),
                 !isPlugin
         );
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                AgentRegistry.getInstance().registerProposer();
-                AgentRegistry.getInstance().registerActions(ctx, receiverFilterPair, isPlugin, ConfigType.ANNOTATION);
-                AgentRegistry.getInstance().registerReceivers(ctx);
+                TaskProposer.init(ctx);
+
+                TaskParticipant.registerActions(ctx, receiverFilterPair, isPlugin, ConfigType.ANNOTATION);
+                TaskParticipant.listenTasks(ctx, receiverFilterPair);
+                TaskParticipant.listenRoutes(ctx, receiverFilterPair);
             }
         }
         //Todo Maybe remove this in the future
         TouchPointContentFactory.registerContentProvider(ctx);
 
-        // 初始化Dubbo
-        Map<Transport, Object> transportConfig = TouchPointTransportConfigBroadcaster.agentConfig();
+        Map<Transport, Object> transportConfig = Agent.agentConfig();
         if (transportConfig != null) {
             Transport transportType = transportConfig.keySet().iterator().next();
             TouchPointTransportRegistryFactory
                     .createRegistry(transportType)
                     .init(ctx, transportConfig.get(transportType));
         }
-
-        AgentSocket.getInstance().connect(ctx, receiverFilterPair);
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override

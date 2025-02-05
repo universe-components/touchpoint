@@ -49,7 +49,7 @@ dependencies {
 `EntryApplication` 继承 `AgentApplication`
 ```kotlin
 @TouchPointAgent(name = "entry_agent")
-@TaskProposer // 是否任务发起者，添加该注解表示该Agent是任务发起者
+@TaskProposer(tasks = {"query_weather"}) // 指定该Agent可发起哪些任务
 @Dubbo(applicationName = "entry_agent") // 可选的全局配置，指定dubbo应用名和注册中心地址
 class EntryApplication : AgentApplication()
 ```
@@ -57,6 +57,7 @@ class EntryApplication : AgentApplication()
 在` Entry Agent` 中执行
 ```kotlin
 AgentBuilder builder = AgentBuilder
+    .task("query_weather")
     .model(Model.GPT_4) // 选择模型
     .setTemperature(0.0f) // 设置温度
     .setModelApiKey("My API Key") // 设置模型API Key
@@ -92,9 +93,9 @@ data class WeatherResponse(val weather: String, val temperature: String) : Touch
 ```kotlin
 @TouchPointAction(
     name = "weather_action",
-    fromAgents = {"entry_agent"}, // 可以指定多个来源Agent
-    fromActions = {""} // 可以指定多个来源Action
-    taskProposers = {"entry_agent"} // 可以指定多个任务发起者
+    toAgents = {"entry_agent"}, // 可以指定多个目标Agent
+    toActions = {""} // 可以指定多个目标Action
+    tasks = {"entry_agent"} // 可以指定多个参与的任务
 ) 
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 class WeathertListener : AgentActionListener<String, WeatherResponse> {

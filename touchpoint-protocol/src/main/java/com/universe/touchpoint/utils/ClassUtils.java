@@ -1,6 +1,10 @@
 package com.universe.touchpoint.utils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClassUtils {
 
@@ -48,6 +52,24 @@ public class ClassUtils {
         }
 
         return result.toString();
+    }
+
+    public static List<Class<?>> getInterfaceGenericTypes(Class<?> clazz) {
+        List<Class<?>> genericTypes = new ArrayList<>();
+        // 获取类实现的所有接口
+        Type[] interfaces = clazz.getGenericInterfaces();
+        for (Type type : interfaces) {
+            if (type instanceof ParameterizedType parameterizedType) {
+                // 获取接口的实际泛型类型
+                Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+                for (Type actualType : actualTypeArguments) {
+                    if (actualType instanceof Class) {
+                        genericTypes.add((Class<?>) actualType);
+                    }
+                }
+            }
+        }
+        return genericTypes;
     }
 
 }

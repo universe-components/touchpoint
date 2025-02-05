@@ -2,7 +2,6 @@ package com.universe.touchpoint;
 
 import android.content.Context;
 
-import com.universe.touchpoint.driver.TaskActionReporter;
 import com.universe.touchpoint.router.AgentRouterReporter;
 
 import java.util.HashMap;
@@ -17,8 +16,7 @@ public abstract class AgentReporter<D> implements TouchPointRegistry {
     private static final Map<String, Class<?>> reporterMap = new HashMap<>();
     static {
         reporterMap.put("router", AgentRouterReporter.class);
-        reporterMap.put("taskAction", TaskActionReporter.class);
-        reporterMap.put("clean", AgentCleaner.class);
+//        reporterMap.put("clean", AgentCleaner.class);
     }
 
     public static <D> AgentReporter<D> getInstance(String type) {

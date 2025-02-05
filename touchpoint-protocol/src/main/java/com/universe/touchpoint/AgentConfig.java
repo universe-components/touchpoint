@@ -12,6 +12,7 @@ public class AgentConfig {
 
     private AIModelConfig modelConfig = new AIModelConfig();
     private TransportConfig<?> transportConfig;
+    private String task;
 
     private final Map<Transport, Class<?>> transportConfigMap = new HashMap<>();
     {
@@ -36,6 +37,14 @@ public class AgentConfig {
 
     public Map<Transport, Class<?>> getTransportConfigMap() {
         return transportConfigMap;
+    }
+
+    public void setTask(String task) {
+        this.task = task;
+    }
+
+    public String getTask() {
+        return task;
     }
 
 }

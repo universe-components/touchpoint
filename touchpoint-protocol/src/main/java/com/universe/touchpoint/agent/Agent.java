@@ -10,10 +10,15 @@ import com.qihoo360.mobilesafe.api.AppVar;
 import com.qihoo360.replugin.RePluginEnv;
 import com.qihoo360.replugin.RePluginHost;
 import com.qihoo360.replugin.model.PluginInfo;
+import com.universe.touchpoint.AgentBuilder;
 import com.universe.touchpoint.annotations.TouchPointAgent;
+import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
 import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.Map;
 
 public class Agent {
 
@@ -50,6 +55,33 @@ public class Agent {
 
     public static String getName() {
         return (String) getProperty("name", TouchPointAgent.class);
+    }
+
+    public static String[] getTasks() {
+        return (String[]) getProperty("tasks", TouchPointAgent.class);
+    }
+
+    public static <T> Map<Transport, T> agentConfig() {
+        try {
+            Map<Transport, T> transportConfigMap = (Map<Transport, T>) AnnotationUtils.annotation2Config(
+                    getApplicationClass(),
+                    TransportConfigMapping.annotation2Config,
+                    TransportConfigMapping.annotation2Type);
+
+            if (!transportConfigMap.isEmpty()) {
+                return transportConfigMap;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        if (AgentBuilder.getBuilder() == null) {
+            return null;
+        }
+
+        return (Map<Transport, T>) Collections.singletonMap(
+                AgentBuilder.getBuilder().getConfig().getTransportConfig().transportType(),
+                AgentBuilder.getBuilder().getConfig().getTransportConfig().config());
     }
 
     public static Object getProperty(String propertyName, Class<? extends Annotation> annotationClass) {

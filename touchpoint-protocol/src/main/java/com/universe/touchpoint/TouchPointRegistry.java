@@ -2,8 +2,10 @@ package com.universe.touchpoint;
 
 import android.content.Context;
 
+import com.universe.touchpoint.context.AgentContext;
+
 public interface TouchPointRegistry {
 
-    void registerReceiver(Context context);
+    <C extends AgentContext> void registerReceiver(Context appContext, C context);
 
 }

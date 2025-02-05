@@ -1,59 +1,25 @@
 package com.universe.touchpoint;
 
-import android.content.Context;
-import android.util.Pair;
-
 import com.qihoo360.replugin.RePluginHost;
-import com.universe.touchpoint.connection.AgentListening;
-import com.universe.touchpoint.utils.ApkUtils;
-
-import java.util.List;
 
 public class AgentSocket {
 
-    private static final Object mLock = new Object();
-    private static AgentSocket mInstance;
+//    public static AgentSocket getInstance() {
+//        synchronized (mLock) {
+//            if (mInstance == null) {
+//                mInstance = new AgentSocket();
+//            }
+//            return mInstance;
+//        }
+//    }
 
-    private AgentConnection state;
-
-    private AgentSocket() {
-        state = new AgentListening();
+    public static void bind(String apkName) {
+        RePluginHost.install(apkName);
     }
 
-    public static AgentSocket getInstance() {
-        synchronized (mLock) {
-            if (mInstance == null) {
-                mInstance = new AgentSocket();
-            }
-            return mInstance;
-        }
-    }
-
-    public void connect(Context context, List<Pair<String, List<Object>>> receiverFilterPair) {
-        String apkPath = ApkUtils.getApkPath(context);
-        assert apkPath != null;
-        RePluginHost.install(apkPath);
-        AgentReporter.getInstance("router").report(receiverFilterPair, context);
-    }
-
-    public void disconnect(Context context) {
-        String apkPath = ApkUtils.getApkPath(context);
-        assert apkPath != null;
-        RePluginHost.uninstall(apkPath);
-
-        AgentReporter.getInstance("clean").report(AgentCleaner.AgentClean.ALL, context);
-    }
-
-    public void changeState(Context context) {
-        state.onStateChange(this, context);
-    }
-
-    public void changeState(Context context, String actionClassName) {
-        state.onStateChange(this, actionClassName, context);
-    }
-
-    public void setState(AgentConnection state) {
-        this.state = state;
+    public static void unbind(String apkName) {
+        RePluginHost.uninstall(apkName);
+//        AgentReporter.getInstance("clean").report(AgentCleaner.AgentClean.ALL, context);
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class ActionGraph {
 
-    // 图的缓存结构：将前置节点映射为ActionConfig对象列表
+    // 图的缓存结构：将节点映射为后置节点列表
     private final Map<String, List<ActionConfig>> graph = new HashMap<>();
     private final Map<String, ActionConfig> actionConfigCache = new HashMap<>();
 
@@ -42,36 +42,18 @@ public class ActionGraph {
         // 缓存ActionConfig对象
         actionConfigCache.put(name, actionConfig);
 
-        // 获取所有前置节点，合并fromAgent和fromAction
-        Set<String> fromNodes = actionConfig.getAllPredecessors();
+        // 获取所有后置节点，合并toAgents和toActions
+        Set<String> toNodes = actionConfig.getAllSuccessors();
 
-        // 为每个前置节点添加到图中
-        for (String agent : fromNodes) {
-            // 获取当前前置节点的ActionConfig对象
-            List<ActionConfig> successors = graph.computeIfAbsent(agent, k -> new ArrayList<>());
-            successors.add(actionConfig);
+        // 为每个后置节点添加到图中
+        for (String node : toNodes) {
+            // 获取当前后置节点的ActionConfig对象
+            List<ActionConfig> predecessors = graph.computeIfAbsent(node, k -> new ArrayList<>());
+            predecessors.add(actionConfig);
         }
     }
 
-    // 获取一个节点的前置节点（合并fromAgent和fromAction）
-    public List<ActionConfig> getPredecessors(String name) {
-        ActionConfig actionConfig = actionConfigCache.get(name);
-        if (actionConfig != null) {
-            // 获取所有前置节点
-            Set<String> fromNodes = actionConfig.getAllPredecessors();
-            List<ActionConfig> predecessors = new ArrayList<>();
-            for (String node : fromNodes) {
-                ActionConfig predecessor = actionConfigCache.get(node);
-                if (predecessor != null) {
-                    predecessors.add(predecessor);
-                }
-            }
-            return predecessors;
-        }
-        return Collections.emptyList();
-    }
-
-    // 获取一个节点的后置节点
+    // 获取一个节点的后置节点（合并toAgents和toActions）
     public List<ActionConfig> getSuccessors(String name) {
         List<ActionConfig> successors = graph.getOrDefault(name, Collections.emptyList());
         assert successors != null;
@@ -83,6 +65,7 @@ public class ActionGraph {
         return actionConfigCache.values();
     }
 
+    // 清除图和缓存
     public void clear() {
         graph.clear();
         actionConfigCache.clear();
