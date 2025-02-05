@@ -101,7 +101,7 @@ public class TaskParticipant {
     public static void listenTasks(Context context, List<Pair<String, List<Object>>> receiverFilterPair) {
         for (Pair<String, List<Object>> pair : receiverFilterPair) {
             List<Object> properties = pair.second;  // 获取 List<Object>
-            for (String task : (String[]) properties.get(3)) {
+            for (String task : (String[]) properties.get(4)) {
                 TaskActionContext actionContext = new TaskActionContext(pair.first, task);
                 AgentSocketStateMachine.getInstance().registerReceiver(context, actionContext);
             }
