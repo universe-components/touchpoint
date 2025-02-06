@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.universe.touchpoint.agent.Agent;
+import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.transport.TouchPointChannelManager;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -19,12 +20,11 @@ public class TouchPointContextManager {
         return generateTouchPoint(tpClass, name, ctx);
     }
 
-    public static <A extends TouchPoint> A generateTouchPoint(
-            A action, String name, String content) {
+    public static <A extends TouchPoint> A generateTouchPoint(A action, String content) {
         Context ctx = Agent.getContext();
         TouchPointChannel channel = TouchPointChannelManager.selectChannel(action, ctx);
 
-        action.setHeader(new TouchPoint.Header(Agent.getName(), name, channel));
+        action.setHeader(new TouchPoint.Header(((AgentAction) action).getMeta().actionName(), channel));
         action.setGoal(content);
 
         return action;

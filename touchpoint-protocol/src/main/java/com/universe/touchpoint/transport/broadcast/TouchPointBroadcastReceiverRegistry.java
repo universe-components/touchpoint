@@ -4,29 +4,22 @@ import android.content.Context;
 import android.content.IntentFilter;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.router.AgentRouter;
+import com.universe.touchpoint.transport.TouchPointChannelManager;
 import com.universe.touchpoint.transport.TouchPointTransportRegistry;
 
 public class TouchPointBroadcastReceiverRegistry implements TouchPointTransportRegistry {
 
     @Override
-    public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String[] filters) {
+    public void register(Context context, AgentActionMetaInfo agentActionMetaInfo) {
         TouchPointBroadcastReceiver<? extends TouchPoint> tpReceiver = new TouchPointBroadcastReceiver<>(
                 agentActionMetaInfo.inputClass(), context);
 
-        IntentFilter intentFilter = new IntentFilter();
-        if (filters != null) {
-            for (String filter : filters) {
-                String filterAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
-                        filter, Agent.getName()
-                ));
-                intentFilter.addAction(filterAction);
-            }
-        }
+        IntentFilter intentFilter = new IntentFilter(TouchPointHelper.touchPointFilterName(agentActionMetaInfo.actionName()));
         context.registerReceiver(tpReceiver, intentFilter, Context.RECEIVER_EXPORTED);
+
+        TouchPointChannelManager.registerContextReceiver(agentActionMetaInfo.actionName(), agentActionMetaInfo.className());
     }
 
     @Override

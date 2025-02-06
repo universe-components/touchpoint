@@ -57,6 +57,34 @@ public class ActionGraph {
         predecessors.addAll(toNodes);
     }
 
+    // 获取指定节点的所有前置节点
+    public Map<String, List<String>> getSubGraph(String nodeName) {
+        Map<String, List<String>> subGraph = new HashMap<>();
+        // 递归获取后置节点
+        populateSubGraph(nodeName, subGraph);
+        return subGraph;
+    }
+
+    // 递归填充子图
+    private void populateSubGraph(String nodeName, Map<String, List<String>> subGraph) {
+        // 获取当前节点的后置节点
+        List<String> successors = graph.get(nodeName);
+        if (successors != null) {
+            // 遍历当前节点的所有后置节点
+            for (String successor : successors) {
+                // 如果当前后置节点不在子图中，添加它
+                if (!subGraph.containsKey(successor)) {
+                    // 获取当前后置节点的后置节点
+                    List<String> successorList = graph.get(successor);
+                    subGraph.put(successor, successorList);
+
+                    // 递归获取当前后置节点的后续节点
+                    populateSubGraph(successor, subGraph);
+                }
+            }
+        }
+    }
+
     public boolean containsActionConfig(String actionName) {
         for (List<String> successors : graph.values()) {
             if (successors.contains(actionName)) {

@@ -89,9 +89,8 @@ public class AgentApplication extends Application {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 TaskProposer.init(ctx);
 
-                TaskParticipant.registerActions(ctx, receiverFilterPair);
+                TaskParticipant.registerActions(receiverFilterPair);
                 TaskParticipant.listenTasks(ctx, receiverFilterPair);
-                TaskParticipant.listenRoutes(ctx, receiverFilterPair);
             }
         }
         //Todo Maybe remove this in the future

@@ -28,10 +28,6 @@ public abstract class TouchPoint {
         this.header.setChannel(channel);
     }
 
-    public void setToAgent(String agent) {
-        this.header.setToAgent(agent);
-    }
-
     public void setHeader(Header header) {
         this.header = header;
     }
@@ -71,7 +67,7 @@ public abstract class TouchPoint {
     public boolean finish() {
         try {
             String contentProviderUri = TouchPointHelper.touchPointContentProviderUri(
-                    TouchPointConstants.CONTENT_PROVIDER_PREFIX, header.toAgent);
+                    TouchPointConstants.CONTENT_PROVIDER_PREFIX, header.fromAction);
             TouchPointContent touchPointContent = TouchPointContentFactory.createContent(Uri.parse(contentProviderUri), Agent.getContext());
             boolean rs = touchPointContent.insertOrUpdate(this);
             if (!rs) {
@@ -85,29 +81,24 @@ public abstract class TouchPoint {
 
     public static class Header {
 
-        private String fromAgent = null;
-        private String toAgent = null;
+        private String fromAction = null;
+        private String toAction = null;
         private transient TouchPointChannel channel;
 
         public Header() {
         }
 
-        public Header(String fromAgent, String toAgent, TouchPointChannel channel) {
-            this.fromAgent = fromAgent;
-            this.toAgent = toAgent;
+        public Header(String fromAction, TouchPointChannel channel) {
+            this.fromAction = fromAction;
             this.channel = channel;
         }
 
-        public String getFromAgent() {
-            return fromAgent;
+        public String getFromAction() {
+            return fromAction;
         }
 
-        public String getToAgent() {
-            return toAgent;
-        }
-
-        public void setToAgent(String toAgent) {
-            this.toAgent = toAgent;
+        public String getToAction() {
+            return toAction;
         }
 
         public TouchPointChannel getChannel() {

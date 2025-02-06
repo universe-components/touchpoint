@@ -7,10 +7,12 @@ import android.content.IntentFilter;
 
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.TouchPointConstants;
-import com.universe.touchpoint.socket.handler.AIModelDistributedHandler;
+import com.universe.touchpoint.socket.handler.ActionGraphDistributedHandler;
+import com.universe.touchpoint.socket.handler.ChannelEstablishedHandler;
+import com.universe.touchpoint.socket.handler.GlobalConfigReadyHandler;
 import com.universe.touchpoint.socket.handler.TaskParticipantReadyHandler;
 import com.universe.touchpoint.socket.handler.TaskReadyHandler;
-import com.universe.touchpoint.socket.handler.TransportConfigDistributedHandler;
+import com.universe.touchpoint.socket.handler.GlobalConfigDistributedHandler;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
 
@@ -70,8 +72,10 @@ public class AgentSocketStateMachine {
         static {
             stateHandlerMap.put(AgentSocketState.TASK_READY, new TaskReadyHandler());
             stateHandlerMap.put(AgentSocketState.PARTICIPANT_READY, new TaskParticipantReadyHandler());
-            stateHandlerMap.put(AgentSocketState.TRANSPORT_DISTRIBUTED, new TransportConfigDistributedHandler());
-            stateHandlerMap.put(AgentSocketState.AI_MODEL_DISTRIBUTED, new AIModelDistributedHandler());
+            stateHandlerMap.put(AgentSocketState.GLOBAL_CONFIG_DISTRIBUTED, new GlobalConfigDistributedHandler());
+            stateHandlerMap.put(AgentSocketState.GLOBAL_CONFIG_READY, new GlobalConfigReadyHandler());
+            stateHandlerMap.put(AgentSocketState.ACTION_GRAPH_DISTRIBUTED, new ActionGraphDistributedHandler());
+            stateHandlerMap.put(AgentSocketState.CHANNEL_ESTABLISHED, new ChannelEstablishedHandler());
         }
 
         public AgentSocketStateListener(C context) {
@@ -88,15 +92,11 @@ public class AgentSocketStateMachine {
                 AgentSocketStateContext<?> stateContext = SerializeUtils.deserializeFromByteArray(stateContextBytes, AgentSocketStateContext.class);
                 AgentSocketStateHandler<?> stateHandler = stateHandlerMap.get(stateContext.getSocketState());
                 assert stateHandler != null;
-                Object ctx = stateContext.getContext();
-                if (ctx == null) {
-                    ctx = context;
-                }
                 AgentSocketState nextState = AgentSocketState.next(stateContext.getSocketState());
                 if (nextState != null) {
                     String filterSuffix = TouchPointHelper.extractSuffixFromFilter(Objects.requireNonNull(intent.getAction()));
                     AgentSocketStateMachine.getInstance().send(new AgentSocketStateContext<>(
-                            nextState, stateHandler.onStateChange(ctx, appContext, filterSuffix)
+                            nextState, stateHandler.onStateChange(stateContext.getContext(), context, appContext, filterSuffix)
                     ), appContext, filterSuffix);
                 }
             } catch (Exception e) {

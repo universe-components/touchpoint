@@ -14,7 +14,6 @@ import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.DriverRegion;
-import com.universe.touchpoint.router.AgentRouter;
 import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastReceiver;
 import com.universe.touchpoint.utils.ClassUtils;
 
@@ -36,7 +35,7 @@ public class AgentActionManager {
         }
     }
 
-    public <T> AgentActionMetaInfo extractAndRegisterAction(
+    public <T> void extractAndRegisterAction(
             String receiverClassName,
             AIModelConfig model,
             TransportConfig<T> transportConfig,
@@ -62,29 +61,18 @@ public class AgentActionManager {
             driverRegion.putTouchPointAction(
                     TouchPointHelper.touchPointActionName(actionName, agentName), agentActionMetaInfo);
 
-            return agentActionMetaInfo;
         } catch (Exception e) {
             if (LogDebug.LOG) {
                 e.printStackTrace();
             }
         }
-        return null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public void registerAgentFinishReceiver(Context appContext,
-                                            String[] filters, Class<? extends TouchPoint> touchPointClass) {
+    public void registerAgentFinishReceiver(Context appContext, String filter, Class<? extends TouchPoint> touchPointClass) {
         TouchPointBroadcastReceiver<? extends TouchPoint> agentFinishReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
 
-        IntentFilter agentFinishFilter = new IntentFilter();
-        if (filters != null) {
-            for (String filter : filters) {
-                String agentFinishAction = TouchPointHelper.touchPointFilterName(AgentRouter.buildChunk(
-                        Agent.getName(), filter
-                ));
-                agentFinishFilter.addAction(agentFinishAction);
-            }
-        }
+        IntentFilter agentFinishFilter = new IntentFilter(TouchPointHelper.touchPointFilterName(filter));
         appContext.registerReceiver(agentFinishReceiver, agentFinishFilter, Context.RECEIVER_EXPORTED);
     }
 
