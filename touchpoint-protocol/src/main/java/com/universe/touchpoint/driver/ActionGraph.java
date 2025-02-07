@@ -3,111 +3,89 @@ package com.universe.touchpoint.driver;
 import com.universe.touchpoint.config.ActionConfig;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
 
 public class ActionGraph {
 
-    // 图的缓存结构：将节点映射为后置节点列表
-    private final Map<String, List<String>> graph = new HashMap<>();
-    private final Map<String, ActionConfig> actionConfigCache = new HashMap<>();
+    // 使用 HashMap 存储邻接表，键为 ActionConfig 节点，值为与该节点相邻的节点列表
+    private final Map<ActionConfig, List<ActionConfig>> adjList = new HashMap<>();
 
-    // 单例实例
-    private static ActionGraph instance;
+    // 根据指定节点获取该节点的子图（包含该节点以及从该节点可达的所有节点和边）
 
-    // 锁对象
-    private static final Object lock = new Object();
-
-    // 获取单例实例
-    public static ActionGraph getInstance() {
-        if (instance == null) {
-            synchronized (lock) {
-                if (instance == null) {
-                    instance = new ActionGraph();
-                }
-            }
+    // 添加节点：如果图中不存在该节点，则添加一个新的条目
+    public void addNode(ActionConfig node) {
+        if (!adjList.containsKey(node)) {
+            adjList.put(node, new ArrayList<>());
         }
-        return instance;
     }
 
-    // 添加ActionConfig到图中
-    public void addActionConfig(ActionConfig actionConfig, String root) {
-        String name = actionConfig.getName();
-
-        // 缓存ActionConfig对象
-        actionConfigCache.put(name, actionConfig);
-
-        if (!containsActionConfig(name)) {
-            List<String> predecessors = graph.computeIfAbsent(root, k -> new ArrayList<>());
-            predecessors.add(name);
-        } else {
-            List<String> predecessors = graph.get(root);
-            assert predecessors!= null;
-            predecessors.remove(actionConfig.getName()); // 删除之前的后置节点
-        }
-
-        // 获取所有后置节点，合并toAgents和toActions
-        Set<String> toNodes = actionConfig.getAllSuccessors();
-
-        List<String> predecessors = graph.computeIfAbsent(name, k -> new ArrayList<>());
-        predecessors.addAll(toNodes);
+    // 添加边（有向边）：从 from 到 to
+    public void addEdge(ActionConfig from, ActionConfig to) {
+        // 如果节点不存在，则先添加节点
+        addNode(from);
+        addNode(to);
+        Objects.requireNonNull(adjList.get(from)).add(to);
     }
 
     // 获取指定节点的所有前置节点
-    public Map<String, List<String>> getSubGraph(String nodeName) {
-        Map<String, List<String>> subGraph = new HashMap<>();
-        // 递归获取后置节点
-        populateSubGraph(nodeName, subGraph);
-        return subGraph;
+    public List<ActionConfig> getPredecessors(ActionConfig node) {
+        List<ActionConfig> predecessors = new ArrayList<>();
+        for (Map.Entry<ActionConfig, List<ActionConfig>> entry : adjList.entrySet()) {
+            if (entry.getValue().contains(node)) {
+                predecessors.add(entry.getKey());
+            }
+        }
+        return predecessors;
     }
 
-    // 递归填充子图
-    private void populateSubGraph(String nodeName, Map<String, List<String>> subGraph) {
-        // 获取当前节点的后置节点
-        List<String> successors = graph.get(nodeName);
-        if (successors != null) {
-            // 遍历当前节点的所有后置节点
-            for (String successor : successors) {
-                // 如果当前后置节点不在子图中，添加它
-                if (!subGraph.containsKey(successor)) {
-                    // 获取当前后置节点的后置节点
-                    List<String> successorList = graph.get(successor);
-                    subGraph.put(successor, successorList);
+    // 获取指定节点的后置节点
+    public List<ActionConfig> getSuccessors(ActionConfig node) {
+        return adjList.getOrDefault(node, Collections.emptyList());
+    }
 
-                    // 递归获取当前后置节点的后续节点
-                    populateSubGraph(successor, subGraph);
+    public void updateNodeDesc(ActionConfig node) {
+        for (ActionConfig key : adjList.keySet()) {
+            if (key.getName().equals(node.getName())) {
+                if (node.getDesc() != null && (key.getDesc() == null || key.getDesc().isEmpty())) {
+                    key.setDesc(node.getDesc());
                 }
+                return;
             }
+        }
+        // 如果图中不存在该节点，则添加节点
+        addNode(node);
+    }
+
+    // 删除节点：同时需要将该节点从所有邻接列表中移除
+    public void removeNode(ActionConfig node) {
+        if (adjList.containsKey(node)) {
+            // 移除其他节点中与该节点相连的边
+            for (List<ActionConfig> neighbors : adjList.values()) {
+                neighbors.remove(node);
+            }
+            // 移除该节点
+            adjList.remove(node);
         }
     }
 
-    public boolean containsActionConfig(String actionName) {
-        for (List<String> successors : graph.values()) {
-            if (successors.contains(actionName)) {
-                return true;
-            }
+    // 删除边：从 from 节点的邻接列表中移除 to 节点
+    public void removeEdge(ActionConfig from, ActionConfig to) {
+        if (adjList.containsKey(from)) {
+            Objects.requireNonNull(adjList.get(from)).remove(to);
         }
-        return false;
     }
 
-    // 获取一个节点的后置节点（合并toAgents和toActions）
-    public List<String> getSuccessors(String name) {
-        return graph.getOrDefault(name, Collections.emptyList());
+    // 获取某个节点的所有邻接节点
+    public List<ActionConfig> getNeighbors(ActionConfig node) {
+        return adjList.getOrDefault(node, new ArrayList<>());
     }
 
-    // 获取图中的所有节点
-    public Collection<ActionConfig> getAllNodes() {
-        return actionConfigCache.values();
-    }
-
-    // 清除图和缓存
-    public void clear() {
-        graph.clear();
-        actionConfigCache.clear();
+    public Map<ActionConfig, List<ActionConfig>> getAdjList() {
+        return adjList;
     }
 
 }

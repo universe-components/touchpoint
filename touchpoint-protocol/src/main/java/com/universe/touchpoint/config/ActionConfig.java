@@ -12,12 +12,20 @@ public class ActionConfig {
     private String[] toActions;
     private String[] tasks;
 
+    public ActionConfig(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
 
     public String getDesc() {
         return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public String[] getToActions() {
