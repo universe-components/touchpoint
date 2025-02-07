@@ -49,21 +49,24 @@ dependencies {
 `EntryApplication` 继承 `AgentApplication`
 ```kotlin
 @TouchPointAgent(name = "entry_agent")
-@TaskProposer(tasks = {"query_weather"}) // 指定该Agent可发起哪些任务
-@Dubbo(applicationName = "entry_agent") // 可选的全局配置，指定dubbo应用名和注册中心地址
 class EntryApplication : AgentApplication()
 ```
 
 在` Entry Agent` 中执行
 ```kotlin
-AgentBuilder builder = AgentBuilder
-    .task("query_weather")
-    .model(Model.GPT_4) // 选择模型
-    .setTemperature(0.0f) // 设置温度
-    .setModelApiKey("My API Key") // 设置模型API Key
-    .build();
+@TaskProposer
+data class Entry {
+    
+    @Task("query_weather")
+    @Dubbo(applicationName = "entry_agent") // 可选的全局配置，指定dubbo应用名和注册中心地址
+    @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 指定模型, 默认使用o1
+    val taskBuilder: TaskBuilder;
+    
+    fun queryWeather() {
+        taskBuilder.run("我想查询上海天气")
+    }
 
-builder.run("我想查询上海天气");
+}
 ```
 
 #### Weather Agent

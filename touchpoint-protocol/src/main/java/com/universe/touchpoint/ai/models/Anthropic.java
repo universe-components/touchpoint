@@ -5,7 +5,7 @@ import com.anthropic.models.Completion;
 import com.anthropic.models.CompletionCreateParams;
 import com.anthropic.models.Model;
 import com.google.common.collect.Lists;
-import com.universe.touchpoint.AgentBuilder;
+import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.ai.AIModel;
 import com.anthropic.client.AnthropicClient;
 import com.universe.touchpoint.config.AIModelConfig;
@@ -19,7 +19,7 @@ public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
 
     public Anthropic(AIModelConfig modelConfig) {
         super(AnthropicOkHttpClient.builder()
-                .apiKey(AgentBuilder
+                .apiKey(TaskBuilder
                         .getBuilder()
                         .getConfig()
                         .getModelConfig()

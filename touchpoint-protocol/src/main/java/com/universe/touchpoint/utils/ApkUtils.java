@@ -7,9 +7,13 @@ import android.util.Pair;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import dalvik.system.DexFile;
 
@@ -61,6 +65,69 @@ public class ApkUtils {
                         }
                         // 将类名和注解属性值列表加入结果
                         result.add(new Pair<>(className, annotationValues));
+                    }
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static Map<String, Map<String, Map<String, Object>>> getFieldAnnotationValues(
+            Context context,
+            Class<? extends Annotation> annotationClass,
+            List<Class<? extends Annotation>> extractAnnotationClasses,
+            String aggregateProperty,
+            boolean canLoad) {
+        Map<String, Map<String, Map<String, Object>>> result = new HashMap<>();
+        try {
+            String apkPath = context.getApplicationInfo().sourceDir;
+            if (!canLoad) {
+                File dexFile = new File(apkPath);
+                dexFile.setWritable(false);
+            }
+
+            DexFile dexFile = new DexFile(apkPath);
+            Enumeration<String> classNamesEnum = dexFile.entries();
+
+            while (classNamesEnum.hasMoreElements()) {
+                String className = classNamesEnum.nextElement();
+                try {
+                    Class<?> loadedClass = context.getClassLoader().loadClass(className);
+                    Field[] fields = loadedClass.getDeclaredFields();
+
+                    for (Field field : fields) {
+                        Map<String, Map<String, Object>> annotationMap = new HashMap<>();
+                        if (field.isAnnotationPresent(annotationClass)) {
+                            Object aggregatePropertyValue = AnnotationUtils.getAnnotationValue(field.getAnnotation(annotationClass), annotationClass, aggregateProperty);
+                            for (Class<? extends Annotation> extractAnnotationClass : extractAnnotationClasses) {
+                                Annotation annotation = field.getAnnotation(extractAnnotationClass);
+                                Map<String, Object> annotationValues = new HashMap<>();
+
+                                // 获取注解中的所有方法（属性）
+                                Method[] methods = extractAnnotationClass.getDeclaredMethods();
+                                for (Method method : methods) {
+                                    try {
+                                        // 调用每个方法获取属性值
+                                        Object value = method.invoke(annotation);
+                                        if (value != null) {
+                                            annotationValues.put(method.getName(), value);
+                                        }
+                                    } catch (Exception e) {
+                                        annotationValues.put(method.getName(), null);
+                                    }
+                                }
+
+                                if (!annotationValues.isEmpty()) {
+                                    annotationMap.put(extractAnnotationClass.getSimpleName(), annotationValues);
+                                }
+                            }
+                            result.put((String) aggregatePropertyValue, annotationMap);
+                        }
                     }
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();

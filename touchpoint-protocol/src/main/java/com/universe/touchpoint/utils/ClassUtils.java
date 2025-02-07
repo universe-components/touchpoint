@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ClassUtils {
 
@@ -52,6 +53,32 @@ public class ClassUtils {
         }
 
         return result.toString();
+    }
+
+    public static void setProperties(Object object, Map<String, Object> properties) {
+        // 获取类的所有字段
+        Field[] fields = object.getClass().getDeclaredFields();
+
+        // 遍历每个字段
+        for (Field field : fields) {
+            // 获取字段的名称
+            String fieldName = field.getName();
+            // 判断 Map 中是否包含该字段名称
+            if (properties.containsKey(fieldName)) {
+                try {
+                    // 获取 Map 中对应字段的值
+                    Object value = properties.get(fieldName);
+
+                    // 设置字段可访问
+                    field.setAccessible(true);
+
+                    // 将 Map 中的值设置到目标字段中
+                    field.set(object, value);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public static List<Class<?>> getInterfaceGenericTypes(Class<?> clazz) {

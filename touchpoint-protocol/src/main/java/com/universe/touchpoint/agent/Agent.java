@@ -10,7 +10,7 @@ import com.qihoo360.mobilesafe.api.AppVar;
 import com.qihoo360.replugin.RePluginEnv;
 import com.qihoo360.replugin.RePluginHost;
 import com.qihoo360.replugin.model.PluginInfo;
-import com.universe.touchpoint.AgentBuilder;
+import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.annotations.TouchPointAgent;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
@@ -75,13 +75,13 @@ public class Agent {
             throw new RuntimeException(e);
         }
 
-        if (AgentBuilder.getBuilder() == null) {
+        if (TaskBuilder.getBuilder() == null) {
             return null;
         }
 
         return (Map<Transport, T>) Collections.singletonMap(
-                AgentBuilder.getBuilder().getConfig().getTransportConfig().transportType(),
-                AgentBuilder.getBuilder().getConfig().getTransportConfig().config());
+                TaskBuilder.getBuilder().getConfig().getTransportConfig().transportType(),
+                TaskBuilder.getBuilder().getConfig().getTransportConfig().config());
     }
 
     public static Object getProperty(String propertyName, Class<? extends Annotation> annotationClass) {

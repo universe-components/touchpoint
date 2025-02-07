@@ -1,6 +1,6 @@
 package com.universe.touchpoint.ai;
 
-import com.universe.touchpoint.AgentBuilder;
+import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.annotations.AIModel;
@@ -35,9 +35,9 @@ public class AIModelSelector {
         }
 
         // 如果 Agent.getModel() 也为空，再检查 AgentBuilder 中的配置
-        Model modelFromBuilder = AgentBuilder.getBuilder().getConfig().getModelConfig().getModel();
+        Model modelFromBuilder = TaskBuilder.getBuilder().getConfig().getModelConfig().getModel();
         if (modelFromBuilder != null) {
-            float temperatureFromBuilder = AgentBuilder.getBuilder().getConfig().getModelConfig().getTemperature();
+            float temperatureFromBuilder = TaskBuilder.getBuilder().getConfig().getModelConfig().getTemperature();
             // 如果 modelFromBuilder 有值，则使用它来创建 AIModelConfig
             return new AIModelConfig(
                     modelFromBuilder,

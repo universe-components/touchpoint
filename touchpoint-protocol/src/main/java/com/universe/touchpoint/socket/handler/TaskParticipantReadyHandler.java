@@ -3,7 +3,7 @@ package com.universe.touchpoint.socket.handler;
 import android.content.Context;
 import android.util.Pair;
 
-import com.universe.touchpoint.AgentBuilder;
+import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.ActionConfig;
 import com.universe.touchpoint.config.TransportConfig;
@@ -22,8 +22,8 @@ public class TaskParticipantReadyHandler implements AgentSocketStateHandler<Pair
             }
         }
         return Pair.create(
-            AgentBuilder.getBuilder().getConfig().getTransportConfig(),
-            AgentBuilder.getBuilder().getConfig().getModelConfig()
+            TaskBuilder.getBuilder().getConfig().getTransportConfig(),
+            TaskBuilder.getBuilder().getConfig().getModelConfig()
         );
     }
 
