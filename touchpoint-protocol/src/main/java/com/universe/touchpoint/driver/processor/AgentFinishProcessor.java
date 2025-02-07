@@ -21,8 +21,10 @@ public class AgentFinishProcessor<T extends TouchPoint> extends ResultProcessor<
     public String process() {
         DriverRegion driverRegion = DriverRegion.getInstance(DriverRegion.class);
         if (driverRegion.getPredecessors(result.getHeader().getFromAction()) == null) {
-            tpReceiver.onReceive((T) result, context);
-            return null;
+            if (tpReceiver != null) {
+                tpReceiver.onReceive((T) result, context);
+                return null;
+            }
         }
         if (transportType == Transport.DUBBO) {
             return result.getOutput();
