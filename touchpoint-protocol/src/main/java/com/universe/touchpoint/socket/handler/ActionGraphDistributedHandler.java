@@ -5,13 +5,15 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
-import com.universe.touchpoint.config.ActionConfig;
-import com.universe.touchpoint.context.AgentContext;
+import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.context.TaskActionContext;
+import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.driver.ActionGraph;
 import com.universe.touchpoint.memory.regions.DriverRegion;
+import com.universe.touchpoint.router.RouteTable;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 import com.universe.touchpoint.transport.TouchPointTransportRegistry;
 import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
@@ -28,19 +30,28 @@ public class ActionGraphDistributedHandler implements AgentSocketStateHandler<Bo
         TaskActionContext taskActionContext = (TaskActionContext) actionContext;
         if (actionGraph != null) {
             DriverRegion driverRegion = DriverRegion.getInstance(DriverRegion.class);
-            List<ActionConfig> predecessors  = actionGraph.getPredecessors(new ActionConfig(taskActionContext.getActionName()));
-            List<ActionConfig> successors = actionGraph.getSuccessors(new ActionConfig(taskActionContext.getActionName()));
+            AgentActionMetaInfo actionMetaInfo = driverRegion.getTouchPointAction(taskActionContext.getAction());
+            List<AgentActionMetaInfo> predecessors  = actionGraph.getPredecessors(actionMetaInfo);
+            List<AgentActionMetaInfo> successors = actionGraph.getSuccessors(actionMetaInfo);
 
             TouchPointTransportRegistry registry = TouchPointTransportRegistryFactory
                     .createRegistry(Objects.requireNonNull(Agent.agentConfig()).keySet().iterator().next());
             AgentActionManager manager = AgentActionManager.getInstance();
 
-            predecessors.forEach(action -> registry.register(context, driverRegion.getTouchPointAction(action.getName())));
-            successors.forEach(action -> manager.registerAgentFinishReceiver(
-                    context, action.getName(), driverRegion.getTouchPointAction(action.getName()).inputClass()));
+            predecessors.forEach(action -> registry.register(context, driverRegion.getTouchPointAction(action.actionName())));
+            successors.forEach(action -> {
+                try {
+                    manager.registerAgentFinishReceiver(
+                            context,
+                            action.actionName(),
+                            (Class<? extends TouchPoint>) Class.forName(driverRegion.getTouchPointAction(action.actionName()).inputClassName()));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
-            driverRegion.putPredecessors(taskActionContext.getActionName(), predecessors);
-            driverRegion.putSuccessors(taskActionContext.getActionName(), successors);
+            RouteTable.getInstance().putPredecessors(taskActionContext.getAction(), predecessors);
+            RouteTable.getInstance().putSuccessors(taskActionContext.getAction(), successors);
         }
         return true;
     }

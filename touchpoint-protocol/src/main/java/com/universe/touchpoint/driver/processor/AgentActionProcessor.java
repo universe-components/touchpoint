@@ -6,6 +6,7 @@ import android.util.Pair;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.ai.AIModelFactory;
 import com.universe.touchpoint.ai.AIModelSelector;
@@ -14,12 +15,9 @@ import com.universe.touchpoint.ai.ChoiceParserFactory;
 import com.universe.touchpoint.ai.prompt.PromptBuilder;
 import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.config.AIModelConfig;
-import com.universe.touchpoint.config.ActionConfig;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.driver.ResultProcessor;
-import com.universe.touchpoint.memory.Region;
-import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.DriverRegion;
+import com.universe.touchpoint.router.RouteTable;
 
 import java.util.List;
 import java.util.Map;
@@ -41,8 +39,7 @@ public class AgentActionProcessor<T extends TouchPoint> extends ResultProcessor<
 
         AIModelConfig modelConfig = AIModelSelector.selectModel(goal, result);
 
-        DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
-        List<ActionConfig> nextActions = driverRegion.getSuccessors(result == null ? task : result.getAction());
+        List<AgentActionMetaInfo> nextActions = RouteTable.getInstance().getSuccessors(result == null ? task : result.getAction());
 
         String input = PromptBuilder.createPromptGenerator(modelConfig.getType()).generatePrompt(nextActions, result, goal);
 

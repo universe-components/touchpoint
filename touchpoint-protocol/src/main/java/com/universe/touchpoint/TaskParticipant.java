@@ -60,7 +60,7 @@ public class TaskParticipant {
         for (Pair<String, List<Object>> pair : receiverFilterPair) {
             List<Object> properties = pair.second;  // 获取 List<Object>
             for (String task : (String[]) properties.get(4)) {
-                TaskActionContext actionContext = new TaskActionContext(pair.first, task);
+                TaskActionContext actionContext = new TaskActionContext((String) properties.get(0), task);
                 AgentSocketStateMachine.getInstance().registerReceiver(context, actionContext);
             }
         }

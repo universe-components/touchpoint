@@ -47,16 +47,17 @@ public class AgentActionManager {
 
             Type[] interfaces = tpInstanceReceiverClass.getGenericInterfaces();
             ParameterizedType parameterizedType = (ParameterizedType) interfaces[0];
-            Type actualType = parameterizedType.getActualTypeArguments()[0];
+            Type inputType = parameterizedType.getActualTypeArguments()[0];
+            Type outputType = parameterizedType.getActualTypeArguments()[1];
 
-            String touchPointClassName = null;
+            String inputClassName = null;
+            String outputClassName = null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                touchPointClassName = actualType.getTypeName();
+                inputClassName = inputType.getTypeName();
+                outputClassName = outputType.getTypeName();
             }
-            Class<?> touchPointClazz = Class.forName(touchPointClassName);
-            Class<? extends TouchPoint> touchPointClass = touchPointClazz.asSubclass(TouchPoint.class);
 
-            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, touchPointClass, model, transportConfig);
+            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, inputClassName, outputClassName, model, transportConfig);
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
             driverRegion.putTouchPointAction(
                     TouchPointHelper.touchPointActionName(actionName, agentName), agentActionMetaInfo);
@@ -80,7 +81,12 @@ public class AgentActionManager {
     public <T extends TouchPoint> T paddingActionInput(String actionName, String actionInput, String agentName) {
         DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
         AgentActionMetaInfo agentActionMetaInfo = driverRegion.getTouchPointAction(TouchPointHelper.touchPointActionName(actionName, agentName));
-        Class<T> inputClass = (Class<T>) agentActionMetaInfo.inputClass();
+        Class<T> inputClass;
+        try {
+            inputClass = (Class<T>) Class.forName(agentActionMetaInfo.inputClassName());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         // 分割输入
         String[] actionInputs = actionInput.split("\\|");

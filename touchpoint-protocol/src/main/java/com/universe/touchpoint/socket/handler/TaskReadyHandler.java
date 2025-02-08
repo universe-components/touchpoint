@@ -2,22 +2,19 @@ package com.universe.touchpoint.socket.handler;
 
 import android.content.Context;
 
+import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.context.AgentContext;
+import com.universe.touchpoint.memory.regions.DriverRegion;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 import com.universe.touchpoint.context.TaskActionContext;
-import com.universe.touchpoint.config.ActionConfig;
-import com.universe.touchpoint.config.mapping.ActionConfigMapping;
-import com.universe.touchpoint.utils.AnnotationUtils;
 
-public class TaskReadyHandler implements AgentSocketStateHandler<ActionConfig> {
+public class TaskReadyHandler implements AgentSocketStateHandler<AgentActionMetaInfo> {
 
     @Override
-    public <C extends AgentContext> ActionConfig onStateChange(Object actionCtx, C agentContext, Context context, String task) {
+    public <C extends AgentContext> AgentActionMetaInfo onStateChange(Object actionCtx, C agentContext, Context context, String task) {
         try {
-            return (ActionConfig) AnnotationUtils.annotation2Config(
-                    Class.forName(((TaskActionContext) actionCtx).getActionName()),
-                    ActionConfigMapping.annotation2Config
-            );
+            DriverRegion driverRegion = DriverRegion.getInstance(DriverRegion.class);
+            return driverRegion.getTouchPointAction(((TaskActionContext) actionCtx).getAction());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

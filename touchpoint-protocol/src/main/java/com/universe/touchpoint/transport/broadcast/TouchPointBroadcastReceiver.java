@@ -20,8 +20,8 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
     private final Class<T> tpClass;
     private final Context mContext;
 
-    public TouchPointBroadcastReceiver(Class<T> tpClass, Context context) {
-        this.tpClass = tpClass;
+    public TouchPointBroadcastReceiver(Class<?> tpClass, Context context) {
+        this.tpClass = (Class<T>) tpClass;
         this.mContext = context;
     }
 

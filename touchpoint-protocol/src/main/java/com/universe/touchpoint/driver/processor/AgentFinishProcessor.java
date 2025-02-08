@@ -8,7 +8,7 @@ import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.driver.ResultProcessor;
-import com.universe.touchpoint.memory.regions.DriverRegion;
+import com.universe.touchpoint.router.RouteTable;
 
 public class AgentFinishProcessor<T extends TouchPoint> extends ResultProcessor<AgentFinish, T> {
 
@@ -19,8 +19,7 @@ public class AgentFinishProcessor<T extends TouchPoint> extends ResultProcessor<
 
     @Override
     public String process() {
-        DriverRegion driverRegion = DriverRegion.getInstance(DriverRegion.class);
-        if (driverRegion.getPredecessors(result.getHeader().getFromAction()) == null) {
+        if (RouteTable.getInstance().getPredecessors(result.getHeader().getFromAction()) == null) {
             if (tpReceiver != null) {
                 tpReceiver.onReceive((T) result, context);
                 return null;

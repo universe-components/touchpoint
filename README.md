@@ -96,8 +96,6 @@ data class WeatherResponse(val weather: String, val temperature: String) : Touch
 ```kotlin
 @TouchPointAction(
     name = "weather_action",
-    toAgents = {"entry_agent"}, // 可以指定多个目标Agent
-    toActions = {""} // 可以指定多个目标Action
     tasks = {"entry_agent"} // 可以指定多个参与的任务
 ) 
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
@@ -146,8 +144,7 @@ class WeathertListener : AgentActionListener<String, WeatherResponse> {
 ```kotlin
 @TouchPointAction(
     name = "weather_action",
-    fromAgent = {"entry_agent"}, // 可以指定多个来源Agent
-    taskProposers = {"entry_agent"} // 可以指定多个任务发起者
+    tasks = {"entry_agent"} // 可以指定多个任务发起者
 ) 
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 @DubboService(interfaceClass = IWeatherService::class) //必须指定接口
