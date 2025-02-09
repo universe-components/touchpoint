@@ -13,11 +13,16 @@ import com.universe.touchpoint.ai.AIModelSelector;
 import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.ai.ChoiceParserFactory;
 import com.universe.touchpoint.ai.prompt.PromptBuilder;
+import com.universe.touchpoint.annotations.ActionRole;
+import com.universe.touchpoint.api.Operator;
 import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.driver.CollaborationFactory;
 import com.universe.touchpoint.driver.ResultProcessor;
 import com.universe.touchpoint.router.RouteTable;
+import com.universe.touchpoint.socket.AgentSocketState;
+import com.universe.touchpoint.socket.AgentSocketStateMachine;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +36,15 @@ public class AgentActionProcessor<T extends TouchPoint> extends ResultProcessor<
 
     @Override
     public String process() {
+        if (result.getMeta().role() == ActionRole.PROPOSER) {
+            Operator<?> operator = CollaborationFactory.getInstance(task).getOperator(result.getMeta().state());
+            AgentSocketStateMachine.getInstance().send(
+                    new AgentSocketStateMachine.AgentSocketStateContext<>(
+                            AgentSocketState.ACTION_GRAPH_DISTRIBUTED, operator.run(result.getActionInput())),
+                    context,
+                    task);
+            return null;
+        }
         if (tpReceiver != null) {
             String actionResult = tpReceiver.onReceive(
                     (T) result.getActionInput(), context).toString();
@@ -47,7 +61,9 @@ public class AgentActionProcessor<T extends TouchPoint> extends ResultProcessor<
         ChoiceParser<Object, Object> choiceParser = ChoiceParserFactory.selectParser(modelConfig.getType());
         Pair<List<AgentAction>, AgentFinish> answer = choiceParser.parse(choices);
 
-        TouchPointContextManager.generateTouchPoint(answer.second, goal).finish();
+        for (AgentAction agentAction : answer.first) {
+            TouchPointContextManager.generateTouchPoint(agentAction, goal).finish();
+        }
         return null;
     }
 

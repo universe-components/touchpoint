@@ -13,6 +13,10 @@ public @interface TouchPointAction {
 
     String desc();
 
+    String status();
+
+    ActionRole role() default ActionRole.PARTICIPANT;
+
 //    String[] toAgents() default {};
 //
 //    String[] toActions() default {};

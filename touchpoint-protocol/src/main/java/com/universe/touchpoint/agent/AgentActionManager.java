@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.annotations.ActionRole;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -41,6 +42,8 @@ public class AgentActionManager {
             TransportConfig<T> transportConfig,
             String actionName,
             String actionDesc,
+            String state,
+            ActionRole role,
             String agentName) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(receiverClassName);
@@ -57,7 +60,7 @@ public class AgentActionManager {
                 outputClassName = outputType.getTypeName();
             }
 
-            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, inputClassName, outputClassName, model, transportConfig);
+            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, state, role, inputClassName, outputClassName, model, transportConfig);
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
             driverRegion.putTouchPointAction(
                     TouchPointHelper.touchPointActionName(actionName, agentName), agentActionMetaInfo);

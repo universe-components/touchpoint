@@ -12,10 +12,6 @@ public class TouchPointConstants {
 
     public static final String TOUCH_POINT_EVENT_NAME = "touch_point";
 
-    public static final String TOUCH_POINT_ROUTER_FILTER_NAME = "router";
-
-    public static final String TOUCH_POINT_ROUTER_EVENT_NAME = "route_entry";
-
     public static final String TOUCH_POINT_TASK_STATE_FILTER = "task_state";
 
     public static final String TOUCH_POINT_TASK_STATE_EVENT = "task_state_event";

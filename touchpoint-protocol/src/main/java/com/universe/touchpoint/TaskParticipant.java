@@ -5,14 +5,19 @@ import android.util.Pair;
 
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
+import com.universe.touchpoint.annotations.ActionRole;
+import com.universe.touchpoint.annotations.collaboration.Operator;
+import com.universe.touchpoint.annotations.collaboration.TaskStatus;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.config.mapping.AIModelConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.context.TaskActionContext;
+import com.universe.touchpoint.driver.CollaborationFactory;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.utils.AnnotationUtils;
+import com.universe.touchpoint.utils.ApkUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -38,6 +43,7 @@ public class TaskParticipant {
                                                                     Class.forName(clazz),
                                                                     AIModelConfigMapping.annotation2Config);
 
+
                 /*
                  * Local Registry
                  */
@@ -49,10 +55,45 @@ public class TaskParticipant {
                                     transportConfig),
                             (String) properties.get(0),
                             (String) properties.get(1),
+                            (String) properties.get(2),
+                            (ActionRole) properties.get(3),
                             Agent.getName());
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
+        }
+    }
+
+    public static void registerCollaboration(Context context) {
+        List<Pair<String, List<Object>>> taskStatusPair = ApkUtils.getClassNames(
+                context,
+                TaskStatus.class,
+                List.of("task"),
+                false
+        );
+        try {
+            for (Pair<String, List<Object>> pair : taskStatusPair) {
+                CollaborationFactory.getInstance((String) pair.second.get(0))
+                        .setStatusClass((Class<Enum<?>>) Class.forName(pair.first));
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+
+        List<Pair<String, List<Object>>> taskOperatorPair = ApkUtils.getClassNames(
+                context,
+                Operator.class,
+                List.of("task", "taskStatus"),
+                false
+        );
+        try {
+            for (Pair<String, List<Object>> pair : taskOperatorPair) {
+                com.universe.touchpoint.api.Operator operator = (com.universe.touchpoint.api.Operator) Class.forName(pair.first).getConstructor().newInstance();
+                CollaborationFactory.getInstance((String) pair.second.get(0))
+                        .registerOperator((String) pair.second.get(1), operator);
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 
