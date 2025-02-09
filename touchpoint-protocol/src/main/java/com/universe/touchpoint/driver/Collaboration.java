@@ -8,13 +8,13 @@ import java.util.Map;
 public class Collaboration {
 
     private Class<Enum<?>> statusClass;
-    private final Map<String, Operator<?>> operatorMap = new HashMap<>();
+    private final Map<String, Operator> operatorMap = new HashMap<>();
 
     public void setStatusClass(Class<Enum<?>> statusClass) {
         this.statusClass = statusClass;
     }
 
-    public void registerOperator(String status, Operator<?> operator) {
+    public void registerOperator(String status, Operator operator) {
         operatorMap.put(status, operator);
     }
 
@@ -22,7 +22,7 @@ public class Collaboration {
         return statusClass;
     }
 
-    public Operator<?> getOperator(String status) {
+    public Operator getOperator(String status) {
         return operatorMap.get(status);
     }
 

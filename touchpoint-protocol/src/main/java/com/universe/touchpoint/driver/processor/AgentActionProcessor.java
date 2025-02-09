@@ -14,11 +14,11 @@ import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.ai.ChoiceParserFactory;
 import com.universe.touchpoint.ai.prompt.PromptBuilder;
 import com.universe.touchpoint.annotations.ActionRole;
-import com.universe.touchpoint.api.Operator;
 import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Transport;
-import com.universe.touchpoint.driver.CollaborationFactory;
+import com.universe.touchpoint.config.TransportConfig;
+import com.universe.touchpoint.driver.CoordinatorReadyHandler;
 import com.universe.touchpoint.driver.ResultProcessor;
 import com.universe.touchpoint.router.RouteTable;
 import com.universe.touchpoint.socket.AgentSocketState;
@@ -37,10 +37,10 @@ public class AgentActionProcessor<T extends TouchPoint> extends ResultProcessor<
     @Override
     public String process() {
         if (result.getMeta().role() == ActionRole.PROPOSER) {
-            Operator<?> operator = CollaborationFactory.getInstance(task).getOperator(result.getMeta().state());
+            Pair<TransportConfig<?>, AIModelConfig> globalConfig = new CoordinatorReadyHandler().onStateChange(result, null, context, task);
             AgentSocketStateMachine.getInstance().send(
                     new AgentSocketStateMachine.AgentSocketStateContext<>(
-                            AgentSocketState.ACTION_GRAPH_DISTRIBUTED, operator.run(result.getActionInput())),
+                            AgentSocketState.GLOBAL_CONFIG_DISTRIBUTED, globalConfig),
                     context,
                     task);
             return null;

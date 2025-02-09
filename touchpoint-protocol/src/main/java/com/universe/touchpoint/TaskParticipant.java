@@ -6,8 +6,7 @@ import android.util.Pair;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.annotations.ActionRole;
-import com.universe.touchpoint.annotations.collaboration.Operator;
-import com.universe.touchpoint.annotations.collaboration.TaskStatus;
+import com.universe.touchpoint.annotations.Coordinator;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
@@ -65,24 +64,9 @@ public class TaskParticipant {
     }
 
     public static void registerCollaboration(Context context) {
-        List<Pair<String, List<Object>>> taskStatusPair = ApkUtils.getClassNames(
-                context,
-                TaskStatus.class,
-                List.of("task"),
-                false
-        );
-        try {
-            for (Pair<String, List<Object>> pair : taskStatusPair) {
-                CollaborationFactory.getInstance((String) pair.second.get(0))
-                        .setStatusClass((Class<Enum<?>>) Class.forName(pair.first));
-            }
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-
         List<Pair<String, List<Object>>> taskOperatorPair = ApkUtils.getClassNames(
                 context,
-                Operator.class,
+                Coordinator.class,
                 List.of("task", "taskStatus"),
                 false
         );

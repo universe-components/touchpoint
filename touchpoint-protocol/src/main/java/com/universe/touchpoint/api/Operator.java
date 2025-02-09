@@ -2,8 +2,8 @@ package com.universe.touchpoint.api;
 
 import com.universe.touchpoint.TouchPoint;
 
-public interface Operator<O> {
+public interface Operator {
 
-    O run(TouchPoint input);
+    void run(TouchPoint input);
 
 }
