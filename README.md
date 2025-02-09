@@ -68,6 +68,22 @@ data class Entry {
 }
 ```
 
+如果需要 `Entry Agent` 重新编排Actions，可以添加注解 `Coordinator`，并实现接口 `ActionCoordinator` 中方法 `run()`如下：
+```kotlin
+    @TouchPointAction(
+    name = "weather_action",
+    tasks = {"entry_agent"} // 可以指定多个任务发起者
+)
+@AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
+@Coordinator(task = "taskA", taskStatus = "coordinator_ready") // 其中，taskStatus为上一步Action执行后的状态
+class Entry : ActionCoordinator {
+
+    override fun run(actionGraph: Map<AgentActionMetaInfo, List<AgentActionMetaInfo>>) {
+        // 重新编排 Actions
+    }
+}
+```
+
 #### Weather Agent
 
 `WeatherApplication` 继承 `AgentApplication`
@@ -183,24 +199,6 @@ class WeatherService {
         } else {
             throw RunTimeException("无法获取天气信息，请检查城市名称是否正确。")
         }
-    }
-
-}
-```
-
-如果需要 `weather_action`重新编排Actions，可以添加注解 `Coordinator`，并实现接口 `Operator` 中方法 `run()`如下：
-```kotlin
-    @TouchPointAction(
-    name = "weather_action",
-    tasks = {"entry_agent"} // 可以指定多个任务发起者
-)
-@AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
-@DubboService(interfaceClass = IWeatherService::class) //必须指定接口
-@Coordinator(task = "taskA", taskStatus = "coordinator_ready") // 其中，taskStatus为上一步Action执行后的状态
-class WeatherService implements ActionCoordinator {
-
-    override fun run(Map<AgentActionMetaInfo, List<AgentActionMetaInfo>> actionGraph) {
-        // 重新编排Actions
     }
 
 }
