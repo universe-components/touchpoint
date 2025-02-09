@@ -16,8 +16,8 @@ public class CoordinatorReadyHandler implements AgentSocketStateHandler<Pair<Tra
     @Override
     public <C extends AgentContext> Pair<TransportConfig<?>, AIModelConfig> onStateChange(Object input, C agentContext, Context context, String task) {
         AgentAction action = (AgentAction) input;
-        ActionCoordinator actionCoordinator = CollaborationFactory.getInstance(task).getOperator(action.getMeta().state());
-        actionCoordinator.run(ActionGraphBuilder.getTaskGraph(task).getAdjList());
+        ActionCoordinator actionCoordinator = CollaborationFactory.getInstance(task).getOperator(action.getAction());
+        actionCoordinator.run(action.getActionInput(), ActionGraphBuilder.getTaskGraph(task).getAdjList());
         return Pair.create(
                 TaskBuilder.getBuilder().getConfig().getTransportConfig(),
                 TaskBuilder.getBuilder().getConfig().getModelConfig()

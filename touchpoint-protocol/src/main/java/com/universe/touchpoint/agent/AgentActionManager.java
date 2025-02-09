@@ -42,7 +42,6 @@ public class AgentActionManager {
             TransportConfig<T> transportConfig,
             String actionName,
             String actionDesc,
-            String state,
             ActionRole role,
             String agentName) {
         try {
@@ -51,16 +50,20 @@ public class AgentActionManager {
             Type[] interfaces = tpInstanceReceiverClass.getGenericInterfaces();
             ParameterizedType parameterizedType = (ParameterizedType) interfaces[0];
             Type inputType = parameterizedType.getActualTypeArguments()[0];
-            Type outputType = parameterizedType.getActualTypeArguments()[1];
 
             String inputClassName = null;
-            String outputClassName = null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 inputClassName = inputType.getTypeName();
-                outputClassName = outputType.getTypeName();
+            }
+            String outputClassName = null;
+            if (parameterizedType.getActualTypeArguments().length > 1) {
+                Type outputType = parameterizedType.getActualTypeArguments()[1];
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    outputClassName = outputType.getTypeName();
+                }
             }
 
-            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, state, role, inputClassName, outputClassName, model, transportConfig);
+            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, role, inputClassName, outputClassName, model, transportConfig);
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
             driverRegion.putTouchPointAction(
                     TouchPointHelper.touchPointActionName(actionName, agentName), agentActionMetaInfo);

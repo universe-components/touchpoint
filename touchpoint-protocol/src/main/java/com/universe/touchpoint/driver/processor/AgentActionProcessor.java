@@ -36,7 +36,7 @@ public class AgentActionProcessor<T extends TouchPoint> extends ResultProcessor<
 
     @Override
     public String process() {
-        if (result.getMeta().role() == ActionRole.PROPOSER) {
+        if (result.getMeta().role() == ActionRole.COORDINATOR) {
             Pair<TransportConfig<?>, AIModelConfig> globalConfig = new CoordinatorReadyHandler().onStateChange(result, null, context, task);
             AgentSocketStateMachine.getInstance().send(
                     new AgentSocketStateMachine.AgentSocketStateContext<>(

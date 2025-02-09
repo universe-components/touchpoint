@@ -8,7 +8,6 @@ public record AgentActionMetaInfo(
         String actionName,
         String className,
         String desc,
-        String state,
         ActionRole role,
         String inputClassName,
         String outputClassName,
