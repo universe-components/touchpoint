@@ -7,6 +7,7 @@ import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.annotations.ActionRole;
 import com.universe.touchpoint.annotations.Coordinator;
+import com.universe.touchpoint.api.ActionCoordinator;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
@@ -72,9 +73,9 @@ public class TaskParticipant {
         );
         try {
             for (Pair<String, List<Object>> pair : taskOperatorPair) {
-                com.universe.touchpoint.api.Operator operator = (com.universe.touchpoint.api.Operator) Class.forName(pair.first).getConstructor().newInstance();
+                ActionCoordinator actionCoordinator = (ActionCoordinator) Class.forName(pair.first).getConstructor().newInstance();
                 CollaborationFactory.getInstance((String) pair.second.get(0))
-                        .registerOperator((String) pair.second.get(1), operator);
+                        .registerOperator((String) pair.second.get(1), actionCoordinator);
             }
         } catch (Exception ex) {
             throw new RuntimeException(ex);

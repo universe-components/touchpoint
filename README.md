@@ -196,10 +196,10 @@ class WeatherService {
 )
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 @DubboService(interfaceClass = IWeatherService::class) //必须指定接口
-@Coordinator(task = "taskA", taskStatus = "coordinator_ready")
-class WeatherService implements Operator {
+@Coordinator(task = "taskA", taskStatus = "coordinator_ready") // 其中，taskStatus为上一步Action执行后的状态
+class WeatherService implements ActionCoordinator {
 
-    override fun run(touchPoint: TouchPoint) {
+    override fun run(Map<AgentActionMetaInfo, List<AgentActionMetaInfo>> actionGraph) {
         // 重新编排Actions
     }
 
