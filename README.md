@@ -71,11 +71,11 @@ data class Entry {
 如果需要 `Entry Agent` 重新编排Actions，可以添加注解 `Coordinator`，并实现接口 `ActionCoordinator` 中方法 `run()`如下：
 ```kotlin
 @TouchPointAction(
-    name = "weather_action",
-    tasks = {"entry_agent"} // 可以指定多个任务发起者
+    name = "entry_action",
+    tasks = {"query_weather"} // 可以指定多个任务发起者
 )
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
-@Coordinator(task = "taskA", taskStatus = "coordinator_ready") // 其中，taskStatus为上一步Action执行后的状态
+@Coordinator(task = "query_weather", taskStatus = "coordinator_ready") // 其中，taskStatus为上一步Action执行后的状态
 class Entry : ActionCoordinator {
 
     override fun run(actionGraph: Map<AgentActionMetaInfo, List<AgentActionMetaInfo>>) {
