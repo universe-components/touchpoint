@@ -17,9 +17,9 @@ public @interface TouchPointAction {
 
     ActionRole role() default ActionRole.PARTICIPANT;
 
-//    String[] toAgents() default {};
-//
-//    String[] toActions() default {};
+    String[] toAgents() default {};
+
+    String[] toActions() default {};
 
     String[] tasks() default {};
 
