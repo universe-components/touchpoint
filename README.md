@@ -74,9 +74,9 @@ data class Entry {
     name = "entry_action", role = ActionRole.COORDINATOR
 )
 @Coordinator(task = "query_weather") // task指定哪个任务的协调者
-class Entry : ActionCoordinator<Boolean> {
+class Entry : ActionCoordinator {
 
-    override fun run(Boolean condition, actionGraph: Map<AgentActionMetaInfo, List<AgentActionMetaInfo>>) {
+    override fun run(TouchPoint condition, actionGraph: Map<AgentActionMetaInfo, List<AgentActionMetaInfo>>) {
         // 重新编排 Actions
     }
     
