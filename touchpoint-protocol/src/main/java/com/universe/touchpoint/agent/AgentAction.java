@@ -10,6 +10,10 @@ public class AgentAction extends TouchPoint {
     private TouchPoint actionInput;
     private AgentActionMetaInfo meta;
 
+    public AgentAction(String goal, Header header) {
+        super(goal, header);
+    }
+
     public AgentAction(String action, TouchPoint actionInput, String thought, AgentActionMetaInfo meta) {
         super();
         this.action = action;

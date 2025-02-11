@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.TouchPointAction;
-import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.memory.Region;
@@ -25,7 +25,7 @@ public class TouchPointChannelManager {
         channelMapping.put(Transport.DUBBO, TouchPointDubboChannel.class);
     }
 
-    public static TouchPointChannel defaultChannel(Context context) {
+    public static TouchPointChannel<?> defaultChannel(Context context) {
         try {
             return new TouchPointBroadcastChannel(context);
         } catch (Exception e) {
@@ -33,24 +33,22 @@ public class TouchPointChannelManager {
         }
     }
 
-    public static <A, C> TouchPointChannel selectChannel(A action, Context context) {
-        if (action instanceof AgentAction) {
-            Transport transport = ((AgentAction) action).getMeta().transportConfig().transportType();
-            C config = (C) ((AgentAction) action).getMeta().transportConfig().config();
+    public static <C> TouchPointChannel<?> selectChannel(AgentActionMetaInfo actionMeta, Context context) {
+        Transport transport = actionMeta.transportConfig().transportType();
+        C config = (C) actionMeta.transportConfig().config();
 
-            if (transport == null) {
-                return new TouchPointBroadcastChannel(context);
-            }
+        if (transport == null) {
+            return new TouchPointBroadcastChannel(context);
+        }
 
-            if (channelMapping.containsKey(transport)) {
-                try {
-                    return (TouchPointChannel) Objects.requireNonNull(
-                            channelMapping.get(transport))
-                            .getConstructor(Context.class, config.getClass())
-                            .newInstance(context, config);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+        if (channelMapping.containsKey(transport)) {
+            try {
+                return (TouchPointChannel<?>) Objects.requireNonNull(
+                        channelMapping.get(transport))
+                        .getConstructor(Context.class, config.getClass())
+                        .newInstance(context, config);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
 

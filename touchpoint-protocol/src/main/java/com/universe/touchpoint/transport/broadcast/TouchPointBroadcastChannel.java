@@ -9,15 +9,15 @@ import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.utils.SerializeUtils;
 
-public class TouchPointBroadcastChannel extends TouchPointChannel {
+public class TouchPointBroadcastChannel extends TouchPointChannel<Boolean> {
 
     public TouchPointBroadcastChannel(Context context) {
         super(context);
     }
 
     @Override
-    public <T extends TouchPoint> boolean send(T touchpoint) {
-        String filter = TouchPointHelper.touchPointFilterName(touchpoint.getHeader().getFromAction());
+    public <T extends TouchPoint> Boolean send(T touchpoint) {
+        String filter = TouchPointHelper.touchPointFilterName(touchpoint.getHeader().getFromAction().actionName());
         Intent intent = new Intent(filter);
         intent.putExtra(TouchPointConstants.TOUCH_POINT_EVENT_NAME, SerializeUtils.serializeToByteArray(touchpoint));
         context.sendBroadcast(intent);

@@ -20,11 +20,11 @@ public class TouchPointContextManager {
         return generateTouchPoint(tpClass, name, ctx);
     }
 
-    public static <A extends TouchPoint> A generateTouchPoint(A action, String content) {
+    public static AgentAction generateTouchPoint(AgentAction action, String content) {
         Context ctx = Agent.getContext();
-        TouchPointChannel channel = TouchPointChannelManager.selectChannel(action, ctx);
+        TouchPointChannel channel = TouchPointChannelManager.selectChannel(action.getMeta(), ctx);
 
-        action.setHeader(new TouchPoint.Header(((AgentAction) action).getMeta().actionName(), channel));
+        action.setHeader(new TouchPoint.Header(action.getMeta(), channel));
         action.setGoal(content);
 
         return action;

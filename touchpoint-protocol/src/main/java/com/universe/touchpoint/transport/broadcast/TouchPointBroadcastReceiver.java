@@ -8,7 +8,7 @@ import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.config.Transport;
-import com.universe.touchpoint.driver.ResultProcessorAdapter;
+import com.universe.touchpoint.driver.ResultExchanger;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.TransportRegion;
@@ -32,13 +32,13 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
 
         T touchPoint = SerializeUtils.deserializeFromByteArray(touchPointBytes, tpClass);
 
-        String filter = TouchPointHelper.touchPointFilterName(touchPoint.getHeader().getFromAction());
+        String filter = TouchPointHelper.touchPointFilterName(touchPoint.getHeader().getFromAction().actionName());
 
         TransportRegion transportRegion = TouchPointMemory.getRegion(Region.TRANSPORT);
         TouchPointListener<T, ?> tpReceiver = (TouchPointListener<T, ?>) transportRegion.getTouchPointReceiver(filter);
 
-        ResultProcessorAdapter.getProcessor(
-                touchPoint, touchPoint.goal, null, tpReceiver, mContext, Transport.BROADCAST).process();
+        ResultExchanger.exchange(
+                touchPoint, touchPoint.goal, null, tpReceiver, mContext, Transport.BROADCAST);
     }
 
 }

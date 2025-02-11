@@ -5,16 +5,38 @@ import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class ActionGraph {
 
-    // 使用 HashMap 存储邻接表，键为 ActionConfig 节点，值为与该节点相邻的节点列表
+    // 使用 HashMap 存储邻接表，键为 AgentActionMetaInfo 节点，值为与该节点相邻的节点列表
     private final Map<AgentActionMetaInfo, List<AgentActionMetaInfo>> adjList = new HashMap<>();
 
-    // 根据指定节点获取该节点的子图（包含该节点以及从该节点可达的所有节点和边）
+    public List<AgentActionMetaInfo> getFirstNodes() {
+        // 用一个集合存储所有节点
+        Set<AgentActionMetaInfo> allNodes = adjList.keySet();
+        // 用一个集合存储所有被作为邻接点的节点
+        Set<AgentActionMetaInfo> nodesWithPredecessors = new HashSet<>();
+
+        // 遍历邻接表，找出所有作为邻接节点的节点
+        for (List<AgentActionMetaInfo> neighbors : adjList.values()) {
+            nodesWithPredecessors.addAll(neighbors);
+        }
+
+        // 返回那些在 allNodes 中，但不在 nodesWithPredecessors 中的节点
+        List<AgentActionMetaInfo> result = new ArrayList<>();
+        for (AgentActionMetaInfo node : allNodes) {
+            if (!nodesWithPredecessors.contains(node)) {
+                result.add(node);
+            }
+        }
+
+        return result;
+    }
 
     // 添加节点：如果图中不存在该节点，则添加一个新的条目
     public void addNode(AgentActionMetaInfo node) {

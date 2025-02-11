@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.universe.touchpoint.TouchPoint;
 
-public abstract class TouchPointChannel {
+public abstract class TouchPointChannel<R> {
 
     protected final Context context;
 
@@ -12,6 +12,6 @@ public abstract class TouchPointChannel {
         this.context = context;
     }
 
-    public abstract <T extends TouchPoint> boolean send(T touchpoint);
+    public abstract <T extends TouchPoint> R send(T touchpoint);
 
 }

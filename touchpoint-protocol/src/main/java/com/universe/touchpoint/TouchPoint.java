@@ -5,6 +5,7 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 
 import com.universe.touchpoint.agent.Agent;
+import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.provider.TouchPointContent;
@@ -14,10 +15,15 @@ import java.lang.reflect.Field;
 
 public abstract class TouchPoint {
 
-    private Header header = new Header();
+    protected Header header = new Header();
     public String goal;
 
     protected TouchPoint() {
+    }
+
+    protected TouchPoint(String goal, Header header) {
+        this.goal = goal;
+        this.header = header;
     }
 
     public void setGoal(String goal) {
@@ -67,13 +73,14 @@ public abstract class TouchPoint {
     public boolean finish() {
         try {
             String contentProviderUri = TouchPointHelper.touchPointContentProviderUri(
-                    TouchPointConstants.CONTENT_PROVIDER_PREFIX, header.fromAction);
+                    TouchPointConstants.CONTENT_PROVIDER_PREFIX, header.fromAction.actionName());
             TouchPointContent touchPointContent = TouchPointContentFactory.createContent(Uri.parse(contentProviderUri), Agent.getContext());
             boolean rs = touchPointContent.insertOrUpdate(this);
             if (!rs) {
                 throw new RuntimeException("insertOrUpdate failed");
             }
-            return header.channel.send(this);
+            header.channel.send(this);
+            return true;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -81,19 +88,23 @@ public abstract class TouchPoint {
 
     public static class Header {
 
-        private String fromAction = null;
-        private String toAction = null;
+        private AgentActionMetaInfo fromAction = null;
+        private final String toAction = null;
         private transient TouchPointChannel channel;
 
         public Header() {
         }
 
-        public Header(String fromAction, TouchPointChannel channel) {
+        public Header(AgentActionMetaInfo fromAction) {
+            this.fromAction = fromAction;
+        }
+
+        public Header(AgentActionMetaInfo fromAction, TouchPointChannel channel) {
             this.fromAction = fromAction;
             this.channel = channel;
         }
 
-        public String getFromAction() {
+        public AgentActionMetaInfo getFromAction() {
             return fromAction;
         }
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Pair;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.agent.AgentFinish;
@@ -13,16 +12,12 @@ import com.universe.touchpoint.ai.AIModelSelector;
 import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.ai.ChoiceParserFactory;
 import com.universe.touchpoint.ai.prompt.PromptBuilder;
-import com.universe.touchpoint.annotations.ActionRole;
 import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Transport;
-import com.universe.touchpoint.config.TransportConfig;
-import com.universe.touchpoint.driver.CoordinatorReadyHandler;
+import com.universe.touchpoint.driver.ResultDispatcher;
 import com.universe.touchpoint.driver.ResultProcessor;
 import com.universe.touchpoint.router.RouteTable;
-import com.universe.touchpoint.socket.AgentSocketState;
-import com.universe.touchpoint.socket.AgentSocketStateMachine;
 
 import java.util.List;
 import java.util.Map;
@@ -36,15 +31,6 @@ public class AgentActionProcessor<T extends TouchPoint> extends ResultProcessor<
 
     @Override
     public String process() {
-        if (result.getMeta().role() == ActionRole.COORDINATOR) {
-            Pair<TransportConfig<?>, AIModelConfig> globalConfig = new CoordinatorReadyHandler().onStateChange(result, null, context, task);
-            AgentSocketStateMachine.getInstance().send(
-                    new AgentSocketStateMachine.AgentSocketStateContext<>(
-                            AgentSocketState.GLOBAL_CONFIG_DISTRIBUTED, globalConfig),
-                    context,
-                    task);
-            return null;
-        }
         if (tpReceiver != null) {
             String actionResult = tpReceiver.onReceive(
                     (T) result.getActionInput(), context).toString();
@@ -62,7 +48,7 @@ public class AgentActionProcessor<T extends TouchPoint> extends ResultProcessor<
         Pair<List<AgentAction>, AgentFinish> answer = choiceParser.parse(choices);
 
         for (AgentAction agentAction : answer.first) {
-            TouchPointContextManager.generateTouchPoint(agentAction, goal).finish();
+            ResultDispatcher.run(agentAction, agentAction.getMeta(), context);
         }
         return null;
     }
