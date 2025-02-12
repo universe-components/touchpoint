@@ -1,6 +1,7 @@
 package com.universe.touchpoint.memory.regions;
 
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.annotations.ActionRole;
 import com.universe.touchpoint.memory.TouchPointRegion;
 import java.util.HashMap;
 
@@ -18,6 +19,15 @@ public class DriverRegion extends TouchPointRegion {
 
     public AgentActionMetaInfo getTouchPointAction(String name) {
         return touchPointActions.get(name);
+    }
+
+    public boolean containActions(ActionRole role) {
+        for (AgentActionMetaInfo agentActionMetaInfo : touchPointActions.values()) {
+            if (agentActionMetaInfo.role() == role) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

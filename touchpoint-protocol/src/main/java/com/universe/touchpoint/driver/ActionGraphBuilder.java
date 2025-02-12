@@ -21,4 +21,8 @@ public class ActionGraphBuilder {
         return actionGraphMap.get(task);
     }
 
+    public static void putGraph(String task, ActionGraph actionGraph) {
+        actionGraphMap.put(task, actionGraph);
+    }
+
 }
