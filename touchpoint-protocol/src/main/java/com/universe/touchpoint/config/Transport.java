@@ -4,6 +4,7 @@ public enum Transport {
 
     DUBBO,
     BROADCAST,
+    MQTT,
     EVENTBUS,
     REST,
     WEBSOCKET,

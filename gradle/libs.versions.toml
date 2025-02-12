@@ -22,6 +22,7 @@ hilt = "2.55"
 openai = "0.20.0"
 anthropic = "0.1.0"
 dubbo = "3.3.0"
+paho = "1.2.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,6 +49,7 @@ hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-comp
 openai = { group = "com.openai", name = "openai-java", version.ref = "openai" }
 anthropic = { group = "com.anthropic", name = "anthropic-java", version.ref = "anthropic"}
 dubbo = { group = "org.apache.dubbo", name = "dubbo", version.ref = "dubbo" }
+paho = { group = "org.eclipse.paho", name = "org.eclipse.paho.mqttv5.client", version.ref = "paho"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

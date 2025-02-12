@@ -37,7 +37,7 @@ public class ActionGraphDistributedHandler implements AgentSocketStateHandler<Bo
             List<AgentActionMetaInfo> successors = actionGraph.getSuccessors(actionMetaInfo);
 
             TouchPointTransportRegistry registry = TouchPointTransportRegistryFactory
-                    .createRegistry(Objects.requireNonNull(Agent.agentConfig()).keySet().iterator().next());
+                    .getRegistry(Objects.requireNonNull(Agent.agentConfig()).keySet().iterator().next());
             AgentActionManager manager = AgentActionManager.getInstance();
 
             predecessors.forEach(action -> registry.register(context, driverRegion.getTouchPointAction(action.actionName())));

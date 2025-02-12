@@ -100,7 +100,7 @@ public class AgentApplication extends Application {
         if (transportConfig != null) {
             Transport transportType = transportConfig.keySet().iterator().next();
             TouchPointTransportRegistryFactory
-                    .createRegistry(transportType)
+                    .getRegistry(transportType)
                     .init(ctx, transportConfig.get(transportType));
         }
 

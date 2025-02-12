@@ -1,7 +1,9 @@
 package com.universe.touchpoint.config.mapping;
 
 import com.universe.touchpoint.annotations.Dubbo;
+import com.universe.touchpoint.annotations.MQTT;
 import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.transport.MQTTConfig;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 
 import org.apache.dubbo.config.annotation.DubboService;
@@ -20,6 +22,7 @@ public class TransportConfigMapping {
         annotation2Config.put(DubboService.class, DubboConfig.class);
         annotation2Config.put(Dubbo.class, DubboConfig.class);
         annotation2Type.put(DubboService.class, Transport.DUBBO);
+        annotation2Config.put(MQTT.class, MQTTConfig.class);
     }
 
 }

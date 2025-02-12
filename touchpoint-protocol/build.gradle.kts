@@ -82,6 +82,7 @@ dependencies {
     api(libs.openai)
     api(libs.anthropic)
     api(libs.dubbo)
+    api(libs.paho)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
