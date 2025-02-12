@@ -6,11 +6,13 @@ import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.TouchPointAction;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.transport.RPCConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.TransportRegion;
 import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastChannel;
+import com.universe.touchpoint.transport.mqtt.TouchPointMQTT5Publisher;
 import com.universe.touchpoint.transport.rpc.TouchPointDubboChannel;
 
 import java.util.HashMap;
@@ -23,6 +25,7 @@ public class TouchPointChannelManager {
 
     static {
         channelMapping.put(Transport.DUBBO, TouchPointDubboChannel.class);
+        channelMapping.put(Transport.MQTT, TouchPointMQTT5Publisher.class);
     }
 
     public static TouchPointChannel<?> defaultChannel(Context context) {
@@ -43,10 +46,16 @@ public class TouchPointChannelManager {
 
         if (channelMapping.containsKey(transport)) {
             try {
+                if (config instanceof RPCConfig) {
+                    return (TouchPointChannel<?>) Objects.requireNonNull(
+                                    channelMapping.get(transport))
+                                    .getConstructor(Context.class, config.getClass())
+                                    .newInstance(context, config);
+                }
                 return (TouchPointChannel<?>) Objects.requireNonNull(
                         channelMapping.get(transport))
-                        .getConstructor(Context.class, config.getClass())
-                        .newInstance(context, config);
+                        .getConstructor(Context.class)
+                        .newInstance(context);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

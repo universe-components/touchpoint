@@ -23,6 +23,8 @@ public class TransportConfigMapping {
         annotation2Config.put(Dubbo.class, DubboConfig.class);
         annotation2Type.put(DubboService.class, Transport.DUBBO);
         annotation2Config.put(MQTT.class, MQTTConfig.class);
+        annotation2Type.put(MQTT.class, Transport.MQTT);
+        transport2Config.put(Transport.MQTT, MQTTConfig.class);
     }
 
 }
