@@ -6,7 +6,6 @@ import java.util.Map;
 public class ActionGraphBuilder {
 
     private static final Object lock = new Object();
-
     private static final Map<String, ActionGraph> actionGraphMap = new HashMap<>();
 
     // 获取单例实例

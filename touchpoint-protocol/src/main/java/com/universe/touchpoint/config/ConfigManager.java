@@ -1,0 +1,86 @@
+package com.universe.touchpoint.config;
+
+import com.universe.touchpoint.TaskBuilder;
+import com.universe.touchpoint.agent.Agent;
+import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.ai.AIModelType;
+import com.universe.touchpoint.annotations.AIModel;
+import com.universe.touchpoint.annotations.SocketProtocol;
+import com.universe.touchpoint.config.mapping.TransportConfigMapping;
+import com.universe.touchpoint.utils.AnnotationUtils;
+
+import java.util.Map;
+import java.util.Objects;
+
+public class ConfigManager {
+
+    public static AIModelConfig selectModel(String input, AgentActionMetaInfo actionMeta, String task) {
+        // 首先检查 action 中的模型
+        if (actionMeta != null) {
+            AIModelConfig modelConfig = actionMeta.model();
+            if (modelConfig != null) {
+                // 如果 action 中有模型，则直接使用该模型
+                return actionMeta.model();
+            }
+        }
+
+        // 如果 action 中没有模型，再检查 Agent 的模型
+        Model model = (Model) Agent.getProperty("model", AIModel.class);
+        if (model != null) {
+            float temperature = (float) Agent.getProperty("temperature", AIModel.class);
+            return new AIModelConfig(
+                    model,
+                    temperature,
+                    model == Model.ClAUDE_3_5_SONNET ? AIModelType.ANTHROPIC : AIModelType.OPEN_AI
+            );
+        }
+
+        // 如果 Agent.getModel() 也为空，再检查 AgentBuilder 中的配置
+        AIModelConfig modelFromBuilder = TaskBuilder.getBuilder(task).getConfig().getModelConfig();
+        if (modelFromBuilder != null) {
+            return modelFromBuilder;
+        }
+
+        // 如果都没有模型，则返回默认模型 OPEN_AI
+        return new AIModelConfig(Model.o1, 0.0f, AIModelType.OPEN_AI);
+    }
+
+    public static <C> TransportConfig<C> selectTransport(AgentActionMetaInfo actionMeta, String task) {
+        TransportConfig<C> config = (TransportConfig<C>) actionMeta.transportConfig();
+
+        if (config != null) {
+            return (TransportConfig<C>) actionMeta.transportConfig();
+        }
+
+        try {
+            Map<Transport, C> transportConfigMap = (Map<Transport, C>) AnnotationUtils.annotation2Config(
+                    Agent.getApplicationClass(),
+                    TransportConfigMapping.annotation2Config,
+                    TransportConfigMapping.annotation2Type);
+
+            if (!transportConfigMap.isEmpty()) {
+                return (TransportConfig<C>) transportConfigMap.get(transportConfigMap.keySet().iterator().next());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        TransportConfig<?> transportConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getTransportConfig();
+        if (transportConfigFromTask != null) {
+            return (TransportConfig<C>) transportConfigFromTask;
+        }
+
+        return new TransportConfig<>(Transport.BROADCAST, null);
+    }
+
+    public static SocketProtocol selectAgentSocketProtocol(String task) {
+        SocketProtocol socketProtocol = Agent.getSocketProtocol();
+        if (socketProtocol != null) {
+            return socketProtocol;
+        }
+
+        SocketProtocol socketProtocolFromTask = TaskBuilder.getBuilder(task).getConfig().getSocketProtocol();
+        return Objects.requireNonNullElse(socketProtocolFromTask, SocketProtocol.ANDROID_BROADCAST);
+    }
+
+}

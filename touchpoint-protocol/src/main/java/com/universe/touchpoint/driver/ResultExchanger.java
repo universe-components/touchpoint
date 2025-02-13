@@ -1,12 +1,11 @@
 package com.universe.touchpoint.driver;
 
 import android.content.Context;
-import android.util.Pair;
-
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.annotations.ActionRole;
+import com.universe.touchpoint.annotations.SocketProtocol;
 import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Transport;
@@ -17,12 +16,14 @@ import com.universe.touchpoint.driver.processor.DefaultResultProcessor;
 import com.universe.touchpoint.socket.AgentSocketState;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 
+import org.apache.commons.lang3.tuple.Triple;
+
 public class ResultExchanger {
 
     public static <R extends TouchPoint, T extends TouchPoint> String exchange(
             R result, String goal, String task, TouchPointListener<T, ?> tpReceiver, Context context, Transport transportType) {
         if (result.getHeader().getFromAction().role() == ActionRole.COORDINATOR) {
-            Pair<TransportConfig<?>, AIModelConfig> globalConfig = new CoordinatorReadyHandler().onStateChange(result, null, context, task);
+            Triple<TransportConfig<?>, AIModelConfig, SocketProtocol> globalConfig = new CoordinatorReadyHandler().onStateChange(result, null, context, task);
             AgentSocketStateMachine.getInstance().send(
                     new AgentSocketStateMachine.AgentSocketStateContext<>(
                             AgentSocketState.GLOBAL_CONFIG_DISTRIBUTED, globalConfig),

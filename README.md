@@ -14,9 +14,9 @@
 
 - **共享触点对象：** Agent之间共享触点对象，通过触点对象交换数据，无需关心交换形式是IPC、消息队列、RPC、还是REST等。
 
-- **多级模型驱动：** LLM驱动可以作用在全流程，也可以作用在Agent及Action。
+- **多级模型驱动：** LLM驱动可以作用在Agent，也可以作用在Task及Action。
 
-- **多级调用策略：** 调用策略可以作用在全流程， 也可以作用在Action上。
+- **多级调用策略：** 调用策略可以作用在Agent， 也可以作用在Action上。
 
 - **多种LLM：** 支持多种LLM，如GPT-3、GPT-3.5、GPT-4、Claude-3、Claude-3.5等。
 
@@ -59,6 +59,7 @@ data class Entry {
     @Task("query_weather")
     @Dubbo(applicationName = "entry_agent") // 可选的全局配置，指定dubbo应用名和注册中心地址
     @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 指定模型, 默认使用o1
+    @AgentSocket(protocol = SocketProtocol.MQTT5)
     val taskBuilder: TaskBuilder;
     
     fun queryWeather() {
@@ -76,7 +77,7 @@ data class Entry {
 @Coordinator(task = "query_weather") // task指定哪个任务的协调者
 class Entry : ActionCoordinator {
 
-    override fun run(TouchPoint condition, actionGraph: Map<AgentActionMetaInfo, List<AgentActionMetaInfo>>) {
+    override fun run(TouchPoint condition, actionGraph: ActionGraph) : ActionGraph {
         // 重新编排 Actions
     }
     

@@ -2,24 +2,33 @@ package com.universe.touchpoint;
 
 import com.universe.touchpoint.config.Model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TaskBuilder {
 
+    private static final Object lock = new Object();
+
+    private final String task;
     private final AgentConfig config = new AgentConfig();
-    private static TaskBuilder builder;
+    private static final Map<String, TaskBuilder> builderMap = new HashMap<>();
 
     public static TaskBuilder task(String task) {
-        builder = new TaskBuilder();
-        builder.config.setTask(task);
-        return builder;
+        if (!builderMap.containsKey(task)) {
+            synchronized (lock) {
+                if (!builderMap.containsKey(task)) {
+                    builderMap.put(task, new TaskBuilder(task));
+                }
+            }
+        }
+        return builderMap.get(task);
     }
 
-    public static TaskBuilder model(Model model) {
-        builder = new TaskBuilder();
-        builder.config.getModelConfig().setModel(model);
-        return builder;
+    public TaskBuilder(String task) {
+        this.task = task;
     }
 
-    public TaskBuilder setModel(Model model) {
+    public TaskBuilder model(Model model) {
         config.getModelConfig().setModel(model);
         return this;
     }
@@ -39,11 +48,11 @@ public class TaskBuilder {
     }
 
     public String run(String content) {
-        return Dispatcher.dispatch(content, config.getTask());
+        return Dispatcher.dispatch(content, task);
     }
 
-    public static TaskBuilder getBuilder() {
-        return builder;
+    public static TaskBuilder getBuilder(String task) {
+        return builderMap.get(task);
     }
 
     public AgentConfig getConfig() {

@@ -8,12 +8,12 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.ai.AIModelFactory;
-import com.universe.touchpoint.ai.AIModelSelector;
 import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.ai.ChoiceParserFactory;
 import com.universe.touchpoint.ai.prompt.PromptBuilder;
 import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.config.AIModelConfig;
+import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.driver.ResultDispatcher;
 import com.universe.touchpoint.driver.ResultProcessor;
@@ -37,7 +37,7 @@ public class AgentActionProcessor<T extends TouchPoint> extends ResultProcessor<
             result.setObservation(actionResult);
         }
 
-        AIModelConfig modelConfig = AIModelSelector.selectModel(goal, result);
+        AIModelConfig modelConfig = ConfigManager.selectModel(goal, result.getMeta(), task);
 
         List<AgentActionMetaInfo> nextActions = RouteTable.getInstance().getSuccessors(result == null ? task : result.getAction());
 

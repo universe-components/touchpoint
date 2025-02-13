@@ -12,7 +12,7 @@ import com.universe.touchpoint.transport.TouchPointTransportRegistry;
 public class TouchPointBroadcastReceiverRegistry implements TouchPointTransportRegistry {
 
     @Override
-    public void register(Context context, AgentActionMetaInfo agentActionMetaInfo) {
+    public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String previousAction) {
         TouchPointBroadcastReceiver<? extends TouchPoint> tpReceiver;
         try {
             tpReceiver = new TouchPointBroadcastReceiver<>(
@@ -21,7 +21,7 @@ public class TouchPointBroadcastReceiverRegistry implements TouchPointTransportR
             throw new RuntimeException(e);
         }
 
-        IntentFilter intentFilter = new IntentFilter(TouchPointHelper.touchPointFilterName(agentActionMetaInfo.actionName()));
+        IntentFilter intentFilter = new IntentFilter(TouchPointHelper.touchPointFilterName(previousAction));
         context.registerReceiver(tpReceiver, intentFilter, Context.RECEIVER_EXPORTED);
 
         TouchPointChannelManager.registerContextReceiver(agentActionMetaInfo.actionName(), agentActionMetaInfo.className());

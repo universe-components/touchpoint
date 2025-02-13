@@ -16,16 +16,12 @@ import com.qihoo360.replugin.RePluginCallbacks;
 import com.qihoo360.replugin.RePluginConfig;
 import com.qihoo360.replugin.RePluginFramework;
 import com.qihoo360.replugin.RePluginHost;
-import com.universe.touchpoint.agent.Agent;
-import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
-import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
 import com.universe.touchpoint.utils.ApkUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class AgentApplication extends Application {
 
@@ -95,14 +91,6 @@ public class AgentApplication extends Application {
         }
         //Todo Maybe remove this in the future
         TouchPointContentFactory.registerContentProvider(ctx);
-
-        Map<Transport, Object> transportConfig = Agent.agentConfig();
-        if (transportConfig != null) {
-            Transport transportType = transportConfig.keySet().iterator().next();
-            TouchPointTransportRegistryFactory
-                    .getRegistry(transportType)
-                    .init(ctx, transportConfig.get(transportType));
-        }
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override

@@ -5,7 +5,6 @@ import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.ChatCompletion;
 import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatModel;
-import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.ai.AIModel;
 import com.universe.touchpoint.config.AIModelConfig;
 
@@ -21,11 +20,7 @@ public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion
     public OpenAI(AIModelConfig modelConfig) {
         super(OpenAIOkHttpClient.builder()
                 .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890)))
-                .apiKey(TaskBuilder
-                        .getBuilder()
-                        .getConfig()
-                        .getModelConfig()
-                        .getApiKey())
+                .apiKey(modelConfig.getApiKey())
                 .build(), modelConfig);
     }
 

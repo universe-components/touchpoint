@@ -1,13 +1,10 @@
 package com.universe.touchpoint.api;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
-
-import java.util.List;
-import java.util.Map;
+import com.universe.touchpoint.driver.ActionGraph;
 
 public interface ActionCoordinator {
 
-    void run(TouchPoint condition, Map<AgentActionMetaInfo, List<AgentActionMetaInfo>> actionGraph);
+    ActionGraph run(TouchPoint condition, ActionGraph actionGraph);
 
 }

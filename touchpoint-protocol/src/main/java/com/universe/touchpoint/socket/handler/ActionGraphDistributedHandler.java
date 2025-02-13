@@ -6,10 +6,11 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.annotations.ActionRole;
+import com.universe.touchpoint.config.ConfigManager;
+import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.context.TaskActionContext;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.driver.ActionGraph;
@@ -21,7 +22,6 @@ import com.universe.touchpoint.transport.TouchPointTransportRegistry;
 import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
 
 import java.util.List;
-import java.util.Objects;
 
 public class ActionGraphDistributedHandler implements AgentSocketStateHandler<Boolean> {
 
@@ -36,11 +36,14 @@ public class ActionGraphDistributedHandler implements AgentSocketStateHandler<Bo
             List<AgentActionMetaInfo> predecessors  = actionGraph.getPredecessors(actionMetaInfo);
             List<AgentActionMetaInfo> successors = actionGraph.getSuccessors(actionMetaInfo);
 
+            TransportConfig<?> transportConfig = ConfigManager.selectTransport(actionMetaInfo, taskActionContext.getBelongTask());
             TouchPointTransportRegistry registry = TouchPointTransportRegistryFactory
-                    .getRegistry(Objects.requireNonNull(Agent.agentConfig()).keySet().iterator().next());
+                    .getRegistry(transportConfig.transportType());
             AgentActionManager manager = AgentActionManager.getInstance();
 
-            predecessors.forEach(action -> registry.register(context, driverRegion.getTouchPointAction(action.actionName())));
+            registry.init(context, transportConfig);
+
+            predecessors.forEach(action -> registry.register(context, actionMetaInfo, action.actionName()));
             successors.forEach(action -> {
                 try {
                     manager.registerAgentFinishReceiver(

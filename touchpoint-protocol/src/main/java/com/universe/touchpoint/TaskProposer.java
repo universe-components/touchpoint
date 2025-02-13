@@ -23,19 +23,18 @@ public class TaskProposer {
     public static void init(Context context) {
         if (Agent.isAnnotationPresent(Task.class)) {
             TransportConfig<?> transportConfigWrapper;
-            try {
-                transportConfigWrapper = (TransportConfig<?>) AnnotationUtils.annotation2Config(
-                        Agent.getApplicationClass(), TransportConfigMapping.annotation2Config);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            TaskBuilder.getBuilder().getConfig().setTransportConfig(transportConfigWrapper);
-
             Map<String, Map<String, Map<String, Object>>> taskProperties = ApkUtils.getFieldAnnotationValues(context,
                     Task.class, Lists.newArrayList(AIModel.class), "value", false);
             for (Map.Entry<String, Map<String, Map<String, Object>>> taskProperty : taskProperties.entrySet()) {
                 AgentSocketStateMachine.getInstance().registerReceiver(context, new TaskContext(taskProperty.getKey()));
                 AgentSocketStateMachine.getInstance().start(context, taskProperty.getKey());
+                try {
+                    transportConfigWrapper = (TransportConfig<?>) AnnotationUtils.annotation2Config(
+                            Agent.getApplicationClass(), TransportConfigMapping.annotation2Config);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                TaskBuilder.task(taskProperty.getKey()).getConfig().setTransportConfig(transportConfigWrapper);
                 for (Map.Entry<String, Map<String, Object>> property : taskProperty.getValue().entrySet()) {
                     if (Objects.equals(property.getKey(), "AIModel")) {
                         AIModelConfig aiModelConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getModelConfig();

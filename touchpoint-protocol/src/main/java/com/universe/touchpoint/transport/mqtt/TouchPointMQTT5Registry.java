@@ -34,16 +34,16 @@ public class TouchPointMQTT5Registry implements TouchPointTransportRegistry {
     }
 
     @Override
-    public void register(Context context, AgentActionMetaInfo agentActionMetaInfo) {
+    public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String previousAction) {
         try {
-            client.subscribe(agentActionMetaInfo.actionName(), 1, (topic, message) -> {
+            client.subscribe(TouchPointHelper.touchPointFilterName(previousAction), 1, (topic, message) -> {
                 // 接收到消息时的回调
                 TouchPointMQTT5Subscriber<?> subscriber = messageSubscribers.get(topic);
                 assert subscriber != null;
                 subscriber.handleMessage(topic, message, context);
             });
             messageSubscribers.put(
-                    TouchPointHelper.touchPointFilterName(agentActionMetaInfo.actionName()),
+                    TouchPointHelper.touchPointFilterName(previousAction),
                     new TouchPointMQTT5Subscriber<>(Class.forName(agentActionMetaInfo.inputClassName())));
             TouchPointChannelManager.registerContextReceiver(agentActionMetaInfo.actionName(), agentActionMetaInfo.className());
         } catch (Exception e) {

@@ -3,8 +3,8 @@ package com.universe.touchpoint.socket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 
+import com.universe.touchpoint.annotations.SocketProtocol;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.socket.handler.ActionGraphDistributedHandler;
@@ -26,6 +26,7 @@ public class AgentSocketStateMachine {
 
     private static final Object mLock = new Object();
     private static AgentSocketStateMachine mInstance;
+    private static SocketProtocol socketProtocol = SocketProtocol.ANDROID_BROADCAST;
 
     public static AgentSocketStateMachine getInstance() {
         synchronized (mLock) {
@@ -45,23 +46,13 @@ public class AgentSocketStateMachine {
     }
 
     public void send(AgentSocketStateContext<?> stateContext, Context context, String filterSuffix) {
-        Intent intent = new Intent(
-                TouchPointHelper.touchPointFilterName(
-                        TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER,
-                        filterSuffix
-                ));
-        intent.putExtra(TouchPointConstants.TOUCH_POINT_TASK_STATE_EVENT, SerializeUtils.serializeToByteArray(stateContext));
-        context.sendBroadcast(intent);
+        AgentSocketProtocol protocol = AgentSocketProtocolSelector.selectProtocol(socketProtocol);
+        protocol.send(stateContext, context, filterSuffix);
     }
 
     public <C extends AgentContext> void registerReceiver(Context appContext, @Nullable C context) {
-        assert context != null;
-        IntentFilter filter = new IntentFilter(
-                TouchPointHelper.touchPointFilterName(
-                        TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER,
-                        context.getBelongTask())
-        );
-        appContext.registerReceiver(new AgentSocketStateListener<>(context), filter, Context.RECEIVER_EXPORTED);
+        AgentSocketProtocol protocol = AgentSocketProtocolSelector.selectProtocol(socketProtocol);
+        protocol.registerReceiver(appContext, context);
     }
 
     public static class AgentSocketStateListener<C extends AgentContext> extends BroadcastReceiver {

@@ -3,9 +3,12 @@ package com.universe.touchpoint.utils;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.util.Pair;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -14,10 +17,38 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import dalvik.system.DexFile;
 
 public class ApkUtils {
+
+    public static Map<String, String> loadProperties(Context context) {
+        Map<String, String> propertiesMap = new HashMap<>();
+        Properties properties = new Properties();
+
+        try {
+            // 获取 AssetManager
+            AssetManager assetManager = context.getAssets();
+
+            // 打开 properties 文件
+            InputStream inputStream = assetManager.open("local.properties");
+
+            // 加载 properties 文件
+            properties.load(inputStream);
+
+            // 将 properties 文件内容转换为 Map
+            for (String key : properties.stringPropertyNames()) {
+                propertiesMap.put(key, properties.getProperty(key));
+            }
+
+            inputStream.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return propertiesMap;
+    }
 
     public static List<Pair<String, List<Object>>> getClassNames(
             Context context,

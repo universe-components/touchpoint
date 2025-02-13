@@ -1,23 +1,24 @@
 package com.universe.touchpoint.socket.handler;
 
 import android.content.Context;
-import android.util.Pair;
-
 import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.annotations.SocketProtocol;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.driver.ActionGraphBuilder;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 
+import org.apache.commons.lang3.tuple.Triple;
+
 import java.util.List;
 import java.util.Map;
 
-public class TaskParticipantReadyHandler implements AgentSocketStateHandler<Pair<TransportConfig<?>, AIModelConfig>> {
+public class TaskParticipantReadyHandler implements AgentSocketStateHandler<Triple<TransportConfig<?>, AIModelConfig, SocketProtocol>> {
 
     @Override
-    public <C extends AgentContext> Pair<TransportConfig<?>, AIModelConfig> onStateChange(Object actionMeta, C agentContext, Context context, String task) {
+    public <C extends AgentContext> Triple<TransportConfig<?>, AIModelConfig, SocketProtocol> onStateChange(Object actionMeta, C agentContext, Context context, String task) {
         if (actionMeta != null) {
             AgentActionMetaInfo actionMetaInfo = (AgentActionMetaInfo) actionMeta;
             ActionGraphBuilder.getTaskGraph(task).addNode(actionMetaInfo);
@@ -31,9 +32,10 @@ public class TaskParticipantReadyHandler implements AgentSocketStateHandler<Pair
                 }
             }
         }
-        return Pair.create(
-            TaskBuilder.getBuilder().getConfig().getTransportConfig(),
-            TaskBuilder.getBuilder().getConfig().getModelConfig()
+        return Triple.of(
+            TaskBuilder.task(task).getConfig().getTransportConfig(),
+            TaskBuilder.task(task).getConfig().getModelConfig(),
+            TaskBuilder.task(task).getConfig().getSocketProtocol()
         );
     }
 

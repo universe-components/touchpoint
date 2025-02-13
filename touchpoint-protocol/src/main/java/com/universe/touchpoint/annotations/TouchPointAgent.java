@@ -15,4 +15,6 @@ public @interface TouchPointAgent {
 
     String iconName() default "";
 
+    SocketProtocol socketBindProtocol() default SocketProtocol.ANDROID_BROADCAST;
+
 }

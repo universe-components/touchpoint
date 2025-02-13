@@ -1,5 +1,6 @@
 package com.universe.touchpoint;
 
+import com.universe.touchpoint.annotations.SocketProtocol;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 import com.universe.touchpoint.config.Transport;
@@ -12,7 +13,7 @@ public class AgentConfig {
 
     private AIModelConfig modelConfig = new AIModelConfig();
     private TransportConfig<?> transportConfig;
-    private String task;
+    private SocketProtocol socketProtocol;
 
     private final Map<Transport, Class<?>> transportConfigMap = new HashMap<>();
     {
@@ -39,12 +40,12 @@ public class AgentConfig {
         return transportConfigMap;
     }
 
-    public void setTask(String task) {
-        this.task = task;
+    public SocketProtocol getSocketProtocol() {
+        return socketProtocol;
     }
 
-    public String getTask() {
-        return task;
+    public void setSocketProtocol(SocketProtocol socketProtocol) {
+        this.socketProtocol = socketProtocol;
     }
 
 }
