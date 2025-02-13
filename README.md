@@ -51,7 +51,8 @@ dependencies {
 /**
  * 其中，socketBindProtocol指定socket绑定流程使用的协议，其作用域为所在Agent上的所有task
  */
-@TouchPointAgent(name = "entry_agent", socketBindProtocol = SocketProtocol.MQTT5)
+@TouchPointAgent(name = "entry_agent")
+@AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
 class EntryApplication : AgentApplication()
 ```
 
@@ -62,11 +63,11 @@ data class Entry {
     @Task("query_weather")
     @Dubbo(applicationName = "entry_agent") // 可选的全局配置，指定dubbo应用名和注册中心地址
     @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 指定模型, 默认使用o1
-    @AgentSocket(bindProtocol = SocketProtocol.MQTT5)
+    @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
     val taskBuilder: TaskBuilder;
     
     fun queryWeather() {
-        taskBuilder.run("我想查询上海天气")
+        TaskBuilder.task("query_weather").run("我想查询上海天气")
     }
 
 }
@@ -93,6 +94,7 @@ class Entry : ActionCoordinator {
 ```kotlin
 @TouchPointAgent(name = "weather_agent", desc = "查询城市的天气信息")
 @Dubbo(applicationName = "weather_agent", registryAddress = "127.0.0.1:2181") // 可选，指定dubbo应用名和注册中心地址
+@AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
 class WeatherApplication : AgentApplication()
 ```
 如果希望 `Weather Agent` 使用指定LLM，可以配置如下：

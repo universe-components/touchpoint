@@ -10,7 +10,6 @@ import com.qihoo360.mobilesafe.api.AppVar;
 import com.qihoo360.replugin.RePluginEnv;
 import com.qihoo360.replugin.RePluginHost;
 import com.qihoo360.replugin.model.PluginInfo;
-import com.universe.touchpoint.annotations.SocketProtocol;
 import com.universe.touchpoint.annotations.TouchPointAgent;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
@@ -55,10 +54,6 @@ public class Agent {
 
     public static String[] getTasks() {
         return (String[]) getProperty("tasks", TouchPointAgent.class);
-    }
-
-    public static SocketProtocol getSocketProtocol() {
-        return (SocketProtocol) getProperty("socketBindProtocol", TouchPointAgent.class);
     }
 
     public static Object getProperty(String propertyName, Class<? extends Annotation> annotationClass) {

@@ -8,6 +8,8 @@ import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.annotations.ActionRole;
 import com.universe.touchpoint.api.ActionCoordinator;
 import com.universe.touchpoint.config.AIModelConfig;
+import com.universe.touchpoint.config.AgentSocketConfig;
+import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.CoordinatorConfig;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
@@ -16,6 +18,10 @@ import com.universe.touchpoint.config.mapping.CoordinatorConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.context.TaskActionContext;
 import com.universe.touchpoint.driver.CollaborationFactory;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.DriverRegion;
+import com.universe.touchpoint.socket.AgentSocketState;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
@@ -81,7 +87,20 @@ public class TaskParticipant {
             List<Object> properties = pair.second;  // 获取 List<Object>
             for (String task : (String[]) properties.get(4)) {
                 TaskActionContext actionContext = new TaskActionContext((String) properties.get(0), task);
-                AgentSocketStateMachine.getInstance().registerReceiver(context, actionContext);
+
+                AgentSocketConfig socketConfig = ConfigManager.selectAgentSocket(task);
+                assert socketConfig != null;
+                AgentSocketStateMachine.registerInstance(task, socketConfig.getBindProtocol());
+                AgentSocketStateMachine.getInstance(task).socketProtocol().initialize(socketConfig);
+
+                AgentSocketStateMachine.getInstance(task).registerReceiver(context, actionContext);
+                DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
+                AgentSocketStateMachine.getInstance(task).send(
+                        new AgentSocketStateMachine.AgentSocketStateContext<>(
+                                AgentSocketState.PARTICIPANT_READY,
+                                driverRegion.getTouchPointAction(actionContext.getAction())),
+                        context,
+                        task);
             }
         }
     }

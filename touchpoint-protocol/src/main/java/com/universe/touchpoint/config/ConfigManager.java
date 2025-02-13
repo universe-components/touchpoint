@@ -5,7 +5,7 @@ import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.ai.AIModelType;
 import com.universe.touchpoint.annotations.AIModel;
-import com.universe.touchpoint.annotations.SocketProtocol;
+import com.universe.touchpoint.config.mapping.AgentSocketConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
@@ -72,18 +72,25 @@ public class ConfigManager {
         return new TransportConfig<>(Transport.BROADCAST, null);
     }
 
-    public static SocketProtocol selectAgentSocketProtocol(String task) {
-        SocketProtocol socketProtocolFromTask = TaskBuilder.getBuilder(task).getConfig().getSocketProtocol();
-        if (socketProtocolFromTask != null) {
-            return socketProtocolFromTask;
+    public static AgentSocketConfig selectAgentSocket(String task) {
+        AgentSocketConfig socketConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getSocketConfig();
+        if (socketConfigFromTask != null) {
+            return socketConfigFromTask;
         }
 
-        SocketProtocol socketProtocol = Agent.getSocketProtocol();
-        if (socketProtocol != null) {
-            return socketProtocol;
+        try {
+            AgentSocketConfig socketConfig = (AgentSocketConfig) AnnotationUtils.annotation2Config(
+                    Agent.getApplicationClass(),
+                    AgentSocketConfigMapping.annotation2Config);
+
+            if (socketConfig != null) {
+                return socketConfig;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
-        return SocketProtocol.ANDROID_BROADCAST;
+        return null;
     }
 
 }
