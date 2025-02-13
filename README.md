@@ -6,7 +6,7 @@
 
 - **多种Agent架构：** 不同Agent可在一个进程，也可分属不同进程，及不同Agent可部署在不同的终端上。
 
-- **多种Agent执行模式：** 不同Agent可以并行，也可以串行执行。
+- **多种Action执行模式：** 不同Action可以并行，也可以串行执行。
 
 - **多种Agent文件格式：** 支持apk、jar、exe、ipa、py等文件格式。
 
@@ -230,5 +230,6 @@ class WeatherService {
 
 ## RoadMap
 
-1. **新增注解方式注入和使用**
-2. **实现跨端Agent连接**
+1. **支持DeepSeek、Claude等模型**
+2. **支持jar、exe、ipa、py等Agent文件类型**
+3. **支持多Action并行**
