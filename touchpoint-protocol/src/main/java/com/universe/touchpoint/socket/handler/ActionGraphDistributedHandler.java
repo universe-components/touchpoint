@@ -15,6 +15,8 @@ import com.universe.touchpoint.context.TaskActionContext;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.driver.ActionGraph;
 import com.universe.touchpoint.driver.ActionGraphBuilder;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.DriverRegion;
 import com.universe.touchpoint.router.RouteTable;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
@@ -31,7 +33,7 @@ public class ActionGraphDistributedHandler implements AgentSocketStateHandler<Bo
         ActionGraph actionGraph = (ActionGraph) input;
         TaskActionContext taskActionContext = (TaskActionContext) actionContext;
         if (actionGraph != null) {
-            DriverRegion driverRegion = DriverRegion.getInstance(DriverRegion.class);
+            DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
             AgentActionMetaInfo actionMetaInfo = driverRegion.getTouchPointAction(taskActionContext.getAction());
             List<AgentActionMetaInfo> predecessors  = actionGraph.getPredecessors(actionMetaInfo);
             List<AgentActionMetaInfo> successors = actionGraph.getSuccessors(actionMetaInfo);
