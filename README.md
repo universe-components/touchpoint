@@ -48,7 +48,10 @@ dependencies {
 
 `EntryApplication` 继承 `AgentApplication`
 ```kotlin
-@TouchPointAgent(name = "entry_agent")
+/**
+ * 其中，socketBindProtocol指定socket绑定流程使用的协议，其作用域为所在Agent上的所有task
+ */
+@TouchPointAgent(name = "entry_agent", socketBindProtocol = SocketProtocol.MQTT5)
 class EntryApplication : AgentApplication()
 ```
 
@@ -59,7 +62,7 @@ data class Entry {
     @Task("query_weather")
     @Dubbo(applicationName = "entry_agent") // 可选的全局配置，指定dubbo应用名和注册中心地址
     @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 指定模型, 默认使用o1
-    @AgentSocket(protocol = SocketProtocol.MQTT5)
+    @AgentSocket(bindProtocol = SocketProtocol.MQTT5)
     val taskBuilder: TaskBuilder;
     
     fun queryWeather() {

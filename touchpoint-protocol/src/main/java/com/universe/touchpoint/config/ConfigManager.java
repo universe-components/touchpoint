@@ -10,7 +10,6 @@ import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class ConfigManager {
 
@@ -24,6 +23,12 @@ public class ConfigManager {
             }
         }
 
+        // 如果 Agent.getModel() 也为空，再检查 AgentBuilder 中的配置
+        AIModelConfig modelFromBuilder = TaskBuilder.getBuilder(task).getConfig().getModelConfig();
+        if (modelFromBuilder != null) {
+            return modelFromBuilder;
+        }
+
         // 如果 action 中没有模型，再检查 Agent 的模型
         Model model = (Model) Agent.getProperty("model", AIModel.class);
         if (model != null) {
@@ -35,12 +40,6 @@ public class ConfigManager {
             );
         }
 
-        // 如果 Agent.getModel() 也为空，再检查 AgentBuilder 中的配置
-        AIModelConfig modelFromBuilder = TaskBuilder.getBuilder(task).getConfig().getModelConfig();
-        if (modelFromBuilder != null) {
-            return modelFromBuilder;
-        }
-
         // 如果都没有模型，则返回默认模型 OPEN_AI
         return new AIModelConfig(Model.o1, 0.0f, AIModelType.OPEN_AI);
     }
@@ -50,6 +49,11 @@ public class ConfigManager {
 
         if (config != null) {
             return (TransportConfig<C>) actionMeta.transportConfig();
+        }
+
+        TransportConfig<?> transportConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getTransportConfig();
+        if (transportConfigFromTask != null) {
+            return (TransportConfig<C>) transportConfigFromTask;
         }
 
         try {
@@ -65,22 +69,21 @@ public class ConfigManager {
             throw new RuntimeException(e);
         }
 
-        TransportConfig<?> transportConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getTransportConfig();
-        if (transportConfigFromTask != null) {
-            return (TransportConfig<C>) transportConfigFromTask;
-        }
-
         return new TransportConfig<>(Transport.BROADCAST, null);
     }
 
     public static SocketProtocol selectAgentSocketProtocol(String task) {
+        SocketProtocol socketProtocolFromTask = TaskBuilder.getBuilder(task).getConfig().getSocketProtocol();
+        if (socketProtocolFromTask != null) {
+            return socketProtocolFromTask;
+        }
+
         SocketProtocol socketProtocol = Agent.getSocketProtocol();
         if (socketProtocol != null) {
             return socketProtocol;
         }
 
-        SocketProtocol socketProtocolFromTask = TaskBuilder.getBuilder(task).getConfig().getSocketProtocol();
-        return Objects.requireNonNullElse(socketProtocolFromTask, SocketProtocol.ANDROID_BROADCAST);
+        return SocketProtocol.ANDROID_BROADCAST;
     }
 
 }

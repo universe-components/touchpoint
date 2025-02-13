@@ -11,6 +11,7 @@ import org.apache.dubbo.config.annotation.DubboService;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class TransportConfigMapping {
 
@@ -25,6 +26,10 @@ public class TransportConfigMapping {
         annotation2Config.put(MQTT.class, MQTTConfig.class);
         annotation2Type.put(MQTT.class, Transport.MQTT);
         transport2Config.put(Transport.MQTT, MQTTConfig.class);
+    }
+
+    public static Set<Class<? extends Annotation>> getAnnotationClasses() {
+        return annotation2Config.keySet();
     }
 
 }

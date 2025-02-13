@@ -1,10 +1,10 @@
 package com.universe.touchpoint.socket.handler;
 
 import android.content.Context;
-import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.annotations.SocketProtocol;
 import com.universe.touchpoint.config.AIModelConfig;
+import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.driver.ActionGraphBuilder;
@@ -31,12 +31,13 @@ public class TaskParticipantReadyHandler implements AgentSocketStateHandler<Trip
                     ActionGraphBuilder.getTaskGraph(task).addEdge(entry.getKey(), actionMetaInfo);
                 }
             }
+            return Triple.of(
+                    ConfigManager.selectTransport(null, task),
+                    ConfigManager.selectModel(null, null, task),
+                    ConfigManager.selectAgentSocketProtocol(task)
+            );
         }
-        return Triple.of(
-            TaskBuilder.task(task).getConfig().getTransportConfig(),
-            TaskBuilder.task(task).getConfig().getModelConfig(),
-            TaskBuilder.task(task).getConfig().getSocketProtocol()
-        );
+        return null;
     }
 
 }
