@@ -12,7 +12,7 @@
 
 - **可热插拔Agent：** Agent网络中的任意一个Agent都可在线加入和退出，不影响整个Agent网络。
 
-- **共享触点对象：** Agent之间共享触点对象，通过触点对象交换数据，无需关心交换形式是IPC、消息队列、RPC、还是REST等。
+- **多种调用方式：** Agent之间可以通过IPC、Broadcast、MQTT、RPC及REST等方式通信。
 
 - **多级模型驱动：** LLM驱动可以作用在Agent，也可以作用在Task及Action。
 
