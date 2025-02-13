@@ -16,9 +16,6 @@ public class DefaultResultProcessor<T extends TouchPoint> extends ResultProcesso
 
     @Override
     public String process() {
-        if (tpReceiver != null) {
-            tpReceiver.onReceive(result, context);
-        }
         return null;
     }
 

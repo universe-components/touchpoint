@@ -53,6 +53,18 @@ public class ActionGraph {
         Objects.requireNonNull(adjList.get(from)).add(to);
     }
 
+    public void addEdgeAtStart(AgentActionMetaInfo from, AgentActionMetaInfo to) {
+        // 如果节点不存在，则先添加节点
+        addNode(from);
+        addNode(to);
+
+        // 获取from对应的列表并将to添加到列表的第一位
+        List<AgentActionMetaInfo> fromList = adjList.get(from);
+        if (fromList != null) {
+            fromList.add(0, to);  // 将to添加到列表的第一位
+        }
+    }
+
     public AgentActionMetaInfo getNode(AgentActionMetaInfo node) {
         if (adjList.containsKey(node)) {
             // 返回节点本身

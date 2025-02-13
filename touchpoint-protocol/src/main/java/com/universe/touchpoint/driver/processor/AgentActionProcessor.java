@@ -31,15 +31,9 @@ public class AgentActionProcessor<T extends TouchPoint> extends ResultProcessor<
 
     @Override
     public String process() {
-        if (tpReceiver != null) {
-            String actionResult = tpReceiver.onReceive(
-                    (T) result.getActionInput(), context).toString();
-            result.setObservation(actionResult);
-        }
-
         AIModelConfig modelConfig = ConfigManager.selectModel(goal, result.getMeta(), task);
 
-        List<AgentActionMetaInfo> nextActions = RouteTable.getInstance().getSuccessors(result == null ? task : result.getAction());
+        List<AgentActionMetaInfo> nextActions = RouteTable.getInstance().getSuccessors(result.getAction());
 
         String input = PromptBuilder.createPromptGenerator(modelConfig.getType()).generatePrompt(nextActions, result, goal);
 

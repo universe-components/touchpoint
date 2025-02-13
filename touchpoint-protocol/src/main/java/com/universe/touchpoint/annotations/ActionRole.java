@@ -4,6 +4,7 @@ public enum ActionRole {
 
     PROPOSER,
     PARTICIPANT,
-    COORDINATOR;
+    COORDINATOR,
+    SUPERVISOR;
 
 }

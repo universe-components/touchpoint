@@ -6,6 +6,9 @@ import android.content.Intent;
 
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointConstants;
+import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.driver.ResultExchanger;
@@ -13,7 +16,10 @@ import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.TransportRegion;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.router.RouteTable;
 import com.universe.touchpoint.utils.SerializeUtils;
+
+import java.util.List;
 
 public class TouchPointBroadcastReceiver<T extends TouchPoint> extends BroadcastReceiver {
 
@@ -37,6 +43,18 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
         TransportRegion transportRegion = TouchPointMemory.getRegion(Region.TRANSPORT);
         TouchPointListener<T, ?> tpReceiver = (TouchPointListener<T, ?>) transportRegion.getTouchPointReceiver(filter);
 
+        if (touchPoint instanceof AgentAction) {
+            String actionResult = tpReceiver.onReceive(
+                    (T) ((AgentAction) touchPoint).getActionInput(), context).toString();
+            ((AgentAction) touchPoint).setObservation(actionResult);
+        } else if(touchPoint instanceof AgentFinish) {
+            List<AgentActionMetaInfo> predecessors = RouteTable.getInstance().getPredecessors(touchPoint.getHeader().getFromAction().actionName());
+            if (predecessors == null) {
+                tpReceiver.onReceive(touchPoint, context);
+            }
+        } else {
+            tpReceiver.onReceive(touchPoint, context);
+        }
         ResultExchanger.exchange(
                 touchPoint, touchPoint.goal, null, tpReceiver, mContext, Transport.BROADCAST);
     }

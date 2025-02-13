@@ -88,6 +88,21 @@ class Entry : ActionCoordinator {
 }
 ```
 
+如果希望 `Entry Agent` 成为监督者，检查前置Action输出，可以配置如下：
+```kotlin
+@TouchPointAction(
+    name = "entry_action", role = ActionRole.SUPERVISOR
+)
+@Supervisor(task = "query_weather") // task指定哪个任务的监督者
+class Entry : ActionSupervisor {
+
+    override fun run(TouchPoint input) : Boolean {
+        // 检查input
+    }
+    
+}
+```
+
 #### Weather Agent
 
 `WeatherApplication` 继承 `AgentApplication`

@@ -7,10 +7,12 @@ import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.annotations.ActionRole;
+import com.universe.touchpoint.api.ActionSupervisor;
 import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
+import com.universe.touchpoint.driver.coordinator.CoordinatorReadyHandler;
 import com.universe.touchpoint.driver.processor.AgentActionProcessor;
 import com.universe.touchpoint.driver.processor.AgentFinishProcessor;
 import com.universe.touchpoint.driver.processor.DefaultResultProcessor;
@@ -33,6 +35,14 @@ public class ResultExchanger {
 
         ResultProcessor<?, ?> resultProcessor;
         if (result instanceof AgentAction && task != null) {
+            boolean isRoute;
+            if (result.getHeader().getFromAction().role() == ActionRole.SUPERVISOR) {
+                ActionSupervisor actionSupervisor = (ActionSupervisor) RoleExecutorFactory.getInstance(task).getOperator(((AgentAction) result).getAction());
+                isRoute = actionSupervisor.run(result);
+                if (!isRoute) {
+                    throw new RuntimeException("ActionSupervisor run failed");
+                }
+            }
             resultProcessor = new AgentActionProcessor<>((AgentAction) result, goal, task, tpReceiver, context, transportType);
         } else if (result instanceof AgentFinish) {
             resultProcessor = new AgentFinishProcessor<>((AgentFinish) result, goal, task, tpReceiver, context, transportType);

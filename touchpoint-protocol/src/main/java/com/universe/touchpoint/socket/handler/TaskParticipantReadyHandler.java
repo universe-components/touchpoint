@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Pair;
 
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.annotations.ActionRole;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.TransportConfig;
@@ -27,7 +28,11 @@ public class TaskParticipantReadyHandler implements AgentSocketStateHandler<Pair
                     ActionGraphBuilder.getTaskGraph(task).addEdge(actionMetaInfo, entry.getKey());
                 }
                 if (entry.getKey().outputClassName().equals(actionMetaInfo.inputClassName())) {
-                    ActionGraphBuilder.getTaskGraph(task).addEdge(entry.getKey(), actionMetaInfo);
+                    if (actionMetaInfo.role() == ActionRole.SUPERVISOR) {
+                        ActionGraphBuilder.getTaskGraph(task).addEdgeAtStart(entry.getKey(), actionMetaInfo);
+                    } else {
+                        ActionGraphBuilder.getTaskGraph(task).addEdge(entry.getKey(), actionMetaInfo);
+                    }
                 }
             }
             return Pair.create(

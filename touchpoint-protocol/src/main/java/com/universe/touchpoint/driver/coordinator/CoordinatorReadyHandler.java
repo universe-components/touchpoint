@@ -1,4 +1,4 @@
-package com.universe.touchpoint.driver;
+package com.universe.touchpoint.driver.coordinator;
 
 import android.content.Context;
 import android.util.Pair;
@@ -9,6 +9,9 @@ import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.context.AgentContext;
+import com.universe.touchpoint.driver.ActionGraph;
+import com.universe.touchpoint.driver.ActionGraphBuilder;
+import com.universe.touchpoint.driver.RoleExecutorFactory;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 
 public class CoordinatorReadyHandler implements AgentSocketStateHandler<Pair<TransportConfig<?>, AIModelConfig>> {
@@ -16,7 +19,7 @@ public class CoordinatorReadyHandler implements AgentSocketStateHandler<Pair<Tra
     @Override
     public <C extends AgentContext> Pair<TransportConfig<?>, AIModelConfig> onStateChange(Object input, C agentContext, Context context, String task) {
         AgentAction action = (AgentAction) input;
-        ActionCoordinator actionCoordinator = CollaborationFactory.getInstance(task).getOperator(action.getAction());
+        ActionCoordinator actionCoordinator = (ActionCoordinator) RoleExecutorFactory.getInstance(task).getOperator(action.getAction());
         ActionGraph actionGraph = actionCoordinator.run(action.getActionInput(), ActionGraphBuilder.getTaskGraph(task));
         ActionGraphBuilder.putGraph(task, actionGraph);
         return Pair.create(
