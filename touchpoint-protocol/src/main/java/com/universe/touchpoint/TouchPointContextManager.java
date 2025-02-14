@@ -20,9 +20,9 @@ public class TouchPointContextManager {
         return generateTouchPoint(tpClass, name, ctx);
     }
 
-    public static AgentAction generateTouchPoint(AgentAction action, String content) {
+    public static AgentAction<?> generateTouchPoint(AgentAction<?> action, String content) {
         Context ctx = Agent.getContext();
-        TouchPointChannel channel = TouchPointChannelManager.selectChannel(action.getMeta(), ctx);
+        TouchPointChannel<?> channel = TouchPointChannelManager.selectChannel(action.getMeta(), ctx);
 
         action.setHeader(new TouchPoint.Header(action.getMeta(), channel));
         action.setGoal(content);
@@ -32,7 +32,7 @@ public class TouchPointContextManager {
 
     public static <T> T generateTouchPoint(Class<T> tpClass, String name, Context context) {
         try {
-            TouchPointChannel channel = TouchPointChannelManager.defaultChannel(context);
+            TouchPointChannel<?> channel = TouchPointChannelManager.defaultChannel(context);
             T selfTouchPoint = tpClass.getConstructor().newInstance();
             Class<?> touchPointClass = tpClass.getSuperclass();
 

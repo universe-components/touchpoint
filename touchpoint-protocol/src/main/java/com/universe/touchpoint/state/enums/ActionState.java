@@ -3,7 +3,8 @@ package com.universe.touchpoint.state.enums;
 public enum ActionState {
 
     NEED_REORDER_ACTION(100),
-    NEED_SUPERVISOR_CHECKING(101);
+    NEED_SUPERVISOR_CHECKING(101),
+    SUCCESS(200);
 
     private final int code;
 
