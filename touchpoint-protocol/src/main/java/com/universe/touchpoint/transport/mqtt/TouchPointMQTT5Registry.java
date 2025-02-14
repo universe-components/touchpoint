@@ -24,7 +24,7 @@ public class TouchPointMQTT5Registry implements TouchPointTransportRegistry {
     public void init(Context context, Object transportConfig) {
         MQTTConfig mqttConfig = (MQTTConfig) transportConfig;
         try {
-            client = new MqttClient(mqttConfig.brokerUrl, "touchpoint_mqtt_broker");
+            client = new MqttClient(mqttConfig.brokerUri, "touchpoint_mqtt_broker");
             MqttConnectionOptions connectOptions = new MqttConnectionOptions();
             connectOptions.setCleanStart(true);
             client.connect(connectOptions);
