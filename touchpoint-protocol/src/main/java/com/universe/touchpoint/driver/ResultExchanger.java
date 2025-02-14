@@ -39,7 +39,7 @@ public class ResultExchanger {
             boolean isRoute;
             if (result.getHeader().getFromAction().role() == ActionRole.SUPERVISOR
                 && result.getState().getCode() == ActionState.NEED_SUPERVISOR_CHECKING.getCode()) {
-                ActionSupervisor<R> actionSupervisor = (ActionSupervisor<R>) RoleExecutorFactory.getInstance(task).getOperator(((AgentAction<R>) result).getAction());
+                ActionSupervisor<R> actionSupervisor = (ActionSupervisor<R>) RoleExecutorFactory.getInstance(task).getExecutor(((AgentAction<R>) result).getAction());
                 isRoute = actionSupervisor.run(result);
                 if (!isRoute) {
                     throw new RuntimeException("ActionSupervisor run failed");

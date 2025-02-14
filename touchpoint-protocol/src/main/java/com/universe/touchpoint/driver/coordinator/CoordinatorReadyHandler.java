@@ -19,7 +19,7 @@ public class CoordinatorReadyHandler<I extends TouchPoint> implements AgentSocke
 
     @Override
     public <C extends AgentContext> Pair<TransportConfig<?>, AIModelConfig> onStateChange(AgentAction<I> action, C agentContext, Context context, String task) {
-        ActionCoordinator<I> actionCoordinator = (ActionCoordinator<I>) RoleExecutorFactory.getInstance(task).getOperator(action.getAction());
+        ActionCoordinator<I> actionCoordinator = (ActionCoordinator<I>) RoleExecutorFactory.getInstance(task).getExecutor(action.getAction());
         ActionGraph actionGraph = actionCoordinator.run(action.getActionInput(), ActionGraphBuilder.getTaskGraph(task));
         ActionGraphBuilder.putGraph(task, actionGraph);
         return Pair.create(

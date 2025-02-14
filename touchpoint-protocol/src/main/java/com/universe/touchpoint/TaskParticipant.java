@@ -78,7 +78,7 @@ public class TaskParticipant {
                     CoordinatorConfigMapping.annotation2Config);
             assert coordinatorConfig != null;
             RoleExecutorFactory.getInstance(coordinatorConfig.getTask())
-                    .registerOperator(actionName, actionClass.getConstructor().newInstance());
+                    .registerExecutor(actionName, actionClass.getConstructor().newInstance());
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -91,7 +91,7 @@ public class TaskParticipant {
                     SupervisorConfigMapping.annotation2Config);
             assert supervisorConfig != null;
             RoleExecutorFactory.getInstance(supervisorConfig.getTask())
-                    .registerOperator(actionName, actionClass.getConstructor().newInstance());
+                    .registerExecutor(actionName, actionClass.getConstructor().newInstance());
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
