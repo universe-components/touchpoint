@@ -15,23 +15,22 @@ import com.universe.touchpoint.socket.AgentSocketStateHandler;
 import java.util.List;
 import java.util.Map;
 
-public class TaskParticipantReadyHandler implements AgentSocketStateHandler<Pair<TransportConfig<?>, AIModelConfig>> {
+public class TaskParticipantReadyHandler implements AgentSocketStateHandler<AgentActionMetaInfo, Pair<TransportConfig<?>, AIModelConfig>> {
 
     @Override
-    public <C extends AgentContext> Pair<TransportConfig<?>, AIModelConfig> onStateChange(Object actionMeta, C agentContext, Context context, String task) {
+    public <C extends AgentContext> Pair<TransportConfig<?>, AIModelConfig> onStateChange(AgentActionMetaInfo actionMeta, C agentContext, Context context, String task) {
         if (actionMeta != null) {
-            AgentActionMetaInfo actionMetaInfo = (AgentActionMetaInfo) actionMeta;
-            ActionGraphBuilder.getTaskGraph(task).addNode(actionMetaInfo);
+            ActionGraphBuilder.getTaskGraph(task).addNode(actionMeta);
             Map<AgentActionMetaInfo, List<AgentActionMetaInfo>> graph  = ActionGraphBuilder.getTaskGraph(task).getAdjList();
             for (Map.Entry<AgentActionMetaInfo, List<AgentActionMetaInfo>> entry : graph.entrySet()) {
-                if (entry.getKey().inputClassName().equals(actionMetaInfo.outputClassName())) {
-                    ActionGraphBuilder.getTaskGraph(task).addEdge(actionMetaInfo, entry.getKey());
+                if (entry.getKey().inputClassName().equals(actionMeta.outputClassName())) {
+                    ActionGraphBuilder.getTaskGraph(task).addEdge(actionMeta, entry.getKey());
                 }
-                if (entry.getKey().outputClassName().equals(actionMetaInfo.inputClassName())) {
-                    if (actionMetaInfo.role() == ActionRole.SUPERVISOR) {
-                        ActionGraphBuilder.getTaskGraph(task).addEdgeAtStart(entry.getKey(), actionMetaInfo);
+                if (entry.getKey().outputClassName().equals(actionMeta.inputClassName())) {
+                    if (actionMeta.role() == ActionRole.SUPERVISOR) {
+                        ActionGraphBuilder.getTaskGraph(task).addEdgeAtStart(entry.getKey(), actionMeta);
                     } else {
-                        ActionGraphBuilder.getTaskGraph(task).addEdge(entry.getKey(), actionMetaInfo);
+                        ActionGraphBuilder.getTaskGraph(task).addEdge(entry.getKey(), actionMeta);
                     }
                 }
             }

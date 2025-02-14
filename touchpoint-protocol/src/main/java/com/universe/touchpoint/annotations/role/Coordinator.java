@@ -1,4 +1,4 @@
-package com.universe.touchpoint.annotations;
+package com.universe.touchpoint.annotations.role;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Supervisor {
+public @interface Coordinator {
 
     String task();
 

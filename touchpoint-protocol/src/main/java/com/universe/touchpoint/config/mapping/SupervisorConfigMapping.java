@@ -1,6 +1,6 @@
 package com.universe.touchpoint.config.mapping;
 
-import com.universe.touchpoint.annotations.Supervisor;
+import com.universe.touchpoint.annotations.role.Supervisor;
 import com.universe.touchpoint.config.SupervisorConfig;
 
 import java.lang.annotation.Annotation;

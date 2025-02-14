@@ -9,14 +9,13 @@ import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 
-public class GlobalConfigDistributedHandler implements AgentSocketStateHandler<Boolean> {
+public class GlobalConfigDistributedHandler implements AgentSocketStateHandler<Pair<TransportConfig<?>, AIModelConfig>, Boolean> {
 
     @Override
-    public <C extends AgentContext> Boolean onStateChange(Object globalConfig, C agentContext, Context context, String task) {
-        Pair<TransportConfig<?>, AIModelConfig> config = (Pair<TransportConfig<?>, AIModelConfig>) globalConfig;
-        if (config != null) {
-            TaskBuilder.task(task).getConfig().setTransportConfig(config.first);
-            TaskBuilder.task(task).getConfig().setModelConfig(config.second);
+    public <C extends AgentContext> Boolean onStateChange(Pair<TransportConfig<?>, AIModelConfig> globalConfig, C agentContext, Context context, String task) {
+        if (globalConfig != null) {
+            TaskBuilder.task(task).getConfig().setTransportConfig(globalConfig.first);
+            TaskBuilder.task(task).getConfig().setModelConfig(globalConfig.second);
         }
         return true;
     }

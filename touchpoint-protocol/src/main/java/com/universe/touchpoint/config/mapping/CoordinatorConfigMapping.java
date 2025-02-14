@@ -1,6 +1,6 @@
 package com.universe.touchpoint.config.mapping;
 
-import com.universe.touchpoint.annotations.Coordinator;
+import com.universe.touchpoint.annotations.role.Coordinator;
 import com.universe.touchpoint.config.CoordinatorConfig;
 
 import java.lang.annotation.Annotation;

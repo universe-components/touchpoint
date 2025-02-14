@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class AgentSocketStateRouter<C extends AgentContext> {
 
-    private static final Map<AgentSocketState, AgentSocketStateHandler<?>> stateHandlerMap = new HashMap<>();
+    private static final Map<AgentSocketState, AgentSocketStateHandler<?, ?>> stateHandlerMap = new HashMap<>();
     static {
         stateHandlerMap.put(AgentSocketState.TASK_READY, new TaskReadyHandler());
         stateHandlerMap.put(AgentSocketState.PARTICIPANT_READY, new TaskParticipantReadyHandler());
@@ -28,16 +28,16 @@ public class AgentSocketStateRouter<C extends AgentContext> {
         stateHandlerMap.put(AgentSocketState.CHANNEL_ESTABLISHED, new ChannelEstablishedHandler());
     }
 
-    public void route(C context, Context appContext, byte[] stateContextBytes, String filter) {
+    public <I, O> void route(C context, Context appContext, byte[] stateContextBytes, String filter) {
         try {
             AgentSocketStateMachine.AgentSocketStateContext<?> stateContext = SerializeUtils.deserializeFromByteArray(stateContextBytes, AgentSocketStateMachine.AgentSocketStateContext.class);
-            AgentSocketStateHandler<?> stateHandler = stateHandlerMap.get(stateContext.getSocketState());
+            AgentSocketStateHandler<I, O> stateHandler = (AgentSocketStateHandler<I, O>) stateHandlerMap.get(stateContext.getSocketState());
             assert stateHandler != null;
             AgentSocketState nextState = AgentSocketState.next(stateContext.getSocketState());
             if (nextState != null) {
                 String filterSuffix = TouchPointHelper.extractSuffixFromFilter(Objects.requireNonNull(filter));
                 AgentSocketStateMachine.getInstance(context.getBelongTask()).send(new AgentSocketStateMachine.AgentSocketStateContext<>(
-                        nextState, stateHandler.onStateChange(stateContext.getContext(), context, appContext, filterSuffix)
+                        nextState, stateHandler.onStateChange((I) stateContext.getContext(), context, appContext, filterSuffix)
                 ), appContext, filterSuffix);
             }
         } catch (Exception e) {

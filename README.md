@@ -1,6 +1,6 @@
 # Touchpoint Protocol
 
-`touchpoint-protocol` ，触点协议（TPP协议），一个Agent之间通信的协议，该协议通过AI模型驱动Agent之间的关系，是智联网的通信标准。
+`touchpoint-protocol` ，触点协议（TPP协议），一个Agent之间协作通信的协议，该协议通过AI模型驱动Agent之间协作，是智联网的协作通信标准。
 
 ## 核心功能
 
@@ -12,7 +12,7 @@
 
 - **可热插拔Agent：** Agent网络中的任意一个Agent都可在线加入和退出，不影响整个Agent网络。
 
-- **多种调用方式：** Agent之间可以通过IPC、Broadcast、MQTT、RPC及REST等方式通信。
+- **多种调用方式：** Action之间可以通过IPC、Broadcast、MQTT、RPC及REST等方式通信。
 
 - **多级模型驱动：** LLM驱动可以作用在Agent，也可以作用在Task及Action。
 

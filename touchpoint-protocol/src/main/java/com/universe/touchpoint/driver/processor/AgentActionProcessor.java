@@ -22,9 +22,9 @@ import com.universe.touchpoint.router.RouteTable;
 import java.util.List;
 import java.util.Map;
 
-public class AgentActionProcessor<T extends TouchPoint> extends ResultProcessor<AgentAction, T> {
+public class AgentActionProcessor<ActionInput extends TouchPoint, T extends TouchPoint> extends ResultProcessor<AgentAction<ActionInput>, T> {
 
-    public AgentActionProcessor(AgentAction result,
+    public AgentActionProcessor(AgentAction<ActionInput> result,
                                 String goal, String task, TouchPointListener<T, ?> tpReceiver, Context context, Transport transportType) {
         super(result, goal, task, tpReceiver, context, transportType);
     }
@@ -39,9 +39,9 @@ public class AgentActionProcessor<T extends TouchPoint> extends ResultProcessor<
 
         Map<Object, List<Object>> choices = AIModelFactory.callModel(input, modelConfig);
         ChoiceParser<Object, Object> choiceParser = ChoiceParserFactory.selectParser(modelConfig.getType());
-        Pair<List<AgentAction>, AgentFinish> answer = choiceParser.parse(choices);
+        Pair<List<AgentAction<ActionInput>>, AgentFinish> answer = choiceParser.parse(choices);
 
-        for (AgentAction agentAction : answer.first) {
+        for (AgentAction<ActionInput> agentAction : answer.first) {
             ResultDispatcher.run(agentAction, agentAction.getMeta(), context);
         }
         return null;

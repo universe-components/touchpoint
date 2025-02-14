@@ -2,19 +2,19 @@ package com.universe.touchpoint.agent;
 
 import com.universe.touchpoint.TouchPoint;
 
-public class AgentAction extends TouchPoint {
+public class AgentAction<T extends TouchPoint> extends TouchPoint {
 
     private String action;
     private String thought;
     private String observation;
-    private TouchPoint actionInput;
+    private T actionInput;
     private AgentActionMetaInfo meta;
 
     public AgentAction(String goal, Header header) {
         super(goal, header);
     }
 
-    public AgentAction(String action, TouchPoint actionInput, String thought, AgentActionMetaInfo meta) {
+    public AgentAction(String action, T actionInput, String thought, AgentActionMetaInfo meta) {
         super();
         this.action = action;
         this.actionInput = actionInput;
@@ -46,11 +46,11 @@ public class AgentAction extends TouchPoint {
         this.observation = observation;
     }
 
-    public TouchPoint getActionInput() {
+    public T getActionInput() {
         return actionInput;
     }
 
-    public void setActionInput(TouchPoint actionInput) {
+    public void setActionInput(T actionInput) {
         this.actionInput = actionInput;
     }
 

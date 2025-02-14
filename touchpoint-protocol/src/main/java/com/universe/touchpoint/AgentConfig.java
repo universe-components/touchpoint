@@ -1,6 +1,5 @@
 package com.universe.touchpoint;
 
-import com.universe.touchpoint.annotations.SocketProtocol;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.AgentSocketConfig;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;

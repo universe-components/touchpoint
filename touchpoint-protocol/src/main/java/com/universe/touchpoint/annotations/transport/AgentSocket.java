@@ -1,4 +1,4 @@
-package com.universe.touchpoint.annotations;
+package com.universe.touchpoint.annotations.transport;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +7,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MQTT {
+public @interface AgentSocket {
 
-    String brokerUrl();
+    SocketProtocol bindProtocol() default SocketProtocol.ANDROID_BROADCAST;
+    String brokerUri() default "";
 
 }

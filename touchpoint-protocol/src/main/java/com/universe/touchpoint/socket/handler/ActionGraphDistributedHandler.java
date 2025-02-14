@@ -25,12 +25,11 @@ import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
 
 import java.util.List;
 
-public class ActionGraphDistributedHandler implements AgentSocketStateHandler<Boolean> {
+public class ActionGraphDistributedHandler implements AgentSocketStateHandler<ActionGraph, Boolean> {
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
-    public <C extends AgentContext> Boolean onStateChange(Object input, C actionContext, Context context, String task) {
-        ActionGraph actionGraph = (ActionGraph) input;
+    public <C extends AgentContext> Boolean onStateChange(ActionGraph actionGraph, C actionContext, Context context, String task) {
         TaskActionContext taskActionContext = (TaskActionContext) actionContext;
         if (actionGraph != null) {
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);

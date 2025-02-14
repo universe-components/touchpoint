@@ -3,6 +3,7 @@ package com.universe.touchpoint.ai.parsers;
 import android.util.Pair;
 
 import com.openai.models.ChatCompletion;
+import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionManager;
@@ -25,8 +26,8 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
     private static final String FINAL_ANSWER_ACTION = "Final Answer: ";
 
     @Override
-    public Pair<List<AgentAction>, AgentFinish> parse(Map<ChatCompletion, List<ChatCompletion.Choice>> choices) {
-        List<AgentAction> agentActions = new ArrayList<>();
+    public <I extends TouchPoint> Pair<List<AgentAction<I>>, AgentFinish> parse(Map<ChatCompletion, List<ChatCompletion.Choice>> choices) {
+        List<AgentAction<I>> agentActions = new ArrayList<>();
 
         for (Map.Entry<ChatCompletion, List<ChatCompletion.Choice>> entry : choices.entrySet()) {
             List<ChatCompletion.Choice> choiceList = entry.getValue(); // 对应的 Choice 列表
@@ -53,7 +54,7 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
                 String thought = matcher.group(1) == null ? "" : Objects.requireNonNull(matcher.group(1)).trim();
 
                 DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
-                agentActions.add(new AgentAction(
+                agentActions.add(new AgentAction<>(
                         action,
                         AgentActionManager
                                 .getInstance()

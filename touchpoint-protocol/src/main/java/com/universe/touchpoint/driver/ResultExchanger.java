@@ -18,13 +18,14 @@ import com.universe.touchpoint.driver.processor.AgentFinishProcessor;
 import com.universe.touchpoint.driver.processor.DefaultResultProcessor;
 import com.universe.touchpoint.socket.AgentSocketState;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
+import com.universe.touchpoint.state.enums.ActionState;
 
 public class ResultExchanger {
 
     public static <R extends TouchPoint, T extends TouchPoint> String exchange(
             R result, String goal, String task, TouchPointListener<T, ?> tpReceiver, Context context, Transport transportType) {
         if (result.getHeader().getFromAction().role() == ActionRole.COORDINATOR) {
-            Pair<TransportConfig<?>, AIModelConfig> globalConfig = new CoordinatorReadyHandler().onStateChange(result, null, context, task);
+            Pair<TransportConfig<?>, AIModelConfig> globalConfig = new CoordinatorReadyHandler<>().onStateChange((AgentAction) result, null, context, task);
             AgentSocketStateMachine.getInstance(task).send(
                     new AgentSocketStateMachine.AgentSocketStateContext<>(
                             AgentSocketState.GLOBAL_CONFIG_DISTRIBUTED, globalConfig),
@@ -36,14 +37,15 @@ public class ResultExchanger {
         ResultProcessor<?, ?> resultProcessor;
         if (result instanceof AgentAction && task != null) {
             boolean isRoute;
-            if (result.getHeader().getFromAction().role() == ActionRole.SUPERVISOR) {
-                ActionSupervisor actionSupervisor = (ActionSupervisor) RoleExecutorFactory.getInstance(task).getOperator(((AgentAction) result).getAction());
+            if (result.getHeader().getFromAction().role() == ActionRole.SUPERVISOR
+                && result.getState().getCode() == ActionState.NEED_SUPERVISOR_CHECKING.getCode()) {
+                ActionSupervisor<R> actionSupervisor = (ActionSupervisor<R>) RoleExecutorFactory.getInstance(task).getOperator(((AgentAction<R>) result).getAction());
                 isRoute = actionSupervisor.run(result);
                 if (!isRoute) {
                     throw new RuntimeException("ActionSupervisor run failed");
                 }
             }
-            resultProcessor = new AgentActionProcessor<>((AgentAction) result, goal, task, tpReceiver, context, transportType);
+            resultProcessor = new AgentActionProcessor<>((AgentAction<R>) result, goal, task, tpReceiver, context, transportType);
         } else if (result instanceof AgentFinish) {
             resultProcessor = new AgentFinishProcessor<>((AgentFinish) result, goal, task, tpReceiver, context, transportType);
         } else {

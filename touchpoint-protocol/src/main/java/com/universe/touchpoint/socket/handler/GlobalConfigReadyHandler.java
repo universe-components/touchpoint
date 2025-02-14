@@ -7,11 +7,11 @@ import com.universe.touchpoint.driver.ActionGraph;
 import com.universe.touchpoint.driver.ActionGraphBuilder;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 
-public class GlobalConfigReadyHandler implements AgentSocketStateHandler<ActionGraph> {
+public class GlobalConfigReadyHandler implements AgentSocketStateHandler<Boolean, ActionGraph> {
 
     @Override
-    public <C extends AgentContext> ActionGraph onStateChange(Object ready, C agentContext, Context context, String task) {
-        if ((Boolean) ready) {
+    public <C extends AgentContext> ActionGraph onStateChange(Boolean ready, C agentContext, Context context, String task) {
+        if (ready) {
             return ActionGraphBuilder.getTaskGraph(task);
         }
         return null;
