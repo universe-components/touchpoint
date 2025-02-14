@@ -11,7 +11,6 @@ import com.universe.touchpoint.ai.AIModelFactory;
 import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.ai.ChoiceParserFactory;
 import com.universe.touchpoint.ai.prompt.PromptBuilder;
-import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.Transport;
@@ -25,8 +24,8 @@ import java.util.Map;
 public class AgentActionProcessor<ActionInput extends TouchPoint, T extends TouchPoint> extends ResultProcessor<AgentAction<ActionInput>, T> {
 
     public AgentActionProcessor(AgentAction<ActionInput> result,
-                                String goal, String task, TouchPointListener<T, ?> tpReceiver, Context context, Transport transportType) {
-        super(result, goal, task, tpReceiver, context, transportType);
+                                String goal, String task, Context context, Transport transportType) {
+        super(result, goal, task, context, transportType);
     }
 
     @Override

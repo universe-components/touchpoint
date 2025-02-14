@@ -56,7 +56,7 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
             tpReceiver.onReceive(touchPoint, context);
         }
         ResultExchanger.exchange(
-                touchPoint, touchPoint.goal, null, tpReceiver, mContext, Transport.BROADCAST);
+                touchPoint, touchPoint.goal, null, mContext, Transport.BROADCAST);
     }
 
 }

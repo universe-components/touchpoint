@@ -2,6 +2,7 @@ package com.universe.touchpoint.ai.prompt.generators;
 
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.universe.touchpoint.agent.AgentAction;
@@ -16,7 +17,7 @@ public class OpenAIPromptGenerator implements PromptGenerator {
 
     @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Override
-    public String generatePrompt(List<AgentActionMetaInfo> actionMetaInfoList, AgentAction action, String question) {
+    public String generatePrompt(@NonNull List<AgentActionMetaInfo> actionMetaInfoList, AgentAction<?> action, String question) {
         StringBuilder toolList = new StringBuilder();
         StringBuilder agentNames = new StringBuilder();
 

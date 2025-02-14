@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface PromptGenerator {
 
-    String generatePrompt(List<AgentActionMetaInfo> taskActions, AgentAction action, String question);
+    String generatePrompt(List<AgentActionMetaInfo> taskActions, AgentAction<?> action, String question);
 
 }

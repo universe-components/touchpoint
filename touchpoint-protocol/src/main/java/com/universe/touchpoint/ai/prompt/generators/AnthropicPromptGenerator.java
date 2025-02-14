@@ -9,7 +9,7 @@ import java.util.List;
 public class AnthropicPromptGenerator implements PromptGenerator {
 
     @Override
-    public String generatePrompt(List<AgentActionMetaInfo> actionMetaInfos, AgentAction action, String question) {
+    public String generatePrompt(List<AgentActionMetaInfo> actionMetaInfos, AgentAction<?> action, String question) {
         return "";
     }
 

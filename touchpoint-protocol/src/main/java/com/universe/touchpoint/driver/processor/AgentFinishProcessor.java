@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentFinish;
-import com.universe.touchpoint.api.TouchPointListener;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.driver.ResultDispatcher;
 import com.universe.touchpoint.driver.ResultProcessor;
@@ -12,8 +11,8 @@ import com.universe.touchpoint.driver.ResultProcessor;
 public class AgentFinishProcessor<T extends TouchPoint> extends ResultProcessor<AgentFinish, T> {
 
     public AgentFinishProcessor(AgentFinish result,
-                                String goal, String task, TouchPointListener<T, ?> tpReceiver, Context context, Transport transport) {
-        super(result, goal, task, tpReceiver, context, transport);
+                                String goal, String task, Context context, Transport transport) {
+        super(result, goal, task, context, transport);
     }
 
     @Override
