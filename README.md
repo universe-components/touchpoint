@@ -79,13 +79,14 @@ data class Entry {
     name = "entry_action", role = ActionRole.COORDINATOR
 )
 @Coordinator(task = "query_weather") // task指定哪个任务的协调者
-class Entry : ActionCoordinator {
+class Entry : ActionCoordinator<PredecessorResponse> {
 
-    override fun run(TouchPoint condition, actionGraph: ActionGraph) : ActionGraph {
+    override fun run(PredecessorResponse predecessorResponse, actionGraph: ActionGraph) : ActionGraph {
         // 重新编排 Actions
     }
     
 }
+其中，PredecessorResponse必须继承TouchPoint。
 ```
 
 如果希望 `Entry Agent` 成为监督者，检查前置Action输出，可以配置如下：
@@ -94,9 +95,9 @@ class Entry : ActionCoordinator {
     name = "entry_action", role = ActionRole.SUPERVISOR
 )
 @Supervisor(task = "query_weather") // task指定哪个任务的监督者
-class Entry : ActionSupervisor {
+class Entry : ActionSupervisor<PredecessorResponse> {
 
-    override fun run(TouchPoint input) : Boolean {
+    override fun run(PredecessorResponse input) : Boolean {
         // 检查input
     }
     

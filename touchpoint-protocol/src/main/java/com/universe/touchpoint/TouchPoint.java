@@ -32,7 +32,7 @@ public abstract class TouchPoint {
         this.goal = goal;
     }
 
-    public void setChannel(TouchPointChannel channel) {
+    public void setChannel(TouchPointChannel<?> channel) {
         this.header.setChannel(channel);
     }
 
