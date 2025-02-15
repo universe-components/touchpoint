@@ -12,6 +12,6 @@ public abstract class TouchPointChannel<R> {
         this.context = context;
     }
 
-    public abstract <T extends TouchPoint> R send(T touchpoint);
+    public abstract <I extends TouchPoint, O extends TouchPoint> R send(I touchpoint);
 
 }

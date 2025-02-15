@@ -1,6 +1,6 @@
 package com.universe.touchpoint.config.mapping;
 
-import com.universe.touchpoint.annotations.AIModel;
+import com.universe.touchpoint.annotations.ai.AIModel;
 import com.universe.touchpoint.config.AIModelConfig;
 
 import java.lang.annotation.Annotation;

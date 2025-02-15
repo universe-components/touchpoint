@@ -8,7 +8,7 @@ import androidx.annotation.RequiresApi;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
-import com.universe.touchpoint.annotations.ActionRole;
+import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.context.TaskActionContext;

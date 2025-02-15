@@ -11,4 +11,6 @@ public @interface Supervisor {
 
     String task();
 
+    EntityType type();
+
 }

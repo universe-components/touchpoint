@@ -1,4 +1,4 @@
-package com.universe.touchpoint.annotations;
+package com.universe.touchpoint.annotations.ai;
 
 import com.universe.touchpoint.config.Model;
 

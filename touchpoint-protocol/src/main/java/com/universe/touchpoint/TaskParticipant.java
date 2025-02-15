@@ -5,7 +5,7 @@ import android.util.Pair;
 
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
-import com.universe.touchpoint.annotations.ActionRole;
+import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.AgentSocketConfig;
 import com.universe.touchpoint.config.ConfigManager;
@@ -18,7 +18,7 @@ import com.universe.touchpoint.config.mapping.CoordinatorConfigMapping;
 import com.universe.touchpoint.config.mapping.SupervisorConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.context.TaskActionContext;
-import com.universe.touchpoint.driver.RoleExecutorFactory;
+import com.universe.touchpoint.rolemodel.RoleExecutorFactory;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.DriverRegion;
@@ -62,7 +62,8 @@ public class TaskParticipant {
                             (String) properties.get(0),
                             (String) properties.get(1),
                             (ActionRole) properties.get(2),
-                            Agent.getName());
+                            Agent.getName(),
+                            (String[]) properties.get(4));
                 registerCollaboration(Class.forName(clazz), (String) properties.get(0));
                 registerSupervisor(Class.forName(clazz), (String) properties.get(0));
             } catch (Exception ex) {

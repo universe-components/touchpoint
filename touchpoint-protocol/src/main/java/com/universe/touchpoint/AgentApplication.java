@@ -77,7 +77,7 @@ public class AgentApplication extends Application {
         List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(
                 ctx,
                 com.universe.touchpoint.annotations.TouchPointAction.class,
-                Arrays.asList("name", "desc", "role", "tasks"),
+                Arrays.asList("name", "desc", "role", "tasks", "toActions"),
                 !isPlugin
         );
 

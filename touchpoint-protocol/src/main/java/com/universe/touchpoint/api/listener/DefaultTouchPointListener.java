@@ -5,9 +5,9 @@ import android.content.Context;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.api.TouchPointListener;
 
-public interface DefaultTouchPointListener<T extends TouchPoint> extends TouchPointListener<T, Boolean> {
+public interface DefaultTouchPointListener<T extends TouchPoint> extends TouchPointListener<T, TouchPoint> {
 
     @Override
-    Boolean onReceive(T touchPoint, Context context);
+    TouchPoint onReceive(T touchPoint, Context context);
 
 }

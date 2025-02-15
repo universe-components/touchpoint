@@ -13,7 +13,7 @@ public class TouchPointBroadcastReceiverRegistry implements TouchPointTransportR
 
     @Override
     public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String previousAction) {
-        TouchPointBroadcastReceiver<? extends TouchPoint> tpReceiver;
+        TouchPointBroadcastReceiver<? extends TouchPoint, ?, ?> tpReceiver;
         try {
             tpReceiver = new TouchPointBroadcastReceiver<>(
                     Class.forName(agentActionMetaInfo.inputClassName()), context);

@@ -1,6 +1,6 @@
 package com.universe.touchpoint.config.mapping;
 
-import com.universe.touchpoint.annotations.transport.AgentSocket;
+import com.universe.touchpoint.annotations.socket.AgentSocket;
 import com.universe.touchpoint.config.AgentSocketConfig;
 
 import java.lang.annotation.Annotation;

@@ -11,4 +11,6 @@ public @interface Coordinator {
 
     String task();
 
+    EntityType type();
+
 }

@@ -8,7 +8,7 @@ import androidx.annotation.RequiresApi;
 
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.annotations.ActionRole;
+import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -43,7 +43,8 @@ public class AgentActionManager {
             String actionName,
             String actionDesc,
             ActionRole role,
-            String agentName) {
+            String agentName,
+            String[] toActions) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(receiverClassName);
 
@@ -63,7 +64,7 @@ public class AgentActionManager {
                 }
             }
 
-            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, role, inputClassName, outputClassName, model, transportConfig);
+            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, role, inputClassName, outputClassName, model, transportConfig, toActions);
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
             driverRegion.putTouchPointAction(
                     TouchPointHelper.touchPointActionName(actionName, agentName), agentActionMetaInfo);
@@ -77,7 +78,7 @@ public class AgentActionManager {
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     public void registerAgentFinishReceiver(Context appContext, String filter, Class<? extends TouchPoint> touchPointClass) {
-        TouchPointBroadcastReceiver<? extends TouchPoint> agentFinishReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
+        TouchPointBroadcastReceiver<? extends TouchPoint, ?, ?> agentFinishReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
 
         IntentFilter agentFinishFilter = new IntentFilter(TouchPointHelper.touchPointFilterName(filter));
         appContext.registerReceiver(agentFinishReceiver, agentFinishFilter, Context.RECEIVER_EXPORTED);

@@ -26,8 +26,8 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
     private static final String FINAL_ANSWER_ACTION = "Final Answer: ";
 
     @Override
-    public <I extends TouchPoint> Pair<List<AgentAction<I>>, AgentFinish> parse(Map<ChatCompletion, List<ChatCompletion.Choice>> choices) {
-        List<AgentAction<I>> agentActions = new ArrayList<>();
+    public <I extends TouchPoint, O extends TouchPoint> Pair<List<AgentAction<I, O>>, AgentFinish> parse(Map<ChatCompletion, List<ChatCompletion.Choice>> choices) {
+        List<AgentAction<I, O>> agentActions = new ArrayList<>();
 
         for (Map.Entry<ChatCompletion, List<ChatCompletion.Choice>> entry : choices.entrySet()) {
             List<ChatCompletion.Choice> choiceList = entry.getValue(); // 对应的 Choice 列表

@@ -11,6 +11,6 @@ import java.util.Map;
 
 public interface ChoiceParser<C, R> {
 
-    <I extends TouchPoint> Pair<List<AgentAction<I>>, AgentFinish> parse(Map<C, List<R>> choices);
+    <I extends TouchPoint, O extends TouchPoint> Pair<List<AgentAction<I, O>>, AgentFinish> parse(Map<C, List<R>> choices);
 
 }

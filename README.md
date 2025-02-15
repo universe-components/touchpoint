@@ -78,8 +78,8 @@ data class Entry {
 @TouchPointAction(
     name = "entry_action", role = ActionRole.COORDINATOR
 )
-@Coordinator(task = "query_weather") // task指定哪个任务的协调者
-class Entry : ActionCoordinator<PredecessorResponse> {
+@Coordinator(task = "query_weather") // task指定是哪个任务的协调者
+class Entry : ActionGraphOperator<PredecessorResponse> {
 
     override fun run(PredecessorResponse predecessorResponse, actionGraph: ActionGraph) : ActionGraph {
         // 重新编排 Actions
@@ -94,8 +94,8 @@ class Entry : ActionCoordinator<PredecessorResponse> {
 @TouchPointAction(
     name = "entry_action", role = ActionRole.SUPERVISOR
 )
-@Supervisor(task = "query_weather") // task指定哪个任务的监督者
-class Entry : ActionSupervisor<PredecessorResponse> {
+@Supervisor(task = "query_weather") // task指定是哪个任务的监督者
+class Entry : DataChecker<PredecessorResponse> {
 
     override fun run(PredecessorResponse input) : Boolean {
         // 检查input
@@ -132,7 +132,8 @@ data class WeatherResponse(val weather: String, val temperature: String) : Touch
 ```kotlin
 @TouchPointAction(
     name = "weather_action",
-    tasks = {"entry_agent"} // 可以指定多个参与的任务
+    tasks = {"entry_agent", "task"} // 可以指定多个参与的任务
+    toActions = {"next_action", "next_action, next_action1, next_action2"} //每个字符串为一个或多个Action之间用逗号隔开，与tasks属性中的任务一一对应
 ) 
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 class WeathertListener : AgentActionListener<String, WeatherResponse> {

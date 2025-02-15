@@ -17,7 +17,7 @@ public class TouchPointDubboChannel extends TouchPointRpcChannel<DubboConfig> {
     }
 
     @Override
-    public <T extends TouchPoint> String send(T touchpoint) {
+    public <I extends TouchPoint, O extends TouchPoint> String send(I touchpoint) {
         Class<?> touchPointService =
                 (Class<?>) ReferenceBuilder.newBuilder()
                         .interfaceClass((transportConfig.interfaceClass))
@@ -31,7 +31,7 @@ public class TouchPointDubboChannel extends TouchPointRpcChannel<DubboConfig> {
             try {
                 result = action.invoke(touchPointService.getDeclaredConstructor().newInstance(), touchpoint);
                 assert result != null;
-                ((AgentAction<?>) touchpoint).setObservation(result.toString());
+                ((AgentAction<?, O>) touchpoint).setOutput((O) result);
                 return ResultExchanger.exchange(touchpoint, touchpoint.goal, null, null, null);
             } catch (Exception e) {
                 throw new RuntimeException(e);

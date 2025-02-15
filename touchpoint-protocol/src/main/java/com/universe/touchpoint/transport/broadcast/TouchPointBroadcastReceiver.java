@@ -21,7 +21,7 @@ import com.universe.touchpoint.utils.SerializeUtils;
 
 import java.util.List;
 
-public class TouchPointBroadcastReceiver<T extends TouchPoint> extends BroadcastReceiver {
+public class TouchPointBroadcastReceiver<T extends TouchPoint, I extends TouchPoint, O extends TouchPoint> extends BroadcastReceiver {
 
     private final Class<T> tpClass;
     private final Context mContext;
@@ -44,9 +44,8 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
         TouchPointListener<T, ?> tpReceiver = (TouchPointListener<T, ?>) transportRegion.getTouchPointReceiver(filter);
 
         if (touchPoint instanceof AgentAction) {
-            String actionResult = tpReceiver.onReceive(
-                    (T) ((AgentAction) touchPoint).getActionInput(), context).toString();
-            ((AgentAction) touchPoint).setObservation(actionResult);
+            ((AgentAction<I, O>) touchPoint).setOutput((O) tpReceiver.onReceive(
+                    (T) ((AgentAction<I, O>) touchPoint).getActionInput(), context));
         } else if(touchPoint instanceof AgentFinish) {
             List<AgentActionMetaInfo> predecessors = RouteTable.getInstance().getPredecessors(touchPoint.getHeader().getFromAction().actionName());
             if (predecessors == null) {

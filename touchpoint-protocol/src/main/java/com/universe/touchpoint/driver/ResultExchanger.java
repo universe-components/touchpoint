@@ -5,50 +5,54 @@ import android.util.Pair;
 
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.agent.AgentFinish;
-import com.universe.touchpoint.annotations.ActionRole;
-import com.universe.touchpoint.api.ActionSupervisor;
+import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.AIModelConfig;
 import com.universe.touchpoint.config.Transport;
 import com.universe.touchpoint.config.TransportConfig;
-import com.universe.touchpoint.driver.coordinator.CoordinatorReadyHandler;
+import com.universe.touchpoint.rolemodel.coordinator.ReorderActionReadyHandler;
 import com.universe.touchpoint.driver.processor.AgentActionProcessor;
-import com.universe.touchpoint.driver.processor.AgentFinishProcessor;
 import com.universe.touchpoint.driver.processor.DefaultResultProcessor;
+import com.universe.touchpoint.rolemodel.RoleExecutorFactory;
+import com.universe.touchpoint.rolemodel.coordinator.SwitchActionModelReadyHandler;
 import com.universe.touchpoint.socket.AgentSocketState;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
-import com.universe.touchpoint.state.enums.ActionState;
+import com.universe.touchpoint.state.enums.TaskState;
 
 public class ResultExchanger {
 
-    public static <R extends TouchPoint, T extends TouchPoint> String exchange(
+    public static <I extends TouchPoint, O extends TouchPoint, R extends TouchPoint, E> String exchange(
             R result, String goal, String task, Context context, Transport transportType) {
-        if (result.getHeader().getFromAction().role() == ActionRole.COORDINATOR) {
-            Pair<TransportConfig<?>, AIModelConfig> globalConfig = new CoordinatorReadyHandler<>().onStateChange((AgentAction) result, null, context, task);
-            AgentSocketStateMachine.getInstance(task).send(
-                    new AgentSocketStateMachine.AgentSocketStateContext<>(
-                            AgentSocketState.GLOBAL_CONFIG_DISTRIBUTED, globalConfig),
-                    context,
-                    task);
-            return null;
+        if (((AgentAction<I, O>) result).getMeta().role() == ActionRole.COORDINATOR) {
+            if (((AgentAction<?, ?>) result).getActionInput().getState().getCode() == TaskState.NEED_REORDER_ACTION.getCode()) {
+                Pair<TransportConfig<?>, AIModelConfig> globalConfig = new ReorderActionReadyHandler<I, O>().onStateChange((AgentAction<I, O>) result, null, context, task);
+                AgentSocketStateMachine.getInstance(task).send(
+                        new AgentSocketStateMachine.AgentSocketStateContext<>(
+                                AgentSocketState.GLOBAL_CONFIG_DISTRIBUTED, globalConfig),
+                        context,
+                        task);
+                throw new RuntimeException(String.format("ActionGraph has been rebuild for task[%s]", task));
+            }
+            if (((AgentAction<I, O>) result).getActionInput().getState().getCode() == TaskState.NEED_SWITCH_AI_MODEL.getCode()) {
+                AgentAction<I, O> newAction = new SwitchActionModelReadyHandler<I, O>().onStateChange((AgentAction<I, O>) result, null, context, task);
+                AgentSocketStateMachine.getInstance(task).send(
+                        new AgentSocketStateMachine.AgentSocketStateContext<>(
+                                AgentSocketState.PARTICIPANT_READY, newAction.getMeta()),
+                        context,
+                        task);
+                throw new RuntimeException(String.format("Action[%s] has been switched model for task[%s]", ((AgentAction<I, O>) result).getAction(), task));
+            }
+        }
+        E actionSupervisor = (E) RoleExecutorFactory.getInstance(task).getExecutor(((AgentAction<I, O>) result).getAction());
+        Object isRoute = RoleExecutorFactory.getInstance(task).run(result, actionSupervisor);
+        if (isRoute instanceof Boolean && !(Boolean) isRoute) {
+            throw new RuntimeException(String.format("ActionSupervisor run failed：%s is not passed", result));
         }
 
         ResultProcessor<?, ?> resultProcessor;
-        if (result instanceof AgentAction && task != null) {
-            boolean isRoute;
-            if (result.getHeader().getFromAction().role() == ActionRole.SUPERVISOR
-                && result.getState().getCode() == ActionState.NEED_SUPERVISOR_CHECKING.getCode()) {
-                ActionSupervisor<R> actionSupervisor = (ActionSupervisor<R>) RoleExecutorFactory.getInstance(task).getExecutor(((AgentAction<R>) result).getAction());
-                isRoute = actionSupervisor.run(result);
-                if (!isRoute) {
-                    throw new RuntimeException("ActionSupervisor run failed");
-                }
-            }
-            resultProcessor = new AgentActionProcessor<>((AgentAction<R>) result, goal, task, context, transportType);
-        } else if (result instanceof AgentFinish) {
-            resultProcessor = new AgentFinishProcessor<>((AgentFinish) result, goal, task, context, transportType);
+        if (task != null) {
+            resultProcessor = new AgentActionProcessor<>((AgentAction<I, O>) result, goal, task, context, transportType);
         } else {
-            resultProcessor = new DefaultResultProcessor(result, goal, null, context, transportType);
+            resultProcessor = new DefaultResultProcessor<>(result, goal, null, context, transportType);
 
         }
 

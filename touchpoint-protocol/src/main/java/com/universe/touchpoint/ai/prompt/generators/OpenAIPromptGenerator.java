@@ -17,7 +17,7 @@ public class OpenAIPromptGenerator implements PromptGenerator {
 
     @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Override
-    public String generatePrompt(@NonNull List<AgentActionMetaInfo> actionMetaInfoList, AgentAction<?> action, String question) {
+    public String generatePrompt(@NonNull List<AgentActionMetaInfo> actionMetaInfoList, AgentAction<?, ?> action, String question) {
         StringBuilder toolList = new StringBuilder();
         StringBuilder agentNames = new StringBuilder();
 
@@ -43,7 +43,7 @@ public class OpenAIPromptGenerator implements PromptGenerator {
                     .append("\nAction Input:")
                     .append(ClassUtils.getFieldValues(action.getActionInput()))
                     .append("\nObservation:")
-                    .append(action.getObservation());
+                    .append(action.getOutput().toString());
         }
         // Replace [{agent_names}] with the agent names
         String finalFormatInstructions = OpenAITemplate.FORMAT_INSTRUCTIONS.replace("{agent_names}", agentNames.toString());

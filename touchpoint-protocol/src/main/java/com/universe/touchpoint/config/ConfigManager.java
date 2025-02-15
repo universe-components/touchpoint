@@ -4,7 +4,7 @@ import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.ai.AIModelType;
-import com.universe.touchpoint.annotations.AIModel;
+import com.universe.touchpoint.annotations.ai.AIModel;
 import com.universe.touchpoint.config.mapping.AgentSocketConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.utils.AnnotationUtils;
