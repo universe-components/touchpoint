@@ -6,15 +6,11 @@ import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.driver.ResultProcessor;
 
-public class DefaultResultProcessor<T extends TouchPoint> extends ResultProcessor<T, T> {
-
-    public DefaultResultProcessor(T touchPoint,
-                                  String goal, String task, Context context, Transport transportType) {
-        super(touchPoint, goal, task, context, transportType);
-    }
+public class DefaultResultProcessor<T extends TouchPoint> implements ResultProcessor<T> {
 
     @Override
-    public String process() {
+    public String process(T touchPoint,
+                          String goal, String task, Context context, Transport transportType) {
         return null;
     }
 

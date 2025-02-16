@@ -21,15 +21,11 @@ import com.universe.touchpoint.router.RouteTable;
 import java.util.List;
 import java.util.Map;
 
-public class AgentActionProcessor<I extends TouchPoint, O extends TouchPoint, T extends TouchPoint> extends ResultProcessor<AgentAction<I, O>, T> {
-
-    public AgentActionProcessor(AgentAction<I, O> result,
-                                String goal, String task, Context context, Transport transportType) {
-        super(result, goal, task, context, transportType);
-    }
+public class AgentActionProcessor<I extends TouchPoint, O extends TouchPoint> implements ResultProcessor<AgentAction<I, O>> {
 
     @Override
-    public String process() {
+    public String process(AgentAction<I, O> result,
+                          String goal, String task, Context context, Transport transportType) {
         AIModelConfig modelConfig = ConfigManager.selectModel(goal, result.getMeta(), task);
 
         List<AgentActionMetaInfo> nextActions = RouteTable.getInstance().getSuccessors(result.getAction());
