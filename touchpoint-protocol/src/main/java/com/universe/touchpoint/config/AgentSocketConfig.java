@@ -1,6 +1,6 @@
 package com.universe.touchpoint.config;
 
-import com.universe.touchpoint.annotations.transport.SocketProtocol;
+import com.universe.touchpoint.annotations.socket.SocketProtocol;
 
 public class AgentSocketConfig {
 

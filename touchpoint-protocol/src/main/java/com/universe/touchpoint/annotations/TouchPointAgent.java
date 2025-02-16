@@ -1,6 +1,6 @@
 package com.universe.touchpoint.annotations;
 
-import com.universe.touchpoint.annotations.transport.SocketProtocol;
+import com.universe.touchpoint.annotations.socket.SocketProtocol;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

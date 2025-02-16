@@ -1,4 +1,4 @@
-package com.universe.touchpoint.annotations.transport;
+package com.universe.touchpoint.annotations.socket;
 
 public enum SocketProtocol {
 

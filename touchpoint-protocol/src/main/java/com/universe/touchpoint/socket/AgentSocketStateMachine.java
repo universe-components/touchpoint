@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.universe.touchpoint.annotations.transport.SocketProtocol;
+import com.universe.touchpoint.annotations.socket.SocketProtocol;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.TouchPointConstants;
 
