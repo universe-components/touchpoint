@@ -1,6 +1,7 @@
 package com.universe.touchpoint.rolemodel.coordinator;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.rolemodel.RoleScope;
@@ -40,9 +41,9 @@ public class Coordinator<SocketInput, SocketOutput> {
                     task);
         String pattern = Objects.requireNonNull(exceptionMap.get(stateCode));
         if (Objects.requireNonNull(TaskState.getState(stateCode)).getScope() == RoleScope.ACTION_GRAPH) {
-            throw new RuntimeException(String.format(pattern, task));
+            Log.i("Coordinator", String.format(pattern, task));
         } else {
-            throw new RuntimeException(String.format(pattern, agentAction.getAction(), task));
+            Log.i("Coordinator", String.format(pattern, agentAction.getAction(), task));
         }
     }
 

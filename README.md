@@ -232,7 +232,7 @@ class WeatherService {
 ```
 
 ## 高级用法
-- [自定义角色](./README_ROLE.md)
+- [自定义角色行为](./README_ROLE.md)
 - [降级为非模型驱动的Agent编排](./README_BASIC.md)
 
 ## RoadMap
