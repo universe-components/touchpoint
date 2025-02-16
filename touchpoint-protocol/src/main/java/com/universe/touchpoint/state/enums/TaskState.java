@@ -1,21 +1,21 @@
 package com.universe.touchpoint.state.enums;
 
-import com.universe.touchpoint.rolemodel.Scope;
+import com.universe.touchpoint.rolemodel.RoleScope;
 
 public enum TaskState {
 
-    OK(200, Scope.ALL),
-    NEED_REORDER_ACTION(300, Scope.ACTION_GRAPH),
-    NEED_SWITCH_AI_MODEL(301, Scope.ACTION),
-    NEED_SWITCH_ACTION(302, Scope.ACTION),
-    NEED_CHECK_ACTION(401, Scope.ACTION),
-    NEED_CHECK_ACTION_GRAPH(402, Scope.ACTION_GRAPH),
-    NEED_CHECK_DATA(403, Scope.DATA);
+    OK(200, RoleScope.ALL),
+    NEED_REORDER_ACTION(300, RoleScope.ACTION_GRAPH),
+    NEED_SWITCH_AI_MODEL(301, RoleScope.ACTION),
+    NEED_SWITCH_ACTION(302, RoleScope.ACTION),
+    NEED_CHECK_ACTION(401, RoleScope.ACTION),
+    NEED_CHECK_ACTION_GRAPH(402, RoleScope.ACTION_GRAPH),
+    NEED_CHECK_DATA(403, RoleScope.DATA);
 
     private final int code;
-    private final Scope scope;
+    private final RoleScope scope;
 
-    TaskState(int code, Scope scope) {
+    TaskState(int code, RoleScope scope) {
         this.code = code;
         this.scope = scope;
     }
@@ -33,7 +33,7 @@ public enum TaskState {
         return code;
     }
 
-    public Scope getScope() {
+    public RoleScope getScope() {
         return scope;
     }
 

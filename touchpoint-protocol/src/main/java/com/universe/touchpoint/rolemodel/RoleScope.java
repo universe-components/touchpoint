@@ -1,6 +1,6 @@
 package com.universe.touchpoint.rolemodel;
 
-public enum Scope {
+public enum RoleScope {
 
     DATA,
     ACTION,

@@ -3,7 +3,7 @@ package com.universe.touchpoint.rolemodel.coordinator;
 import android.content.Context;
 
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.rolemodel.Scope;
+import com.universe.touchpoint.rolemodel.RoleScope;
 import com.universe.touchpoint.rolemodel.coordinator.handler.ReorderActionReadyHandler;
 import com.universe.touchpoint.rolemodel.coordinator.handler.SwitchActionModelReadyHandler;
 import com.universe.touchpoint.socket.AgentSocketState;
@@ -39,7 +39,7 @@ public class Coordinator<SocketInput, SocketOutput> {
                     context,
                     task);
         String pattern = Objects.requireNonNull(exceptionMap.get(stateCode));
-        if (Objects.requireNonNull(TaskState.getState(stateCode)).getScope() == Scope.ACTION_GRAPH) {
+        if (Objects.requireNonNull(TaskState.getState(stateCode)).getScope() == RoleScope.ACTION_GRAPH) {
             throw new RuntimeException(String.format(pattern, task));
         } else {
             throw new RuntimeException(String.format(pattern, agentAction.getAction(), task));
