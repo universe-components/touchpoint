@@ -6,7 +6,7 @@ import android.util.Log;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.rolemodel.RoleScope;
 import com.universe.touchpoint.rolemodel.coordinator.handler.ReorderActionReadyHandler;
-import com.universe.touchpoint.rolemodel.coordinator.handler.SwitchActionModelReadyHandler;
+import com.universe.touchpoint.rolemodel.coordinator.handler.SwitchActionReadyHandler;
 import com.universe.touchpoint.socket.AgentSocketState;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
@@ -22,9 +22,17 @@ public class Coordinator<SocketInput, SocketOutput> {
     private final Map<Integer, AgentSocketState> socketStateMap = new HashMap<>();
     private final Map<Integer, String> exceptionMap = new HashMap<>();
     {
-        handlerMap.put(TaskState.NEED_SWITCH_AI_MODEL.getCode(), (AgentSocketStateHandler<SocketInput, SocketOutput>) new SwitchActionModelReadyHandler<>());
+        handlerMap.put(TaskState.NEED_SWITCH_AI_MODEL.getCode(), (AgentSocketStateHandler<SocketInput, SocketOutput>) new SwitchActionReadyHandler<>());
         socketStateMap.put(TaskState.NEED_SWITCH_AI_MODEL.getCode(), AgentSocketState.PARTICIPANT_READY);
         exceptionMap.put(TaskState.NEED_SWITCH_AI_MODEL.getCode(), "Action[%s] has been switched model for task[%s]");
+
+        handlerMap.put(TaskState.NEED_SWITCH_TRANSPORT.getCode(), (AgentSocketStateHandler<SocketInput, SocketOutput>) new SwitchActionReadyHandler<>());
+        socketStateMap.put(TaskState.NEED_SWITCH_TRANSPORT.getCode(), AgentSocketState.PARTICIPANT_READY);
+        exceptionMap.put(TaskState.NEED_SWITCH_TRANSPORT.getCode(), "Action[%s] has been switched transport for task[%s]");
+
+        handlerMap.put(TaskState.NEED_SWITCH_ACTION.getCode(), (AgentSocketStateHandler<SocketInput, SocketOutput>) new SwitchActionReadyHandler<>());
+        socketStateMap.put(TaskState.NEED_SWITCH_ACTION.getCode(), AgentSocketState.PARTICIPANT_READY);
+        exceptionMap.put(TaskState.NEED_SWITCH_ACTION.getCode(), "Action[%s] has been changed for task[%s]");
 
         handlerMap.put(TaskState.NEED_REORDER_ACTION.getCode(), (AgentSocketStateHandler<SocketInput, SocketOutput>) new ReorderActionReadyHandler<>());
         socketStateMap.put(TaskState.NEED_REORDER_ACTION.getCode(), AgentSocketState.GLOBAL_CONFIG_DISTRIBUTED);

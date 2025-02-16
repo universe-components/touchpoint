@@ -11,7 +11,7 @@ import com.universe.touchpoint.memory.regions.DriverRegion;
 import com.universe.touchpoint.rolemodel.RoleExecutorFactory;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 
-public class SwitchActionModelReadyHandler<I extends TouchPoint, O extends TouchPoint> implements AgentSocketStateHandler<AgentAction<I, O>, AgentAction<I, O>> {
+public class SwitchActionReadyHandler<I extends TouchPoint, O extends TouchPoint> implements AgentSocketStateHandler<AgentAction<I, O>, AgentAction<I, O>> {
 
     @Override
     public <C extends AgentContext> AgentAction<I, O> onStateChange(AgentAction<I, O> action, C agentContext, Context context, String task) {
