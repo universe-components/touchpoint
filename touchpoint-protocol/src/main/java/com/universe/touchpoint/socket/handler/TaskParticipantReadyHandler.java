@@ -14,8 +14,6 @@ import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.DriverRegion;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 
-import java.util.Arrays;
-
 public class TaskParticipantReadyHandler implements AgentSocketStateHandler<AgentActionMetaInfo, Pair<TransportConfig<?>, AIModelConfig>> {
 
     @Override
@@ -25,7 +23,7 @@ public class TaskParticipantReadyHandler implements AgentSocketStateHandler<Agen
             driverRegion.putTouchPointSwapAction(actionMeta.actionName(), actionMeta);
 
             ActionGraphBuilder.getTaskGraph(task).addNode(actionMeta);
-            Arrays.stream(actionMeta.toActions()).forEach(toAction -> {
+            actionMeta.toActions().getToActions(task).forEach(toAction -> {
                 if (driverRegion.containsTouchPointSwapAction(toAction)) {
                     ActionGraphBuilder.getTaskGraph(task).addEdge(actionMeta, driverRegion.getTouchPointSwapAction(toAction));
                 }

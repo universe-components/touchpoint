@@ -6,6 +6,7 @@ import android.util.Pair;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.config.ActionRelation;
 import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.ConfigManager;
@@ -25,6 +26,7 @@ import com.universe.touchpoint.memory.regions.DriverRegion;
 import com.universe.touchpoint.socket.AgentSocketState;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.utils.AnnotationUtils;
+import com.universe.touchpoint.utils.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -56,6 +58,9 @@ public class TaskParticipant {
                 boolean coordinatorResult = registerCoordinator(Class.forName(clazz), (String) properties.get(0));
                 boolean supervisorResult = registerSupervisor(Class.forName(clazz), (String) properties.get(0));
                 ActionRole role = coordinatorResult ? ActionRole.COORDINATOR : (supervisorResult ? ActionRole.SUPERVISOR : null);
+
+                ActionRelation actionRelation = new ActionRelation((String) properties.get(0));
+                actionRelation.setToActions(StringUtils.convert((String[]) properties.get(4)));
                 AgentActionManager.getInstance().extractAndRegisterAction(
                             clazz,
                             aiModelConfig,
@@ -66,7 +71,7 @@ public class TaskParticipant {
                             (String) properties.get(1),
                             role,
                             Agent.getName(),
-                            (String[]) properties.get(4));
+                            actionRelation);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -108,7 +113,7 @@ public class TaskParticipant {
     public static void listenTasks(Context context, List<Pair<String, List<Object>>> receiverFilterPair) {
         for (Pair<String, List<Object>> pair : receiverFilterPair) {
             List<Object> properties = pair.second;  // 获取 List<Object>
-            for (String task : (String[]) properties.get(4)) {
+            for (String task : (String[]) properties.get(3)) {
                 TaskActionContext actionContext = new TaskActionContext((String) properties.get(0), task);
 
                 AgentSocketConfig socketConfig = ConfigManager.selectAgentSocket(task);

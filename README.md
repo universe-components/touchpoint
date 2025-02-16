@@ -135,7 +135,10 @@ data class WeatherResponse(val weather: String, val temperature: String) : Touch
 @TouchPointAction(
     name = "weather_action",
     tasks = {"entry_agent", "task"} // 可以指定多个参与的任务
-    toActions = {"next_action", "next_action, next_action1, next_action2"} //每个字符串为一个或多个Action之间用逗号隔开，与tasks属性中的任务一一对应
+    toActions = {
+        "entry_agent[next_action"], 
+        "task2[next_action, next_action1, next_action2"]
+    } //格式为：task_name[action_name1, action_name2, ...]
 ) 
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 class WeathertListener : AgentActionListener<String, WeatherResponse> {

@@ -23,6 +23,4 @@ public @interface TouchPointAction {
 
     String[] toActions() default {};
 
-    String[] tasks() default {};
-
 }
