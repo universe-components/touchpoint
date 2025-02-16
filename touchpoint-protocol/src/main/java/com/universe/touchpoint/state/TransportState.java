@@ -6,4 +6,8 @@ public class TransportState extends TouchPointState {
         super(code, message);
     }
 
+    public TransportState(int code, String message, String action) {
+        super(code, message, action);
+    }
+
 }

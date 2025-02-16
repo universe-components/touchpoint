@@ -6,4 +6,8 @@ public class DriverState extends TouchPointState {
         super(code, message);
     }
 
+    public DriverState(int code, String message, String action) {
+        super(code, message, action);
+    }
+
 }
