@@ -60,7 +60,7 @@ public class TaskParticipant {
                 ActionRole role = coordinatorResult ? ActionRole.COORDINATOR : (supervisorResult ? ActionRole.SUPERVISOR : null);
 
                 ActionRelation actionRelation = new ActionRelation((String) properties.get(0));
-                actionRelation.setToActions(StringUtils.convert((String[]) properties.get(4)));
+                actionRelation.setToActions(StringUtils.convert((String[]) properties.get(3)));
                 AgentActionManager.getInstance().extractAndRegisterAction(
                             clazz,
                             aiModelConfig,
@@ -113,7 +113,8 @@ public class TaskParticipant {
     public static void listenTasks(Context context, List<Pair<String, List<Object>>> receiverFilterPair) {
         for (Pair<String, List<Object>> pair : receiverFilterPair) {
             List<Object> properties = pair.second;  // 获取 List<Object>
-            for (String task : (String[]) properties.get(3)) {
+            Map<String, List<String>> toActions = StringUtils.convert((String[]) properties.get(3));
+            for (String task : toActions.keySet()) {
                 TaskActionContext actionContext = new TaskActionContext((String) properties.get(0), task);
 
                 AgentSocketConfig socketConfig = ConfigManager.selectAgentSocket(task);
