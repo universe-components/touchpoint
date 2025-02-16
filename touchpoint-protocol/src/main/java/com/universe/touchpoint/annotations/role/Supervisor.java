@@ -13,6 +13,4 @@ public @interface Supervisor {
 
     String task();
 
-    RoleScope scope();
-
 }

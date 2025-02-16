@@ -13,6 +13,4 @@ public @interface Coordinator {
 
     String task();
 
-    RoleScope scope();
-
 }
