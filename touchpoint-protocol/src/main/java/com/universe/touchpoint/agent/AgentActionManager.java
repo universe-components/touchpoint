@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi;
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.annotations.role.ActionRole;
-import com.universe.touchpoint.config.ActionRelation;
+import com.universe.touchpoint.config.ActionDependency;
 import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -45,7 +45,7 @@ public class AgentActionManager {
             String actionDesc,
             ActionRole role,
             String agentName,
-            ActionRelation toActions) {
+            ActionDependency toActions) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(receiverClassName);
 

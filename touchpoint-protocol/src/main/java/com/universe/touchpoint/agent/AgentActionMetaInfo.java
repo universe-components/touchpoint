@@ -1,7 +1,7 @@
 package com.universe.touchpoint.agent;
 
 import com.universe.touchpoint.annotations.role.ActionRole;
-import com.universe.touchpoint.config.ActionRelation;
+import com.universe.touchpoint.config.ActionDependency;
 import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
 
@@ -14,5 +14,5 @@ public record AgentActionMetaInfo(
         String outputClassName,
         AIModelConfig model,
         TransportConfig<?> transportConfig,
-        ActionRelation toActions) {
+        ActionDependency toActions) {
 }

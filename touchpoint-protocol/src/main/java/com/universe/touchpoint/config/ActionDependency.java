@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ActionRelation {
+public class ActionDependency {
 
     private final String action;
     private Map<String, List<String>> toActions = new HashMap<>();
 
-    public ActionRelation(String action) {
+    public ActionDependency(String action) {
         this.action = action;
     }
 

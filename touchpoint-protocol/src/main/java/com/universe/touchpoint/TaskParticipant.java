@@ -6,7 +6,7 @@ import android.util.Pair;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.annotations.role.ActionRole;
-import com.universe.touchpoint.config.ActionRelation;
+import com.universe.touchpoint.config.ActionDependency;
 import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.ConfigManager;
@@ -59,8 +59,8 @@ public class TaskParticipant {
                 boolean supervisorResult = registerSupervisor(Class.forName(clazz), (String) properties.get(0));
                 ActionRole role = coordinatorResult ? ActionRole.COORDINATOR : (supervisorResult ? ActionRole.SUPERVISOR : null);
 
-                ActionRelation actionRelation = new ActionRelation((String) properties.get(0));
-                actionRelation.setToActions(StringUtils.convert((String[]) properties.get(3)));
+                ActionDependency actionDependency = new ActionDependency((String) properties.get(0));
+                actionDependency.setToActions(StringUtils.convert((String[]) properties.get(3)));
                 AgentActionManager.getInstance().extractAndRegisterAction(
                             clazz,
                             aiModelConfig,
@@ -71,7 +71,7 @@ public class TaskParticipant {
                             (String) properties.get(1),
                             role,
                             Agent.getName(),
-                            actionRelation);
+                        actionDependency);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
