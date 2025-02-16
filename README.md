@@ -78,7 +78,7 @@ data class Entry {
 如果需要 `Entry Agent` 重新编排Actions，可以添加注解 `Coordinator`，并实现接口 `ActionCoordinator` 中方法 `run()`如下：
 ```kotlin
 @TouchPointAction(
-    name = "entry_action", role = ActionRole.COORDINATOR
+    name = "entry_action"
 )
 @Coordinator(task = "query_weather") // task指定是哪个任务的协调者
 class Entry : ActionGraphOperator<PredecessorResponse> {

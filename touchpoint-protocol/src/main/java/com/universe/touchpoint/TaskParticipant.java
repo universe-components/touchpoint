@@ -53,6 +53,9 @@ public class TaskParticipant {
                 /*
                  * Local Registry
                  */
+                boolean coordinatorResult = registerCoordinator(Class.forName(clazz), (String) properties.get(0));
+                boolean supervisorResult = registerSupervisor(Class.forName(clazz), (String) properties.get(0));
+                ActionRole role = coordinatorResult ? ActionRole.COORDINATOR : (supervisorResult ? ActionRole.SUPERVISOR : null);
                 AgentActionManager.getInstance().extractAndRegisterAction(
                             clazz,
                             aiModelConfig,
@@ -61,38 +64,42 @@ public class TaskParticipant {
                                     transportConfig),
                             (String) properties.get(0),
                             (String) properties.get(1),
-                            (ActionRole) properties.get(2),
+                            role,
                             Agent.getName(),
                             (String[]) properties.get(4));
-                registerCollaboration(Class.forName(clazz), (String) properties.get(0));
-                registerSupervisor(Class.forName(clazz), (String) properties.get(0));
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
         }
     }
 
-    public static void registerCollaboration(Class<?> actionClass, String actionName) {
+    public static boolean registerCoordinator(Class<?> actionClass, String actionName) {
         try {
             CoordinatorConfig coordinatorConfig = (CoordinatorConfig) AnnotationUtils.annotation2Config(
                     actionClass,
                     CoordinatorConfigMapping.annotation2Config);
-            assert coordinatorConfig != null;
+            if (coordinatorConfig == null) {
+                return false;
+            }
             RoleExecutorFactory.getInstance(coordinatorConfig.getTask())
                     .registerExecutor(actionName, actionClass.getConstructor().newInstance());
+            return true;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    public static void registerSupervisor(Class<?> actionClass, String actionName) {
+    public static boolean registerSupervisor(Class<?> actionClass, String actionName) {
         try {
             SupervisorConfig supervisorConfig = (SupervisorConfig) AnnotationUtils.annotation2Config(
                     actionClass,
                     SupervisorConfigMapping.annotation2Config);
-            assert supervisorConfig != null;
+            if (supervisorConfig == null) {
+                return false;
+            }
             RoleExecutorFactory.getInstance(supervisorConfig.getTask())
                     .registerExecutor(actionName, actionClass.getConstructor().newInstance());
+            return true;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

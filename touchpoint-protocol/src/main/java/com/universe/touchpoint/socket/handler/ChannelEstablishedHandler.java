@@ -16,7 +16,7 @@ public class ChannelEstablishedHandler implements AgentSocketStateHandler<Boolea
         if (ready) {
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
             driverRegion.clearTouchPointSwapActions();
-            Log.i("ChannelEstablishedHandler", "channel established");
+            Log.i("ChannelEstablishedHandler", "Collaborative relationship established");
             return true;
         }
         return false;
