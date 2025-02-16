@@ -9,7 +9,7 @@ import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.transport.TouchPointChannelManager;
 import com.universe.touchpoint.transport.TouchPointTransportRegistry;
 
-public class TouchPointBroadcastReceiverRegistry implements TouchPointTransportRegistry {
+public class TouchPointBroadcastReceiverRegistry implements TouchPointTransportRegistry<Object> {
 
     @Override
     public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String previousAction) {

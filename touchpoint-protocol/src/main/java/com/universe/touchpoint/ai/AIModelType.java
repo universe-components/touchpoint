@@ -4,7 +4,7 @@ public enum AIModelType {
 
     OPEN_AI("openai"),
     ANTHROPIC("claude"),
-    ;
+    DEEPSEEK("deepseek");
 
     private final String type;
 

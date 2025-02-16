@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 
-public interface TouchPointTransportRegistry {
+public interface TouchPointTransportRegistry<C> {
 
-    void init(Context context, Object transportConfig);
+    void init(Context context, C transportConfig);
 
     void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String filter);
 

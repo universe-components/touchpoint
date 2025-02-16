@@ -7,28 +7,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class AIModel<T, C, R> {
+public abstract class AIModel<Client, Completion, Choice> {
 
-    protected final T client;
+    protected final Client client;
     protected final AIModelConfig config;
-    protected List<C> completions = new ArrayList<>();
+    protected List<Completion> completions = new ArrayList<>();
 
-    public AIModel(T client, AIModelConfig config) {
+    public AIModel(Client client, AIModelConfig config) {
         this.client = client;
         this.config = config;
     }
 
-    public R selectChoice(Map<C, List<R>> choices) {
+    public Choice selectChoice(Map<Completion, List<Choice>> choices) {
         // 随机选择一个 choice
-        List<R> choiceList = choices.values().iterator().next();
+        List<Choice> choiceList = choices.values().iterator().next();
         return choiceList.get(ThreadLocalRandom.current().nextInt(choiceList.size()));
     }
 
-    public T getClient() {
+    public Client getClient() {
         return client;
     }
 
     public abstract void createCompletion(String content);
-    public abstract Map<C, List<R>> predict();
+    public abstract Map<Completion, List<Choice>> predict();
 
 }

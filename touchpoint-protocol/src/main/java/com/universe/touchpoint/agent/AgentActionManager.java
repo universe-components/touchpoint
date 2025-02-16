@@ -37,10 +37,10 @@ public class AgentActionManager {
         }
     }
 
-    public <T> void extractAndRegisterAction(
+    public <C> void extractAndRegisterAction(
             String receiverClassName,
             AIModelConfig model,
-            TransportConfig<T> transportConfig,
+            TransportConfig<C> transportConfig,
             String actionName,
             String actionDesc,
             ActionRole role,

@@ -15,16 +15,15 @@ import org.eclipse.paho.mqttv5.common.MqttException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TouchPointMQTT5Registry implements TouchPointTransportRegistry {
+public class TouchPointMQTT5Registry implements TouchPointTransportRegistry<MQTTConfig> {
 
     private MqttClient client;
-    private final Map<String, TouchPointMQTT5Subscriber<?>> messageSubscribers = new HashMap<>();
+    private final Map<String, TouchPointMQTT5Subscriber<?, ?, ?>> messageSubscribers = new HashMap<>();
 
     @Override
-    public void init(Context context, Object transportConfig) {
-        MQTTConfig mqttConfig = (MQTTConfig) transportConfig;
+    public void init(Context context, MQTTConfig transportConfig) {
         try {
-            client = new MqttClient(mqttConfig.brokerUri, "touchpoint_mqtt_broker");
+            client = new MqttClient(transportConfig.brokerUri, "touchpoint_mqtt_broker");
             MqttConnectionOptions connectOptions = new MqttConnectionOptions();
             connectOptions.setCleanStart(true);
             client.connect(connectOptions);
@@ -38,7 +37,7 @@ public class TouchPointMQTT5Registry implements TouchPointTransportRegistry {
         try {
             client.subscribe(TouchPointHelper.touchPointFilterName(previousAction), 1, (topic, message) -> {
                 // 接收到消息时的回调
-                TouchPointMQTT5Subscriber<?> subscriber = messageSubscribers.get(topic);
+                TouchPointMQTT5Subscriber<?, ?, ?> subscriber = messageSubscribers.get(topic);
                 assert subscriber != null;
                 subscriber.handleMessage(topic, message, context);
             });

@@ -21,8 +21,7 @@ public class Coordinator<SocketInput, SocketOutput> {
     private final Map<Integer, AgentSocketStateHandler<SocketInput, SocketOutput>> handlerMap = new HashMap<>();
     private final Map<Integer, AgentSocketState> socketStateMap = new HashMap<>();
     private final Map<Integer, String> exceptionMap = new HashMap<>();
-
-    public Coordinator() {
+    {
         handlerMap.put(TaskState.NEED_SWITCH_AI_MODEL.getCode(), (AgentSocketStateHandler<SocketInput, SocketOutput>) new SwitchActionModelReadyHandler<>());
         socketStateMap.put(TaskState.NEED_SWITCH_AI_MODEL.getCode(), AgentSocketState.PARTICIPANT_READY);
         exceptionMap.put(TaskState.NEED_SWITCH_AI_MODEL.getCode(), "Action[%s] has been switched model for task[%s]");

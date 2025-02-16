@@ -17,7 +17,7 @@ public class ChoiceParserFactory {
         choiceParserMap.put(AIModelType.ANTHROPIC, AnthropicChoiceParser.class);
     }
 
-    public static <C, R> ChoiceParser<C, R> selectParser(AIModelType modelType) {
+    public static <C, CH> ChoiceParser<C, CH> selectParser(AIModelType modelType) {
         synchronized (lock) {
             if (choiceParser == null) {
                 try {
@@ -31,7 +31,7 @@ public class ChoiceParserFactory {
                     throw new IllegalArgumentException("Error creating choice parser for type: " + modelType, e);
                 }
             }
-            return (ChoiceParser<C, R>) choiceParser;
+            return (ChoiceParser<C, CH>) choiceParser;
         }
     }
 

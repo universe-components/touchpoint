@@ -12,13 +12,13 @@ import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.config.bootstrap.builders.ServiceBuilder;
 
-public class TouchPointDubboRegistry implements TouchPointTransportRegistry {
+public class TouchPointDubboRegistry implements TouchPointTransportRegistry<DubboConfig> {
 
     @Override
-    public void init(Context context, Object transportConfig) {
+    public void init(Context context, DubboConfig transportConfig) {
         DubboBootstrap.getInstance()
-                .application(((DubboConfig) transportConfig).getApplicationName())
-                .registry(new RegistryConfig(((DubboConfig) transportConfig).getRegistryAddress()))
+                .application(transportConfig.getApplicationName())
+                .registry(new RegistryConfig(transportConfig.getRegistryAddress()))
                 .protocol(new ProtocolConfig(CommonConstants.TRIPLE, 50051))
                 .start()
                 .await();

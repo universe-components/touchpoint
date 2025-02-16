@@ -9,9 +9,9 @@ import com.universe.touchpoint.transport.TouchPointChannelManager;
 
 public class ResultDispatcher {
 
-    public static <R extends TouchPoint, T> String run(R result, AgentActionMetaInfo actionMeta, Context context) {
-        TouchPointChannel channel = TouchPointChannelManager.selectChannel(actionMeta, context);
-        T rs = (T) channel.send(result);
+    public static <R extends TouchPoint, F> String run(R result, AgentActionMetaInfo actionMeta, Context context) {
+        TouchPointChannel<?> channel = TouchPointChannelManager.selectChannel(actionMeta, context);
+        F rs = (F) channel.send(result);
         if (rs instanceof String) {
             return (String) rs;
         }

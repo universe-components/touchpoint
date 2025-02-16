@@ -25,12 +25,12 @@ public class AIModelFactory {
      * @param modelConfig 模型配置
      * @return 对应的 AIModel 实例
      */
-    public static <C, R> AIModel<?, C, R> createModel(AIModelConfig modelConfig) {
+    public static <C, CH> AIModel<?, C, CH> createModel(AIModelConfig modelConfig) {
         synchronized (lock) {
             if (model == null) {
                 try {
                     // 获取模型类类型
-                    Class<? extends AIModel<?, C, R>> modelClass = (Class<? extends AIModel<?, C, R>>) modelMap.get(modelConfig.getType());
+                    Class<? extends AIModel<?, C, CH>> modelClass = (Class<? extends AIModel<?, C, CH>>) modelMap.get(modelConfig.getType());
                     if (modelClass == null) {
                         throw new IllegalArgumentException("Unknown model type: " + modelConfig.getType());
                     }
@@ -39,13 +39,13 @@ public class AIModelFactory {
                     throw new IllegalArgumentException("Error creating model for type: " + modelConfig.getType(), e);
                 }
             }
-            return (AIModel<?, C, R>) model;
+            return (AIModel<?, C, CH>) model;
         }
     }
 
-    public static <C, R> Map<C, List<R>> callModel(String content, AIModelConfig modelConfig) {
+    public static <C, CH> Map<C, List<CH>> callModel(String content, AIModelConfig modelConfig) {
         // 获取模型实例
-        AIModel<?, C, R> model = createModel(modelConfig);
+        AIModel<?, C, CH> model = createModel(modelConfig);
         // 创建聊天对话
         model.createCompletion(content);
         // 执行推理并获取choice，随机选择一个choice

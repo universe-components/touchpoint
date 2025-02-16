@@ -10,14 +10,14 @@ import java.util.Map;
 
 public class TouchPointTransportRegistryFactory {
 
-    private static final Map<Transport, TouchPointTransportRegistry> registryMap = new HashMap<>();
+    private static final Map<Transport, TouchPointTransportRegistry<?>> registryMap = new HashMap<>();
     static {
         registryMap.put(Transport.DUBBO, new TouchPointDubboRegistry());
         registryMap.put(Transport.BROADCAST, new TouchPointBroadcastReceiverRegistry());
         registryMap.put(Transport.MQTT, new TouchPointMQTT5Registry());
     }
 
-    public static TouchPointTransportRegistry getRegistry(Transport transport) {
+    public static TouchPointTransportRegistry<?> getRegistry(Transport transport) {
         return registryMap.get(transport);
     }
 
