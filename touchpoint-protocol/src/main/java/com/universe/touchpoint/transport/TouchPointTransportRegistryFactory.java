@@ -1,6 +1,6 @@
 package com.universe.touchpoint.transport;
 
-import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastReceiverRegistry;
 import com.universe.touchpoint.transport.mqtt.TouchPointMQTT5Registry;
 import com.universe.touchpoint.transport.rpc.TouchPointDubboRegistry;

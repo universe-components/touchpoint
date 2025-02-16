@@ -5,8 +5,13 @@ import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.ai.AIModelType;
 import com.universe.touchpoint.annotations.ai.AIModel;
+import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.config.mapping.AgentSocketConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
+import com.universe.touchpoint.config.socket.AgentSocketConfig;
+import com.universe.touchpoint.config.transport.Transport;
+import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
 import java.util.Map;

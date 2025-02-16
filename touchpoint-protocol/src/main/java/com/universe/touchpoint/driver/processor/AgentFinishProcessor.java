@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentFinish;
-import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.driver.ResultDispatcher;
 import com.universe.touchpoint.driver.ResultProcessor;
 

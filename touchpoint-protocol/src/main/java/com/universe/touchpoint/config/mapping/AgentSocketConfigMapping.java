@@ -1,7 +1,7 @@
 package com.universe.touchpoint.config.mapping;
 
 import com.universe.touchpoint.annotations.socket.AgentSocket;
-import com.universe.touchpoint.config.AgentSocketConfig;
+import com.universe.touchpoint.config.socket.AgentSocketConfig;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;

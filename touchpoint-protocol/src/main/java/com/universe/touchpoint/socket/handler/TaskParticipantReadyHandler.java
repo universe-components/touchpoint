@@ -4,9 +4,9 @@ import android.content.Context;
 import android.util.Pair;
 
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
-import com.universe.touchpoint.config.AIModelConfig;
+import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.ConfigManager;
-import com.universe.touchpoint.config.TransportConfig;
+import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.driver.ActionGraphBuilder;
 import com.universe.touchpoint.memory.Region;

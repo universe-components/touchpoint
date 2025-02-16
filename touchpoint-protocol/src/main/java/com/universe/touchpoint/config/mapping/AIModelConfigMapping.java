@@ -1,7 +1,7 @@
 package com.universe.touchpoint.config.mapping;
 
 import com.universe.touchpoint.annotations.ai.AIModel;
-import com.universe.touchpoint.config.AIModelConfig;
+import com.universe.touchpoint.config.ai.AIModelConfig;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;

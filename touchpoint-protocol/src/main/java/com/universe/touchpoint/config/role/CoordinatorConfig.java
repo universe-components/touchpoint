@@ -1,4 +1,4 @@
-package com.universe.touchpoint.config;
+package com.universe.touchpoint.config.role;
 
 public class CoordinatorConfig {
 

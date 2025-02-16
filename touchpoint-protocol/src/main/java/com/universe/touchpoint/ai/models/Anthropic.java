@@ -7,7 +7,7 @@ import com.anthropic.models.Model;
 import com.google.common.collect.Lists;
 import com.universe.touchpoint.ai.AIModel;
 import com.anthropic.client.AnthropicClient;
-import com.universe.touchpoint.config.AIModelConfig;
+import com.universe.touchpoint.config.ai.AIModelConfig;
 
 import java.util.HashMap;
 import java.util.List;

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.rolemodel.coordinator.CoordinatorFactory;
 import com.universe.touchpoint.rolemodel.supervisor.SupervisorFactory;
 import com.universe.touchpoint.driver.processor.AgentActionProcessor;

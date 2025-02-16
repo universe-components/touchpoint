@@ -1,4 +1,4 @@
-package com.universe.touchpoint.config;
+package com.universe.touchpoint.config.ai;
 
 import com.openai.models.ChatModel;
 import com.universe.touchpoint.ai.AIModelType;

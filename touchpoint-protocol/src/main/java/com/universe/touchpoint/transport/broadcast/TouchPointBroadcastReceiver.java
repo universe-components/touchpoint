@@ -10,7 +10,7 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.api.TouchPointListener;
-import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.driver.ResultExchanger;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.TouchPointAction;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
-import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.RPCConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.memory.Region;

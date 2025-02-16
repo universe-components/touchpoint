@@ -1,6 +1,6 @@
 package com.universe.touchpoint.annotations.ai;
 
-import com.universe.touchpoint.config.Model;
+import com.universe.touchpoint.config.ai.Model;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

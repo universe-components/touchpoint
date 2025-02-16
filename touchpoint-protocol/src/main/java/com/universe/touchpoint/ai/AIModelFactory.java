@@ -2,7 +2,7 @@ package com.universe.touchpoint.ai;
 
 import com.universe.touchpoint.ai.models.Anthropic;
 import com.universe.touchpoint.ai.models.OpenAI;
-import com.universe.touchpoint.config.AIModelConfig;
+import com.universe.touchpoint.config.ai.AIModelConfig;
 
 import java.util.HashMap;
 import java.util.List;

@@ -3,7 +3,7 @@ package com.universe.touchpoint.driver;
 import android.content.Context;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.transport.Transport;
 
 public abstract class ResultProcessor<R, T extends TouchPoint> {
 

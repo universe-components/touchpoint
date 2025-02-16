@@ -2,7 +2,7 @@ package com.universe.touchpoint.config.mapping;
 
 import com.universe.touchpoint.annotations.transport.Dubbo;
 import com.universe.touchpoint.annotations.transport.MQTT;
-import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.MQTTConfig;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 

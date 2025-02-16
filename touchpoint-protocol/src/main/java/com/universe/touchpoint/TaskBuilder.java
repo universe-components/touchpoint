@@ -1,6 +1,6 @@
 package com.universe.touchpoint;
 
-import com.universe.touchpoint.config.Model;
+import com.universe.touchpoint.config.ai.Model;
 
 import java.util.HashMap;
 import java.util.Map;

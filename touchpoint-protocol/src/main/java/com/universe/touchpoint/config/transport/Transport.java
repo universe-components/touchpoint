@@ -1,4 +1,4 @@
-package com.universe.touchpoint.config;
+package com.universe.touchpoint.config.transport;
 
 public enum Transport {
 

@@ -1,4 +1,4 @@
-package com.universe.touchpoint.config;
+package com.universe.touchpoint.config.socket;
 
 import com.universe.touchpoint.annotations.socket.SocketProtocol;
 

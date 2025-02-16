@@ -6,7 +6,7 @@ import com.openai.models.ChatCompletion;
 import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatModel;
 import com.universe.touchpoint.ai.AIModel;
-import com.universe.touchpoint.config.AIModelConfig;
+import com.universe.touchpoint.config.ai.AIModelConfig;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;

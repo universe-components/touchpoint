@@ -3,7 +3,7 @@ package com.universe.touchpoint.transport.mqtt;
 import android.content.Context;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.config.Transport;
+import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
