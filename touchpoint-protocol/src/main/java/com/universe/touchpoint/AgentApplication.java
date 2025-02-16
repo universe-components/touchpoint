@@ -120,7 +120,7 @@ public class AgentApplication extends Application {
             }
 
             @Override
-            public void onActivitySaveInstanceState(@NonNull Activity activity, Bundle outState) {
+            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
                 // 保存 Activity 状态的回调
             }
 
