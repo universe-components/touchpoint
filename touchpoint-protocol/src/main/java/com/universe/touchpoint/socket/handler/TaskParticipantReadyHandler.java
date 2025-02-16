@@ -30,14 +30,6 @@ public class TaskParticipantReadyHandler implements AgentSocketStateHandler<Agen
                     ActionGraphBuilder.getTaskGraph(task).addEdge(actionMeta, driverRegion.getTouchPointSwapAction(toAction));
                 }
             });
-
-//            if (entry.getKey().outputClassName().equals(actionMeta.inputClassName())) {
-//                if (actionMeta.role() == ActionRole.SUPERVISOR) {
-//                    ActionGraphBuilder.getTaskGraph(task).addEdgeAtStart(entry.getKey(), actionMeta);
-//                } else {
-//                    ActionGraphBuilder.getTaskGraph(task).addEdge(entry.getKey(), actionMeta);
-//                }
-//            }
             return Pair.create(
                     ConfigManager.selectTransport(null, task),
                     ConfigManager.selectModel(null, null, task)

@@ -1,6 +1,5 @@
 package com.universe.touchpoint.rolemodel;
 
-import static com.universe.touchpoint.state.enums.TaskState.NEED_CHANGE_DATA;
 import static com.universe.touchpoint.state.enums.TaskState.NEED_CHECK_ACTION;
 import static com.universe.touchpoint.state.enums.TaskState.NEED_CHECK_DATA;
 
@@ -38,8 +37,7 @@ public class RoleExecutor<Executor> {
                 if (((AgentAction<?, ?>) touchPoint).getMeta().role() == ActionRole.SUPERVISOR) {
                     if (((AgentAction<?, ?>) touchPoint).getActionInput().getState().getCode() == NEED_CHECK_ACTION.getCode()) {
                         return method.invoke(executor, ((AgentAction<?, ?>) touchPoint).getActionInput(), touchPoint);
-                    } else if (((AgentAction<?, ?>) touchPoint).getActionInput().getState().getCode() == NEED_CHANGE_DATA.getCode()
-                            || ((AgentAction<?, ?>) touchPoint).getActionInput().getState().getCode() == NEED_CHECK_DATA.getCode()) {
+                    } else if (((AgentAction<?, ?>) touchPoint).getActionInput().getState().getCode() == NEED_CHECK_DATA.getCode()) {
                         return method.invoke(executor, touchPoint);
                     }
                 }

@@ -1,5 +1,7 @@
 package com.universe.touchpoint.annotations.role;
 
+import com.universe.touchpoint.rolemodel.Scope;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,6 +13,6 @@ public @interface Coordinator {
 
     String task();
 
-    EntityType type();
+    Scope scope();
 
 }

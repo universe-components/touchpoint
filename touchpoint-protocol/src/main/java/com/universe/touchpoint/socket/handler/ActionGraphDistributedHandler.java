@@ -8,13 +8,11 @@ import androidx.annotation.RequiresApi;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
-import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.TransportConfig;
 import com.universe.touchpoint.context.TaskActionContext;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.driver.ActionGraph;
-import com.universe.touchpoint.driver.ActionGraphBuilder;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.DriverRegion;
@@ -55,10 +53,6 @@ public class ActionGraphDistributedHandler implements AgentSocketStateHandler<Ac
                     throw new RuntimeException(e);
                 }
             });
-
-            if (driverRegion.containActions(ActionRole.COORDINATOR)) {
-                ActionGraphBuilder.putGraph(task, actionGraph);
-            }
 
             RouteTable.getInstance().putPredecessors(taskActionContext.getAction(), predecessors);
             RouteTable.getInstance().putSuccessors(taskActionContext.getAction(), successors);
