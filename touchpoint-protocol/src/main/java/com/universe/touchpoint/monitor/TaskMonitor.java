@@ -1,16 +1,17 @@
 package com.universe.touchpoint.monitor;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.api.checker.ActionGraphChecker;
+import com.universe.touchpoint.api.checker.TaskChecker;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
+import com.universe.touchpoint.driver.ActionGraph;
 import com.universe.touchpoint.state.DriverState;
 import com.universe.touchpoint.state.enums.TaskState;
 
-public class ActionGraphMonitor<T extends TouchPoint> implements ActionGraphChecker<T, MonitorResult> {
+public class TaskMonitor<T extends TouchPoint> implements TaskChecker<T, MonitorResult> {
 
     @Override
-    public MonitorResult run(T touchPoint, String task) {
+    public MonitorResult run(T touchPoint, ActionGraph actionGraph, String task) {
         TaskMetricConfig metricConfig = ConfigManager.selectTaskMetricConfig(task);
         MonitorResult monitorResult = new MonitorResult();
 

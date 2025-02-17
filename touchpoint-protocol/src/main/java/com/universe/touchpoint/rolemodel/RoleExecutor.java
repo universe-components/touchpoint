@@ -5,7 +5,7 @@ import static com.universe.touchpoint.state.enums.TaskState.NEED_CHECK_ACTION_GR
 
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.api.RoleConstants;
-import com.universe.touchpoint.monitor.ActionGraphMonitor;
+import com.universe.touchpoint.monitor.TaskMonitor;
 import com.universe.touchpoint.monitor.ActionMonitor;
 
 import java.lang.reflect.Method;
@@ -17,7 +17,7 @@ public class RoleExecutor<Executor> {
     private final Map<String, Executor> executorMap = new HashMap<>();
     {
         executorMap.put(RoleConstants.ACTION_CAPABILITY_CHECKER, (Executor) new ActionMonitor<>());
-        executorMap.put(RoleConstants.TASK_EXECUTOR_CHECKER, (Executor) new ActionGraphMonitor<>());
+        executorMap.put(RoleConstants.TASK_EXECUTOR_CHECKER, (Executor) new TaskMonitor<>());
     }
 
     public void registerExecutor(String action, Executor executor) {
