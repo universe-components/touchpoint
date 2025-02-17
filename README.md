@@ -44,6 +44,14 @@ dependencies {
 
 以获取上海天气为例，其中，有一个入口Entry Agent和一个Weather Agent。
 
+### 绑定Agent
+如果 `Entry Agent` 和 `Weather Agent` 在同一个节点部署，需要在 `Entry Agent`添加如下代码完成绑定：
+```kotlin
+// 以两个Agent都是apk为例
+AgentSocket.bind(./"weather_agent", BinderType.ANDROID_BINDER);
+```
+备注：仅同一节点部署需要显式绑定。
+
 ### 实现Agent
 
 #### Entry Agent
@@ -51,19 +59,20 @@ dependencies {
 `EntryApplication` 继承 `AgentApplication`
 ```kotlin
 /**
- * 其中，socketBindProtocol指定socket绑定流程使用的协议，其作用域为所在Agent上的所有task
+ * 其中，bindProtocol指定协作关系建立流程使用的协议，其作用域为所在Agent上的所有task，默认为AndroidBroadcast
  */
 @TouchPointAgent(name = "entry_agent")
 @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
 class EntryApplication : AgentApplication()
 ```
+说明：由于TPP协议包含两个工作流：协作建立流和执行流。其中，协作建立流完成协作关系建立，执行流完成Action的执行。因此，`AgentSocket`为协作建立流相关配置。
 
-在` Entry Agent` 中执行
+在` Entry Agent` 中添加代码如下：
 ```kotlin
 data class Entry {
     
-    @Task("query_weather")
-    @Dubbo(applicationName = "entry_agent") // 可选的全局配置，指定dubbo应用名和注册中心地址
+    @Task("query_weather") // 指定task
+    @Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // 可选的全局配置，指定dubbo应用名和注册中心地址
     @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 指定模型, 默认使用o1
     @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
     val taskBuilder: TaskBuilder;
@@ -74,37 +83,7 @@ data class Entry {
 
 }
 ```
-
-如果需要 `Entry Agent` 重新编排Actions，可以添加注解 `Coordinator`，并实现接口 `ActionCoordinator` 中方法 `run()`如下：
-```kotlin
-@TouchPointAction(
-    name = "entry_action"
-)
-@Coordinator(task = "query_weather") // task指定是哪个任务的协调者
-class Entry : ActionGraphOperator<PredecessorResponse> {
-
-    override fun run(PredecessorResponse predecessorResponse, actionGraph: ActionGraph) : ActionGraph {
-        // 重新编排 Actions
-    }
-    
-}
-其中，PredecessorResponse必须继承TouchPoint。
-```
-
-如果希望 `Entry Agent` 成为监督者，检查前置Action输出，可以配置如下：
-```kotlin
-@TouchPointAction(
-    name = "entry_action", role = ActionRole.SUPERVISOR
-)
-@Supervisor(task = "query_weather") // task指定是哪个任务的监督者
-class Entry : DataChecker<PredecessorResponse> {
-
-    override fun run(PredecessorResponse input) : Boolean {
-        // 检查input
-    }
-    
-}
-```
+备注：以上配置作用域为Task。其中，`Dubbo` 指定协作执行流的通信协议，默认为AndroidBroadcast。
 
 #### Weather Agent
 
@@ -124,8 +103,12 @@ class WeatherApplication : AgentApplication()
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 class WeatherApplication : AgentApplication()
 ```
+备注：以上配置作用域为Agent。Agent上所有未配置Action都使用以上配置。
 
-定义获取天气的响应类
+定义获取天气的请求和响应类
+```kotlin
+data class WeatherRequest(val city: String) : TouchPoint()
+```
 ```kotlin
 data class WeatherResponse(val weather: String, val temperature: String) : TouchPoint()
 ```
@@ -134,16 +117,15 @@ data class WeatherResponse(val weather: String, val temperature: String) : Touch
 ```kotlin
 @TouchPointAction(
     name = "weather_action",
-    tasks = {"entry_agent", "task"} // 可以指定多个参与的任务
     toActions = {
-        "entry_agent[next_action"], 
+        "entry_agent[\"next_action\"]", 
         "task2[next_action, next_action1, next_action2"]
     } //格式为：task_name[action_name1, action_name2, ...]
 ) 
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
-class WeathertListener : AgentActionListener<String, WeatherResponse> {
+class WeathertListener : AgentActionListener<WeatherRequest, WeatherResponse> {
 
-    override fun onReceive(city: String, context: Context) : WeatherResponse {
+    override fun onReceive(cityRequest: WeatherRequest, context: Context) : WeatherResponse {
         val client = OkHttpClient()
 
         // 设置请求的 URL 和参数
@@ -181,15 +163,15 @@ class WeathertListener : AgentActionListener<String, WeatherResponse> {
 
 }
 ```
+备注：以上代码中的`onReceive`方法输入和输出必须继承 `TouchPoint`。
 
 如果希望 `weather_action` 使用Dubbo协议，可以配置如下：
 ```kotlin
 @TouchPointAction(
-    name = "weather_action",
-    tasks = {"entry_agent"} // 可以指定多个任务发起者
+    name = "weather_action"
 ) 
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
-@DubboService(interfaceClass = IWeatherService::class) //必须指定接口
+@DubboService(interfaceClass = IWeatherService::class) //必须指定接口，该注解为Dubbo自带注解
 class WeatherService {
 
     override fun query(city: String) : WeatherResponse {
@@ -230,6 +212,7 @@ class WeatherService {
 
 }
 ```
+备注：以上配置作用域为Action。配置优先级：Action > Task > Agent。
 
 ## 高级用法
 - [自定义角色行为](./README_ROLE.md)

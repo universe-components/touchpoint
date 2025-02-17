@@ -1,6 +1,6 @@
 # Touchpoint Protocol
 
-`touchpoint-protocol` ，触点协议（TPP协议），一个Agent之间通信的协议，该协议通过AI模型驱动Agent之间的关系，是智联网的通信标准。
+`touchpoint-protocol` ，触点协议（TPP协议），一个Agent之间协作通信的协议，该协议通过AI模型驱动Agent之间协作，是智联网的协作通信标准。
 
 ## 使用指南
 
