@@ -10,7 +10,7 @@ import com.qihoo360.mobilesafe.api.AppVar;
 import com.qihoo360.replugin.RePluginEnv;
 import com.qihoo360.replugin.RePluginHost;
 import com.qihoo360.replugin.model.PluginInfo;
-import com.universe.touchpoint.annotations.TouchPointAgent;
+import com.universe.touchpoint.annotations.task.TouchPointAgent;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
 import java.lang.annotation.Annotation;
