@@ -17,7 +17,7 @@ public class ActionGraphMonitor<T extends TouchPoint> implements ActionGraphChec
         assert metricConfig != null;
         if (TaskMetricManager.getTaskMetric(task).getRetryActionCount().get() > metricConfig.getMaxRetryActionCount()) {
             monitorResult.setState(new DriverState(
-                    TaskState.NEED_SWITCH_ACTION.getCode(),
+                    TaskState.NEED_REORDER_ACTION.getCode(),
                     "The task has too many action retries",
                     touchPoint.getHeader().getToAction().getActionName()));
             return monitorResult;
