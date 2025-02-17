@@ -29,10 +29,10 @@ public class RoleExecutor<Executor> {
             Class<?>[] paramsType = executor.getClass().getMethod("run").getParameterTypes();
             Method method = executor.getClass().getMethod("run", paramsType);
 
-            if (action.getActionInput().getState().getCode() == NEED_CHECK_ACTION.getCode()) {
-                return method.invoke(executor, action.getActionInput(), action);
+            if (action.getInput().getState().getCode() == NEED_CHECK_ACTION.getCode()) {
+                return method.invoke(executor, action.getInput(), action);
             } else {
-                return method.invoke(executor, action.getActionInput());
+                return method.invoke(executor, action.getInput());
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

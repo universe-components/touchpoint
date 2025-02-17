@@ -56,7 +56,7 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
                 DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
                 currentAction.setAction(action);
                 currentAction.setThought(thought);
-                currentAction.setActionInput(AgentActionManager
+                currentAction.setInput(AgentActionManager
                         .getInstance()
                         .paddingActionInput(
                                 action, actionInput.replaceAll("\"", "").trim(), Agent.getName()

@@ -17,7 +17,7 @@ public class ResultExchanger {
     public static <I extends TouchPoint, O extends TouchPoint, R extends TouchPoint> String exchange(
             R result, String goal, String task, Context context, Transport transportType) {
         if (result instanceof AgentAction<?, ?>) {
-            int stateCode = ((AgentAction<I, O>) result).getActionInput().getState().getCode();
+            int stateCode = ((AgentAction<I, O>) result).getInput().getState().getCode();
             if (stateCode >= 300 && stateCode < 400) {
                 CoordinatorFactory.getCoordinator(task).execute((AgentAction<I, O>) result, task, context);
             } else if (stateCode >= 400) {

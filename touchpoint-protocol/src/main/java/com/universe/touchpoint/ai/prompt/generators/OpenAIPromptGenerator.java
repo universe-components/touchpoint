@@ -41,7 +41,7 @@ public class OpenAIPromptGenerator implements PromptGenerator {
                     .append("\nAction:")
                     .append(action.getAction())
                     .append("\nAction Input:")
-                    .append(ClassUtils.getFieldValues(action.getActionInput()))
+                    .append(ClassUtils.getFieldValues(action.getInput()))
                     .append("\nObservation:")
                     .append(action.getOutput().toString());
         }

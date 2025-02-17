@@ -15,8 +15,8 @@ public class SwitchActionReadyHandler<I extends TouchPoint, O extends TouchPoint
 
     @Override
     public <C extends AgentContext> AgentAction<I, O> onStateChange(AgentAction<I, O> action, C agentContext, Context context, String task) {
-        ActionOperator<I> actionCoordinator = (ActionOperator<I>) RoleExecutorFactory.getInstance(task).getExecutor(action.getActionInput().getState().getRedirectToAction());
-        AgentAction<I, O> newAction = (AgentAction<I, O>) actionCoordinator.run(action.getActionInput(), action);
+        ActionOperator<I> actionCoordinator = (ActionOperator<I>) RoleExecutorFactory.getInstance(task).getExecutor(action.getInput().getState().getRedirectToAction());
+        AgentAction<I, O> newAction = (AgentAction<I, O>) actionCoordinator.run(action.getInput(), action);
 
         DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
         driverRegion.putTouchPointAction(action.getAction(), newAction.getMeta());

@@ -40,7 +40,7 @@ public class Coordinator<SocketInput, SocketOutput> {
     }
 
     public void execute(AgentAction<?, ?> agentAction, String task, Context context) {
-        int stateCode = agentAction.getActionInput().getState().getCode();
+        int stateCode = agentAction.getInput().getState().getCode();
         SocketOutput result = Objects.requireNonNull(handlerMap.get(stateCode)).onStateChange((SocketInput) agentAction, null, context, task);
         AgentSocketStateMachine.getInstance(task).send(
                     new AgentSocketStateMachine.AgentSocketStateContext<>(socketStateMap.get(stateCode), result),

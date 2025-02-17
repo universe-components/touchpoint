@@ -35,7 +35,7 @@ public class TouchPointMQTT5Subscriber<T extends TouchPoint, I extends TouchPoin
 
         if (touchPoint instanceof AgentAction) {
             ((AgentAction<I, O>) touchPoint).setOutput((O) tpReceiver.onReceive(
-                    (T) ((AgentAction<I, O>) touchPoint).getActionInput(), context));
+                    (T) ((AgentAction<I, O>) touchPoint).getInput(), context));
         } else if(touchPoint instanceof AgentFinish) {
             List<AgentActionMetaInfo> predecessors = RouteTable.getInstance().getPredecessors(touchPoint.getHeader().getFromAction().getActionName());
             if (predecessors == null) {

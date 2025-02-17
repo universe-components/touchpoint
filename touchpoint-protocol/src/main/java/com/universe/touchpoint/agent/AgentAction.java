@@ -8,7 +8,7 @@ public class AgentAction<I extends TouchPoint, O extends TouchPoint> extends Tou
     private String action;
     private String thought;
     private O output;
-    private I actionInput;
+    private I input;
     private AgentActionMetaInfo meta;
     private final ActionMetric metric = new ActionMetric();
 
@@ -40,12 +40,12 @@ public class AgentAction<I extends TouchPoint, O extends TouchPoint> extends Tou
         this.output = output;
     }
 
-    public I getActionInput() {
-        return actionInput;
+    public I getInput() {
+        return input;
     }
 
-    public void setActionInput(I actionInput) {
-        this.actionInput = actionInput;
+    public void setInput(I input) {
+        this.input = input;
     }
 
     public void setMeta(AgentActionMetaInfo meta) {
