@@ -12,6 +12,9 @@ import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.TransportConfig;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.DriverRegion;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
 import java.util.Map;
@@ -49,7 +52,9 @@ public class ConfigManager {
         return new AIModelConfig(Model.o1, 0.0f, AIModelType.OPEN_AI);
     }
 
-    public static <C> TransportConfig<C> selectTransport(AgentActionMetaInfo actionMeta, String task) {
+    public static <C> TransportConfig<C> selectTransport(String action, String task) {
+        DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
+        AgentActionMetaInfo actionMeta = driverRegion.getTouchPointAction(action);
         TransportConfig<C> config = (TransportConfig<C>) actionMeta.transportConfig();
 
         if (config != null) {

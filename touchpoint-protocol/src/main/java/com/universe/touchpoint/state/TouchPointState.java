@@ -4,7 +4,7 @@ public abstract class TouchPointState {
 
     protected int code;
     protected String message;
-    protected String action;
+    protected String redirectToAction;
 
     public TouchPointState(int code, String message) {
         this(code, message, null);
@@ -13,7 +13,7 @@ public abstract class TouchPointState {
     public TouchPointState(int code, String message, String action) {
         this.code = code;
         this.message = message;
-        this.action = action;
+        this.redirectToAction = action;
     }
 
     public void setCode(int code) {
@@ -32,12 +32,12 @@ public abstract class TouchPointState {
         return message;
     }
 
-    public void setAction(String action) {
-        this.action = action;
+    public void setRedirectToAction(String redirectToAction) {
+        this.redirectToAction = redirectToAction;
     }
 
-    public String getAction() {
-        return action;
+    public String getRedirectToAction() {
+        return redirectToAction;
     }
 
 }

@@ -19,11 +19,11 @@ public class ReorderActionReadyHandler<I extends TouchPoint, O extends TouchPoin
 
     @Override
     public <C extends AgentContext> Pair<TransportConfig<TC>, AIModelConfig> onStateChange(AgentAction<I, O> action, C agentContext, Context context, String task) {
-        ActionGraphOperator<I> actionCoordinator = (ActionGraphOperator<I>) RoleExecutorFactory.getInstance(task).getExecutor(action.getActionInput().getState().getAction());
+        ActionGraphOperator<I> actionCoordinator = (ActionGraphOperator<I>) RoleExecutorFactory.getInstance(task).getExecutor(action.getActionInput().getState().getRedirectToAction());
         ActionGraph actionGraph = actionCoordinator.run(action.getActionInput(), ActionGraphBuilder.getTaskGraph(task));
         ActionGraphBuilder.putGraph(task, actionGraph);
         return Pair.create(
-                ConfigManager.selectTransport(action.getMeta(), task),
+                ConfigManager.selectTransport(action.getAction(), task),
                 ConfigManager.selectModel(null, action.getMeta(), task)
         );
     }
