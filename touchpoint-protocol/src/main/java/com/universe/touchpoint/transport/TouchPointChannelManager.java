@@ -37,8 +37,8 @@ public class TouchPointChannelManager {
     }
 
     public static <C> TouchPointChannel<?> selectChannel(AgentActionMetaInfo actionMeta, Context context) {
-        Transport transport = actionMeta.transportConfig().transportType();
-        C config = (C) actionMeta.transportConfig().config();
+        Transport transport = actionMeta.getTransportConfig().transportType();
+        C config = (C) actionMeta.getTransportConfig().config();
 
         if (transport == null) {
             return new TouchPointBroadcastChannel(context);

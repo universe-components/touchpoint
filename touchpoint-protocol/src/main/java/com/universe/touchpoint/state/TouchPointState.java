@@ -1,6 +1,6 @@
 package com.universe.touchpoint.state;
 
-public abstract class TouchPointState {
+public class TouchPointState {
 
     protected int code;
     protected String message;

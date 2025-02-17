@@ -39,13 +39,13 @@ public class ActionGraphDistributedHandler implements AgentSocketStateHandler<Ac
             TouchPointTransportRegistry<?> registry = TouchPointTransportRegistryFactory.getRegistry(transportConfig.transportType());
             AgentActionManager manager = AgentActionManager.getInstance();
 
-            predecessors.forEach(action -> registry.register(context, actionMetaInfo, action.actionName()));
+            predecessors.forEach(action -> registry.register(context, actionMetaInfo, action.getActionName()));
             successors.forEach(action -> {
                 try {
                     manager.registerAgentFinishReceiver(
                             context,
-                            action.actionName(),
-                            (Class<? extends TouchPoint>) Class.forName(driverRegion.getTouchPointAction(action.actionName()).inputClassName()));
+                            action.getActionName(),
+                            (Class<? extends TouchPoint>) Class.forName(driverRegion.getTouchPointAction(action.getActionName()).getInputClassName()));
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

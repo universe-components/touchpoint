@@ -22,10 +22,10 @@ public class OpenAIPromptGenerator implements PromptGenerator {
         StringBuilder agentNames = new StringBuilder();
 
         for (AgentActionMetaInfo actionMetaInfo : actionMetaInfoList) {
-            toolList.append(actionMetaInfo.actionName())
+            toolList.append(actionMetaInfo.getActionName())
                     .append(": ")
-                    .append(actionMetaInfo.desc()).append("\n");
-            agentNames.append(actionMetaInfo.actionName()).append(", ");
+                    .append(actionMetaInfo.getDesc()).append("\n");
+            agentNames.append(actionMetaInfo.getActionName()).append(", ");
         }
 
         // Remove trailing comma and space from agentNames

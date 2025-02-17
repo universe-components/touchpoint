@@ -24,7 +24,7 @@ public class TouchPointMQTT5Publisher extends TouchPointChannel<Boolean> {
         MqttMessage message = new MqttMessage(SerializeUtils.serializeToByteArray(touchpoint));
         message.setQos(1);  // 设置 QoS 为1
 
-        String topic = TouchPointHelper.touchPointFilterName(touchpoint.getHeader().getFromAction().actionName());
+        String topic = TouchPointHelper.touchPointFilterName(touchpoint.getHeader().getFromAction().getActionName());
         try {
             mqtt5Registry.getClient().publish(topic, message);
         } catch (MqttException e) {

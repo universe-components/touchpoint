@@ -9,8 +9,9 @@ import androidx.annotation.RequiresApi;
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.annotations.role.ActionRole;
-import com.universe.touchpoint.config.ActionDependency;
+import com.universe.touchpoint.config.task.ActionDependency;
 import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.task.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.memory.Region;
@@ -45,6 +46,7 @@ public class AgentActionManager {
             String actionDesc,
             ActionRole role,
             String agentName,
+            ActionMetricConfig actionMetricConfig,
             ActionDependency toActions) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(receiverClassName);
@@ -65,7 +67,7 @@ public class AgentActionManager {
                 }
             }
 
-            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, role, inputClassName, outputClassName, model, transportConfig, toActions);
+            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, role, inputClassName, outputClassName, model, transportConfig, actionMetricConfig, toActions);
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
             driverRegion.putTouchPointAction(
                     TouchPointHelper.touchPointActionName(actionName, agentName), agentActionMetaInfo);
@@ -91,7 +93,7 @@ public class AgentActionManager {
         AgentActionMetaInfo agentActionMetaInfo = driverRegion.getTouchPointAction(TouchPointHelper.touchPointActionName(actionName, agentName));
         Class<T> inputClass;
         try {
-            inputClass = (Class<T>) Class.forName(agentActionMetaInfo.inputClassName());
+            inputClass = (Class<T>) Class.forName(agentActionMetaInfo.getInputClassName());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

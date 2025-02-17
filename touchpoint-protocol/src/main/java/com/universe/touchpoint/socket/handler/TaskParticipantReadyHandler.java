@@ -20,10 +20,10 @@ public class TaskParticipantReadyHandler implements AgentSocketStateHandler<Agen
     public <C extends AgentContext> Pair<TransportConfig<?>, AIModelConfig> onStateChange(AgentActionMetaInfo actionMeta, C agentContext, Context context, String task) {
         if (actionMeta != null) {
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
-            driverRegion.putTouchPointSwapAction(actionMeta.actionName(), actionMeta);
+            driverRegion.putTouchPointSwapAction(actionMeta.getActionName(), actionMeta);
 
             ActionGraphBuilder.getTaskGraph(task).addNode(actionMeta);
-            actionMeta.toActions().getToActions(task).forEach(toAction -> {
+            actionMeta.getToActions().getToActions(task).forEach(toAction -> {
                 if (driverRegion.containsTouchPointSwapAction(toAction)) {
                     ActionGraphBuilder.getTaskGraph(task).addEdge(actionMeta, driverRegion.getTouchPointSwapAction(toAction));
                 }

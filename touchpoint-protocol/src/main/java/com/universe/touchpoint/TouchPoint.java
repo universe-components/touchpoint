@@ -19,20 +19,30 @@ public abstract class TouchPoint {
 
     protected Header header = new Header();
     public String goal;
+    private String task;
     protected TouchPointState state;
 
     protected TouchPoint() {
         this.state.setCode(TaskState.OK.getCode());
     }
 
-    protected TouchPoint(String goal, Header header) {
+    protected TouchPoint(String goal, String task, Header header) {
         this.goal = goal;
+        this.task = task;
         this.header = header;
         this.state.setCode(TaskState.OK.getCode());
     }
 
     public void setGoal(String goal) {
         this.goal = goal;
+    }
+
+    public void setTask(String task) {
+        this.task = task;
+    }
+
+    public String getTask() {
+        return task;
     }
 
     public void setChannel(TouchPointChannel<?> channel) {
@@ -86,7 +96,7 @@ public abstract class TouchPoint {
     public boolean finish() {
         try {
             String contentProviderUri = TouchPointHelper.touchPointContentProviderUri(
-                    TouchPointConstants.CONTENT_PROVIDER_PREFIX, header.fromAction.actionName());
+                    TouchPointConstants.CONTENT_PROVIDER_PREFIX, header.fromAction.getActionName());
             TouchPointContent touchPointContent = TouchPointContentFactory.createContent(Uri.parse(contentProviderUri), Agent.getContext());
             boolean rs = touchPointContent.insertOrUpdate(this);
             if (!rs) {
@@ -102,7 +112,7 @@ public abstract class TouchPoint {
     public static class Header {
 
         private AgentActionMetaInfo fromAction = null;
-        private final String toAction = null;
+        private AgentActionMetaInfo toAction = null;
         private transient TouchPointChannel<?> channel;
 
         public Header() {
@@ -121,15 +131,23 @@ public abstract class TouchPoint {
             return fromAction;
         }
 
-        public String getToAction() {
+        public void setToAction(String toAction) {
+            this.toAction = new AgentActionMetaInfo(toAction);
+        }
+
+        public void setToAction(AgentActionMetaInfo toAction) {
+            this.toAction = toAction;
+        }
+
+        public AgentActionMetaInfo getToAction() {
             return toAction;
         }
 
-        public TouchPointChannel getChannel() {
+        public TouchPointChannel<?> getChannel() {
             return channel;
         }
 
-        public void setChannel(TouchPointChannel channel) {
+        public void setChannel(TouchPointChannel<?> channel) {
             this.channel = channel;
         }
 

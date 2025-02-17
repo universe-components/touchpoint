@@ -34,7 +34,7 @@ public class AgentActionProcessor<I extends TouchPoint, O extends TouchPoint> im
 
         Map<Object, List<Object>> choices = AIModelFactory.callModel(input, modelConfig);
         ChoiceParser<Object, Object> choiceParser = ChoiceParserFactory.selectParser(modelConfig.getType());
-        Pair<List<AgentAction<I, O>>, AgentFinish> answer = choiceParser.parse(choices);
+        Pair<List<AgentAction<I, O>>, AgentFinish> answer = choiceParser.parse(choices, result);
 
         for (AgentAction<I, O> agentAction : answer.first) {
             ResultDispatcher.run(agentAction, agentAction.getMeta(), context);

@@ -38,7 +38,7 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint, I extends TouchPo
 
         T touchPoint = SerializeUtils.deserializeFromByteArray(touchPointBytes, tpClass);
 
-        String filter = TouchPointHelper.touchPointFilterName(touchPoint.getHeader().getFromAction().actionName());
+        String filter = TouchPointHelper.touchPointFilterName(touchPoint.getHeader().getFromAction().getActionName());
 
         TransportRegion transportRegion = TouchPointMemory.getRegion(Region.TRANSPORT);
         TouchPointListener<T, ?> tpReceiver = (TouchPointListener<T, ?>) transportRegion.getTouchPointReceiver(filter);
@@ -47,7 +47,7 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint, I extends TouchPo
             ((AgentAction<I, O>) touchPoint).setOutput((O) tpReceiver.onReceive(
                     (T) ((AgentAction<I, O>) touchPoint).getActionInput(), context));
         } else if(touchPoint instanceof AgentFinish) {
-            List<AgentActionMetaInfo> predecessors = RouteTable.getInstance().getPredecessors(touchPoint.getHeader().getFromAction().actionName());
+            List<AgentActionMetaInfo> predecessors = RouteTable.getInstance().getPredecessors(touchPoint.getHeader().getFromAction().getActionName());
             if (predecessors == null) {
                 tpReceiver.onReceive(touchPoint, context);
             }

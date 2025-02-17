@@ -7,9 +7,11 @@ import com.universe.touchpoint.ai.AIModelType;
 import com.universe.touchpoint.annotations.ai.AIModel;
 import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.ai.Model;
+import com.universe.touchpoint.config.mapping.ActionMetricConfigMapping;
 import com.universe.touchpoint.config.mapping.AgentSocketConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
+import com.universe.touchpoint.config.task.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.memory.Region;
@@ -24,10 +26,10 @@ public class ConfigManager {
     public static AIModelConfig selectModel(String input, AgentActionMetaInfo actionMeta, String task) {
         // 首先检查 action 中的模型
         if (actionMeta != null) {
-            AIModelConfig modelConfig = actionMeta.model();
+            AIModelConfig modelConfig = actionMeta.getModel();
             if (modelConfig != null) {
                 // 如果 action 中有模型，则直接使用该模型
-                return actionMeta.model();
+                return actionMeta.getModel();
             }
         }
 
@@ -55,10 +57,10 @@ public class ConfigManager {
     public static <C> TransportConfig<C> selectTransport(String action, String task) {
         DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
         AgentActionMetaInfo actionMeta = driverRegion.getTouchPointAction(action);
-        TransportConfig<C> config = (TransportConfig<C>) actionMeta.transportConfig();
+        TransportConfig<C> config = (TransportConfig<C>) actionMeta.getTransportConfig();
 
         if (config != null) {
-            return (TransportConfig<C>) actionMeta.transportConfig();
+            return (TransportConfig<C>) actionMeta.getTransportConfig();
         }
 
         TransportConfig<?> transportConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getTransportConfig();
@@ -95,6 +97,35 @@ public class ConfigManager {
 
             if (socketConfig != null) {
                 return socketConfig;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    public static ActionMetricConfig selectActionMetricConfig(String action, String task) {
+        DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
+        AgentActionMetaInfo actionMeta = driverRegion.getTouchPointAction(action);
+        ActionMetricConfig config = actionMeta.getActionMetricConfig();
+
+        if (config != null) {
+            return actionMeta.getActionMetricConfig();
+        }
+
+        ActionMetricConfig actionMetricConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getActionMetricConfig();
+        if (actionMetricConfigFromTask != null) {
+            return actionMetricConfigFromTask;
+        }
+
+        try {
+            ActionMetricConfig actionMetricConfigFromAgent = (ActionMetricConfig) AnnotationUtils.annotation2Config(
+                    Agent.getApplicationClass(),
+                    ActionMetricConfigMapping.annotation2Config);
+
+            if (actionMetricConfigFromAgent != null) {
+                return actionMetricConfigFromAgent;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

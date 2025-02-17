@@ -43,8 +43,8 @@ public class TouchPointMQTT5Registry implements TouchPointTransportRegistry<MQTT
             });
             messageSubscribers.put(
                     TouchPointHelper.touchPointFilterName(previousAction),
-                    new TouchPointMQTT5Subscriber<>(Class.forName(agentActionMetaInfo.inputClassName())));
-            TouchPointChannelManager.registerContextReceiver(agentActionMetaInfo.actionName(), agentActionMetaInfo.className());
+                    new TouchPointMQTT5Subscriber<>(Class.forName(agentActionMetaInfo.getInputClassName())));
+            TouchPointChannelManager.registerContextReceiver(agentActionMetaInfo.getActionName(), agentActionMetaInfo.getClassName());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

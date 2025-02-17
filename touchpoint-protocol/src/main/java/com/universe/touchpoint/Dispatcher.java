@@ -11,7 +11,7 @@ public class Dispatcher {
         StringBuilder resultBuilder = new StringBuilder();
         ActionGraphBuilder.getTaskGraph(task).getFirstNodes().forEach(
             actionMeta -> {
-                AgentAction<?, ?> action = new AgentAction<>(content, new TouchPoint.Header(actionMeta));
+                AgentAction<?, ?> action = new AgentAction<>(content, task, new TouchPoint.Header(actionMeta));
                 String result = ResultDispatcher.run(action, actionMeta, Agent.getContext());
                 resultBuilder.append(result).append("\n");
             }

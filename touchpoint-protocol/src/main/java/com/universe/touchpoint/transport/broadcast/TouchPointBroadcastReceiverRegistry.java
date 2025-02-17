@@ -16,7 +16,7 @@ public class TouchPointBroadcastReceiverRegistry implements TouchPointTransportR
         TouchPointBroadcastReceiver<? extends TouchPoint, ?, ?> tpReceiver;
         try {
             tpReceiver = new TouchPointBroadcastReceiver<>(
-                    Class.forName(agentActionMetaInfo.inputClassName()), context);
+                    Class.forName(agentActionMetaInfo.getInputClassName()), context);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -24,7 +24,7 @@ public class TouchPointBroadcastReceiverRegistry implements TouchPointTransportR
         IntentFilter intentFilter = new IntentFilter(TouchPointHelper.touchPointFilterName(previousAction));
         context.registerReceiver(tpReceiver, intentFilter, Context.RECEIVER_EXPORTED);
 
-        TouchPointChannelManager.registerContextReceiver(agentActionMetaInfo.actionName(), agentActionMetaInfo.className());
+        TouchPointChannelManager.registerContextReceiver(agentActionMetaInfo.getActionName(), agentActionMetaInfo.getClassName());
     }
 
     @Override

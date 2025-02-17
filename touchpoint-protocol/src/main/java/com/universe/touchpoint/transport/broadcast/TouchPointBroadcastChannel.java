@@ -17,7 +17,7 @@ public class TouchPointBroadcastChannel extends TouchPointChannel<Boolean> {
 
     @Override
     public <T extends TouchPoint, O extends TouchPoint> Boolean send(T touchpoint) {
-        String filter = TouchPointHelper.touchPointFilterName(touchpoint.getHeader().getFromAction().actionName());
+        String filter = TouchPointHelper.touchPointFilterName(touchpoint.getHeader().getFromAction().getActionName());
         Intent intent = new Intent(filter);
         intent.putExtra(TouchPointConstants.TOUCH_POINT_EVENT_NAME, SerializeUtils.serializeToByteArray(touchpoint));
         context.sendBroadcast(intent);

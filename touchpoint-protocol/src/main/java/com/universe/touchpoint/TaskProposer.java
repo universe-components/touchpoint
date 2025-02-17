@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.annotations.ai.AIModel;
 import com.universe.touchpoint.annotations.socket.AgentSocket;
-import com.universe.touchpoint.annotations.Task;
+import com.universe.touchpoint.annotations.task.Task;
 import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.ConfigManager;

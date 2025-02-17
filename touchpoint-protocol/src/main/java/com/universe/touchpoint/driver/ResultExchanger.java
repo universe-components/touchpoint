@@ -27,6 +27,7 @@ public class ResultExchanger {
 
         ResultProcessor<R> resultProcessor;
         if (result instanceof AgentAction<?, ?>) {
+            ((AgentAction<?, ?>) result).getMetric().getPredictionCount().incrementAndGet();
             resultProcessor = (ResultProcessor<R>) new AgentActionProcessor<I, O>();
         } else if (result instanceof AgentFinish) {
             resultProcessor = (ResultProcessor<R>) new AgentFinishProcessor();

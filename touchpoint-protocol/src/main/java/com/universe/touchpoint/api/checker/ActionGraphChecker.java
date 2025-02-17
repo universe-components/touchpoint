@@ -3,8 +3,8 @@ package com.universe.touchpoint.api.checker;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.driver.ActionGraph;
 
-public interface ActionGraphChecker<T extends TouchPoint> {
+public interface ActionGraphChecker<I extends TouchPoint, O> {
 
-    boolean run(T touchPoint, ActionGraph actionGraph);
+    O run(I touchPoint, ActionGraph actionGraph);
 
 }

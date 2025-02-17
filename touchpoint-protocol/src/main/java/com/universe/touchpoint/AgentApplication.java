@@ -16,6 +16,7 @@ import com.qihoo360.replugin.RePluginCallbacks;
 import com.qihoo360.replugin.RePluginConfig;
 import com.qihoo360.replugin.RePluginFramework;
 import com.qihoo360.replugin.RePluginHost;
+import com.universe.touchpoint.annotations.task.TouchPointAction;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
 import com.universe.touchpoint.utils.ApkUtils;
@@ -76,7 +77,7 @@ public class AgentApplication extends Application {
 
         List<Pair<String, List<Object>>> receiverFilterPair = ApkUtils.getClassNames(
                 ctx,
-                com.universe.touchpoint.annotations.TouchPointAction.class,
+                TouchPointAction.class,
                 Arrays.asList("name", "desc", "role", "toActions"),
                 !isPlugin
         );

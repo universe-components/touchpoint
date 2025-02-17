@@ -26,8 +26,8 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
     private static final String FINAL_ANSWER_ACTION = "Final Answer: ";
 
     @Override
-    public <I extends TouchPoint, O extends TouchPoint> Pair<List<AgentAction<I, O>>, AgentFinish> parse(Map<ChatCompletion, List<ChatCompletion.Choice>> choices) {
-        List<AgentAction<I, O>> agentActions = new ArrayList<>();
+    public <ReqInput extends TouchPoint, ReqOutput extends TouchPoint, RespInput extends TouchPoint, RespOutput extends TouchPoint> Pair<List<AgentAction<RespInput, RespOutput>>, AgentFinish> parse(Map<ChatCompletion, List<ChatCompletion.Choice>> choices, AgentAction<ReqInput, ReqOutput> currentAction) {
+        List<AgentAction<RespInput, RespOutput>> agentActions = new ArrayList<>();
 
         for (Map.Entry<ChatCompletion, List<ChatCompletion.Choice>> entry : choices.entrySet()) {
             List<ChatCompletion.Choice> choiceList = entry.getValue(); // 对应的 Choice 列表
@@ -54,16 +54,16 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
                 String thought = matcher.group(1) == null ? "" : Objects.requireNonNull(matcher.group(1)).trim();
 
                 DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
-                agentActions.add(new AgentAction<>(
-                        action,
-                        AgentActionManager
-                                .getInstance()
-                                .paddingActionInput(
-                                    action, actionInput.replaceAll("\"", "").trim(), Agent.getName()
-                                ),
-                        thought,
-                        driverRegion.getTouchPointAction(
-                                TouchPointHelper.touchPointActionName(action, Agent.getName()))));
+                currentAction.setAction(action);
+                currentAction.setThought(thought);
+                currentAction.setActionInput(AgentActionManager
+                        .getInstance()
+                        .paddingActionInput(
+                                action, actionInput.replaceAll("\"", "").trim(), Agent.getName()
+                        ));
+                currentAction.setMeta( driverRegion.getTouchPointAction(
+                        TouchPointHelper.touchPointActionName(action, Agent.getName())));
+                agentActions.add((AgentAction<RespInput, RespOutput>) currentAction);
             }
         }
         // 返回 AgentAction

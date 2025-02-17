@@ -14,7 +14,7 @@ import java.util.Map;
 public class AnthropicChoiceParser implements ChoiceParser<Completion, String> {
 
     @Override
-    public <I extends TouchPoint, O extends TouchPoint> Pair<List<AgentAction<I, O>>, AgentFinish> parse(Map<Completion, List<String>> choices) {
+    public <ReqInput extends TouchPoint, ReqOutput extends TouchPoint, RespInput extends TouchPoint, RespOutput extends TouchPoint> Pair<List<AgentAction<RespInput, RespOutput>>, AgentFinish> parse(Map<Completion, List<String>> choices, AgentAction<ReqInput, ReqOutput> currentAction) {
         return null;
     }
 

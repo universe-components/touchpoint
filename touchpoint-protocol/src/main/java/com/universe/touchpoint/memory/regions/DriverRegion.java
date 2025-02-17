@@ -40,7 +40,7 @@ public class DriverRegion extends TouchPointRegion {
 
     public boolean containActions(ActionRole role) {
         for (AgentActionMetaInfo agentActionMetaInfo : touchPointActions.values()) {
-            if (agentActionMetaInfo.role() == role) {
+            if (agentActionMetaInfo.getRole() == role) {
                 return true;
             }
         }

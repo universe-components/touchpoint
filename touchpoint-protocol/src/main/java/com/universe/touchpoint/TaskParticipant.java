@@ -6,12 +6,14 @@ import android.util.Pair;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.annotations.role.ActionRole;
-import com.universe.touchpoint.config.ActionDependency;
+import com.universe.touchpoint.config.mapping.ActionMetricConfigMapping;
+import com.universe.touchpoint.config.task.ActionDependency;
 import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.role.CoordinatorConfig;
 import com.universe.touchpoint.config.role.SupervisorConfig;
+import com.universe.touchpoint.config.task.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.config.mapping.AIModelConfigMapping;
@@ -51,6 +53,9 @@ public class TaskParticipant {
                 AIModelConfig aiModelConfig = (AIModelConfig) AnnotationUtils.annotation2Config(
                                                                     Class.forName(clazz),
                                                                     AIModelConfigMapping.annotation2Config);
+                ActionMetricConfig actionMetricConfig = (ActionMetricConfig) AnnotationUtils.annotation2Config(
+                        Class.forName(clazz),
+                        ActionMetricConfigMapping.annotation2Config);
 
                 /*
                  * Local Registry
@@ -71,7 +76,8 @@ public class TaskParticipant {
                             (String) properties.get(1),
                             role,
                             Agent.getName(),
-                        actionDependency);
+                            actionMetricConfig,
+                            actionDependency);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }

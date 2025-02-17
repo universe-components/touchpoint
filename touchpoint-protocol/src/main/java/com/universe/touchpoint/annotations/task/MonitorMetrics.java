@@ -1,4 +1,4 @@
-package com.universe.touchpoint.annotations;
+package com.universe.touchpoint.annotations.task;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +7,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Task {
+public @interface MonitorMetrics {
 
-    String value();
+    int maxPredictionCount() default 10;
 
 }
