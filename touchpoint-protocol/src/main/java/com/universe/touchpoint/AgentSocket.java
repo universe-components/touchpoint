@@ -1,16 +1,16 @@
 package com.universe.touchpoint;
 
-import com.qihoo360.replugin.RePluginHost;
+import com.universe.touchpoint.link.BinderFactory;
+import com.universe.touchpoint.link.BinderType;
 
 public class AgentSocket {
 
-    public static void bind(String apkName) {
-        RePluginHost.install(apkName);
-        RePluginHost.preload(apkName);
+    public static void bind(String path, BinderType binderType) {
+        BinderFactory.getBinder(binderType).bind(path);
     }
 
-    public static void unbind(String apkName) {
-        RePluginHost.uninstall(apkName);
+    public static void unbind(String path, BinderType binderType) {
+        BinderFactory.getBinder(binderType).unbind(path);
     }
 
 }
