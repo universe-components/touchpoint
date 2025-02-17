@@ -31,9 +31,9 @@ public class TouchPointDubboRegistry implements TouchPointTransportRegistry<Dubb
             Class<?> providerClass = Class.forName(agentActionMetaInfo.getClassName());
             DubboBootstrap.getInstance()
                     .service(ServiceBuilder.newBuilder()
-                            .interfaceClass(dubboConfig.interfaceClass)
-                            .ref(providerClass.getConstructor().newInstance())
-                            .build());
+                    .interfaceClass(dubboConfig.interfaceClass)
+                    .ref(providerClass.getConstructor().newInstance())
+                    .build());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
