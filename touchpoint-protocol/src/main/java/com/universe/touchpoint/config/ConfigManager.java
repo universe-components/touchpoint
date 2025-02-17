@@ -10,6 +10,7 @@ import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.config.mapping.ActionMetricConfigMapping;
 import com.universe.touchpoint.config.mapping.AgentSocketConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
+import com.universe.touchpoint.config.metric.TaskMetricConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.Transport;
@@ -97,6 +98,27 @@ public class ConfigManager {
 
             if (socketConfig != null) {
                 return socketConfig;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    public static TaskMetricConfig selectTaskMetricConfig(String task) {
+        TaskMetricConfig taskMetricConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getTaskMetricConfig();
+        if (taskMetricConfigFromTask != null) {
+            return taskMetricConfigFromTask;
+        }
+
+        try {
+            TaskMetricConfig taskMetricConfigFromAgent = (TaskMetricConfig) AnnotationUtils.annotation2Config(
+                    Agent.getApplicationClass(),
+                    ActionMetricConfigMapping.annotation2Config);
+
+            if (taskMetricConfigFromAgent != null) {
+                return taskMetricConfigFromAgent;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

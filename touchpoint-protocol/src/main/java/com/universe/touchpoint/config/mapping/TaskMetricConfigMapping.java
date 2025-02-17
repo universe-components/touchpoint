@@ -1,17 +1,17 @@
 package com.universe.touchpoint.config.mapping;
 
-import com.universe.touchpoint.annotations.metric.MonitorActionMetrics;
-import com.universe.touchpoint.config.metric.ActionMetricConfig;
+import com.universe.touchpoint.annotations.metric.MonitorTaskMetrics;
+import com.universe.touchpoint.config.metric.TaskMetricConfig;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActionMetricConfigMapping {
+public class TaskMetricConfigMapping {
 
     public static final Map<Class<? extends Annotation>, Class<?>> annotation2Config = new HashMap<>();
     static {
-        annotation2Config.put(MonitorActionMetrics.class, ActionMetricConfig.class);
+        annotation2Config.put(MonitorTaskMetrics.class, TaskMetricConfig.class);
     }
 
 }

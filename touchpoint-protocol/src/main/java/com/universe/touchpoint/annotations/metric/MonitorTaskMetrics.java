@@ -7,8 +7,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MonitorMetrics {
+public @interface MonitorTaskMetrics {
 
-    int maxPredictionCount() default 10;
+    int maxFaultActionCount() default 10;
+    int maxRetryActionCount() default 10;
 
 }

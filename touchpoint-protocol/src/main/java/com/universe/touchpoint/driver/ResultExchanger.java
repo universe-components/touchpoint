@@ -7,6 +7,7 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.driver.processor.AgentFinishProcessor;
+import com.universe.touchpoint.monitor.TaskMetricManager;
 import com.universe.touchpoint.rolemodel.coordinator.CoordinatorFactory;
 import com.universe.touchpoint.rolemodel.supervisor.SupervisorFactory;
 import com.universe.touchpoint.driver.processor.AgentActionProcessor;
@@ -28,6 +29,7 @@ public class ResultExchanger {
         ResultProcessor<R> resultProcessor;
         if (result instanceof AgentAction<?, ?>) {
             ((AgentAction<?, ?>) result).getMetric().getPredictionCount().incrementAndGet();
+            TaskMetricManager.addTaskMetric((AgentAction<?, ?>) result);
             resultProcessor = (ResultProcessor<R>) new AgentActionProcessor<I, O>();
         } else if (result instanceof AgentFinish) {
             resultProcessor = (ResultProcessor<R>) new AgentFinishProcessor();
