@@ -4,7 +4,7 @@ import android.content.Context;
 import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.ai.AIModelConfig;
-import com.universe.touchpoint.config.task.ActionMetricConfig;
+import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.context.TaskActionContext;

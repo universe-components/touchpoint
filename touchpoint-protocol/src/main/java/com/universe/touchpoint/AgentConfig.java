@@ -2,7 +2,7 @@ package com.universe.touchpoint;
 
 import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
-import com.universe.touchpoint.config.task.ActionMetricConfig;
+import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.TransportConfig;

@@ -11,6 +11,7 @@ import com.universe.touchpoint.annotations.ai.AIModel;
 import com.universe.touchpoint.annotations.socket.AgentSocket;
 import com.universe.touchpoint.annotations.task.Task;
 import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.TransportConfig;
@@ -55,6 +56,10 @@ public class TaskProposer {
                         AgentSocketConfig socketConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getSocketConfig();
                         ClassUtils.setProperties(socketConfig, property.getValue());
                         AgentSocketStateMachine.getInstance(taskProperty.getKey()).socketProtocol().initialize(socketConfig);
+                    }
+                    if (Objects.equals(property.getKey(), "MonitorMetrics")) {
+                        ActionMetricConfig actionMetricConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getActionMetricConfig();
+                        ClassUtils.setProperties(actionMetricConfig, property.getValue());
                     }
                 }
 

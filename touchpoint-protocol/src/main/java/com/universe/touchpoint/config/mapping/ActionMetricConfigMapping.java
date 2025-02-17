@@ -1,7 +1,7 @@
 package com.universe.touchpoint.config.mapping;
 
-import com.universe.touchpoint.annotations.task.MonitorMetrics;
-import com.universe.touchpoint.config.task.ActionMetricConfig;
+import com.universe.touchpoint.annotations.metric.MonitorMetrics;
+import com.universe.touchpoint.config.metric.ActionMetricConfig;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;

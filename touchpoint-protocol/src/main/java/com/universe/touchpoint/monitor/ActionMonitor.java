@@ -4,7 +4,7 @@ import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.api.checker.ActionChecker;
 import com.universe.touchpoint.config.ConfigManager;
-import com.universe.touchpoint.config.task.ActionMetricConfig;
+import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.state.DriverState;
 import com.universe.touchpoint.state.enums.TaskState;
 

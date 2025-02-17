@@ -13,7 +13,7 @@ import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.role.CoordinatorConfig;
 import com.universe.touchpoint.config.role.SupervisorConfig;
-import com.universe.touchpoint.config.task.ActionMetricConfig;
+import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.config.mapping.AIModelConfigMapping;

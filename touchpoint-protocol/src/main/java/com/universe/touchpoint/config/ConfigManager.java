@@ -11,7 +11,7 @@ import com.universe.touchpoint.config.mapping.ActionMetricConfigMapping;
 import com.universe.touchpoint.config.mapping.AgentSocketConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
-import com.universe.touchpoint.config.task.ActionMetricConfig;
+import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.memory.Region;

@@ -1,4 +1,4 @@
-package com.universe.touchpoint.annotations.task;
+package com.universe.touchpoint.annotations.metric;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

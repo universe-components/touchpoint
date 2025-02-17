@@ -1,4 +1,4 @@
-package com.universe.touchpoint.config.task;
+package com.universe.touchpoint.config.metric;
 
 public class ActionMetricConfig {
 
