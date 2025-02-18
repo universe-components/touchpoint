@@ -12,7 +12,7 @@
 
 - **可热插拔Agent：** Agent网络中的任意一个Agent都可在线加入和退出，不影响整个Agent网络。
 
-- **运行时修改Action和工作流：** 可在任务运行时，动态调整Action和工作流。
+- **动态工作流：** 可在任务运行时，动态调整Action和工作流。
 
 - **多种调用方式：** Action之间可以通过IPC、Broadcast、MQTT、RPC及REST等方式通信。
 
