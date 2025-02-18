@@ -48,7 +48,7 @@ dependencies {
 如果 `Entry Agent` 和 `Weather Agent` 在同一个节点部署，需要在 `Entry Agent`添加如下代码完成绑定：
 ```kotlin
 // 以两个Agent都是apk为例
-AgentSocket.bind(./"weather_agent", BinderType.ANDROID_BINDER);
+AgentSocket.bind(./"weather_agent.apk", BinderType.ANDROID_BINDER);
 ```
 备注：仅同一节点部署需要显式绑定。
 
