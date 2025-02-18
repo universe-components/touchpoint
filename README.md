@@ -215,8 +215,8 @@ class WeatherService {
 备注：以上配置作用域为Action。配置优先级：Action > Task > Agent。
 
 ## 高级用法
-- [自定义角色行为](./README_ROLE.md)
-- [降级为非模型驱动的Agent编排](./README_BASIC.md)
+- [动态工作流](./README_ROLE.md)
+- [非模型驱动工作流](./README_BASIC.md)
 
 ## RoadMap
 
