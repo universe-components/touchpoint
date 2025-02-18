@@ -2,14 +2,14 @@ package com.universe.touchpoint.socket;
 
 import android.content.Context;
 
-import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.socket.handler.ActionGraphDistributedHandler;
 import com.universe.touchpoint.socket.handler.ChannelEstablishedHandler;
 import com.universe.touchpoint.socket.handler.GlobalConfigDistributedHandler;
 import com.universe.touchpoint.socket.handler.GlobalConfigReadyHandler;
+import com.universe.touchpoint.socket.handler.RoleExecutorDistributedHandler;
+import com.universe.touchpoint.socket.handler.RoleExecutorMergedHandler;
 import com.universe.touchpoint.socket.handler.TaskParticipantReadyHandler;
-import com.universe.touchpoint.socket.handler.TaskReadyHandler;
 import com.universe.touchpoint.utils.SerializeUtils;
 
 import java.util.HashMap;
@@ -20,11 +20,12 @@ public class AgentSocketStateRouter<C extends AgentContext> {
 
     private static final Map<AgentSocketState, AgentSocketStateHandler<?, ?>> stateHandlerMap = new HashMap<>();
     static {
-        stateHandlerMap.put(AgentSocketState.TASK_READY, new TaskReadyHandler());
-        stateHandlerMap.put(AgentSocketState.PARTICIPANT_READY, new TaskParticipantReadyHandler());
+        stateHandlerMap.put(AgentSocketState.PARTICIPANT_READY, new TaskParticipantReadyHandler<>());
         stateHandlerMap.put(AgentSocketState.GLOBAL_CONFIG_DISTRIBUTED, new GlobalConfigDistributedHandler<>());
         stateHandlerMap.put(AgentSocketState.GLOBAL_CONFIG_READY, new GlobalConfigReadyHandler());
-        stateHandlerMap.put(AgentSocketState.ACTION_GRAPH_DISTRIBUTED, new ActionGraphDistributedHandler());
+        stateHandlerMap.put(AgentSocketState.ACTION_GRAPH_DISTRIBUTED, new ActionGraphDistributedHandler<>());
+        stateHandlerMap.put(AgentSocketState.ROLE_EXECUTOR_DISTRIBUTED, new RoleExecutorDistributedHandler<>());
+        stateHandlerMap.put(AgentSocketState.ROLE_EXECUTOR_MERGED, new RoleExecutorMergedHandler<>());
         stateHandlerMap.put(AgentSocketState.CHANNEL_ESTABLISHED, new ChannelEstablishedHandler());
     }
 

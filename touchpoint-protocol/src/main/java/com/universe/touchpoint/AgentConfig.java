@@ -1,6 +1,7 @@
 package com.universe.touchpoint;
 
 import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.metric.MetricSocketConfig;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
@@ -16,6 +17,7 @@ public class AgentConfig {
     private AIModelConfig modelConfig = new AIModelConfig();
     private TransportConfig<?> transportConfig;
     private AgentSocketConfig socketConfig = new AgentSocketConfig();
+    private MetricSocketConfig metricSocketConfig = new MetricSocketConfig();
     private ActionMetricConfig actionMetricConfig = new ActionMetricConfig();
     private TaskMetricConfig taskMetricConfig = new TaskMetricConfig();
 
@@ -50,6 +52,14 @@ public class AgentConfig {
 
     public void setSocketConfig(AgentSocketConfig socketConfig) {
         this.socketConfig = socketConfig;
+    }
+
+    public MetricSocketConfig getMetricSocketConfig() {
+        return metricSocketConfig;
+    }
+
+    public void setMetricSocketConfig(MetricSocketConfig metricSocketConfig) {
+        this.metricSocketConfig = metricSocketConfig;
     }
 
     public ActionMetricConfig getActionMetricConfig() {

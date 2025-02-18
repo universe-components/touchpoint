@@ -1,11 +1,11 @@
 package com.universe.touchpoint.api.checker.defaults;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.TouchPointContext;
 import com.universe.touchpoint.api.checker.ActionChecker;
 
 public interface DefaultActionChecker<T extends TouchPoint> extends ActionChecker<T, Boolean> {
 
-    Boolean run(T touchPoint, AgentAction<?, ?> action);
+    Boolean run(T touchPoint, TouchPointContext context);
 
 }

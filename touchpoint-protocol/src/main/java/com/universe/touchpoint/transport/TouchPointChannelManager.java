@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
-import com.universe.touchpoint.api.TouchPointListener;
+import com.universe.touchpoint.api.TouchPointExecutor;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.RPCConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -67,7 +67,7 @@ public class TouchPointChannelManager {
     public static void registerContextReceiver(String actionName, String actionClassName) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(actionClassName);
-            TouchPointListener<?, ?> tpInstanceReceiver = (TouchPointListener<?, ?>) tpInstanceReceiverClass.getConstructor().newInstance();
+            TouchPointExecutor<?, ?> tpInstanceReceiver = (TouchPointExecutor<?, ?>) tpInstanceReceiverClass.getConstructor().newInstance();
             registerContextReceiver(actionName, tpInstanceReceiver);
         } catch (Exception e) {
             if (LogDebug.LOG) {
@@ -76,7 +76,7 @@ public class TouchPointChannelManager {
         }
     }
 
-    private static void registerContextReceiver(String actionName, TouchPointListener<?, ?> tpInstanceReceiver) {
+    private static void registerContextReceiver(String actionName, TouchPointExecutor<?, ?> tpInstanceReceiver) {
         String filterAction = TouchPointHelper.touchPointFilterName(actionName);
         TransportRegion transportRegion = TouchPointMemory.getRegion(Region.TRANSPORT);
         transportRegion.putTouchPointReceiver(filterAction, tpInstanceReceiver);

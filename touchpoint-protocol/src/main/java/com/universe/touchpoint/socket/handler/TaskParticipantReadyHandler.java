@@ -3,7 +3,7 @@ package com.universe.touchpoint.socket.handler;
 import android.content.Context;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.config.ConfigManager;
-import com.universe.touchpoint.context.AgentContext;
+import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.driver.ActionGraphBuilder;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;

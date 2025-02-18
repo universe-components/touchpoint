@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
-import com.universe.touchpoint.context.AgentContext;
+import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.socket.AgentSocketProtocol;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;

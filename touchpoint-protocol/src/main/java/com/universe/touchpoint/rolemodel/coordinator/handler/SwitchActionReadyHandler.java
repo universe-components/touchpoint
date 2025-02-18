@@ -2,9 +2,10 @@ package com.universe.touchpoint.rolemodel.coordinator.handler;
 
 import android.content.Context;
 import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.api.operator.ActionOperator;
-import com.universe.touchpoint.context.AgentContext;
+import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.DriverRegion;
@@ -16,7 +17,7 @@ public class SwitchActionReadyHandler<I extends TouchPoint, O extends TouchPoint
     @Override
     public <C extends AgentContext> AgentAction<I, O> onStateChange(AgentAction<I, O> action, C agentContext, Context context, String task) {
         ActionOperator<I> actionCoordinator = (ActionOperator<I>) RoleExecutorFactory.getInstance(task).getExecutor(action.getInput().getState().getRedirectToAction());
-        AgentAction<I, O> newAction = (AgentAction<I, O>) actionCoordinator.run(action.getInput(), action);
+        AgentAction<I, O> newAction = (AgentAction<I, O>) actionCoordinator.run(action.getInput(), TouchPointContextManager.getTouchPointContext(task));
 
         DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
         driverRegion.putTouchPointAction(action.getAction(), newAction.getMeta());

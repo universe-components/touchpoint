@@ -1,7 +1,6 @@
 package com.universe.touchpoint.socket;
 
 import android.content.Context;
-import com.universe.touchpoint.context.AgentContext;
 
 public interface AgentSocketStateHandler<I, O> {
 

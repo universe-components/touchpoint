@@ -7,6 +7,7 @@ import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.mapping.ActionMetricConfigMapping;
+import com.universe.touchpoint.config.metric.MetricSocketConfig;
 import com.universe.touchpoint.config.task.ActionDependency;
 import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
@@ -20,7 +21,8 @@ import com.universe.touchpoint.config.mapping.AIModelConfigMapping;
 import com.universe.touchpoint.config.mapping.CoordinatorConfigMapping;
 import com.universe.touchpoint.config.mapping.SupervisorConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
-import com.universe.touchpoint.context.TaskActionContext;
+import com.universe.touchpoint.monitor.TaskMetricManager;
+import com.universe.touchpoint.socket.context.TaskActionContext;
 import com.universe.touchpoint.rolemodel.RoleExecutorFactory;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
@@ -43,16 +45,16 @@ public class TaskParticipant {
             Map<Transport, Object> transportConfigMap;
             try {
                 transportConfigMap = AnnotationUtils.annotation2Config(
-                                        Class.forName(clazz),
-                                        TransportConfigMapping.annotation2Config,
-                                        TransportConfigMapping.annotation2Type
-                                    );
+                        Class.forName(clazz),
+                        TransportConfigMapping.annotation2Config,
+                        TransportConfigMapping.annotation2Type
+                );
 
                 Transport transportType = transportConfigMap.keySet().iterator().next();
                 Object transportConfig = transportConfigMap.get(transportType);
                 AIModelConfig aiModelConfig = (AIModelConfig) AnnotationUtils.annotation2Config(
-                                                                    Class.forName(clazz),
-                                                                    AIModelConfigMapping.annotation2Config);
+                        Class.forName(clazz),
+                        AIModelConfigMapping.annotation2Config);
                 ActionMetricConfig actionMetricConfig = (ActionMetricConfig) AnnotationUtils.annotation2Config(
                         Class.forName(clazz),
                         ActionMetricConfigMapping.annotation2Config);
@@ -67,17 +69,17 @@ public class TaskParticipant {
                 ActionDependency actionDependency = new ActionDependency((String) properties.get(0));
                 actionDependency.setToActions(StringUtils.convert((String[]) properties.get(3)));
                 AgentActionManager.getInstance().extractAndRegisterAction(
-                            clazz,
-                            aiModelConfig,
-                            new TransportConfig<>(
-                                    transportType,
-                                    transportConfig),
-                            (String) properties.get(0),
-                            (String) properties.get(1),
-                            role,
-                            Agent.getName(),
-                            actionMetricConfig,
-                            actionDependency);
+                        clazz,
+                        aiModelConfig,
+                        new TransportConfig<>(
+                                transportType,
+                                transportConfig),
+                        (String) properties.get(0),
+                        (String) properties.get(1),
+                        role,
+                        Agent.getName(),
+                        actionMetricConfig,
+                        actionDependency);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -127,8 +129,14 @@ public class TaskParticipant {
                 assert socketConfig != null;
                 AgentSocketStateMachine.registerInstance(task, socketConfig.getBindProtocol());
                 AgentSocketStateMachine.getInstance(task).socketProtocol().initialize(socketConfig);
-
                 AgentSocketStateMachine.getInstance(task).registerReceiver(context, actionContext);
+
+                MetricSocketConfig metricSocketConfig = ConfigManager.selectMetricSocket(task);
+                assert metricSocketConfig != null;
+                TaskMetricManager.registerListener(task, metricSocketConfig.getBindProtocol());
+                TaskMetricManager.getListener(task).initialize(metricSocketConfig);
+                TaskMetricManager.getListener(task).registerReceiver(context, task);
+
                 DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
                 AgentSocketStateMachine.getInstance(task).send(
                         new AgentSocketStateMachine.AgentSocketStateContext<>(

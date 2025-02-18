@@ -2,7 +2,7 @@ package com.universe.touchpoint.socket.handler;
 
 import android.content.Context;
 
-import com.universe.touchpoint.context.AgentContext;
+import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.driver.ActionGraph;
 import com.universe.touchpoint.driver.ActionGraphBuilder;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;

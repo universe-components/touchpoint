@@ -1,7 +1,6 @@
 package com.universe.touchpoint.agent;
 
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.monitor.metric.ActionMetric;
 
 public class AgentAction<I extends TouchPoint, O extends TouchPoint> extends TouchPoint {
 
@@ -10,7 +9,6 @@ public class AgentAction<I extends TouchPoint, O extends TouchPoint> extends Tou
     private O output;
     private I input;
     private AgentActionMetaInfo meta;
-    private final ActionMetric metric = new ActionMetric();
 
     public AgentAction(String goal, String task, Header header) {
         super(goal, task, header);
@@ -54,10 +52,6 @@ public class AgentAction<I extends TouchPoint, O extends TouchPoint> extends Tou
 
     public AgentActionMetaInfo getMeta() {
         return meta;
-    }
-
-    public ActionMetric getMetric() {
-        return metric;
     }
 
     //        @NonNull

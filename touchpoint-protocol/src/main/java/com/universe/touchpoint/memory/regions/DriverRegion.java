@@ -4,6 +4,7 @@ import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.memory.TouchPointRegion;
 import java.util.HashMap;
+import java.util.List;
 
 public class DriverRegion extends TouchPointRegion {
 
@@ -38,9 +39,9 @@ public class DriverRegion extends TouchPointRegion {
         touchPointSwapActions.clear();
     }
 
-    public boolean containActions(ActionRole role) {
+    public boolean containActions(List<ActionRole> roles) {
         for (AgentActionMetaInfo agentActionMetaInfo : touchPointActions.values()) {
-            if (agentActionMetaInfo.getRole() == role) {
+            if (roles.contains(agentActionMetaInfo.getRole())) {
                 return true;
             }
         }

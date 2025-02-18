@@ -6,8 +6,20 @@ public class ActionMetric {
 
     private final AtomicInteger predictionCount = new AtomicInteger(0);
 
-    public AtomicInteger getPredictionCount() {
-        return predictionCount;
+    public int getPredictionCount() {
+        return predictionCount.get();
+    }
+
+    public void incrementPredictionCount() {
+        predictionCount.incrementAndGet();
+    }
+
+    public void addPredictionCount(int predictionCount) {
+        this.predictionCount.addAndGet(predictionCount);
+    }
+
+    public void setPredictionCount(int predictionCount) {
+        this.predictionCount.set(predictionCount);
     }
 
 }

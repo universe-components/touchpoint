@@ -9,7 +9,9 @@ import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.config.mapping.ActionMetricConfigMapping;
 import com.universe.touchpoint.config.mapping.AgentSocketConfigMapping;
+import com.universe.touchpoint.config.mapping.MetricSocketConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
+import com.universe.touchpoint.config.metric.MetricSocketConfig;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
@@ -95,6 +97,27 @@ public class ConfigManager {
             AgentSocketConfig socketConfig = (AgentSocketConfig) AnnotationUtils.annotation2Config(
                     Agent.getApplicationClass(),
                     AgentSocketConfigMapping.annotation2Config);
+
+            if (socketConfig != null) {
+                return socketConfig;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    public static MetricSocketConfig selectMetricSocket(String task) {
+        MetricSocketConfig socketConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getMetricSocketConfig();
+        if (socketConfigFromTask != null) {
+            return socketConfigFromTask;
+        }
+
+        try {
+            MetricSocketConfig socketConfig = (MetricSocketConfig) AnnotationUtils.annotation2Config(
+                    Agent.getApplicationClass(),
+                    MetricSocketConfigMapping.annotation2Config);
 
             if (socketConfig != null) {
                 return socketConfig;

@@ -16,6 +16,10 @@ public class TouchPointConstants {
 
     public static final String TOUCH_POINT_TASK_STATE_EVENT = "task_state_event";
 
+    public static final String TOUCH_POINT_TASK_METRIC_FILTER = "task_metric";
+
+    public static final String TOUCH_POINT_TASK_METRIC_EVENT = "task_metric_event";
+
     public static final String TOUCH_POINT_CLEAN_FILTER = "clean";
 
     public static final String TOUCH_POINT_CLEAN_EVENT_NAME = "clean_event";

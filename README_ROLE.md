@@ -23,68 +23,46 @@ TPP协议基于状态 - 角色驱动模型实现动态工作流的调整，包�
 `DataOperator`：用于修改Action输入。
 
 ## Example
-比如，HR主管给一个HR布置任务：检查员工考勤次数，次数少于阈值，交由办理离职的HR开除该员工：
+比如，产品团队Leader收到一个研发小组团建的消息，于是，告知项目经理，他的项目绕过该研发小组，先和其他团队对接。
 
-实现 `HR Leader Action`，将 `NEED_CHECK_ACTION` 状态添加进方法输出：
+实现 `Product Leader Action`，将 `NEED_REORDER_ACTION` 状态添加进方法输出：
 ```kotlin
-@TouchPointAction( name = "hrLeader", toActions = { "daily_checking[\"hr\"]" })
-class HRLeader : AgentActionListener<EmployeeRequest, EmployeeResponse> {
+@TouchPointAction( name = "productLeader", toActions = { "projectA[\"pm\"]" })
+class ProductLeader : AgentActionListener<TeamMessage, TeamResponse> {
    
-   override fun onReceive(employeeRequest: EmployeeRequest, context: Context) : EmployeeResponse {
-     EmployeeResponse employee = new EmployeeResponse();
-     employee.setEntity(employeeRequest.getEntity("James"));
-     employee.setState(new TouchPointState(
-             TaskState.NEED_CHECK_ACTION.getCode(),
-             "Please check James' jobs",
-             "hr");
+   override fun onReceive(message: TeamMessage, context: Context) : TeamResponse {
+     TeamResponse teamResponse = new TeamResponse();
+     if (message.getContent().contains("team-building")) {
+       teamResponse.setState(new TouchPointState(
+                 TaskState.NEED_REORDER_ACTION.getCode(),
+                 "The R&D team is team-building, followed by coordination with other teams",
+                 "pm",
+                 "R&D");
+     }
      
-     return employee;
+     return teamResponse;
    }
  
 }
 ```
 
-实现 `HR`，`HR`为监督者，检查HR主管转发给她的员工，并检查其考勤：
+实现 `PM`，`PM`为协调者，实施绕过该研发小组，先和其他团队对接，即从Task中移除该研发小组：
 ```kotlin
-@TouchPointAction( name = "hr")
-@Supervisor(task = "daily_checking")
-class HR : DataChecker<EmployeeResponse, CheckResult> {
+@TouchPointAction( name = "pm")
+@Coordinator(task = "projectA")
+class PM : ActionGraphOperator<TeamResponse> {
 
-    override fun run(employee: EmployeeResponse): CheckResult {
-      if (employee < 10) {
-        checkResult = CheckResult();
-        checkResult.setEmployee(employee.getEntity());
-        checkResult.state = TouchPointState(
-          TaskState.NEED_SWITCH_ACTION.code,
-          "The employee[]'s attendance frequency is too low.",
-          "check out work"
-        )
-        return checkResult
-      }
-
-      checkResult.setState(TouchPointState(TaskState.OK.getCode(), "success"));
-      return true
-    }
-
-}
-```
-
-实现 `Check Out Work`，`Check Out Work`为协调者，将员工开除：
-```kotlin
-@TouchPointAction( name = "check out work")
-@Coordinator(task = "daily_checking")
-class HRCheckOutWork : ActionGraphOperator<CheckResult> {
-
-    override fun run(employeeCheckResult: CheckResult, actionGraph: ActionGraph): Boolean {
-      if (actionGraph.getAdjList().containsKey(employeeCheckResult.getEmployee()) {
+    override fun run(teamResponse: TeamResponse, actionGraph: ActionGraph, context: TouchPointContext): ActionGraph {
+      AgentActionMetaInfo actionMeta = context.getActionMeta(teamResponse.getState().getCtxName())
+      if (actionGraph.getAdjList().containsKey(actionMeta)) {
         for (List<AgentActionMetaInfo> neighbors : adjList.values()) {
-          neighbors.remove(employeeCheckResult.getEmployee());
+          neighbors.remove(actionMeta);
         }
         // 移除该节点
-        adjList.remove(employeeCheckResult.getEmployee());
+        adjList.remove(actionMeta);
       }
 
-      return true
+      return actionGraph
     }
 
 }

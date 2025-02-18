@@ -7,20 +7,28 @@ public class ActionGraphMetric {
     private final AtomicInteger faultActionCount = new AtomicInteger(0);
     private final AtomicInteger retryActionCount = new AtomicInteger(0);
 
-    public AtomicInteger getFaultActionCount() {
-        return faultActionCount;
+    public int getFaultActionCount() {
+        return faultActionCount.get();
     }
 
-    public AtomicInteger getRetryActionCount() {
-        return retryActionCount;
+    public int getRetryActionCount() {
+        return retryActionCount.get();
     }
 
     public void addFaultActionCount() {
         faultActionCount.incrementAndGet();
     }
 
-    public void addRetryActionCount(int retryCount) {
+    public void setRetryActionCount(int retryCount) {
         retryActionCount.set(retryCount);
+    }
+
+    public void incrementRetryActionCount() {
+        retryActionCount.incrementAndGet();
+    }
+
+    public void addRetryActionCount(int retryCount) {
+        retryActionCount.addAndGet(retryCount);
     }
 
 }

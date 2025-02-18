@@ -9,7 +9,7 @@ import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.agent.AgentFinish;
-import com.universe.touchpoint.api.TouchPointListener;
+import com.universe.touchpoint.api.TouchPointExecutor;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.driver.ResultExchanger;
 import com.universe.touchpoint.memory.Region;
@@ -41,18 +41,18 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint, I extends TouchPo
         String filter = TouchPointHelper.touchPointFilterName(touchPoint.getHeader().getFromAction().getActionName());
 
         TransportRegion transportRegion = TouchPointMemory.getRegion(Region.TRANSPORT);
-        TouchPointListener<T, ?> tpReceiver = (TouchPointListener<T, ?>) transportRegion.getTouchPointReceiver(filter);
+        TouchPointExecutor<T, ?> tpReceiver = (TouchPointExecutor<T, ?>) transportRegion.getTouchPointReceiver(filter);
 
         if (touchPoint instanceof AgentAction) {
-            ((AgentAction<I, O>) touchPoint).setOutput((O) tpReceiver.onReceive(
+            ((AgentAction<I, O>) touchPoint).setOutput((O) tpReceiver.run(
                     (T) ((AgentAction<I, O>) touchPoint).getInput(), context));
         } else if(touchPoint instanceof AgentFinish) {
             List<AgentActionMetaInfo> predecessors = RouteTable.getInstance().getPredecessors(touchPoint.getHeader().getFromAction().getActionName());
             if (predecessors == null) {
-                tpReceiver.onReceive(touchPoint, context);
+                tpReceiver.run(touchPoint, context);
             }
         } else {
-            tpReceiver.onReceive(touchPoint, context);
+            tpReceiver.run(touchPoint, context);
         }
         ResultExchanger.exchange(
                 touchPoint, touchPoint.goal, null, mContext, Transport.BROADCAST);

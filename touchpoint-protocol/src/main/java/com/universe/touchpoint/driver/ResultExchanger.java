@@ -13,6 +13,8 @@ import com.universe.touchpoint.rolemodel.supervisor.SupervisorFactory;
 import com.universe.touchpoint.driver.processor.AgentActionProcessor;
 import com.universe.touchpoint.driver.processor.DefaultResultProcessor;
 
+import java.util.Map;
+
 public class ResultExchanger {
 
     public static <I extends TouchPoint, O extends TouchPoint, R extends TouchPoint> String exchange(
@@ -28,8 +30,19 @@ public class ResultExchanger {
 
         ResultProcessor<R> resultProcessor;
         if (result instanceof AgentAction<?, ?>) {
-            ((AgentAction<?, ?>) result).getMetric().getPredictionCount().incrementAndGet();
-            TaskMetricManager.addTaskMetric((AgentAction<?, ?>) result);
+            String countAction = ((AgentAction<?, ?>) result).getAction();
+            TaskMetricManager.getActionMetric(task, countAction).incrementPredictionCount();
+
+            int actionRetryCount = TaskMetricManager.getActionMetric(task, ((AgentAction<?, ?>) result).getAction()).getPredictionCount();
+            if (actionRetryCount > 0) {
+                TaskMetricManager.getTaskMetric(task).setRetryActionCount(actionRetryCount);
+            }
+
+            Map<String, Integer> metrics = Map.of(
+                    task + "||" + countAction, TaskMetricManager.getActionMetric(task, countAction).getPredictionCount(),
+                    task, TaskMetricManager.getTaskMetric(task).getRetryActionCount());
+            TaskMetricManager.getListener(task).send(metrics, context, task);
+
             resultProcessor = (ResultProcessor<R>) new AgentActionProcessor<I, O>();
         } else if (result instanceof AgentFinish) {
             resultProcessor = (ResultProcessor<R>) new AgentFinishProcessor();

@@ -17,7 +17,7 @@ import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
-import com.universe.touchpoint.context.TaskContext;
+import com.universe.touchpoint.socket.context.TaskContext;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.utils.ApkUtils;
 import com.universe.touchpoint.utils.ClassUtils;
@@ -69,7 +69,6 @@ public class TaskProposer {
                 }
 
                 AgentSocketStateMachine.getInstance(taskProperty.getKey()).registerReceiver(context, new TaskContext(taskProperty.getKey()));
-                AgentSocketStateMachine.getInstance(taskProperty.getKey()).start(context, taskProperty.getKey());
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.universe.touchpoint.context;
+package com.universe.touchpoint.socket;
 
 public abstract class AgentContext {
 
