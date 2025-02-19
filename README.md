@@ -123,9 +123,9 @@ data class WeatherResponse(val weather: String, val temperature: String) : Touch
     } //格式为：task_name[action_name1, action_name2, ...]
 ) 
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
-class WeathertListener : AgentActionListener<WeatherRequest, WeatherResponse> {
+class WeatherService : AgentActionExecutor<WeatherRequest, WeatherResponse> {
 
-    override fun onReceive(cityRequest: WeatherRequest, context: Context) : WeatherResponse {
+    override fun run(cityRequest: WeatherRequest, context: Context) : WeatherResponse {
         val client = OkHttpClient()
 
         // 设置请求的 URL 和参数
