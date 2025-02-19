@@ -3,7 +3,7 @@
 `touchpoint-protocol` ，触点协议（TPP协议），一个Agent之间协作通信的协议，该协议通过AI模型驱动Agent之间协作，是智联网的协作通信标准。
 
 ## 概述
-TPP协议基于状态 - 角色驱动模型实现动态工作流的调整，包括Action重新编排、Action修改、更换等。其通过前置Action触发调整工作流。具体接入方法如下：
+TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包括Action重新编排、Action修改、更换等。其通过前置Action触发调整工作流。具体接入方法如下：
 - 在前置Action输出中添加状态码，目前支持的状态码：  
   `OK(200)`,  
   `NEED_REORDER_ACTION(300)`,  
