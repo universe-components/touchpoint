@@ -79,6 +79,8 @@ class PM : ActionGraphOperator<TeamResponse> {
       for (List<AgentActionMetaInfo> neighbors : adjList.values()) {
         neighbors.remove(actionMeta);
       }
+      
+      return actionGraph
     }
 
 }
