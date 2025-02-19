@@ -5,15 +5,15 @@
 ## 概述
 TPP协议基于状态 - 角色驱动模型实现动态工作流的调整，包括Action重新编排、Action修改、更换等。其通过前置Action触发调整工作流。具体接入方法如下：
 - 在前置Action输出中添加状态码，目前支持的状态码：  
-  OK(200),  
-  NEED_REORDER_ACTION(300),  
-  NEED_SWITCH_AI_MODEL(301),  
-  NEED_SWITCH_TRANSPORT(302),  
-  NEED_SWITCH_ACTION(303),  
-  NEED_CHECK_ACTION(401),  
-  NEED_CHECK_ACTION_GRAPH(402),  
-  NEED_CHECK_DATA(403)  
-- 后置Action添加角色注解，处理前置Action重定向过来的数据。当前支持的角色有：`Coordinator` 和 `Supervisor`。`Coordinator`用于操作Action和工作流，`Supervisor`用于检查Data、Action和工作流。
+  `OK(200)`,  
+  `NEED_REORDER_ACTION(300)`,  
+  `NEED_SWITCH_AI_MODEL(301)`,  
+ `NEED_SWITCH_TRANSPORT(302)`,  
+  `NEED_SWITCH_ACTION(303)`,  
+  `NEED_CHECK_ACTION(401)`,  
+  `NEED_CHECK_ACTION_GRAPH(402)`,  
+  `NEED_CHECK_DATA(403)`  
+- 后置Action添加角色注解，处理前置Action重定向过来的数据。当前支持的角色有：`Coordinator` 和 `Supervisor`。`Coordinator`用于操作Data、Action和工作流，`Supervisor`用于检查Data、Action和工作流。
 - 后置Action实现角色接口，当前支持的接口有：  
 `ActionChecker`：用于检查Action。  
 `DataChecker`：用于检查Action输入。  
@@ -54,15 +54,31 @@ class PM : ActionGraphOperator<TeamResponse> {
 
     override fun run(teamResponse: TeamResponse, actionGraph: ActionGraph, context: TouchPointContext): ActionGraph {
       AgentActionMetaInfo actionMeta = context.getActionMeta(teamResponse.getState().getCtxName())
-      if (actionGraph.getAdjList().containsKey(actionMeta)) {
-        for (List<AgentActionMetaInfo> neighbors : adjList.values()) {
-          neighbors.remove(actionMeta);
+      adjList = actionGraph.getAdjList()
+      List<AgentActionMetaInfo> successors = actionGraph.getAdjList().get(actionMeta);
+
+      List<AgentActionMetaInfo> predecessors = new ArrayList<>();
+      for (Map.Entry<AgentActionMetaInfo, List<AgentActionMetaInfo>> entry : adjList.entrySet()) {
+        AgentActionMetaInfo node = entry.getKey();
+        List<AgentActionMetaInfo> neighbors = entry.getValue();
+
+        if (neighbors.contains(actionMeta)) {
+          predecessors.add(node);
         }
-        // 移除该节点
-        adjList.remove(actionMeta);
       }
 
-      return actionGraph
+      // 连接所有前置节点与后置节点
+      for (AgentActionMetaInfo predecessor : predecessors) {
+        for (AgentActionMetaInfo successor : successors) {
+            // 将前置节点的后续节点指向后置节点
+            adjList.get(predecessor).add(successor);
+        }
+      }
+
+      adjList.remove(actionMeta);
+      for (List<AgentActionMetaInfo> neighbors : adjList.values()) {
+        neighbors.remove(actionMeta);
+      }
     }
 
 }
