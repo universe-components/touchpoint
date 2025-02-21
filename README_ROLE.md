@@ -13,7 +13,10 @@ TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包�
   `NEED_CHECK_ACTION(401)`,  
   `NEED_CHECK_ACTION_GRAPH(402)`,  
   `NEED_CHECK_DATA(403)`  
-- 后置Action添加角色注解，处理前置Action重定向过来的数据。当前支持的角色有：`Coordinator` 和 `Supervisor`。`Coordinator`用于操作Data、Action和工作流，`Supervisor`用于检查Data、Action和工作流。
+- 后置Action添加角色注解，处理前置Action重定向过来的数据。当前支持的角色有：`Executor` 、`Coordinator` 和 `Supervisor`。  
+  `Executor`：执行者，用于操作Data。  
+  `Coordinator`：协调者，用于操作Action和工作流。  
+  `Supervisor`：监督者，用于检查Data、Action和工作流。
 - 后置Action实现角色接口，当前支持的接口有：  
 `ActionChecker`：用于检查Action。  
 `DataChecker`：用于检查Action输入。  

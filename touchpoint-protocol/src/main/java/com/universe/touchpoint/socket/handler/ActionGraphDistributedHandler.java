@@ -5,15 +5,14 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.driver.ActionGraphBuilder;
-import com.universe.touchpoint.rolemodel.RoleExecutor;
-import com.universe.touchpoint.rolemodel.RoleExecutorFactory;
+import com.universe.touchpoint.rolemodel.RoleExecutorManager;
+import com.universe.touchpoint.rolemodel.TaskExecutorFactory;
 import com.universe.touchpoint.socket.context.TaskActionContext;
 import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.driver.ActionGraph;
@@ -28,11 +27,11 @@ import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
 import java.util.Collections;
 import java.util.List;
 
-public class ActionGraphDistributedHandler<E> implements AgentSocketStateHandler<ActionGraph, RoleExecutor<E>> {
+public class ActionGraphDistributedHandler implements AgentSocketStateHandler<ActionGraph, RoleExecutorManager> {
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
-    public <C extends AgentContext> RoleExecutor<E> onStateChange(ActionGraph actionGraph, C actionContext, Context context, String task) {
+    public <C extends AgentContext> RoleExecutorManager onStateChange(ActionGraph actionGraph, C actionContext, Context context, String task) {
         TaskActionContext taskActionContext = (TaskActionContext) actionContext;
         if (actionGraph != null) {
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
@@ -44,13 +43,12 @@ public class ActionGraphDistributedHandler<E> implements AgentSocketStateHandler
             TouchPointTransportRegistry<?> registry = TouchPointTransportRegistryFactory.getRegistry(transportConfig.transportType());
             AgentActionManager manager = AgentActionManager.getInstance();
 
-            predecessors.forEach(action -> registry.register(context, actionMetaInfo, action.getActionName()));
+            predecessors.forEach(action -> registry.register(context, actionMetaInfo, action.getActionName(), task));
             successors.forEach(action -> {
                 try {
                     manager.registerAgentFinishReceiver(
                             context,
-                            action.getActionName(),
-                            (Class<? extends TouchPoint>) Class.forName(driverRegion.getTouchPointAction(action.getActionName()).getInputClassName()));
+                            action.getActionName());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -63,7 +61,7 @@ public class ActionGraphDistributedHandler<E> implements AgentSocketStateHandler
             RouteTable.getInstance().putPredecessors(taskActionContext.getAction(), predecessors);
             RouteTable.getInstance().putSuccessors(taskActionContext.getAction(), successors);
         }
-        return RoleExecutorFactory.getInstance(task);
+        return TaskExecutorFactory.getInstance(task);
     }
 
 }
