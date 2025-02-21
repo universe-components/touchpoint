@@ -18,6 +18,7 @@ TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包�
   `Coordinator`：协调者，用于操作Action和工作流。  
   `Supervisor`：监督者，用于检查Data、Action和工作流。
 - 后置Action实现角色接口，当前支持的接口有：  
+`AgentActionExecutor`：用于执行Action。
 `ActionChecker`：用于检查Action。  
 `DataChecker`：用于检查Action输入。  
 `TaskChecker`：用于检查任务和工作流。  
@@ -31,7 +32,7 @@ TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包�
 实现 `Product Leader Action`，将 `NEED_REORDER_ACTION` 状态添加进方法输出：
 ```kotlin
 @TouchPointAction( name = "productLeader", toActions = { "projectA[\"pm\"]" })
-class ProductLeader : AgentActionListener<TeamMessage, TeamResponse> {
+class ProductLeader : AgentActionExecutor<TeamMessage, TeamResponse> {
    
    override fun onReceive(message: TeamMessage, context: Context) : TeamResponse {
      TeamResponse teamResponse = new TeamResponse();
