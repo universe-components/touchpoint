@@ -8,7 +8,7 @@ public interface TouchPointTransportRegistry<C> {
 
     void init(Context context, C transportConfig);
 
-    void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String filter);
+    void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String filter, String task);
 
 
 }

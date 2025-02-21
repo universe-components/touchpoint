@@ -6,7 +6,6 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.task.ActionDependency;
@@ -73,15 +72,13 @@ public class AgentActionManager {
                     TouchPointHelper.touchPointActionName(actionName, agentName), agentActionMetaInfo);
 
         } catch (Exception e) {
-            if (LogDebug.LOG) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public void registerAgentFinishReceiver(Context appContext, String filter, Class<? extends TouchPoint> touchPointClass) {
-        TouchPointBroadcastReceiver<? extends TouchPoint, ?, ?> agentFinishReceiver = new TouchPointBroadcastReceiver<>(touchPointClass, appContext);
+    public void registerAgentFinishReceiver(Context appContext, String filter) {
+        TouchPointBroadcastReceiver<? extends TouchPoint, ?, ?> agentFinishReceiver = new TouchPointBroadcastReceiver<>(AgentFinish.class, appContext);
 
         IntentFilter agentFinishFilter = new IntentFilter(TouchPointHelper.touchPointFilterName(filter));
         appContext.registerReceiver(agentFinishReceiver, agentFinishFilter, Context.RECEIVER_EXPORTED);

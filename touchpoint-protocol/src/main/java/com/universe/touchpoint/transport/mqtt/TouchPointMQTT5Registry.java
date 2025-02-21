@@ -2,6 +2,7 @@ package com.universe.touchpoint.transport.mqtt;
 
 import android.content.Context;
 
+import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.config.transport.MQTTConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -33,7 +34,7 @@ public class TouchPointMQTT5Registry implements TouchPointTransportRegistry<MQTT
     }
 
     @Override
-    public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String previousAction) {
+    public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String previousAction, String task) {
         try {
             client.subscribe(TouchPointHelper.touchPointFilterName(previousAction), 1, (topic, message) -> {
                 // 接收到消息时的回调
@@ -43,8 +44,8 @@ public class TouchPointMQTT5Registry implements TouchPointTransportRegistry<MQTT
             });
             messageSubscribers.put(
                     TouchPointHelper.touchPointFilterName(previousAction),
-                    new TouchPointMQTT5Subscriber<>(Class.forName(agentActionMetaInfo.getInputClassName())));
-            TouchPointChannelManager.registerContextReceiver(agentActionMetaInfo.getActionName(), agentActionMetaInfo.getClassName());
+                    new TouchPointMQTT5Subscriber<>(AgentAction.class));
+            TouchPointChannelManager.registerContextReceiver(agentActionMetaInfo.getActionName(), agentActionMetaInfo.getClassName(), task);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -2,16 +2,16 @@ package com.universe.touchpoint.socket.handler;
 
 import android.content.Context;
 
-import com.universe.touchpoint.rolemodel.RoleExecutor;
-import com.universe.touchpoint.rolemodel.RoleExecutorFactory;
+import com.universe.touchpoint.rolemodel.RoleExecutorManager;
+import com.universe.touchpoint.rolemodel.TaskExecutorFactory;
 import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 
-public class RoleExecutorDistributedHandler<E> implements AgentSocketStateHandler<RoleExecutor<E>, RoleExecutor<E>> {
+public class RoleExecutorDistributedHandler implements AgentSocketStateHandler<RoleExecutorManager, RoleExecutorManager> {
 
-    public <C extends AgentContext> RoleExecutor<E> onStateChange(RoleExecutor<E> roleExecutor, C actionContext, Context context, String task) {
-        RoleExecutorFactory.getInstance(task).getExecutorMap().putAll(roleExecutor.getExecutorMap());
-        return RoleExecutorFactory.getInstance(task);
+    public <C extends AgentContext> RoleExecutorManager onStateChange(RoleExecutorManager roleExecutorManager, C actionContext, Context context, String task) {
+        TaskExecutorFactory.getInstance(task).getExecutorMap().putAll(roleExecutorManager.getExecutorMap());
+        return TaskExecutorFactory.getInstance(task);
     }
 
 }

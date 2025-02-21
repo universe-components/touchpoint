@@ -2,24 +2,26 @@ package com.universe.touchpoint.agent;
 
 import com.universe.touchpoint.TouchPoint;
 
-public class AgentAction<I extends TouchPoint, O extends TouchPoint> extends TouchPoint {
+public class AgentAction<I extends TouchPoint, O> extends TouchPoint {
 
-    private String action;
+    private String actionName;
     private String thought;
     private O output;
     private I input;
     private AgentActionMetaInfo meta;
 
-    public AgentAction(String goal, String task, Header header) {
-        super(goal, task, header);
+    public AgentAction(String actionName, AgentActionMetaInfo actionMeta, Header header) {
+        super(header);
+        this.actionName = actionName;
+        this.meta = actionMeta;
     }
 
-    public String getAction() {
-        return action;
+    public String getActionName() {
+        return actionName;
     }
 
-    public void setAction(String action) {
-        this.action = action;
+    public void setActionName(String actionName) {
+        this.actionName = actionName;
     }
 
     public String getThought() {

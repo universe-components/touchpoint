@@ -2,15 +2,11 @@ package com.universe.touchpoint.transport;
 
 import android.content.Context;
 
-import com.qihoo360.replugin.helper.LogDebug;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
-import com.universe.touchpoint.api.TouchPointExecutor;
+import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.RPCConfig;
-import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.memory.Region;
-import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.TransportRegion;
+import com.universe.touchpoint.rolemodel.TaskExecutorFactory;
 import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastChannel;
 import com.universe.touchpoint.transport.mqtt.TouchPointMQTT5Publisher;
 import com.universe.touchpoint.transport.rpc.TouchPointDubboChannel;
@@ -64,22 +60,14 @@ public class TouchPointChannelManager {
         return new TouchPointBroadcastChannel(context);
     }
 
-    public static void registerContextReceiver(String actionName, String actionClassName) {
+    public static void registerContextReceiver(String actionName, String actionClassName, String task) {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(actionClassName);
-            TouchPointExecutor<?, ?> tpInstanceReceiver = (TouchPointExecutor<?, ?>) tpInstanceReceiverClass.getConstructor().newInstance();
-            registerContextReceiver(actionName, tpInstanceReceiver);
+            RoleExecutor<?, ?> tpInstanceReceiver = (RoleExecutor<?, ?>) tpInstanceReceiverClass.getConstructor().newInstance();
+            TaskExecutorFactory.getInstance(task).registerExecutor(actionName, tpInstanceReceiver);
         } catch (Exception e) {
-            if (LogDebug.LOG) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         }
-    }
-
-    private static void registerContextReceiver(String actionName, TouchPointExecutor<?, ?> tpInstanceReceiver) {
-        String filterAction = TouchPointHelper.touchPointFilterName(actionName);
-        TransportRegion transportRegion = TouchPointMemory.getRegion(Region.TRANSPORT);
-        transportRegion.putTouchPointReceiver(filterAction, tpInstanceReceiver);
     }
 
 }

@@ -23,9 +23,9 @@ public class AgentSocketStateRouter<C extends AgentContext> {
         stateHandlerMap.put(AgentSocketState.PARTICIPANT_READY, new TaskParticipantReadyHandler<>());
         stateHandlerMap.put(AgentSocketState.GLOBAL_CONFIG_DISTRIBUTED, new GlobalConfigDistributedHandler<>());
         stateHandlerMap.put(AgentSocketState.GLOBAL_CONFIG_READY, new GlobalConfigReadyHandler());
-        stateHandlerMap.put(AgentSocketState.ACTION_GRAPH_DISTRIBUTED, new ActionGraphDistributedHandler<>());
-        stateHandlerMap.put(AgentSocketState.ROLE_EXECUTOR_DISTRIBUTED, new RoleExecutorDistributedHandler<>());
-        stateHandlerMap.put(AgentSocketState.ROLE_EXECUTOR_MERGED, new RoleExecutorMergedHandler<>());
+        stateHandlerMap.put(AgentSocketState.ACTION_GRAPH_DISTRIBUTED, new ActionGraphDistributedHandler());
+        stateHandlerMap.put(AgentSocketState.ROLE_EXECUTOR_DISTRIBUTED, new RoleExecutorDistributedHandler());
+        stateHandlerMap.put(AgentSocketState.ROLE_EXECUTOR_MERGED, new RoleExecutorMergedHandler());
         stateHandlerMap.put(AgentSocketState.CHANNEL_ESTABLISHED, new ChannelEstablishedHandler());
     }
 

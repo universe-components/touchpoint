@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.state.TouchPointState;
 import com.universe.touchpoint.state.enums.TaskState;
 import com.universe.touchpoint.transport.TouchPointChannel;
@@ -18,31 +19,16 @@ import java.lang.reflect.Field;
 public abstract class TouchPoint {
 
     protected Header header = new Header();
-    public String goal;
-    private String task;
+    protected final TouchPointContext context = new TouchPointContext();
     protected TouchPointState state;
 
     protected TouchPoint() {
         this.state.setCode(TaskState.OK.getCode());
     }
 
-    protected TouchPoint(String goal, String task, Header header) {
-        this.goal = goal;
-        this.task = task;
+    protected TouchPoint(Header header) {
         this.header = header;
         this.state.setCode(TaskState.OK.getCode());
-    }
-
-    public void setGoal(String goal) {
-        this.goal = goal;
-    }
-
-    public void setTask(String task) {
-        this.task = task;
-    }
-
-    public String getTask() {
-        return task;
     }
 
     public void setChannel(TouchPointChannel<?> channel) {
@@ -55,6 +41,10 @@ public abstract class TouchPoint {
 
     public Header getHeader() {
         return header;
+    }
+
+    public TouchPointContext getContext() {
+        return context;
     }
 
     public void setState(TouchPointState state) {

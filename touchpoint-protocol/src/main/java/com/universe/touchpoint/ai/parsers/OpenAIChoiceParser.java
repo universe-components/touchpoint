@@ -35,7 +35,7 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
                 String text = choice.message().content().get();
                 if (text.contains(FINAL_ANSWER_ACTION)) {
                     // 如果文本中包含 FINAL_ANSWER_ACTION，返回 AgentFinish
-                    return new Pair<>(null, new AgentFinish(text.split(FINAL_ANSWER_ACTION)[1].trim()));
+                    return new Pair<>(null, new AgentFinish(text.split(FINAL_ANSWER_ACTION)[1].trim(), currentAction.getMeta()));
                 }
 
                 // 正则表达式，用于匹配 Action 和 Action Input
@@ -54,7 +54,7 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
                 String thought = matcher.group(1) == null ? "" : Objects.requireNonNull(matcher.group(1)).trim();
 
                 DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
-                currentAction.setAction(action);
+                currentAction.setActionName(action);
                 currentAction.setThought(thought);
                 currentAction.setInput(AgentActionManager
                         .getInstance()

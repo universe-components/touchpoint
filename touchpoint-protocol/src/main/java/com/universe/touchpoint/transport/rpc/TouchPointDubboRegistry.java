@@ -25,7 +25,7 @@ public class TouchPointDubboRegistry implements TouchPointTransportRegistry<Dubb
     }
 
     @Override
-    public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String previousAction) {
+    public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String previousAction, String task) {
         DubboConfig dubboConfig = (DubboConfig) agentActionMetaInfo.getTransportConfig().config();
         try {
             Class<?> providerClass = Class.forName(agentActionMetaInfo.getClassName());

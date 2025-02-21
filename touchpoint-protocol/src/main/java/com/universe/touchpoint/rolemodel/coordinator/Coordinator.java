@@ -50,7 +50,7 @@ public class Coordinator<SocketInput, SocketOutput> {
         if (Objects.requireNonNull(TaskState.getState(stateCode)).getScope() == RoleScope.ACTION_GRAPH) {
             Log.i("Coordinator", String.format(pattern, task));
         } else {
-            Log.i("Coordinator", String.format(pattern, agentAction.getAction(), task));
+            Log.i("Coordinator", String.format(pattern, agentAction.getActionName(), task));
         }
     }
 

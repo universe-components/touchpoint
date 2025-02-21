@@ -2,7 +2,7 @@ package com.universe.touchpoint.monitor.metric;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ActionGraphMetric {
+public class TaskMetric {
 
     private final AtomicInteger faultActionCount = new AtomicInteger(0);
     private final AtomicInteger retryActionCount = new AtomicInteger(0);

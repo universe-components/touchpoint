@@ -3,11 +3,14 @@ package com.universe.touchpoint.agent;
 import com.universe.touchpoint.TouchPoint;
 
 public class AgentFinish extends TouchPoint {
-    private String output;
 
-    public AgentFinish(String output) {
+    private String output;
+    private AgentActionMetaInfo meta;
+
+    public AgentFinish(String output, AgentActionMetaInfo meta) {
         super();
         this.output = output;
+        this.meta = meta;
     }
 
     public String getOutput() {
@@ -16,6 +19,14 @@ public class AgentFinish extends TouchPoint {
 
     public void setOutput(String output) {
         this.output = output;
+    }
+
+    public AgentActionMetaInfo getMeta() {
+        return meta;
+    }
+
+    public void setMeta(AgentActionMetaInfo meta) {
+        this.meta = meta;
     }
 
 //        @NonNull

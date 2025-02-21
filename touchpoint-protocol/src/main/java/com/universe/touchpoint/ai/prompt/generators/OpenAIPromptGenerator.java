@@ -17,11 +17,11 @@ public class OpenAIPromptGenerator implements PromptGenerator {
 
     @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Override
-    public String generatePrompt(@NonNull List<AgentActionMetaInfo> actionMetaInfoList, AgentAction<?, ?> action, String question) {
+    public String generatePrompt(@NonNull List<AgentActionMetaInfo> nextActions, AgentAction<?, ?> action, String question) {
         StringBuilder toolList = new StringBuilder();
         StringBuilder agentNames = new StringBuilder();
 
-        for (AgentActionMetaInfo actionMetaInfo : actionMetaInfoList) {
+        for (AgentActionMetaInfo actionMetaInfo : nextActions) {
             toolList.append(actionMetaInfo.getActionName())
                     .append(": ")
                     .append(actionMetaInfo.getDesc()).append("\n");
@@ -39,7 +39,7 @@ public class OpenAIPromptGenerator implements PromptGenerator {
             finalSuffix = finalSuffix.replace("{agent_scratchpad}", action.getThought());
             actionBody.append(finalSuffix)
                     .append("\nAction:")
-                    .append(action.getAction())
+                    .append(action.getActionName())
                     .append("\nAction Input:")
                     .append(ClassUtils.getFieldValues(action.getInput()))
                     .append("\nObservation:")

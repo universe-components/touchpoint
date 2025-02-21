@@ -6,6 +6,7 @@ import android.util.Pair;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.config.mapping.ActionMetricConfigMapping;
 import com.universe.touchpoint.config.metric.MetricSocketConfig;
 import com.universe.touchpoint.config.task.ActionDependency;
@@ -21,9 +22,8 @@ import com.universe.touchpoint.config.mapping.AIModelConfigMapping;
 import com.universe.touchpoint.config.mapping.CoordinatorConfigMapping;
 import com.universe.touchpoint.config.mapping.SupervisorConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
-import com.universe.touchpoint.monitor.TaskMetricManager;
 import com.universe.touchpoint.socket.context.TaskActionContext;
-import com.universe.touchpoint.rolemodel.RoleExecutorFactory;
+import com.universe.touchpoint.rolemodel.TaskExecutorFactory;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.DriverRegion;
@@ -94,8 +94,8 @@ public class TaskParticipant {
             if (coordinatorConfig == null) {
                 return false;
             }
-            RoleExecutorFactory.getInstance(coordinatorConfig.getTask())
-                    .registerExecutor(actionName, actionClass.getConstructor().newInstance());
+            TaskExecutorFactory.getInstance(coordinatorConfig.getTask())
+                    .registerExecutor(actionName, (RoleExecutor<?, ?>) actionClass.getConstructor().newInstance());
             return true;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -110,8 +110,8 @@ public class TaskParticipant {
             if (supervisorConfig == null) {
                 return false;
             }
-            RoleExecutorFactory.getInstance(supervisorConfig.getTask())
-                    .registerExecutor(actionName, actionClass.getConstructor().newInstance());
+            TaskExecutorFactory.getInstance(supervisorConfig.getTask())
+                    .registerExecutor(actionName, (RoleExecutor<?, ?>) actionClass.getConstructor().newInstance());
             return true;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -133,9 +133,6 @@ public class TaskParticipant {
 
                 MetricSocketConfig metricSocketConfig = ConfigManager.selectMetricSocket(task);
                 assert metricSocketConfig != null;
-                TaskMetricManager.registerListener(task, metricSocketConfig.getBindProtocol());
-                TaskMetricManager.getListener(task).initialize(metricSocketConfig);
-                TaskMetricManager.getListener(task).registerReceiver(context, task);
 
                 DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
                 AgentSocketStateMachine.getInstance(task).send(

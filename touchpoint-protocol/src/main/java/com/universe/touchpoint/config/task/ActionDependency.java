@@ -1,5 +1,6 @@
 package com.universe.touchpoint.config.task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,19 @@ public class ActionDependency {
 
     public List<String> getToActions(String task) {
         return toActions.get(task);
+    }
+
+    public void addToAction(String task, String action) {
+        List<String> actions = toActions.get(task);
+        if (actions == null) {
+            toActions.put(task, new ArrayList<>());
+        }
+        assert actions != null;
+        actions.add(action);
+    }
+
+    public void clearToAction(String task) {
+        toActions.remove(task);
     }
 
 }

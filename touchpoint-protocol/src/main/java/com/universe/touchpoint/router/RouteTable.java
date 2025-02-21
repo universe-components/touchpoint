@@ -4,6 +4,7 @@ import com.universe.touchpoint.agent.AgentActionMetaInfo;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class RouteTable {
 
@@ -36,6 +37,15 @@ public class RouteTable {
 
     public List<AgentActionMetaInfo> getSuccessors(String name) {
         return successors.get(name);
+    }
+
+    public boolean containsItem(String from, String to) {
+        for (AgentActionMetaInfo toMeta : Objects.requireNonNull(successors.get(from))) {
+            if (toMeta.getActionName().equals(to)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

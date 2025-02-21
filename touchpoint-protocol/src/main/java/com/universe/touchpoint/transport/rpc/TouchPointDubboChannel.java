@@ -32,7 +32,7 @@ public class TouchPointDubboChannel extends TouchPointRpcChannel<DubboConfig> {
                 result = action.invoke(touchPointService.getDeclaredConstructor().newInstance(), touchpoint);
                 assert result != null;
                 ((AgentAction<?, O>) touchpoint).setOutput((O) result);
-                return ResultExchanger.exchange(touchpoint, touchpoint.goal, null, null, null);
+                return ResultExchanger.exchange(touchpoint, touchpoint.getContext().getTask().getGoal(), null, null, null);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
