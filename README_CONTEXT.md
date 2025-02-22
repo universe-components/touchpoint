@@ -6,7 +6,7 @@
 TPP协议允许开发者添加自定义的数据到上下文，在Action之间传递。
 
 ## Example
-比如，原来的机器人leader不稳定，我们可以给机器人添加一个 `leader = "robotA"` ，设置一个机器人集群由 `robotA`这个机器人指挥，方便集群中的其他机器人接收 `robotA`的动态指令。
+比如，有一个做家务的机器人团队，但是，团队中leader的抓取行为不稳定，我们可以添加一个 `leader = "robotA"`标记 ，设置该团队由新的leader `robotA`指挥，方便团队中的其他机器人接收 `robotA` 的动态指令。
 
 ```kotlin
 @TouchPointAction(name = "robot_coordinator")
