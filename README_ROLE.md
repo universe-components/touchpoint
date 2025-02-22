@@ -33,7 +33,7 @@ TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包�
 
 实现 `Product Leader Action`，将 `NEED_REORDER_ACTION` 状态添加进方法输出：
 ```kotlin
-@TouchPointAction( name = "productLeader", toActions = { "projectA[\"pm\"]" })
+@TouchPointAction( name = "productLeader", toActions = { "projectA[\"productManager\"]" })
 class ProductLeader : AgentActionExecutor<TeamMessage, TeamResponse> {
    
    override fun run(message: TeamMessage, context: Context) : TeamResponse {
