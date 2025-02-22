@@ -13,6 +13,7 @@ TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包�
   `NEED_CHECK_ACTION(401)`,  
   `NEED_CHECK_ACTION_GRAPH(402)`,  
   `NEED_CHECK_DATA(403)`  
+  开发者也可以自定义状态码。
 - 后置Action添加角色注解，处理前置Action重定向过来的数据。当前支持4种角色：`Proposer` 、 `Executor` 、`Coordinator` 和 `Supervisor`。  
   `Proposer`：发起者，用于发起任务。  
   `Executor`：执行者，用于操作Data，执行Action。  
