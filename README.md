@@ -216,7 +216,8 @@ class WeatherService {
 
 ## 高级用法
 - [动态工作流](./README_ROLE.md)
-- [非模型驱动工作流](./README_BASIC.md)
+- [规则驱动工作流](./README_RULE.md)
+- [自定义上下文](./README_CONTEXT.md)
 
 ## RoadMap
 

@@ -35,14 +35,14 @@ TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包�
 @TouchPointAction( name = "productLeader", toActions = { "projectA[\"pm\"]" })
 class ProductLeader : AgentActionExecutor<TeamMessage, TeamResponse> {
    
-   override fun onReceive(message: TeamMessage, context: Context) : TeamResponse {
+   override fun run(message: TeamMessage, context: Context) : TeamResponse {
      TeamResponse teamResponse = new TeamResponse();
      if (message.getContent().contains("team-building")) {
+       teamResponse.getContext().setAction("R&D");
        teamResponse.setState(new TouchPointState(
-                 TaskState.NEED_REORDER_ACTION.getCode(),
-                 "The R&D team is team-building, followed by coordination with other teams",
-                 "pm",
-                 "R&D");
+                 TaskState.NEED_REORDER_ACTION.getCode(), // 状态码为NEED_REORDER_ACTION，表示需要重新编排Action
+                 "The R&D team is team-building, followed by coordination with other teams", // 状态描述
+                 "pm"); // 状态码NEED_REORDER_ACTION对应的Action名称，即后置Action的名称
      }
      
      return teamResponse;
@@ -57,35 +57,36 @@ class ProductLeader : AgentActionExecutor<TeamMessage, TeamResponse> {
 @Coordinator(task = "projectA")
 class PM : ActionGraphOperator<TeamResponse> {
 
-    override fun run(teamResponse: TeamResponse, actionGraph: ActionGraph, context: TouchPointContext): ActionGraph {
-      AgentActionMetaInfo actionMeta = context.getActionMeta(teamResponse.getState().getCtxName())
-      adjList = actionGraph.getAdjList()
-      List<AgentActionMetaInfo> successors = actionGraph.getAdjList().get(actionMeta);
+    override fun run(teamResponse: TeamResponse, context: Context): ActionGraph {
+        String taskName = teamResponse.getContext().getTask();
+        ActionGraph actionGraph = TouchPointContextManager.getTouchPointContext(taskName).getActionGraph();
+        AgentActionMetaInfo actionMeta = TouchPointContextManager.getTouchPointContext(taskName).getActionContext().getActionMetaInfo(teamResponse.getContext().getAction());
+        adjList = actionGraph.getAdjList()
+        List<AgentActionMetaInfo> successors = actionGraph.getAdjList().get(actionMeta);
 
-      List<AgentActionMetaInfo> predecessors = new ArrayList<>();
-      for (Map.Entry<AgentActionMetaInfo, List<AgentActionMetaInfo>> entry : adjList.entrySet()) {
-        AgentActionMetaInfo node = entry.getKey();
-        List<AgentActionMetaInfo> neighbors = entry.getValue();
-
-        if (neighbors.contains(actionMeta)) {
-          predecessors.add(node);
+        List<AgentActionMetaInfo> predecessors = new ArrayList<>();
+        for (Map.Entry<AgentActionMetaInfo, List<AgentActionMetaInfo>> entry : adjList.entrySet()) {
+            AgentActionMetaInfo node = entry.getKey();
+            List<AgentActionMetaInfo> neighbors = entry.getValue();
+    
+            if (neighbors.contains(actionMeta)) {
+              predecessors.add(node);
+            }
         }
-      }
 
-      // 连接所有前置节点与后置节点
-      for (AgentActionMetaInfo predecessor : predecessors) {
-        for (AgentActionMetaInfo successor : successors) {
-            // 将前置节点的后续节点指向后置节点
-            adjList.get(predecessor).add(successor);
+        // 连接所有前置节点与后置节点
+        for (AgentActionMetaInfo predecessor : predecessors) {
+            for (AgentActionMetaInfo successor : successors) {
+                // 将前置节点的后续节点指向后置节点
+                adjList.get(predecessor).add(successor);
+            }
         }
-      }
 
-      adjList.remove(actionMeta);
-      for (List<AgentActionMetaInfo> neighbors : adjList.values()) {
-        neighbors.remove(actionMeta);
-      }
-      
-      return actionGraph
+        adjList.remove(actionMeta);
+        for (List<AgentActionMetaInfo> neighbors : adjList.values()) {
+            neighbors.remove(actionMeta);
+        }
+        return actionGraph
     }
 
 }

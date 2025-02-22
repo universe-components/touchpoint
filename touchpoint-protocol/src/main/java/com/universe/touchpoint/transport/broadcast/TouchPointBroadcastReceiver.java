@@ -50,7 +50,6 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint, I extends TouchPo
             } else if (stateCode >= 400) {
                 SupervisorFactory.getSupervisor(taskName).execute((AgentAction<I, O>) touchPoint, taskName, context);
             }
-
             RoleExecutor<I, O> tpReceiver = (RoleExecutor<I, O>) TaskRoleExecutor.getInstance(taskName).getExecutor(((AgentAction<?, ?>) touchPoint).getActionName());
             O runResult = tpReceiver.run(((AgentAction<I, O>) touchPoint).getInput(), context);
 
@@ -65,7 +64,7 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint, I extends TouchPo
                 );
             }
             ((AgentAction<I, O>) touchPoint).setOutput(runResult);
-        } else if(touchPoint instanceof AgentFinish) {
+        } else if (touchPoint instanceof AgentFinish) {
             List<AgentActionMetaInfo> predecessors = RouteTable.getInstance().getPredecessors(touchPoint.getHeader().getFromAction().getActionName());
             if (predecessors == null) {
                 AgentFinishExecutor finishExecutor = (AgentFinishExecutor) TaskRoleExecutor.getInstance(taskName)
