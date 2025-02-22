@@ -25,11 +25,9 @@ public class AgentActionProcessor<I extends TouchPoint, O extends TouchPoint> im
     @Override
     public <NewInput extends TouchPoint, NewOutput extends TouchPoint> Pair<List<AgentAction<NewInput, NewOutput>>, AgentFinish> process(AgentAction<I, O> result, String goal, String task, Context context, Transport transportType) {
         AIModelConfig modelConfig = ConfigManager.selectModel(goal, result.getMeta(), task);
-
         List<AgentActionMetaInfo> nextActions = RouteTable.getInstance().getSuccessors(result.getActionName());
 
         String input = PromptBuilder.createPromptGenerator(modelConfig.getType()).generatePrompt(nextActions, result, goal);
-
         Map<Object, List<Object>> choices = AIModelFactory.callModel(input, modelConfig);
         ChoiceParser<Object, Object> choiceParser = ChoiceParserFactory.selectParser(modelConfig.getType());
         return choiceParser.parse(choices, result);
