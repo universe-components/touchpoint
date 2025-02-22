@@ -10,7 +10,7 @@ import com.universe.touchpoint.rolemodel.coordinator.handler.SwitchActionReadyHa
 import com.universe.touchpoint.socket.AgentSocketState;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
-import com.universe.touchpoint.state.enums.TaskState;
+import com.universe.touchpoint.context.state.enums.TaskState;
 
 import java.util.HashMap;
 import java.util.Map;

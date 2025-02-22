@@ -1,4 +1,4 @@
-package com.universe.touchpoint.link;
+package com.universe.touchpoint.binder;
 
 public interface Binder {
 

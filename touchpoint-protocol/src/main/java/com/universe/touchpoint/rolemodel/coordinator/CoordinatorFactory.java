@@ -1,6 +1,6 @@
 package com.universe.touchpoint.rolemodel.coordinator;
 
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 
 import java.util.HashMap;
 import java.util.Map;

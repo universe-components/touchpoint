@@ -1,21 +1,31 @@
 package com.universe.touchpoint.context;
 
-import com.universe.touchpoint.monitor.metric.ActionMetric;
+import com.universe.touchpoint.driver.ActionGraph;
+import com.universe.touchpoint.driver.ActionGraphBuilder;
 import java.util.Map;
 
 public class TouchPointContext {
 
-    private TaskContext task;
+    private final String task;
+    private TaskContext taskContext;
+    private final ActionContext actionContext = new ActionContext();
     private String action;
-    private Map<String, ActionMetric> actionMetrics;
     private Map<String, Object> extContext;
 
-    public TaskContext getTask() {
+    public TouchPointContext(String task) {
+        this.task = task;
+    }
+
+    public String getTask() {
         return task;
     }
 
-    public void setTask(TaskContext task) {
-        this.task = task;
+    public TaskContext getTaskContext() {
+        return taskContext;
+    }
+
+    public void setTaskContext(TaskContext taskContext) {
+        this.taskContext = taskContext;
     }
 
     public String getAction() {
@@ -26,8 +36,12 @@ public class TouchPointContext {
         this.action = action;
     }
 
-    public ActionMetric getActionMetric(String action) {
-        return actionMetrics.computeIfAbsent(action, k -> new ActionMetric());
+    public ActionContext getActionContext() {
+        return actionContext;
+    }
+
+    public ActionGraph getActionGraph() {
+        return ActionGraphBuilder.getTaskGraph(task);
     }
 
     public void addExtContext(String name, Object context) {

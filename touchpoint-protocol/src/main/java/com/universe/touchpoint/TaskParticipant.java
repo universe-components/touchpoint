@@ -23,7 +23,7 @@ import com.universe.touchpoint.config.mapping.CoordinatorConfigMapping;
 import com.universe.touchpoint.config.mapping.SupervisorConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.socket.context.TaskActionContext;
-import com.universe.touchpoint.rolemodel.TaskExecutorFactory;
+import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.DriverRegion;
@@ -94,7 +94,7 @@ public class TaskParticipant {
             if (coordinatorConfig == null) {
                 return false;
             }
-            TaskExecutorFactory.getInstance(coordinatorConfig.getTask())
+            TaskRoleExecutor.getInstance(coordinatorConfig.getTask())
                     .registerExecutor(actionName, (RoleExecutor<?, ?>) actionClass.getConstructor().newInstance());
             return true;
         } catch (Exception ex) {
@@ -110,7 +110,7 @@ public class TaskParticipant {
             if (supervisorConfig == null) {
                 return false;
             }
-            TaskExecutorFactory.getInstance(supervisorConfig.getTask())
+            TaskRoleExecutor.getInstance(supervisorConfig.getTask())
                     .registerExecutor(actionName, (RoleExecutor<?, ?>) actionClass.getConstructor().newInstance());
             return true;
         } catch (Exception ex) {

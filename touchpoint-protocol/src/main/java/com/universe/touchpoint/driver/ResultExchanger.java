@@ -3,7 +3,7 @@ package com.universe.touchpoint.driver;
 import android.content.Context;
 import android.util.Pair;
 
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.config.transport.Transport;
@@ -20,11 +20,11 @@ public class ResultExchanger {
         ResultProcessor<R> resultProcessor;
         if (result instanceof AgentAction<?, ?>) {
             String countAction = ((AgentAction<?, ?>) result).getActionName();
-            result.getContext().getActionMetric(countAction).incrementPredictionCount();
+            result.getContext().getActionContext().getActionMetric(countAction).incrementPredictionCount();
 
-            int actionRetryCount = result.getContext().getActionMetric(countAction).getPredictionCount();
+            int actionRetryCount = result.getContext().getActionContext().getActionMetric(countAction).getPredictionCount();
             if (actionRetryCount > 0) {
-                result.getContext().getTask().getMetric().setRetryActionCount(actionRetryCount);
+                result.getContext().getTaskContext().getMetric().setRetryActionCount(actionRetryCount);
             }
 
             resultProcessor = (ResultProcessor<R>) new AgentActionProcessor<I, O>();

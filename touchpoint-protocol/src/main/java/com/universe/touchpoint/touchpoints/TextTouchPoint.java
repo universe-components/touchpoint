@@ -1,6 +1,6 @@
 package com.universe.touchpoint.touchpoints;
 
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 
 public class TextTouchPoint extends TouchPoint {
 
@@ -8,10 +8,6 @@ public class TextTouchPoint extends TouchPoint {
     private Boolean isBold = false;
     private Boolean isUnderlined = false;
     private String text;
-
-    public TextTouchPoint() {
-        super();
-    }
 
     public Float getFontSize() {
         return fontSize;

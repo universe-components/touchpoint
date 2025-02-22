@@ -1,7 +1,7 @@
 package com.universe.touchpoint;
 
-import com.universe.touchpoint.link.BinderFactory;
-import com.universe.touchpoint.link.BinderType;
+import com.universe.touchpoint.binder.BinderFactory;
+import com.universe.touchpoint.binder.BinderType;
 
 public class AgentSocket {
 

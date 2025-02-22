@@ -1,15 +1,11 @@
 package com.universe.touchpoint.touchpoints;
 
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 
 public class TableTouchPoint extends TouchPoint {
 
     private Integer rowCount;
     private Integer columnCount;
-
-    public TableTouchPoint() {
-        super();
-    }
 
     public Integer getRowCount() {
         return rowCount;

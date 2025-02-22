@@ -1,8 +1,7 @@
 package com.universe.touchpoint.transport;
 
 import android.content.Context;
-
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 
 public abstract class TouchPointChannel<R> {
 

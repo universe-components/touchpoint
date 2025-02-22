@@ -11,8 +11,8 @@ import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.driver.ActionGraphBuilder;
-import com.universe.touchpoint.rolemodel.RoleExecutorManager;
-import com.universe.touchpoint.rolemodel.TaskExecutorFactory;
+import com.universe.touchpoint.rolemodel.RoleExecutorContainer;
+import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.socket.context.TaskActionContext;
 import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.driver.ActionGraph;
@@ -27,11 +27,11 @@ import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
 import java.util.Collections;
 import java.util.List;
 
-public class ActionGraphDistributedHandler implements AgentSocketStateHandler<ActionGraph, RoleExecutorManager> {
+public class ActionGraphDistributedHandler implements AgentSocketStateHandler<ActionGraph, RoleExecutorContainer> {
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
-    public <C extends AgentContext> RoleExecutorManager onStateChange(ActionGraph actionGraph, C actionContext, Context context, String task) {
+    public <C extends AgentContext> RoleExecutorContainer onStateChange(ActionGraph actionGraph, C actionContext, Context context, String task) {
         TaskActionContext taskActionContext = (TaskActionContext) actionContext;
         if (actionGraph != null) {
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
@@ -61,7 +61,7 @@ public class ActionGraphDistributedHandler implements AgentSocketStateHandler<Ac
             RouteTable.getInstance().putPredecessors(taskActionContext.getAction(), predecessors);
             RouteTable.getInstance().putSuccessors(taskActionContext.getAction(), successors);
         }
-        return TaskExecutorFactory.getInstance(task);
+        return TaskRoleExecutor.getInstance(task);
     }
 
 }

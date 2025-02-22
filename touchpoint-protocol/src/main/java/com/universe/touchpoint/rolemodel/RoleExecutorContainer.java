@@ -2,13 +2,13 @@ package com.universe.touchpoint.rolemodel;
 
 import com.universe.touchpoint.api.RoleConstants;
 import com.universe.touchpoint.api.RoleExecutor;
-import com.universe.touchpoint.monitor.actions.TaskMonitor;
-import com.universe.touchpoint.monitor.actions.ActionMonitor;
+import com.universe.touchpoint.monitor.action.TaskMonitor;
+import com.universe.touchpoint.monitor.action.ActionMonitor;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RoleExecutorManager {
+public class RoleExecutorContainer {
 
     private final Map<String, RoleExecutor<?, ?>> executorMap = new HashMap<>();
     {

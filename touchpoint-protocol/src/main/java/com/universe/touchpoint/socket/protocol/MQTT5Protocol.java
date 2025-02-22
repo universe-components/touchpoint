@@ -19,7 +19,7 @@ import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
 import org.eclipse.paho.mqttv5.common.MqttException;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 
-public class MQTT5 implements AgentSocketProtocol {
+public class MQTT5Protocol implements AgentSocketProtocol {
 
     private MqttClient client;
 

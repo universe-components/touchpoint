@@ -1,15 +1,11 @@
 package com.universe.touchpoint.touchpoints;
 
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 
 public class SkinTouchPoint extends TouchPoint {
 
     private Integer optionBackgroundId;
     private Integer blurWindowBackGroundId;
-
-    public SkinTouchPoint() {
-        super();
-    }
 
     public Integer getOptionBackgroundId() {
         return optionBackgroundId;

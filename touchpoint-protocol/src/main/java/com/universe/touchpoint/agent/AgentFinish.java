@@ -1,6 +1,6 @@
 package com.universe.touchpoint.agent;
 
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 
 public class AgentFinish extends TouchPoint {
 
@@ -8,7 +8,6 @@ public class AgentFinish extends TouchPoint {
     private AgentActionMetaInfo meta;
 
     public AgentFinish(String output, AgentActionMetaInfo meta) {
-        super();
         this.output = output;
         this.meta = meta;
     }

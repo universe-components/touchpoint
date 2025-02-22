@@ -1,4 +1,4 @@
-package com.universe.touchpoint.state;
+package com.universe.touchpoint.context;
 
 public class TouchPointState {
 

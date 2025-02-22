@@ -19,7 +19,7 @@ import com.universe.touchpoint.utils.SerializeUtils;
 
 import java.util.Objects;
 
-public class AndroidBroadcast implements AgentSocketProtocol {
+public class AndroidBroadcastProtocol implements AgentSocketProtocol {
 
     @Override
     public void send(AgentSocketStateMachine.AgentSocketStateContext<?> stateContext, Context context, String filterSuffix) {

@@ -2,7 +2,7 @@ package com.universe.touchpoint.ai;
 
 import android.util.Pair;
 
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 

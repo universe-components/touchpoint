@@ -6,7 +6,7 @@ import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.RPCConfig;
-import com.universe.touchpoint.rolemodel.TaskExecutorFactory;
+import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastChannel;
 import com.universe.touchpoint.transport.mqtt.TouchPointMQTT5Publisher;
 import com.universe.touchpoint.transport.rpc.TouchPointDubboChannel;
@@ -64,7 +64,7 @@ public class TouchPointChannelManager {
         try {
             Class<?> tpInstanceReceiverClass = Class.forName(actionClassName);
             RoleExecutor<?, ?> tpInstanceReceiver = (RoleExecutor<?, ?>) tpInstanceReceiverClass.getConstructor().newInstance();
-            TaskExecutorFactory.getInstance(task).registerExecutor(actionName, tpInstanceReceiver);
+            TaskRoleExecutor.getInstance(task).registerExecutor(actionName, tpInstanceReceiver);
         } catch (Exception e) {
             e.printStackTrace();
         }

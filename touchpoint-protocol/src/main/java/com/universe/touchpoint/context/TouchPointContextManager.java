@@ -3,7 +3,6 @@ package com.universe.touchpoint.context;
 import android.content.Context;
 import android.net.Uri;
 
-import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentAction;
@@ -26,7 +25,7 @@ public class TouchPointContextManager {
         if (!touchPointContextMap.containsKey(task)) {
             synchronized (lock) {
                 if (!touchPointContextMap.containsKey(task)) {
-                    touchPointContextMap.put(task, new TouchPointContext());
+                    touchPointContextMap.put(task, new TouchPointContext(task));
                 }
             }
         }
@@ -43,7 +42,7 @@ public class TouchPointContextManager {
         TouchPointChannel<?> channel = TouchPointChannelManager.selectChannel(action.getMeta(), ctx);
 
         action.setHeader(new TouchPoint.Header(action.getMeta(), channel));
-        action.getContext().setTask(new TaskContext(content));
+        action.getContext().setTaskContext(new TaskContext(content));
 
         return action;
     }

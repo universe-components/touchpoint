@@ -1,4 +1,4 @@
-package com.universe.touchpoint.state.enums;
+package com.universe.touchpoint.context.state.enums;
 
 import com.universe.touchpoint.rolemodel.RoleScope;
 

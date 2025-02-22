@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.transport.TouchPointChannelManager;

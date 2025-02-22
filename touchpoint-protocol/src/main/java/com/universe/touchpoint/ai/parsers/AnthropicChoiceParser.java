@@ -3,7 +3,7 @@ package com.universe.touchpoint.ai.parsers;
 import android.util.Pair;
 
 import com.anthropic.models.Completion;
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.ai.ChoiceParser;

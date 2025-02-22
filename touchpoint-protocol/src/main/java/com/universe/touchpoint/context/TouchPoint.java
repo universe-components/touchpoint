@@ -1,14 +1,13 @@
-package com.universe.touchpoint;
+package com.universe.touchpoint.context;
 
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
+import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
-import com.universe.touchpoint.context.TouchPointContext;
-import com.universe.touchpoint.state.TouchPointState;
-import com.universe.touchpoint.state.enums.TaskState;
+import com.universe.touchpoint.context.state.enums.TaskState;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.provider.TouchPointContent;
@@ -18,16 +17,17 @@ import java.lang.reflect.Field;
 
 public abstract class TouchPoint {
 
-    protected Header header = new Header();
-    protected final TouchPointContext context = new TouchPointContext();
+    protected Header header;
+    protected TouchPointContext context;
     protected TouchPointState state;
 
-    protected TouchPoint() {
+    public TouchPoint() {
         this.state.setCode(TaskState.OK.getCode());
     }
 
-    protected TouchPoint(Header header) {
+    protected TouchPoint(Header header, TouchPointContext context) {
         this.header = header;
+        this.context = context;
         this.state.setCode(TaskState.OK.getCode());
     }
 

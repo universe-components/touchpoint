@@ -1,6 +1,6 @@
-package com.universe.touchpoint.link;
+package com.universe.touchpoint.binder;
 
-import com.universe.touchpoint.link.binder.AndroidBinder;
+import com.universe.touchpoint.binder.mode.AndroidBinder;
 
 import java.util.HashMap;
 import java.util.Map;

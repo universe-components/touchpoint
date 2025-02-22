@@ -3,7 +3,7 @@ package com.universe.touchpoint.transport.broadcast;
 import android.content.Context;
 import android.content.IntentFilter;
 
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.helper.TouchPointHelper;

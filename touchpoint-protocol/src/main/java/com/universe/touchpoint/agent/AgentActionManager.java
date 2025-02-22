@@ -6,7 +6,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.task.ActionDependency;
 import com.universe.touchpoint.config.ai.AIModelConfig;

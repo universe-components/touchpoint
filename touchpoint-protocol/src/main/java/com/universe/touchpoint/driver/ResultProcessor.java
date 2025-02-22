@@ -3,7 +3,7 @@ package com.universe.touchpoint.driver;
 import android.content.Context;
 import android.util.Pair;
 
-import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.config.transport.Transport;

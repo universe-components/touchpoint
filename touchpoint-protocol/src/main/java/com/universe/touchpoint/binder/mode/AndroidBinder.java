@@ -1,7 +1,7 @@
-package com.universe.touchpoint.link.binder;
+package com.universe.touchpoint.binder.mode;
 
 import com.qihoo360.replugin.RePluginHost;
-import com.universe.touchpoint.link.Binder;
+import com.universe.touchpoint.binder.Binder;
 
 public class AndroidBinder implements Binder {
 

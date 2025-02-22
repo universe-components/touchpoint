@@ -1,4 +1,6 @@
-package com.universe.touchpoint.state;
+package com.universe.touchpoint.context.state;
+
+import com.universe.touchpoint.context.TouchPointState;
 
 public class DriverState extends TouchPointState {
 
