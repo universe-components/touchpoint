@@ -25,7 +25,7 @@
 ## 架构
 
 <div align="center">
-  <img src="architecture.png" alt="Architecture" />
+  <img src="architecture.jpg" alt="Architecture" />
 </div>
 
 ## 使用指南
