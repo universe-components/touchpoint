@@ -6,6 +6,10 @@ public class TouchPointState {
     protected String message;
     protected String redirectToAction;
 
+    public TouchPointState(int code) {
+        this.code = code;
+    }
+
     public TouchPointState(int code, String message) {
         this(code, message, null);
     }

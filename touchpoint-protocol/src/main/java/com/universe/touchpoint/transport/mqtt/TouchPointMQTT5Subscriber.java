@@ -16,6 +16,7 @@ import com.universe.touchpoint.rolemodel.supervisor.SupervisorFactory;
 import com.universe.touchpoint.router.RouteTable;
 import com.universe.touchpoint.socket.AgentSocketState;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
+import com.universe.touchpoint.socket.AgentSocketStateRouter;
 import com.universe.touchpoint.utils.SerializeUtils;
 
 import org.eclipse.paho.mqttv5.common.MqttMessage;
@@ -42,22 +43,21 @@ public class TouchPointMQTT5Subscriber<T extends TouchPoint, I extends TouchPoin
                 CoordinatorFactory.getCoordinator(task).execute((AgentAction<I, O>) touchPoint, task, context);
             } else if (stateCode >= 400) {
                 SupervisorFactory.getSupervisor(task).execute((AgentAction<I, O>) touchPoint, task, context);
-            }
-
-            RoleExecutor<I, O> tpReceiver = (RoleExecutor<I, O>) TaskRoleExecutor.getInstance(task).getExecutor(((AgentAction<?, ?>) touchPoint).getActionName());
-            O runResult = tpReceiver.run(((AgentAction<I, O>) touchPoint).getInput(), context);
-
-            // If redirecting, rebuild the ActionGraph.
-            if (runResult.getState().getRedirectToAction() != null
-                    && !RouteTable.getInstance().containsItem(((AgentAction<?, ?>) touchPoint).getActionName(), runResult.getState().getRedirectToAction())) {
-                ((AgentAction<I, O>) touchPoint).getMeta().getToActions().addToAction(task, touchPoint.getState().getRedirectToAction());
-                AgentSocketStateMachine.getInstance(task).send(
-                        new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.PARTICIPANT_READY, ((AgentAction<?, ?>) touchPoint).getMeta()),
+                new AgentSocketStateRouter<>().route(
+                        null,
                         context,
-                        task
-                );
+                        new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.REDIRECT_ACTION_READY, touchPoint),
+                        task);
+            } else {
+                RoleExecutor<I, O> tpReceiver = (RoleExecutor<I, O>) TaskRoleExecutor.getInstance(task).getExecutor(((AgentAction<?, ?>) touchPoint).getActionName());
+                O runResult = tpReceiver.run(((AgentAction<I, O>) touchPoint).getInput(), context);
+                new AgentSocketStateRouter<>().route(
+                        null,
+                        context,
+                        new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.REDIRECT_ACTION_READY, touchPoint),
+                        task);
+                ((AgentAction<I, O>) touchPoint).setOutput(runResult);
             }
-            ((AgentAction<I, O>) touchPoint).setOutput(runResult);
         } else if(touchPoint instanceof AgentFinish) {
             List<AgentActionMetaInfo> predecessors = RouteTable.getInstance().getPredecessors(touchPoint.getHeader().getFromAction().getActionName());
             if (predecessors == null) {

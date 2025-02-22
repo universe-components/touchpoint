@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.context.TouchPointState;
 import com.universe.touchpoint.rolemodel.RoleScope;
 import com.universe.touchpoint.rolemodel.coordinator.handler.ReorderActionReadyHandler;
 import com.universe.touchpoint.rolemodel.coordinator.handler.SwitchActionReadyHandler;
@@ -49,8 +50,12 @@ public class Coordinator<SocketInput, SocketOutput> {
         String pattern = Objects.requireNonNull(exceptionMap.get(stateCode));
         if (Objects.requireNonNull(TaskState.getState(stateCode)).getScope() == RoleScope.ACTION_GRAPH) {
             Log.i("Coordinator", String.format(pattern, task));
+            agentAction.setState(new TouchPointState(
+                    Objects.requireNonNull(socketStateMap.get(stateCode)).getCode(), String.format(pattern, task)));
         } else {
             Log.i("Coordinator", String.format(pattern, agentAction.getActionName(), task));
+            agentAction.setState(new TouchPointState(
+                    Objects.requireNonNull(socketStateMap.get(stateCode)).getCode(), String.format(pattern, agentAction.getActionName(), task)));
         }
     }
 
