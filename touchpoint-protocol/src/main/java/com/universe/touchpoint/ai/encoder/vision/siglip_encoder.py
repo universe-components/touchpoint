@@ -6,8 +6,8 @@ from transformers import AutoImageProcessor, AutoModel
 # 提取 SigLIP 特征
 def extract_siglip_features(image_data, model):
     # 加载 SigLIP 模型和处理器
-    processor = AutoImageProcessor.from_pretrained("")
-    model = AutoModel.from_pretrained("google/siglip-base-patch16-224")
+    processor = AutoImageProcessor.from_pretrained(model)
+    model = AutoModel.from_pretrained(model)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
 

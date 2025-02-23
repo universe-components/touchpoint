@@ -15,7 +15,7 @@ def extract_dinov2_features(image_data, model):
     features (numpy.ndarray): 提取的特征向量。
     """
     processor = AutoImageProcessor.from_pretrained(model)
-    model = AutoModel.from_pretrained("facebook/dinov2-base")
+    model = AutoModel.from_pretrained(model)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
