@@ -19,14 +19,15 @@ TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包�
   `Executor`：执行者，用于操作Data，执行Action。  
   `Coordinator`：协调者，用于操作Action和工作流。  
   `Supervisor`：监督者，用于检查Data、Action和工作流。
-- 后置Action实现角色接口，当前支持的接口有：  
+- 后置Action实现角色接口，当前支持的接口和基类有：  
 `AgentActionExecutor`：用于执行Action。  
 `ActionChecker`：用于检查Action。  
 `DataChecker`：用于检查Action输入。  
 `TaskChecker`：用于检查任务和工作流。  
 `ActionGraphOperator`：用于修改工作流。  
 `ActionOperator`：用于修改Action。  
-`DataOperator`：用于修改Action输入。
+`DataOperator`：用于修改Action输入。  
+`ImageActionExecutor`：用于执行视觉图像识别。
 
 ## Example
 比如，产品团队Leader收到一个研发小组团建的消息，于是，告知项目经理，他的项目绕过该研发小组，先和其他团队对接。
