@@ -99,4 +99,26 @@ public class ClassUtils {
         return genericTypes;
     }
 
+    /**
+     * 判断指定类是否实现了指定接口
+     *
+     * @param clazz         要检查的类
+     * @param interfaceType 要检查的接口类型
+     * @return 如果 clazz 实现了 interfaceType，则返回 true；否则返回 false
+     */
+    public static boolean implementsInterface(Class<?> clazz, Class<?> interfaceType) {
+        if (clazz == null || interfaceType == null) {
+            throw new IllegalArgumentException("参数不能为空");
+        }
+        // 获取类实现的所有接口
+        Class<?>[] interfaces = clazz.getInterfaces();
+        // 遍历接口数组，检查是否包含目标接口
+        for (Class<?> iface : interfaces) {
+            if (iface.equals(interfaceType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

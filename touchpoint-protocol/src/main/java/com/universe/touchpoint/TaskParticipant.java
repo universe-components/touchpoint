@@ -7,10 +7,14 @@ import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.api.RoleExecutor;
+import com.universe.touchpoint.config.ai.VisionLangModelConfig;
+import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.config.mapping.ActionMetricConfigMapping;
+import com.universe.touchpoint.config.mapping.VisionLangModelConfigMapping;
+import com.universe.touchpoint.config.mapping.VisionModelConfigMapping;
 import com.universe.touchpoint.config.metric.MetricSocketConfig;
 import com.universe.touchpoint.config.task.ActionDependency;
-import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.role.CoordinatorConfig;
@@ -18,7 +22,7 @@ import com.universe.touchpoint.config.role.SupervisorConfig;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.TransportConfig;
-import com.universe.touchpoint.config.mapping.AIModelConfigMapping;
+import com.universe.touchpoint.config.mapping.LangModelConfigMapping;
 import com.universe.touchpoint.config.mapping.CoordinatorConfigMapping;
 import com.universe.touchpoint.config.mapping.SupervisorConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
@@ -52,9 +56,15 @@ public class TaskParticipant {
 
                 Transport transportType = transportConfigMap.keySet().iterator().next();
                 Object transportConfig = transportConfigMap.get(transportType);
-                AIModelConfig aiModelConfig = (AIModelConfig) AnnotationUtils.annotation2Config(
+                LangModelConfig langModelConfig = (LangModelConfig) AnnotationUtils.annotation2Config(
                         Class.forName(clazz),
-                        AIModelConfigMapping.annotation2Config);
+                        LangModelConfigMapping.annotation2Config);
+                VisionModelConfig visionModelConfig = (VisionModelConfig) AnnotationUtils.annotation2Config(
+                        Class.forName(clazz),
+                        VisionModelConfigMapping.annotation2Config);
+                VisionLangModelConfig visionLangModelConfig = (VisionLangModelConfig) AnnotationUtils.annotation2Config(
+                        Class.forName(clazz),
+                        VisionLangModelConfigMapping.annotation2Config);
                 ActionMetricConfig actionMetricConfig = (ActionMetricConfig) AnnotationUtils.annotation2Config(
                         Class.forName(clazz),
                         ActionMetricConfigMapping.annotation2Config);
@@ -70,7 +80,9 @@ public class TaskParticipant {
                 actionDependency.setToActions(StringUtils.convert((String[]) properties.get(3)));
                 AgentActionManager.getInstance().extractAndRegisterAction(
                         clazz,
-                        aiModelConfig,
+                        langModelConfig,
+                        visionModelConfig,
+                        visionLangModelConfig,
                         new TransportConfig<>(
                                 transportType,
                                 transportConfig),

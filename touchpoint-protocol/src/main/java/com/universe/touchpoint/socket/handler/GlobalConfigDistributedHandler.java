@@ -3,7 +3,9 @@ package com.universe.touchpoint.socket.handler;
 import android.content.Context;
 import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.config.ConfigManager;
-import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.ai.LangModelConfig;
+import com.universe.touchpoint.config.ai.VisionLangModelConfig;
+import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
@@ -21,7 +23,9 @@ public class GlobalConfigDistributedHandler<Config, TC> implements AgentSocketSt
     public <C extends AgentContext> Boolean onStateChange(Map<String, Config> globalConfig, C actionContext, Context context, String task) {
         if (globalConfig != null) {
             TaskBuilder.task(task).getConfig().setTransportConfig((TransportConfig<?>) globalConfig.get("transport"));
-            TaskBuilder.task(task).getConfig().setModelConfig((AIModelConfig) globalConfig.get("aimodel"));
+            TaskBuilder.task(task).getConfig().setModelConfig((LangModelConfig) globalConfig.get("langmodel"));
+            TaskBuilder.task(task).getConfig().setVisionModelConfig((VisionModelConfig) globalConfig.get("visionmodel"));
+            TaskBuilder.task(task).getConfig().setVisionLangModelConfig((VisionLangModelConfig) globalConfig.get("visionLangModel"));
             TaskBuilder.task(task).getConfig().setActionMetricConfig((ActionMetricConfig) globalConfig.get("actionMetric"));
             TaskBuilder.task(task).getConfig().setTaskMetricConfig((TaskMetricConfig) globalConfig.get("taskMetric"));
 

@@ -15,7 +15,9 @@ public class GlobalConfigReadyHandler<Config> implements AgentSocketStateHandler
         if (ready) {
             return (Map<String, Config>) Map.of(
                     "transport", ConfigManager.selectTransport(null, task),
-                    "aimodel", ConfigManager.selectModel(null, null, task),
+                    "langmodel", ConfigManager.selectModel(null, null, task),
+                    "visionmodel", ConfigManager.selectVisionModel(null, null, task),
+                    "visionLangModel", ConfigManager.selectVisionLangModel(null, null, task),
                     "actionMetric", ConfigManager.selectActionMetricConfig(null, task),
                     "taskMetric", ConfigManager.selectTaskMetricConfig(task)
             );

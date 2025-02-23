@@ -37,6 +37,7 @@ public class ResultExchanger {
         Pair<List<AgentAction<I, O>>, AgentFinish> processedResult = resultProcessor.process(result, goal, task, context, transportType);
         if (processedResult.first != null) {
             for (AgentAction<?, ?> agentAction : processedResult.first) {
+                result.getContext().getActionContext().setCurrentAction(agentAction.getActionName());
                 ResultDispatcher.run(agentAction, agentAction.getMeta(), context);
             }
         } else {

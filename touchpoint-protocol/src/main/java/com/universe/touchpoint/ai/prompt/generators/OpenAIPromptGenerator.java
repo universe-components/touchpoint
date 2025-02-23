@@ -7,8 +7,11 @@ import androidx.annotation.RequiresApi;
 
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.ai.ActionDecoder;
 import com.universe.touchpoint.ai.prompt.PromptGenerator;
 import com.universe.touchpoint.ai.prompt.template.OpenAITemplate;
+import com.universe.touchpoint.api.image.ImageActionExecutor;
+import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.utils.ClassUtils;
 
 import java.util.List;
@@ -17,7 +20,7 @@ public class OpenAIPromptGenerator implements PromptGenerator {
 
     @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Override
-    public String generatePrompt(@NonNull List<AgentActionMetaInfo> nextActions, AgentAction<?, ?> action, String question) {
+    public <I extends TouchPoint, O> String generatePrompt(@NonNull List<AgentActionMetaInfo> nextActions, AgentAction<I, O> action, String question) {
         StringBuilder toolList = new StringBuilder();
         StringBuilder agentNames = new StringBuilder();
 
@@ -34,16 +37,35 @@ public class OpenAIPromptGenerator implements PromptGenerator {
         }
 
         StringBuilder actionBody = new StringBuilder();
-        String finalSuffix = OpenAITemplate.SUFFIX.replace("{input}", question);
+        String finalSuffix = OpenAITemplate.SUFFIX.replace("{question}", question);
         if (action != null) {
-            finalSuffix = finalSuffix.replace("{agent_scratchpad}", action.getThought());
+            boolean isImageAction;
+            String actionName;
+            String actionInput;
+            String observation;
+            try {
+                isImageAction = ClassUtils.implementsInterface(Class.forName(action.getMeta().getClassName()), ImageActionExecutor.class);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            if (isImageAction) {
+                finalSuffix = finalSuffix.replace("{agent_scratchpad}", "I have visual and text features to help answer the question.");
+                actionName = "Use visual and text features to generate an answer.";
+                actionInput = ActionDecoder.run((Double[]) action.getOutput()).toString();
+                observation = "Waiting for the model's response.";
+            } else {
+                finalSuffix = finalSuffix.replace("{agent_scratchpad}", action.getThought());
+                actionName = action.getActionName();
+                actionInput = ClassUtils.getFieldValues(action.getInput());
+                observation = action.getOutput().toString();
+            }
             actionBody.append(finalSuffix)
                     .append("\nAction:")
-                    .append(action.getActionName())
+                    .append(actionName)
                     .append("\nAction Input:")
-                    .append(ClassUtils.getFieldValues(action.getInput()))
+                    .append(actionInput)
                     .append("\nObservation:")
-                    .append(action.getOutput().toString());
+                    .append(observation);
         }
         // Replace [{agent_names}] with the agent names
         String finalFormatInstructions = OpenAITemplate.FORMAT_INSTRUCTIONS.replace("{agent_names}", agentNames.toString());

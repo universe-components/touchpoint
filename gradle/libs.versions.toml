@@ -24,6 +24,7 @@ anthropic = "0.1.0"
 dubbo = "3.3.0"
 paho = "1.2.5"
 commons-lang3 = "3.17.0"
+jep = "4.2.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,8 +51,9 @@ hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-comp
 openai = { group = "com.openai", name = "openai-java", version.ref = "openai" }
 anthropic = { group = "com.anthropic", name = "anthropic-java", version.ref = "anthropic"}
 dubbo = { group = "org.apache.dubbo", name = "dubbo", version.ref = "dubbo" }
-paho = { group = "org.eclipse.paho", name = "org.eclipse.paho.mqttv5.client", version.ref = "paho"}
-commons-lang3 = { group = "org.apache.commons", name = "commons-lang3", version.ref = "commons-lang3"}
+paho = { group = "org.eclipse.paho", name = "org.eclipse.paho.mqttv5.client", version.ref = "paho" }
+commons-lang3 = { group = "org.apache.commons", name = "commons-lang3", version.ref = "commons-lang3" }
+jep = { group = "black.ninia", name = "jep", version.ref = "jep" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

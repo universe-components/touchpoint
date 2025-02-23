@@ -1,8 +1,10 @@
 package com.universe.touchpoint.agent;
 
 import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.config.ai.VisionLangModelConfig;
+import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.config.task.ActionDependency;
-import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
 
@@ -14,7 +16,9 @@ public class AgentActionMetaInfo {
     private ActionRole role;
     private String inputClassName;
     private String outputClassName;
-    private AIModelConfig model;
+    private LangModelConfig model;
+    private VisionModelConfig visionModel;
+    private VisionLangModelConfig visionLangModel;
     private TransportConfig<?> transportConfig;
     private ActionMetricConfig actionMetricConfig;
     private ActionDependency toActions;
@@ -23,7 +27,7 @@ public class AgentActionMetaInfo {
         this.actionName = actionName;
     }
 
-    public <C> AgentActionMetaInfo(String actionName, String receiverClassName, String actionDesc, ActionRole role, String inputClassName, String outputClassName, AIModelConfig model, TransportConfig<C> transportConfig, ActionMetricConfig actionMetricConfig, ActionDependency toActions) {
+    public <C> AgentActionMetaInfo(String actionName, String receiverClassName, String actionDesc, ActionRole role, String inputClassName, String outputClassName, LangModelConfig model, VisionModelConfig visionModelConfig, VisionLangModelConfig visionLangModelConfig, TransportConfig<C> transportConfig, ActionMetricConfig actionMetricConfig, ActionDependency toActions) {
         this.actionName = actionName;
         this.className = receiverClassName;
         this.desc = actionDesc;
@@ -31,6 +35,8 @@ public class AgentActionMetaInfo {
         this.inputClassName = inputClassName;
         this.outputClassName = outputClassName;
         this.model = model;
+        this.visionModel = visionModelConfig;
+        this.visionLangModel = visionLangModelConfig;
         this.transportConfig = transportConfig;
         this.actionMetricConfig = actionMetricConfig;
         this.toActions = toActions;
@@ -84,12 +90,28 @@ public class AgentActionMetaInfo {
         this.outputClassName = outputClassName;
     }
 
-    public AIModelConfig getModel() {
+    public LangModelConfig getModel() {
         return model;
     }
 
-    public void setModel(AIModelConfig model) {
+    public void setModel(LangModelConfig model) {
         this.model = model;
+    }
+
+    public VisionModelConfig getVisionModel() {
+        return visionModel;
+    }
+
+    public void setVisionModel(VisionModelConfig visionModel) {
+        this.visionModel = visionModel;
+    }
+
+    public VisionLangModelConfig getVisionLangModel() {
+        return visionLangModel;
+    }
+
+    public void setVisionLangModel(VisionLangModelConfig visionLangModel) {
+        this.visionLangModel = visionLangModel;
     }
 
     public TransportConfig<?> getTransportConfig() {

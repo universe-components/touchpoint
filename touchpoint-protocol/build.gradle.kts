@@ -83,6 +83,7 @@ dependencies {
     api(libs.anthropic)
     api(libs.dubbo)
     api(libs.paho)
+    implementation(libs.jep)
     implementation(libs.commons.lang3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -6,7 +6,7 @@ import com.openai.models.ChatCompletion;
 import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatModel;
 import com.universe.touchpoint.ai.AIModel;
-import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.ai.LangModelConfig;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion.Choice> {
 
-    public OpenAI(AIModelConfig modelConfig) {
+    public OpenAI(LangModelConfig modelConfig) {
         super(OpenAIOkHttpClient.builder()
                 .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890)))
                 .apiKey(modelConfig.getApiKey())
@@ -29,7 +29,7 @@ public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion
         ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
                 .addUserMessage(content)
                 .model((ChatModel) Objects.requireNonNull(
-                        AIModelConfig.modelConfigMap.get(config.getModel())))
+                        LangModelConfig.modelConfigMap.get(config.getModel())))
                 .temperature(config.getTemperature())
                 .build();
 

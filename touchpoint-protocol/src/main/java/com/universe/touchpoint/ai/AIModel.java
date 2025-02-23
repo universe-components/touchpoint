@@ -1,6 +1,6 @@
 package com.universe.touchpoint.ai;
 
-import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.ai.LangModelConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +10,10 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class AIModel<Client, Completion, Choice> {
 
     protected final Client client;
-    protected final AIModelConfig config;
+    protected final LangModelConfig config;
     protected List<Completion> completions = new ArrayList<>();
 
-    public AIModel(Client client, AIModelConfig config) {
+    public AIModel(Client client, LangModelConfig config) {
         this.client = client;
         this.config = config;
     }

@@ -6,10 +6,12 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.universe.touchpoint.config.ai.VisionLangModelConfig;
+import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.task.ActionDependency;
-import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -39,7 +41,9 @@ public class AgentActionManager {
 
     public <C> void extractAndRegisterAction(
             String receiverClassName,
-            AIModelConfig model,
+            LangModelConfig model,
+            VisionModelConfig visionModelConfig,
+            VisionLangModelConfig visionLangModelConfig,
             TransportConfig<C> transportConfig,
             String actionName,
             String actionDesc,
@@ -66,7 +70,7 @@ public class AgentActionManager {
                 }
             }
 
-            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, role, inputClassName, outputClassName, model, transportConfig, actionMetricConfig, toActions);
+            AgentActionMetaInfo agentActionMetaInfo = new AgentActionMetaInfo(actionName, receiverClassName, actionDesc, role, inputClassName, outputClassName, model, visionModelConfig, visionLangModelConfig, transportConfig, actionMetricConfig, toActions);
             DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
             driverRegion.putTouchPointAction(
                     TouchPointHelper.touchPointActionName(actionName, agentName), agentActionMetaInfo);

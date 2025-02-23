@@ -18,7 +18,7 @@ public class OpenAITemplate {
     public static final String SUFFIX = """
             Begin!
             
-            Question: {input}
+            Question: {question}
             Thought: {agent_scratchpad}""";
 
 }

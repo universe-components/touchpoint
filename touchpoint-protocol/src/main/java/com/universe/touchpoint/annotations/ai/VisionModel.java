@@ -9,12 +9,10 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AIModel {
+public @interface VisionModel {
 
     Model name() default Model.NONE;
 
     float temperature() default 0.0f;
-
-    String apiKey() default "";
 
 }

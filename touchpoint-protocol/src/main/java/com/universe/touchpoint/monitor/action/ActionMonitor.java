@@ -22,7 +22,7 @@ public class ActionMonitor<T extends TouchPoint> implements ActionChecker<T, Mon
         assert metricConfig != null;
         if (touchPoint.getContext().getActionContext().getActionMetric(ctxAction).getPredictionCount() > metricConfig.getMaxPredictionCount()) {
             monitorResult.setState(new DriverState(
-                    TaskState.NEED_SWITCH_AI_MODEL.getCode(),
+                    TaskState.NEED_SWITCH_LANG_MODEL.getCode(),
                     "The AI model has too many prediction rounds and still hasn't provided a final result",
                     touchPoint.getHeader().getToAction().getActionName()));
             return monitorResult;

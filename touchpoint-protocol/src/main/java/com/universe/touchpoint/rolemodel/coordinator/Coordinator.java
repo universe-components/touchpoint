@@ -23,9 +23,17 @@ public class Coordinator<SocketInput, SocketOutput> {
     private final Map<Integer, AgentSocketState> socketStateMap = new HashMap<>();
     private final Map<Integer, String> exceptionMap = new HashMap<>();
     {
-        handlerMap.put(TaskState.NEED_SWITCH_AI_MODEL.getCode(), (AgentSocketStateHandler<SocketInput, SocketOutput>) new SwitchActionReadyHandler<>());
-        socketStateMap.put(TaskState.NEED_SWITCH_AI_MODEL.getCode(), AgentSocketState.PARTICIPANT_READY);
-        exceptionMap.put(TaskState.NEED_SWITCH_AI_MODEL.getCode(), "Action[%s] has been switched model for task[%s]");
+        handlerMap.put(TaskState.NEED_SWITCH_LANG_MODEL.getCode(), (AgentSocketStateHandler<SocketInput, SocketOutput>) new SwitchActionReadyHandler<>());
+        socketStateMap.put(TaskState.NEED_SWITCH_LANG_MODEL.getCode(), AgentSocketState.PARTICIPANT_READY);
+        exceptionMap.put(TaskState.NEED_SWITCH_LANG_MODEL.getCode(), "Action[%s] has been switched language model for task[%s]");
+
+        handlerMap.put(TaskState.NEED_SWITCH_VISION_MODEL.getCode(), (AgentSocketStateHandler<SocketInput, SocketOutput>) new SwitchActionReadyHandler<>());
+        socketStateMap.put(TaskState.NEED_SWITCH_VISION_MODEL.getCode(), AgentSocketState.PARTICIPANT_READY);
+        exceptionMap.put(TaskState.NEED_SWITCH_VISION_MODEL.getCode(), "Action[%s] has been switched vision model for task[%s]");
+
+        handlerMap.put(TaskState.NEED_SWITCH_VISION_LANG_MODEL.getCode(), (AgentSocketStateHandler<SocketInput, SocketOutput>) new SwitchActionReadyHandler<>());
+        socketStateMap.put(TaskState.NEED_SWITCH_VISION_LANG_MODEL.getCode(), AgentSocketState.PARTICIPANT_READY);
+        exceptionMap.put(TaskState.NEED_SWITCH_VISION_LANG_MODEL.getCode(), "Action[%s] has been switched vision lang model for task[%s]");
 
         handlerMap.put(TaskState.NEED_SWITCH_TRANSPORT.getCode(), (AgentSocketStateHandler<SocketInput, SocketOutput>) new SwitchActionReadyHandler<>());
         socketStateMap.put(TaskState.NEED_SWITCH_TRANSPORT.getCode(), AgentSocketState.PARTICIPANT_READY);

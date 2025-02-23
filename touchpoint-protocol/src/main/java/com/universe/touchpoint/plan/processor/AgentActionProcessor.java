@@ -11,7 +11,7 @@ import com.universe.touchpoint.ai.AIModelFactory;
 import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.ai.ChoiceParserFactory;
 import com.universe.touchpoint.ai.prompt.PromptBuilder;
-import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.plan.ResultProcessor;
@@ -24,7 +24,7 @@ public class AgentActionProcessor<I extends TouchPoint, O extends TouchPoint> im
 
     @Override
     public <NewInput extends TouchPoint, NewOutput extends TouchPoint> Pair<List<AgentAction<NewInput, NewOutput>>, AgentFinish> process(AgentAction<I, O> result, String goal, String task, Context context, Transport transportType) {
-        AIModelConfig modelConfig = ConfigManager.selectModel(goal, result.getMeta(), task);
+        LangModelConfig modelConfig = ConfigManager.selectModel(goal, result.getMeta(), task);
         List<AgentActionMetaInfo> nextActions = RouteTable.getInstance().getSuccessors(result.getActionName());
 
         String input = PromptBuilder.createPromptGenerator(modelConfig.getType()).generatePrompt(nextActions, result, goal);

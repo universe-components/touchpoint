@@ -10,7 +10,16 @@ import java.util.Map;
 
 public class ActionContext {
 
+    private String currentAction;
     private Map<String, ActionMetric> actionMetrics;
+
+    public String getCurrentAction() {
+        return currentAction;
+    }
+
+    public void setCurrentAction(String currentAction) {
+        this.currentAction = currentAction;
+    }
 
     public ActionMetric getActionMetric(String action) {
         return actionMetrics.computeIfAbsent(action, k -> new ActionMetric());

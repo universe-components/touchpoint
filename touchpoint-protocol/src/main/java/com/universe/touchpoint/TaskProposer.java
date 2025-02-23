@@ -7,10 +7,12 @@ import androidx.annotation.RequiresApi;
 
 import com.google.common.collect.Lists;
 import com.universe.touchpoint.agent.Agent;
-import com.universe.touchpoint.annotations.ai.AIModel;
+import com.universe.touchpoint.annotations.ai.LangModel;
 import com.universe.touchpoint.annotations.socket.AgentSocket;
 import com.universe.touchpoint.annotations.task.Task;
-import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.ai.LangModelConfig;
+import com.universe.touchpoint.config.ai.VisionLangModelConfig;
+import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
@@ -32,7 +34,7 @@ public class TaskProposer {
     @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     public static void init(Context context) {
         if (Agent.isAnnotationPresent(Task.class)) {
-            List<Class<? extends Annotation>> extractAnnotationClasses = Lists.newArrayList(AIModel.class, AgentSocket.class);
+            List<Class<? extends Annotation>> extractAnnotationClasses = Lists.newArrayList(LangModel.class, AgentSocket.class);
             extractAnnotationClasses.addAll(TransportConfigMapping.getAnnotationClasses());
 
             List<String> transportAnnotationName = extractAnnotationClasses.stream()
@@ -45,9 +47,17 @@ public class TaskProposer {
                 AgentSocketStateMachine.registerInstance(taskProperty.getKey(), Objects.requireNonNull(ConfigManager.selectAgentSocket(taskProperty.getKey())).getBindProtocol());
 
                 for (Map.Entry<String, Map<String, Object>> property : taskProperty.getValue().entrySet()) {
-                    if (Objects.equals(property.getKey(), "AIModel")) {
-                        AIModelConfig aiModelConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getModelConfig();
-                        ClassUtils.setProperties(aiModelConfig, property.getValue());
+                    if (Objects.equals(property.getKey(), "LangModel")) {
+                        LangModelConfig langModelConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getModelConfig();
+                        ClassUtils.setProperties(langModelConfig, property.getValue());
+                    }
+                    if (Objects.equals(property.getKey(), "VisionModel")) {
+                        VisionModelConfig visionModelConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getVisionModelConfig();
+                        ClassUtils.setProperties(visionModelConfig, property.getValue());
+                    }
+                    if (Objects.equals(property.getKey(), "VisionLangModel")) {
+                        VisionLangModelConfig visionLangModelConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getVisionLangModelConfig();
+                        ClassUtils.setProperties(visionLangModelConfig, property.getValue());
                     }
                     if (transportAnnotationName.contains(property.getKey())) {
                         TransportConfig<?> transportConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getTransportConfig();

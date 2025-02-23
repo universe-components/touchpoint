@@ -4,9 +4,13 @@ import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.ai.AIModelType;
-import com.universe.touchpoint.annotations.ai.AIModel;
-import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.annotations.ai.LangModel;
+import com.universe.touchpoint.annotations.ai.VisionLangModel;
+import com.universe.touchpoint.annotations.ai.VisionModel;
+import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.Model;
+import com.universe.touchpoint.config.ai.VisionLangModelConfig;
+import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.config.mapping.ActionMetricConfigMapping;
 import com.universe.touchpoint.config.mapping.AgentSocketConfigMapping;
 import com.universe.touchpoint.config.mapping.MetricSocketConfigMapping;
@@ -26,10 +30,10 @@ import java.util.Map;
 
 public class ConfigManager {
 
-    public static AIModelConfig selectModel(String input, AgentActionMetaInfo actionMeta, String task) {
+    public static LangModelConfig selectModel(String input, AgentActionMetaInfo actionMeta, String task) {
         // 首先检查 action 中的模型
         if (actionMeta != null) {
-            AIModelConfig modelConfig = actionMeta.getModel();
+            LangModelConfig modelConfig = actionMeta.getModel();
             if (modelConfig != null) {
                 // 如果 action 中有模型，则直接使用该模型
                 return actionMeta.getModel();
@@ -37,16 +41,16 @@ public class ConfigManager {
         }
 
         // 如果 Agent.getModel() 也为空，再检查 AgentBuilder 中的配置
-        AIModelConfig modelFromBuilder = TaskBuilder.getBuilder(task).getConfig().getModelConfig();
+        LangModelConfig modelFromBuilder = TaskBuilder.getBuilder(task).getConfig().getModelConfig();
         if (modelFromBuilder != null) {
             return modelFromBuilder;
         }
 
         // 如果 action 中没有模型，再检查 Agent 的模型
-        Model model = (Model) Agent.getProperty("model", AIModel.class);
+        Model model = (Model) Agent.getProperty("model", LangModel.class);
         if (model != null) {
-            float temperature = (float) Agent.getProperty("temperature", AIModel.class);
-            return new AIModelConfig(
+            float temperature = (float) Agent.getProperty("temperature", LangModel.class);
+            return new LangModelConfig(
                     model,
                     temperature,
                     model == Model.ClAUDE_3_5_SONNET ? AIModelType.ANTHROPIC : AIModelType.OPEN_AI
@@ -54,7 +58,65 @@ public class ConfigManager {
         }
 
         // 如果都没有模型，则返回默认模型 OPEN_AI
-        return new AIModelConfig(Model.o1, 0.0f, AIModelType.OPEN_AI);
+        return new LangModelConfig(Model.o1, 0.0f, AIModelType.OPEN_AI);
+    }
+
+    public static VisionModelConfig selectVisionModel(String input, AgentActionMetaInfo actionMeta, String task) {
+        // 首先检查 action 中的模型
+        if (actionMeta != null) {
+            VisionModelConfig modelConfig = actionMeta.getVisionModel();
+            if (modelConfig != null) {
+                // 如果 action 中有模型，则直接使用该模型
+                return actionMeta.getVisionModel();
+            }
+        }
+
+        // 如果 Agent.getModel() 也为空，再检查 AgentBuilder 中的配置
+        VisionModelConfig modelFromBuilder = TaskBuilder.getBuilder(task).getConfig().getVisionModelConfig();
+        if (modelFromBuilder != null) {
+            return modelFromBuilder;
+        }
+
+        // 如果 action 中没有模型，再检查 Agent 的模型
+        Model model = (Model) Agent.getProperty("model", VisionModel.class);
+        if (model != null) {
+            float temperature = (float) Agent.getProperty("temperature", VisionModel.class);
+            return new VisionModelConfig(
+                    model,
+                    temperature
+            );
+        }
+
+        return null;
+    }
+
+    public static VisionLangModelConfig selectVisionLangModel(String input, AgentActionMetaInfo actionMeta, String task) {
+        // 首先检查 action 中的模型
+        if (actionMeta != null) {
+            VisionLangModelConfig modelConfig = actionMeta.getVisionLangModel();
+            if (modelConfig != null) {
+                // 如果 action 中有模型，则直接使用该模型
+                return actionMeta.getVisionLangModel();
+            }
+        }
+
+        // 如果 Agent.getModel() 也为空，再检查 AgentBuilder 中的配置
+        VisionLangModelConfig modelFromBuilder = TaskBuilder.getBuilder(task).getConfig().getVisionLangModelConfig();
+        if (modelFromBuilder != null) {
+            return modelFromBuilder;
+        }
+
+        // 如果 action 中没有模型，再检查 Agent 的模型
+        Model model = (Model) Agent.getProperty("model", VisionLangModel.class);
+        if (model != null) {
+            float temperature = (float) Agent.getProperty("temperature", VisionLangModel.class);
+            return new VisionLangModelConfig(
+                    model,
+                    temperature
+            );
+        }
+
+        return null;
     }
 
     public static <C> TransportConfig<C> selectTransport(String action, String task) {

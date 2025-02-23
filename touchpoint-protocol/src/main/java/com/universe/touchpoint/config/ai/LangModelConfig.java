@@ -6,7 +6,7 @@ import com.universe.touchpoint.ai.AIModelType;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AIModelConfig {
+public class LangModelConfig {
 
     private Model model;
     private float temperature;
@@ -21,19 +21,19 @@ public class AIModelConfig {
         modelConfigMap.put(Model.ClAUDE_3_5_SONNET, com.anthropic.models.Model.CLAUDE_3_5_SONNET_LATEST);
     }
 
-    public AIModelConfig() {}
+    public LangModelConfig() {}
 
-    public AIModelConfig(Model model, float temperature, AIModelType type) {
+    public LangModelConfig(Model model, float temperature, AIModelType type) {
         this.model = model;
         this.temperature = temperature;
         this.type = type;
     }
 
-    public AIModelConfig(Model model, float temperature) {
+    public LangModelConfig(Model model, float temperature) {
         this(model, temperature, (String) null);
     }
 
-    public AIModelConfig(Model model, float temperature, String apiKey) {
+    public LangModelConfig(Model model, float temperature, String apiKey) {
         this.model = model;
         this.temperature = temperature;
         this.apiKey = apiKey;

@@ -1,6 +1,8 @@
 package com.universe.touchpoint;
 
-import com.universe.touchpoint.config.ai.AIModelConfig;
+import com.universe.touchpoint.config.ai.LangModelConfig;
+import com.universe.touchpoint.config.ai.VisionLangModelConfig;
+import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.config.metric.MetricSocketConfig;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
@@ -14,7 +16,9 @@ import java.util.Map;
 
 public class AgentConfig {
 
-    private AIModelConfig modelConfig = new AIModelConfig();
+    private LangModelConfig modelConfig = new LangModelConfig();
+    private VisionModelConfig visionModelConfig = new VisionModelConfig();
+    private VisionLangModelConfig visionLangModelConfig = new VisionLangModelConfig();
     private TransportConfig<?> transportConfig;
     private AgentSocketConfig socketConfig = new AgentSocketConfig();
     private MetricSocketConfig metricSocketConfig = new MetricSocketConfig();
@@ -26,12 +30,28 @@ public class AgentConfig {
         transportConfigMap.put(Transport.DUBBO, DubboConfig.class);
     }
 
-    public AIModelConfig getModelConfig() {
+    public LangModelConfig getModelConfig() {
         return modelConfig;
     }
 
-    public void setModelConfig(AIModelConfig modelConfig) {
+    public void setModelConfig(LangModelConfig modelConfig) {
         this.modelConfig = modelConfig;
+    }
+
+    public VisionModelConfig getVisionModelConfig() {
+        return visionModelConfig;
+    }
+
+    public void setVisionModelConfig(VisionModelConfig visionModelConfig) {
+        this.visionModelConfig = visionModelConfig;
+    }
+
+    public VisionLangModelConfig getVisionLangModelConfig() {
+        return visionLangModelConfig;
+    }
+
+    public void setVisionLangModelConfig(VisionLangModelConfig visionLangModelConfig) {
+        this.visionLangModelConfig = visionLangModelConfig;
     }
 
     public TransportConfig<?> getTransportConfig() {
