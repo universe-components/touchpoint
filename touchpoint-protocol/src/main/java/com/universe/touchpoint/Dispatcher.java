@@ -4,8 +4,8 @@ import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.context.TaskContext;
 import com.universe.touchpoint.context.TouchPoint;
-import com.universe.touchpoint.driver.ActionGraphBuilder;
-import com.universe.touchpoint.driver.ResultDispatcher;
+import com.universe.touchpoint.plan.ActionGraphBuilder;
+import com.universe.touchpoint.plan.ResultDispatcher;
 
 public class Dispatcher {
 

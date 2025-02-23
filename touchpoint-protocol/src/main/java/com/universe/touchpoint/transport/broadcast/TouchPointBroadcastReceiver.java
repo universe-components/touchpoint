@@ -15,7 +15,7 @@ import com.universe.touchpoint.api.executor.AgentFinishExecutor;
 import com.universe.touchpoint.api.executor.TouchPointExecutor;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.context.TouchPointState;
-import com.universe.touchpoint.driver.ResultExchanger;
+import com.universe.touchpoint.plan.ResultExchanger;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.rolemodel.coordinator.CoordinatorFactory;
 import com.universe.touchpoint.rolemodel.supervisor.SupervisorFactory;

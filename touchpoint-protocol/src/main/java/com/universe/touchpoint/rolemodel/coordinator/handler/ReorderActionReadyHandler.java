@@ -10,8 +10,8 @@ import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.socket.AgentContext;
-import com.universe.touchpoint.driver.ActionGraph;
-import com.universe.touchpoint.driver.ActionGraphBuilder;
+import com.universe.touchpoint.plan.ActionGraph;
+import com.universe.touchpoint.plan.ActionGraphBuilder;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 

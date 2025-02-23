@@ -1,4 +1,4 @@
-package com.universe.touchpoint.driver;
+package com.universe.touchpoint.plan;
 
 import java.util.HashMap;
 import java.util.Map;

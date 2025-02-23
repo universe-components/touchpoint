@@ -9,7 +9,7 @@ import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.context.TaskContext;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.config.transport.Transport;
-import com.universe.touchpoint.driver.ResultExchanger;
+import com.universe.touchpoint.plan.ResultExchanger;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.rolemodel.coordinator.CoordinatorFactory;
 import com.universe.touchpoint.rolemodel.supervisor.SupervisorFactory;

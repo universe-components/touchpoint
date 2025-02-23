@@ -1,7 +1,7 @@
 package com.universe.touchpoint.context;
 
-import com.universe.touchpoint.driver.ActionGraph;
-import com.universe.touchpoint.driver.ActionGraphBuilder;
+import com.universe.touchpoint.plan.ActionGraph;
+import com.universe.touchpoint.plan.ActionGraphBuilder;
 import java.util.Map;
 
 public class TouchPointContext {

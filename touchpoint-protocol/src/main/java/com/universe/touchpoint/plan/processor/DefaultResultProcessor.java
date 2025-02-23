@@ -1,4 +1,4 @@
-package com.universe.touchpoint.driver.processor;
+package com.universe.touchpoint.plan.processor;
 
 import android.content.Context;
 import android.util.Pair;
@@ -7,7 +7,7 @@ import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.config.transport.Transport;
-import com.universe.touchpoint.driver.ResultProcessor;
+import com.universe.touchpoint.plan.ResultProcessor;
 
 import java.util.List;
 

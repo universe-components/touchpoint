@@ -1,4 +1,4 @@
-package com.universe.touchpoint.driver.processor;
+package com.universe.touchpoint.plan.processor;
 
 import android.content.Context;
 import android.util.Pair;
@@ -14,7 +14,7 @@ import com.universe.touchpoint.ai.prompt.PromptBuilder;
 import com.universe.touchpoint.config.ai.AIModelConfig;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.Transport;
-import com.universe.touchpoint.driver.ResultProcessor;
+import com.universe.touchpoint.plan.ResultProcessor;
 import com.universe.touchpoint.router.RouteTable;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.universe.touchpoint.driver;
+package com.universe.touchpoint.plan;
 
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 
