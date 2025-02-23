@@ -20,11 +20,11 @@
 
 - **多种调用方式：** Action之间可以通过IPC、Broadcast、MQTT、RPC及REST等方式通信。
 
-- **多级模型驱动：** LLM驱动可以作用在Agent，也可以作用在Task及Action。
+- **多级模型驱动：** AI模型可以作用在Agent，也可以作用在Task及Action。
 
 - **多级调用策略：** 调用策略可以作用在Agent， 也可以作用在Action上。
 
-- **多种LLM：** 支持多种LLM，如GPT-3、GPT-3.5、GPT-4、Claude-3、Claude-3.5等。
+- **多种AI模型：** 支持多种模型，如GPT-3、GPT-3.5、GPT-4、Claude-3、Claude-3.5、DINOv2、SigLIP等。
 
 ## 架构
 
