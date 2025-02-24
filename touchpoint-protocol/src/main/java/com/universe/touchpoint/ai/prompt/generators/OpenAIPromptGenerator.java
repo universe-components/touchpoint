@@ -1,19 +1,18 @@
 package com.universe.touchpoint.ai.prompt.generators;
 
 import android.os.Build;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
-import com.universe.touchpoint.ai.ActionDecoder;
 import com.universe.touchpoint.ai.prompt.PromptGenerator;
 import com.universe.touchpoint.ai.prompt.template.OpenAITemplate;
-import com.universe.touchpoint.api.image.ImageActionExecutor;
+import com.universe.touchpoint.api.executor.ImageActionExecutor;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.utils.ClassUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class OpenAIPromptGenerator implements PromptGenerator {
@@ -51,7 +50,7 @@ public class OpenAIPromptGenerator implements PromptGenerator {
             if (isImageAction) {
                 finalSuffix = finalSuffix.replace("{agent_scratchpad}", "I have visual and text features to help answer the question.");
                 actionName = "Use visual and text features to generate an answer.";
-                actionInput = ActionDecoder.run((Double[]) action.getOutput()).toString();
+                actionInput = String.join(", ", Arrays.stream((Double[]) action.getOutput()).map(String::valueOf).toArray(String[]::new));
                 observation = "Waiting for the model's response.";
             } else {
                 finalSuffix = finalSuffix.replace("{agent_scratchpad}", action.getThought());

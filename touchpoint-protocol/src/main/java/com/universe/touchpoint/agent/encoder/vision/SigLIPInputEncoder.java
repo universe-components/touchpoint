@@ -1,13 +1,13 @@
-package com.universe.touchpoint.ai.encoder.vision;
+package com.universe.touchpoint.agent.encoder.vision;
 
-import com.universe.touchpoint.ai.encoder.VisionEncoder;
+import com.universe.touchpoint.agent.encoder.VisionInputEncoder;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
 
 import jep.Jep;
 import jep.JepException;
 import jep.SharedInterpreter;
 
-public class SigLIPEncoder implements VisionEncoder<VisionLangModelConfig> {
+public class SigLIPInputEncoder implements VisionInputEncoder<VisionLangModelConfig> {
 
     @Override
     public Double[][] run(Double[][] imageData, VisionLangModelConfig modelConfig) {

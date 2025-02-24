@@ -1,9 +1,9 @@
-package com.universe.touchpoint.api.image;
+package com.universe.touchpoint.api.executor;
 
 import android.content.Context;
 
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
-import com.universe.touchpoint.ai.MediaEncodeExecutor;
+import com.universe.touchpoint.agent.ActionInputEncodeExecutor;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
@@ -16,7 +16,7 @@ public abstract class ImageActionExecutor implements RoleExecutor<ImageData, Dou
         String goal = imageData.getContext().getTaskContext().getGoal();
         DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
         AgentActionMetaInfo actionMetaInfo = driverRegion.getTouchPointAction(imageData.getContext().getActionContext().getCurrentAction());
-        return MediaEncodeExecutor.encode(imageData.getData(), goal, actionMetaInfo.getVisionModel(), actionMetaInfo.getVisionLangModel(), actionMetaInfo.getModel());
+        return ActionInputEncodeExecutor.encode(imageData.getData(), goal, actionMetaInfo.getVisionModel(), actionMetaInfo.getVisionLangModel(), actionMetaInfo.getModel());
     }
 
 }

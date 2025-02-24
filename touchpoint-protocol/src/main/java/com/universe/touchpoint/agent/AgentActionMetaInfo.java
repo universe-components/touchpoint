@@ -1,12 +1,14 @@
 package com.universe.touchpoint.agent;
 
 import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.api.executor.ImageActionExecutor;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
 import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.config.task.ActionDependency;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
+import com.universe.touchpoint.utils.ClassUtils;
 
 public class AgentActionMetaInfo {
 
@@ -14,6 +16,7 @@ public class AgentActionMetaInfo {
     private String className;
     private String desc;
     private ActionRole role;
+    private ActionType type;
     private String inputClassName;
     private String outputClassName;
     private LangModelConfig model;
@@ -27,11 +30,20 @@ public class AgentActionMetaInfo {
         this.actionName = actionName;
     }
 
-    public <C> AgentActionMetaInfo(String actionName, String receiverClassName, String actionDesc, ActionRole role, String inputClassName, String outputClassName, LangModelConfig model, VisionModelConfig visionModelConfig, VisionLangModelConfig visionLangModelConfig, TransportConfig<C> transportConfig, ActionMetricConfig actionMetricConfig, ActionDependency toActions) {
+    public <C> AgentActionMetaInfo(String actionName, String className, String actionDesc, ActionRole role, String inputClassName, String outputClassName, LangModelConfig model, VisionModelConfig visionModelConfig, VisionLangModelConfig visionLangModelConfig, TransportConfig<C> transportConfig, ActionMetricConfig actionMetricConfig, ActionDependency toActions) {
         this.actionName = actionName;
-        this.className = receiverClassName;
+        this.className = className;
         this.desc = actionDesc;
         this.role = role;
+        try {
+            if (ClassUtils.implementsInterface(Class.forName(className), ImageActionExecutor.class)) {
+                this.type = ActionType.SENSOR;
+            } else {
+                this.type = ActionType.INPUT;
+            }
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         this.inputClassName = inputClassName;
         this.outputClassName = outputClassName;
         this.model = model;
@@ -72,6 +84,10 @@ public class AgentActionMetaInfo {
 
     public void setRole(ActionRole role) {
         this.role = role;
+    }
+
+    public ActionType getType() {
+        return type;
     }
 
     public String getInputClassName() {

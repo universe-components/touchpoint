@@ -19,9 +19,7 @@ import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.DriverRegion;
 import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastReceiver;
-import com.universe.touchpoint.utils.ClassUtils;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -89,7 +87,7 @@ public class AgentActionManager {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends TouchPoint> T paddingActionInput(String actionName, String actionInput, String agentName) {
+    public <T> T paddingActionInput(String actionName, String actionInput, String agentName) {
         DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
         AgentActionMetaInfo agentActionMetaInfo = driverRegion.getTouchPointAction(TouchPointHelper.touchPointActionName(actionName, agentName));
         Class<T> inputClass;
@@ -100,25 +98,8 @@ public class AgentActionManager {
         }
 
         // 分割输入
-        String[] actionInputs = actionInput.split("\\|");
-
-        try {
-            T touchPointInstance = inputClass.getDeclaredConstructor().newInstance();
-            Field[] fields = inputClass.getDeclaredFields();
-
-            // 遍历字段并填充值
-            for (int i = 0; i < fields.length && i < actionInputs.length; i++) {
-                Field field = fields[i];
-                field.setAccessible(true); // 确保可以访问私有字段
-                Object value = ClassUtils.convertToFieldType(field.getType(), actionInputs[i]); // 转换为字段的类型
-                field.set(touchPointInstance, value); // 设置字段值
-            }
-
-            // 返回填充后的对象
-            return touchPointInstance;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create or populate inputClass instance", e);
-        }
+        ModelOutputDecoder<T, T> actionParamsDecoder = (ModelOutputDecoder<T, T>) ModelOutputDecoderSelector.selectParamsDecoder(agentActionMetaInfo.getType());
+        return actionParamsDecoder.run(actionInput, inputClass);
     }
 
 }

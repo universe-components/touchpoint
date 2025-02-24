@@ -1,14 +1,14 @@
-package com.universe.touchpoint.ai.encoder;
+package com.universe.touchpoint.agent.encoder;
 
 import com.openai.client.OpenAIClient;
 import com.openai.models.EmbeddingCreateParams;
 import com.universe.touchpoint.ai.AIModelFactory;
-import com.universe.touchpoint.ai.MediaEncoder;
+import com.universe.touchpoint.agent.ActionInputEncoder;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 
 import java.util.List;
 
-public class TextEncoder implements MediaEncoder<String, List<Double>, LangModelConfig> {
+public class TextInputEncoder implements ActionInputEncoder<String, List<Double>, LangModelConfig> {
 
     @Override
     public List<Double> run(String text, LangModelConfig modelConfig) {

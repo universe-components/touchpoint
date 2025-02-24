@@ -1,13 +1,18 @@
-package com.universe.touchpoint.ai;
+package com.universe.touchpoint.agent.decoder;
 
+import com.universe.touchpoint.agent.ModelOutputDecoder;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActionDecoder {
+public class ActionInstructionDecoder implements ModelOutputDecoder<Map<String, Object>, Double[]> {
 
-    public static Map<String, Object> run(Double[] actionData) {
+    @Override
+    public Map<String, Object> run(String params, Class<Double[]> clazz) {
+        Double[] actionData = Arrays.stream(params.split(", ")).map(Double::parseDouble).toArray(Double[]::new);
         // 确保传入的数组有7个元素
-        if (actionData == null || actionData.length != 7) {
+        if (actionData.length != 7) {
             throw new IllegalArgumentException("actionData 必须是一个包含7个元素的数组");
         }
 

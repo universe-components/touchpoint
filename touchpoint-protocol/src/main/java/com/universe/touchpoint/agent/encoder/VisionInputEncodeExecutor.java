@@ -1,7 +1,7 @@
-package com.universe.touchpoint.ai.encoder;
+package com.universe.touchpoint.agent.encoder;
 
-import com.universe.touchpoint.ai.encoder.vision.DinoV2Encoder;
-import com.universe.touchpoint.ai.encoder.vision.SigLIPEncoder;
+import com.universe.touchpoint.agent.encoder.vision.DinoV2InputEncoder;
+import com.universe.touchpoint.agent.encoder.vision.SigLIPInputEncoder;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
 import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.utils.ClassUtils;
@@ -15,23 +15,23 @@ import jep.Jep;
 import jep.JepException;
 import jep.SharedInterpreter;
 
-public class VisionEncodeExecutor {
+public class VisionInputEncodeExecutor {
 
-    private static final Map<String, VisionEncoder<?>> encoders = new HashMap<>();
+    private static final Map<String, VisionInputEncoder<?>> encoders = new HashMap<>();
     static {
-        encoders.put("dinov2_features", new DinoV2Encoder());
-        encoders.put("siglip_features", new SigLIPEncoder());
+        encoders.put("dinov2_features", new DinoV2InputEncoder());
+        encoders.put("siglip_features", new SigLIPInputEncoder());
     }
 
     public static Double[][] encode(Double[][] imageData, VisionModelConfig visionModelConfig, VisionLangModelConfig visionLangModelConfig) {
-        new DinoV2Encoder().run(imageData, visionModelConfig);
+        new DinoV2InputEncoder().run(imageData, visionModelConfig);
         try (Jep jep = new SharedInterpreter()) {
-            for (Map.Entry<String, VisionEncoder<?>> encoder : encoders.entrySet()) {
+            for (Map.Entry<String, VisionInputEncoder<?>> encoder : encoders.entrySet()) {
                 List<Class<?>> types = ClassUtils.getInterfaceGenericTypes(Objects.requireNonNull(encoders.get(encoder.getKey())).getClass());
                 if (types.contains(VisionModelConfig.class)) {
-                    jep.set(encoder.getKey(), ((VisionEncoder<VisionModelConfig>) encoder.getValue()).run(imageData, visionModelConfig));
+                    jep.set(encoder.getKey(), ((VisionInputEncoder<VisionModelConfig>) encoder.getValue()).run(imageData, visionModelConfig));
                 } else {
-                    jep.set(encoder.getKey(), ((VisionEncoder<VisionLangModelConfig>) encoder.getValue()).run(imageData, visionLangModelConfig));
+                    jep.set(encoder.getKey(), ((VisionInputEncoder<VisionLangModelConfig>) encoder.getValue()).run(imageData, visionLangModelConfig));
                 }
             }
             // 加载 Python 脚本

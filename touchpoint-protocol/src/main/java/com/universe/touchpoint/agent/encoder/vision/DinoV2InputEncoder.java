@@ -1,13 +1,13 @@
-package com.universe.touchpoint.ai.encoder.vision;
+package com.universe.touchpoint.agent.encoder.vision;
 
 import jep.Jep;
 import jep.JepException;
 import jep.SharedInterpreter;
 
-import com.universe.touchpoint.ai.encoder.VisionEncoder;
+import com.universe.touchpoint.agent.encoder.VisionInputEncoder;
 import com.universe.touchpoint.config.ai.VisionModelConfig;
 
-public class DinoV2Encoder implements VisionEncoder<VisionModelConfig> {
+public class DinoV2InputEncoder implements VisionInputEncoder<VisionModelConfig> {
 
     @Override
     public Double[][] run(Double[][] imageData, VisionModelConfig modelConfig) {
