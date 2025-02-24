@@ -3,7 +3,6 @@ package com.universe.touchpoint.socket;
 import android.content.Context;
 
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.router.RedirectActionHandler;
 import com.universe.touchpoint.socket.handler.ActionGraphDistributedHandler;
 import com.universe.touchpoint.socket.handler.ChannelEstablishedHandler;
 import com.universe.touchpoint.socket.handler.GlobalConfigDistributedHandler;
@@ -24,7 +23,6 @@ public class AgentSocketStateRouter<C extends AgentContext> {
         stateHandlerMap.put(AgentSocketState.GLOBAL_CONFIG_READY, new GlobalConfigReadyHandler<>());
         stateHandlerMap.put(AgentSocketState.ACTION_GRAPH_DISTRIBUTED, new ActionGraphDistributedHandler());
         stateHandlerMap.put(AgentSocketState.CHANNEL_ESTABLISHED, new ChannelEstablishedHandler());
-        stateHandlerMap.put(AgentSocketState.REDIRECT_ACTION_READY, new RedirectActionHandler<>());
     }
 
     public void route(C context, Context appContext, byte[] stateContextBytes, String filter) {

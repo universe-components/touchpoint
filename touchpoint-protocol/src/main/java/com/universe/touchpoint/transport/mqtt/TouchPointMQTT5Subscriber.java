@@ -13,7 +13,7 @@ import com.universe.touchpoint.plan.ResultExchanger;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.rolemodel.coordinator.CoordinatorFactory;
 import com.universe.touchpoint.rolemodel.supervisor.SupervisorFactory;
-import com.universe.touchpoint.router.RouteTable;
+import com.universe.touchpoint.router.Router;
 import com.universe.touchpoint.socket.AgentSocketState;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.AgentSocketStateRouter;
@@ -59,7 +59,7 @@ public class TouchPointMQTT5Subscriber<T extends TouchPoint, I extends TouchPoin
                 ((AgentAction<I, O>) touchPoint).setOutput(runResult);
             }
         } else if(touchPoint instanceof AgentFinish) {
-            List<AgentActionMetaInfo> predecessors = RouteTable.getInstance().getPredecessors(touchPoint.getHeader().getFromAction().getActionName());
+            List<AgentActionMetaInfo> predecessors = Router.route(touchPoint, false);
             if (predecessors == null) {
                 RoleExecutor<T, O> tpReceiver = (RoleExecutor<T, O>) TaskRoleExecutor.getInstance(task).getExecutor(topic);
                 tpReceiver.run(touchPoint, context);
