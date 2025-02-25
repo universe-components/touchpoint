@@ -73,8 +73,8 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint, I extends TouchPo
                         context,
                         new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.REDIRECT_ACTION_READY, touchPoint),
                         taskName);
-                touchPoint.setState(new TouchPointState(AgentSocketState.REDIRECT_ACTION_READY.getCode()));
                 ((AgentAction<I, O>) touchPoint).setOutput(runResult);
+                touchPoint.setState(new TouchPointState(AgentSocketState.REDIRECT_ACTION_READY.getCode()));
             }
         } else if (touchPoint instanceof AgentFinish) {
             List<AgentActionMetaInfo> predecessors = Router.route(touchPoint, false);;

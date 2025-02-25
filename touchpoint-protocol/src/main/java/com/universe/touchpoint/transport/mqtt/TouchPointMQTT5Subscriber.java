@@ -9,6 +9,7 @@ import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.context.TaskContext;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.config.transport.Transport;
+import com.universe.touchpoint.context.TouchPointState;
 import com.universe.touchpoint.plan.ResultExchanger;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.rolemodel.coordinator.CoordinatorFactory;
@@ -57,6 +58,7 @@ public class TouchPointMQTT5Subscriber<T extends TouchPoint, I extends TouchPoin
                         new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.REDIRECT_ACTION_READY, touchPoint),
                         task);
                 ((AgentAction<I, O>) touchPoint).setOutput(runResult);
+                touchPoint.setState(new TouchPointState(AgentSocketState.REDIRECT_ACTION_READY.getCode()));
             }
         } else if(touchPoint instanceof AgentFinish) {
             List<AgentActionMetaInfo> predecessors = Router.route(touchPoint, false);
