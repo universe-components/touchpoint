@@ -15,10 +15,10 @@ public class TaskBuilder {
     private static final Map<String, TaskBuilder> builderMap = new HashMap<>();
 
     public static TaskBuilder task(String task) {
-        return task(task, null);
+        return task(task, (Object) null);
     }
 
-    public static TaskBuilder task(String task, Object modalArgs) {
+    public static TaskBuilder task(String task, Object... modalArgs) {
         if (!builderMap.containsKey(task)) {
             synchronized (lock) {
                 if (!builderMap.containsKey(task)) {
@@ -37,7 +37,7 @@ public class TaskBuilder {
         this.task = task;
     }
 
-    public TaskBuilder(String task, Object modalArgs) {
+    public TaskBuilder(String task, Object... modalArgs) {
         this.task = task;
         this.modalArgs = modalArgs;
     }
