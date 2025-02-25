@@ -36,7 +36,7 @@ class RoobotVisionEncoder : ImageActionExecutor {
 @TouchPointAction(name = "action_executor", toActions = {"item_classification_placement[]"})
 class RobotActionExecutor : AgentActionExecutor<ActionSequence, TouchPoint> {
 
-    override fun run(actionSequence: ActionSequence, context: Context): ActionSequence {
+    override fun run(actionSequence: ActionSequence, context: Context): TouchPoint {
         // 执行行为序列
         ......
         ......
