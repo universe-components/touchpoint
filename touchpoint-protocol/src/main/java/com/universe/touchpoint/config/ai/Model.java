@@ -7,7 +7,7 @@ public enum Model {
     o1("o1"),
     ClAUDE_3_5_SONNET("claudan-3.5"),
     DINO_V2("facebook/dinov2-base"),
-    SIG_LIP("google/siglip-base-patch16-224"),
+    SIGLIP("google/siglip-base-patch16-224"),
     NONE("");
 
     private final String name;

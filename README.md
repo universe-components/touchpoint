@@ -223,6 +223,7 @@ class WeatherService {
 - [规则驱动工作流](./README_RULE.md)
 - [自定义上下文](./README_CONTEXT.md)
 - [VLA模型](./README_VLA.md)
+- [扩展接口](./README_EXTENSION.md)
 
 ## RoadMap
 

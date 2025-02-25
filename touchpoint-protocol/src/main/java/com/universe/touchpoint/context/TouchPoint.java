@@ -1,7 +1,6 @@
 package com.universe.touchpoint.context;
 
 import android.net.Uri;
-
 import androidx.annotation.NonNull;
 
 import com.universe.touchpoint.TouchPointConstants;
@@ -15,7 +14,7 @@ import com.universe.touchpoint.provider.TouchPointContentFactory;
 
 import java.lang.reflect.Field;
 
-public abstract class TouchPoint {
+public class TouchPoint {
 
     protected Header header;
     protected TouchPointContext context;
