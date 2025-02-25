@@ -23,6 +23,7 @@ import com.universe.touchpoint.router.Router;
 import com.universe.touchpoint.socket.AgentSocketState;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.AgentSocketStateRouter;
+import com.universe.touchpoint.utils.ClassUtils;
 import com.universe.touchpoint.utils.SerializeUtils;
 
 import java.util.List;
@@ -66,7 +67,8 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint, I extends TouchPo
                         taskName);
             } else {
                 RoleExecutor<I, O> tpReceiver = (RoleExecutor<I, O>) TaskRoleExecutor.getInstance(taskName).getExecutor(((AgentAction<?, ?>) touchPoint).getActionName());
-                O runResult = tpReceiver.run(((AgentAction<I, O>) touchPoint).getInput(), context);
+                I input = ((AgentAction<I, O>) touchPoint).getInput();
+                O runResult = tpReceiver.run((I) ClassUtils.getFirstParam(input), context);
                 // If redirecting, rebuild the ActionGraph.
                 new AgentSocketStateRouter<>().route(
                         null,

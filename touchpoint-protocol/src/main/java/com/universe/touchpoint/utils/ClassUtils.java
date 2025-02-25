@@ -9,6 +9,16 @@ import java.util.Map;
 
 public class ClassUtils {
 
+    public static Object getFirstParam(Object params) {
+        if (params != null && params.getClass().isArray()) {
+            // 类型转换为数组
+            Object[] arrayInput = (Object[]) params;
+            return arrayInput[0];  // 返回数组的第一个元素
+        } else {
+            return params;  // 返回原始输入
+        }
+    }
+
     public static Object convertToFieldType(Class<?> fieldType, String value) {
         if (fieldType == int.class || fieldType == Integer.class) {
             return Integer.parseInt(value);
