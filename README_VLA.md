@@ -21,7 +21,7 @@ data class Entry {
 }
 ```
 
-第二步：实时图像进行编码
+第二步：实时图像编码
 ```kotlin
 @TouchPointAction(name = "robot_vision_encoder", 
   toActions = {"item_classification_placement[\"action_executor\"]" })
