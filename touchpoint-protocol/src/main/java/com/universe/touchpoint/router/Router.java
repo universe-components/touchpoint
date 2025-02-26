@@ -20,10 +20,6 @@ public class Router {
         } else if (from instanceof AgentFinish) {
             actionName = from.getHeader().getFromAction().getActionName();
         }
-        if (from.getState().getRedirectToAction() != null) {
-            DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
-            return Collections.singletonList(driverRegion.getTouchPointAction(from.getState().getRedirectToAction()));
-        }
         if (isCalling) {
             return RouteTable.getInstance().getSuccessors(actionName);
         }
