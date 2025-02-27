@@ -81,11 +81,17 @@ class MediaCoordinator implements ActionGraphOperator<MovieFile> {
             ......
             ......
         }
+        if (file.getFileName().endsWith(".flv")) {
+            // replace the player action to flv in graph
+            ......
+            ......
+        }
         return graph;
     }
     
 }
 ```
+备注：开发者也可以为不同的文件格式定义不同的协调者，比如，分别实现 `mp4` 和 `flv` 的协调者。
 
 ### 总结
 |      | 接口模式                     | 协调者模式（TPP协议）                |
