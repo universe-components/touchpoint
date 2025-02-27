@@ -39,7 +39,7 @@ public class FlvPlayer implements MediaPlayer {
 ```
 ### 现在
 
-第一步：实现执行者接口
+第一步：实现执行者行为
 
 ```java
 class MovieFile extends TouchPoint {
