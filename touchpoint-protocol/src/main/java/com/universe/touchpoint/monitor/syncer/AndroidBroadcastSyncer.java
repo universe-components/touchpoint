@@ -18,18 +18,14 @@ import com.universe.touchpoint.utils.SerializeUtils;
 import java.util.Map;
 import java.util.Objects;
 
-public class AndroidBroadcastSyncer extends MetricSyncer {
-
-    public AndroidBroadcastSyncer(String task) {
-        super(task);
-    }
+public class AndroidBroadcastSyncer implements MetricSyncer {
 
     @Override
     public void initialize(MetricSocketConfig config) {
     }
 
     @Override
-    public void registerListener(Context context) {
+    public void registerListener(String task, Context context) {
         IntentFilter filter = new IntentFilter(
                 TouchPointHelper.touchPointFilterName(task, TouchPointConstants.METRIC_FILTER)
         );
@@ -37,7 +33,7 @@ public class AndroidBroadcastSyncer extends MetricSyncer {
     }
 
     @Override
-    public void sendMetrics(Pair<TaskMetric, Map<String, ActionMetric>> metricPair, Context context) {
+    public void sendMetrics(Pair<TaskMetric, Map<String, ActionMetric>> metricPair, String task, Context context) {
         Intent intent = new Intent(TouchPointHelper.touchPointFilterName(task, TouchPointConstants.METRIC_FILTER));
         intent.putExtra(TouchPointConstants.METRIC_EVENT_NAME, SerializeUtils.serializeToByteArray(metricPair));
         context.sendBroadcast(intent);

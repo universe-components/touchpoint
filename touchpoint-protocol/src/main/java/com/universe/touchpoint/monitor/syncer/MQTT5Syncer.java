@@ -10,7 +10,6 @@ import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.monitor.MetricSyncer;
 import com.universe.touchpoint.monitor.metric.ActionMetric;
 import com.universe.touchpoint.monitor.metric.TaskMetric;
-import com.universe.touchpoint.socket.AgentSocketStateRouter;
 import com.universe.touchpoint.utils.SerializeUtils;
 
 import org.eclipse.paho.mqttv5.client.MqttClient;
@@ -20,13 +19,9 @@ import org.eclipse.paho.mqttv5.common.MqttMessage;
 
 import java.util.Map;
 
-public class MQTT5Syncer extends MetricSyncer {
+public class MQTT5Syncer implements MetricSyncer {
 
     private MqttClient client;
-
-    public MQTT5Syncer(String task) {
-        super(task);
-    }
 
     @Override
     public void initialize(MetricSocketConfig config) {
@@ -41,7 +36,7 @@ public class MQTT5Syncer extends MetricSyncer {
     }
 
     @Override
-    public void registerListener(Context context) {
+    public void registerListener(String task, Context context) {
         try {
             assert context != null;
             client.subscribe(TouchPointHelper.touchPointFilterName(
@@ -61,7 +56,7 @@ public class MQTT5Syncer extends MetricSyncer {
     }
 
     @Override
-    public void sendMetrics(Pair<TaskMetric, Map<String, ActionMetric>> metricPair, Context context) {
+    public void sendMetrics(Pair<TaskMetric, Map<String, ActionMetric>> metricPair, String task, Context context) {
         String topic = TouchPointHelper.touchPointFilterName(TouchPointHelper.touchPointFilterName(
                 task,
                 TouchPointConstants.METRIC_FILTER

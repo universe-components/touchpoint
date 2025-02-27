@@ -146,7 +146,8 @@ public class TaskParticipant {
 
                 MetricSocketConfig metricSocketConfig = ConfigManager.selectMetricSocket(task);
                 assert metricSocketConfig != null;
-                MetricSyncerFactory.getSyncer(task, metricSocketConfig.getBindProtocol()).registerListener(context);
+                MetricSyncerFactory.registerSyncer(task, metricSocketConfig.getBindProtocol()).initialize(metricSocketConfig);
+                MetricSyncerFactory.getSyncer(task).registerListener(task, context);
 
                 DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
                 AgentSocketStateMachine.getInstance(task).send(

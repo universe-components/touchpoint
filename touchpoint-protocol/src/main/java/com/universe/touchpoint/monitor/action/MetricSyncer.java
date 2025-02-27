@@ -24,7 +24,7 @@ public class MetricSyncer implements AgentActionExecutor<TouchPoint, TouchPoint>
         String task = touchPoint.getContext().getTask();
         TaskMetric taskMetric = TouchPointContextManager.getTouchPointContext(task).getTaskContext().getMetric();
         Map<String, ActionMetric> actionMetrics = TouchPointContextManager.getTouchPointContext(task).getActionContext().getActionMetrics();
-        MetricSyncerFactory.getSyncer(task).sendMetrics(Pair.create(taskMetric, actionMetrics), context);
+        MetricSyncerFactory.getSyncer(task).sendMetrics(Pair.create(taskMetric, actionMetrics), task, context);
         return touchPoint;
     }
 

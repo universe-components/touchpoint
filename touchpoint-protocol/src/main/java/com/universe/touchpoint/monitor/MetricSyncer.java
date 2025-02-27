@@ -9,18 +9,12 @@ import com.universe.touchpoint.monitor.metric.TaskMetric;
 
 import java.util.Map;
 
-public abstract class MetricSyncer {
+public interface MetricSyncer {
 
-    protected String task;
+    void initialize(MetricSocketConfig config);
 
-    public MetricSyncer(String task) {
-        this.task = task;
-    }
+    void registerListener(String task, Context context);
 
-    public abstract void initialize(MetricSocketConfig config);
-
-    public abstract void registerListener(Context context);
-
-    public abstract void sendMetrics(Pair<TaskMetric, Map<String, ActionMetric>> metricPair, Context context);
+    void sendMetrics(Pair<TaskMetric, Map<String, ActionMetric>> metricPair, String task, Context context);
 
 }
