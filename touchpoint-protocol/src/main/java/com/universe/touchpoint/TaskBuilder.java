@@ -61,8 +61,8 @@ public class TaskBuilder {
         return this;
     }
 
-    public String run(String content) {
-        return Dispatcher.dispatch(content, task, modalArgs);
+    public String run(String goal) {
+        return Dispatcher.dispatch(goal, task, modalArgs);
     }
 
     public static TaskBuilder getBuilder(String task) {
