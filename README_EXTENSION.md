@@ -67,7 +67,7 @@ class Mp4Player implements AgentActionExecutor<MovieFile, TouchPoint> {
 }
 ```
 
-第二步：通过协调者替换现有播放方式
+第二步：通过协调者替换现有播放格式
 ```java
 @TouchPointAction(name = "media_coordinator", toActions = {"movie[]"})
 class MediaCoordinator implements ActionGraphOperator<MovieFile> {
@@ -75,7 +75,7 @@ class MediaCoordinator implements ActionGraphOperator<MovieFile> {
     @Override
     private ActionGraph run(MovieFile file, Context context) {
         String task = file.getContext().getTask();
-        ActionGraph graph = TouchPointContextManager.getTouchPointContext(task).getActionGraph(context);
+        ActionGraph graph = TouchPointContextManager.getTouchPointContext(task).getActionGraph();
         if (file.getFileName().endsWith(".mp4")) {
             // replace the player action to mp4 in graph
             ......
