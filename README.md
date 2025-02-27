@@ -135,6 +135,7 @@ data class WeatherResponse(val weather: String, val temperature: String) : Touch
 ```kotlin
 @TouchPointAction(
     name = "weather_action",
+    desc = "查询城市的天气信息",
     toActions = {
         "entry_agent[\"next_action\"]", 
         "task2[next_action, next_action1, next_action2"]
@@ -187,6 +188,7 @@ class WeatherService : AgentActionExecutor<WeatherRequest, WeatherResponse> {
 ```kotlin
 @TouchPointAction(
     name = "weather_action"
+    desc = "查询城市的天气信息",
 ) 
 @LangModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 @DubboService(interfaceClass = IWeatherService::class) //必须指定接口，该注解为Dubbo自带注解

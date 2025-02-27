@@ -36,7 +36,10 @@ TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包�
 
 实现 `Product Leader Action`，将 `NEED_REORDER_ACTION` 状态添加进方法输出：
 ```kotlin
-@TouchPointAction( name = "productLeader", toActions = { "projectA[\"productManager\"]" })
+@TouchPointAction( 
+  name = "productLeader", 
+  desc = "hand off to pm",
+  toActions = { "projectA[\"productManager\"]" })
 class ProductLeader : AgentActionExecutor<TeamMessage, TeamResponse> {
    
    override fun run(message: TeamMessage, context: Context) : TeamResponse {
@@ -57,7 +60,10 @@ class ProductLeader : AgentActionExecutor<TeamMessage, TeamResponse> {
 
 实现 `PM`，`PM`为协调者，实施绕过该研发小组，先和其他团队对接，即从Task中移除该研发小组：
 ```kotlin
-@TouchPointAction( name = "pm")
+@TouchPointAction( 
+  name = "pm"
+  desc = "remove R&D team from task"
+  toActions = { "projectA[]" })
 @Coordinator(task = "projectA")
 class PM : ActionGraphOperator<TeamResponse> {
 

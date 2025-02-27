@@ -23,8 +23,10 @@ data class Entry {
 
 第二步：实时图像编码
 ```kotlin
-@TouchPointAction(name = "robot_vision_encoder", 
-  toActions = {"item_classification_placement[\"action_executor\"]" })
+@TouchPointAction(
+    name = "robot_vision_encoder", 
+    desc = "图像编码",
+    toActions = {"item_classification_placement[\"action_executor\"]" })
 @VisionModel(name = Model.DINO_V2)
 @VisionLangModel(name = Model.SIGLIP)
 class RoobotVisionEncoder : ImageActionExecutor {
@@ -33,7 +35,10 @@ class RoobotVisionEncoder : ImageActionExecutor {
 
 第三步：执行行为序列
 ```kotlin
-@TouchPointAction(name = "action_executor", toActions = {"item_classification_placement[]"})
+@TouchPointAction(
+    name = "action_executor", 
+    desc = "执行行为序列",
+    toActions = {"item_classification_placement[]"})
 class RobotActionExecutor : AgentActionExecutor<ActionSequence, TouchPoint> {
 
     override fun run(actionSequence: ActionSequence, context: Context): TouchPoint {
