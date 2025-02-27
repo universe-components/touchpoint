@@ -13,8 +13,17 @@ import java.util.Set;
 
 public class ActionGraph {
 
+    private String name = "default";
     // 使用 HashMap 存储邻接表，键为 AgentActionMetaInfo 节点，值为与该节点相邻的节点列表
     private final Map<AgentActionMetaInfo, List<AgentActionMetaInfo>> adjList = new HashMap<>();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public List<AgentActionMetaInfo> getFirstNodes() {
         // 用一个集合存储所有节点

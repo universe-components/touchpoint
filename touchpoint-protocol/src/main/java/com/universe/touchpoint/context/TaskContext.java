@@ -5,6 +5,7 @@ import com.universe.touchpoint.monitor.metric.TaskMetric;
 public class TaskContext {
 
     private final String goal;
+    private String actionGraphName;
     private final TaskMetric metric = new TaskMetric();
 
     public TaskContext(String goal) {
@@ -13,6 +14,14 @@ public class TaskContext {
 
     public String getGoal() {
         return goal;
+    }
+
+    public String getActionGraphName() {
+        return actionGraphName;
+    }
+
+    public void setActionGraphName(String actionGraphName) {
+        this.actionGraphName = actionGraphName;
     }
 
     public TaskMetric getMetric() {

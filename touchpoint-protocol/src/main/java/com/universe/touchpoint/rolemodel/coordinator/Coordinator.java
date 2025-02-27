@@ -4,7 +4,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.config.ai.Model;
+import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.context.TouchPointState;
+import com.universe.touchpoint.plan.ActionGraphBuilder;
 import com.universe.touchpoint.rolemodel.RoleScope;
 import com.universe.touchpoint.rolemodel.coordinator.handler.ReorderActionReadyHandler;
 import com.universe.touchpoint.rolemodel.coordinator.handler.SwitchActionReadyHandler;
@@ -44,17 +47,35 @@ public class Coordinator<SocketInput, SocketOutput> {
         exceptionMap.put(TaskState.NEED_SWITCH_ACTION.getCode(), "Action[%s] has been changed for task[%s]");
 
         handlerMap.put(TaskState.NEED_REORDER_ACTION.getCode(), (AgentSocketStateHandler<SocketInput, SocketOutput>) new ReorderActionReadyHandler<>());
-        socketStateMap.put(TaskState.NEED_REORDER_ACTION.getCode(), AgentSocketState.GLOBAL_CONFIG_DISTRIBUTED);
+        socketStateMap.put(TaskState.NEED_REORDER_ACTION.getCode(), AgentSocketState.ACTION_GRAPH_DISTRIBUTED);
         exceptionMap.put(TaskState.NEED_REORDER_ACTION.getCode(), "ActionGraph has been rebuild for task[%s]");
     }
 
     public void execute(AgentAction<?, ?> agentAction, String task, Context context) {
         int stateCode = agentAction.getInput().getState().getCode();
         SocketOutput result = Objects.requireNonNull(handlerMap.get(stateCode)).onStateChange((SocketInput) agentAction, null, context, task);
-        AgentSocketStateMachine.getInstance(task).send(
+
+        String prevGraphName = ActionGraphBuilder.getTaskGraph(task).getName();
+        String currGraphName = agentAction.getContext().getTaskContext().getActionGraphName();
+        Model prevlangModel = agentAction.getMeta().getModel().getModel();
+        Model prevVisionModel = agentAction.getMeta().getVisionModel().getModel();
+        Model prevVisionLangModel = agentAction.getMeta().getVisionLangModel().getModel();
+        Model currlangModel = agentAction.getContext().getActionContext().getLangModel(agentAction.getActionName());
+        Model currVisionModel = agentAction.getContext().getActionContext().getVisionModel(agentAction.getActionName());
+        Model currVisionLangModel = agentAction.getContext().getActionContext().getVisionLangModel(agentAction.getActionName());
+        Transport prevTransport = agentAction.getMeta().getTransportConfig().transportType();
+        Transport currTransport = agentAction.getContext().getActionContext().getTransport(agentAction.getActionName());
+        if (!Objects.equals(prevGraphName, currGraphName)
+            || !Objects.equals(prevlangModel, currlangModel)
+            || !Objects.equals(prevVisionModel, currVisionModel)
+            || !Objects.equals(prevVisionLangModel, currVisionLangModel)
+            || !Objects.equals(prevTransport, currTransport)) {
+            AgentSocketStateMachine.getInstance(task).send(
                     new AgentSocketStateMachine.AgentSocketStateContext<>(socketStateMap.get(stateCode), result),
                     context,
                     task);
+        }
+
         String pattern = Objects.requireNonNull(exceptionMap.get(stateCode));
         if (Objects.requireNonNull(TaskState.getState(stateCode)).getScope() == RoleScope.ACTION_GRAPH) {
             Log.i("Coordinator", String.format(pattern, task));
