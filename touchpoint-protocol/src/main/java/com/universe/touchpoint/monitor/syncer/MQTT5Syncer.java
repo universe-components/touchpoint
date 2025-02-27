@@ -1,0 +1,77 @@
+package com.universe.touchpoint.monitor.syncer;
+
+import android.content.Context;
+import android.util.Pair;
+
+import com.universe.touchpoint.TouchPointConstants;
+import com.universe.touchpoint.config.metric.MetricSocketConfig;
+import com.universe.touchpoint.context.TouchPointContextManager;
+import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.monitor.MetricSyncer;
+import com.universe.touchpoint.monitor.metric.ActionMetric;
+import com.universe.touchpoint.monitor.metric.TaskMetric;
+import com.universe.touchpoint.socket.AgentSocketStateRouter;
+import com.universe.touchpoint.utils.SerializeUtils;
+
+import org.eclipse.paho.mqttv5.client.MqttClient;
+import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
+import org.eclipse.paho.mqttv5.common.MqttException;
+import org.eclipse.paho.mqttv5.common.MqttMessage;
+
+import java.util.Map;
+
+public class MQTT5Syncer extends MetricSyncer {
+
+    private MqttClient client;
+
+    public MQTT5Syncer(String task) {
+        super(task);
+    }
+
+    @Override
+    public void initialize(MetricSocketConfig config) {
+        try {
+            client = new MqttClient(config.getBrokerUri(), "agent_socket_mqtt_broker");
+            MqttConnectionOptions connectOptions = new MqttConnectionOptions();
+            connectOptions.setCleanStart(true);
+            client.connect(connectOptions);
+        } catch (MqttException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void registerListener(Context context) {
+        try {
+            assert context != null;
+            client.subscribe(TouchPointHelper.touchPointFilterName(
+                    task,
+                    TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER),
+                    1, (topic, message) -> {
+                if (message == null) {
+                    return;
+                }
+                Pair<TaskMetric, Map<String, ActionMetric>> metricPair = SerializeUtils.deserializeFromByteArray(message.getPayload(), Pair.class);
+                TouchPointContextManager.getTouchPointContext(task).getTaskContext().setMetric(metricPair.first);
+                TouchPointContextManager.getTouchPointContext(task).getActionContext().setActionMetrics(metricPair.second);
+            });
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void sendMetrics(Pair<TaskMetric, Map<String, ActionMetric>> metricPair, Context context) {
+        String topic = TouchPointHelper.touchPointFilterName(TouchPointHelper.touchPointFilterName(
+                task,
+                TouchPointConstants.METRIC_FILTER
+        ));
+        try {
+            MqttMessage message = new MqttMessage(SerializeUtils.serializeToByteArray(metricPair));
+            client.publish(topic, message);
+        } catch (MqttException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+}

@@ -60,6 +60,14 @@ public class ActionContext {
         transports.put(action, transport);
     }
 
+    public Map<String, ActionMetric> getActionMetrics() {
+        return actionMetrics;
+    }
+
+    public void setActionMetrics(Map<String, ActionMetric> actionMetrics) {
+        this.actionMetrics = actionMetrics;
+    }
+
     public ActionMetric getActionMetric(String action) {
         return actionMetrics.computeIfAbsent(action, k -> new ActionMetric());
     }

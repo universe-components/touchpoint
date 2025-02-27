@@ -6,7 +6,7 @@ public class TaskContext {
 
     private final String goal;
     private String actionGraphName;
-    private final TaskMetric metric = new TaskMetric();
+    private TaskMetric metric;
 
     public TaskContext(String goal) {
         this.goal = goal;
@@ -26,6 +26,10 @@ public class TaskContext {
 
     public TaskMetric getMetric() {
         return metric;
+    }
+
+    public void setMetric(TaskMetric metric) {
+        this.metric = metric;
     }
 
 }

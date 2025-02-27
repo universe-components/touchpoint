@@ -26,6 +26,7 @@ import com.universe.touchpoint.config.mapping.LangModelConfigMapping;
 import com.universe.touchpoint.config.mapping.CoordinatorConfigMapping;
 import com.universe.touchpoint.config.mapping.SupervisorConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
+import com.universe.touchpoint.monitor.MetricSyncerFactory;
 import com.universe.touchpoint.socket.context.TaskActionContext;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.memory.Region;
@@ -145,6 +146,7 @@ public class TaskParticipant {
 
                 MetricSocketConfig metricSocketConfig = ConfigManager.selectMetricSocket(task);
                 assert metricSocketConfig != null;
+                MetricSyncerFactory.getSyncer(task, metricSocketConfig.getBindProtocol()).registerListener(context);
 
                 DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
                 AgentSocketStateMachine.getInstance(task).send(

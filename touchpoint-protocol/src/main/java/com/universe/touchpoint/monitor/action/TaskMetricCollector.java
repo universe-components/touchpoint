@@ -10,7 +10,7 @@ import com.universe.touchpoint.context.TouchPointContextManager;
 @TouchPointAction(
         name = "task_metric_collector",
         desc = "collect task metrics",
-        toAgents = {"collect_metrics[]"})
+        toAgents = {"collect_metrics[metrics_syncer]"})
 public class TaskMetricCollector implements AgentActionExecutor<TouchPoint, TouchPoint> {
 
     @Override
