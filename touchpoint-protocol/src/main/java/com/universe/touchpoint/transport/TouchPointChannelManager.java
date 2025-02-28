@@ -1,11 +1,12 @@
 package com.universe.touchpoint.transport;
 
 import android.content.Context;
-
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.api.RoleExecutor;
+import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.RPCConfig;
+import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastChannel;
 import com.universe.touchpoint.transport.mqtt.TouchPointMQTT5Publisher;
@@ -32,9 +33,10 @@ public class TouchPointChannelManager {
         }
     }
 
-    public static <C> TouchPointChannel<?> selectChannel(AgentActionMetaInfo actionMeta, Context context) {
-        Transport transport = actionMeta.getTransportConfig().transportType();
-        C config = (C) actionMeta.getTransportConfig().config();
+    public static <C> TouchPointChannel<?> selectChannel(AgentActionMetaInfo actionMeta, String task, Context context) {
+        TransportConfig<C> transportConfig = ConfigManager.selectTransport(actionMeta.getActionName(), task);
+        Transport transport = transportConfig.transportType();
+        C config = transportConfig.config();
 
         if (transport == null) {
             return new TouchPointBroadcastChannel(context);

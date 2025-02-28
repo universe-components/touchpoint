@@ -39,7 +39,7 @@ public class TouchPointContextManager {
 
     public static AgentAction<?, ?> generateTouchPoint(AgentAction<?, ?> action, String content) {
         Context ctx = Agent.getContext();
-        TouchPointChannel<?> channel = TouchPointChannelManager.selectChannel(action.getMeta(), ctx);
+        TouchPointChannel<?> channel = TouchPointChannelManager.selectChannel(action.getMeta(), action.getContext().getTask(), ctx);
 
         action.setHeader(new TouchPoint.Header(action.getMeta(), channel));
         action.getContext().setTaskContext(new TaskContext(content));
