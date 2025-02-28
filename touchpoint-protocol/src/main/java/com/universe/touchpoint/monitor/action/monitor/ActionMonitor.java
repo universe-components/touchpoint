@@ -1,30 +1,29 @@
-package com.universe.touchpoint.monitor.action;
+package com.universe.touchpoint.monitor.action.monitor;
 
 import android.content.Context;
 
 import com.universe.touchpoint.context.TouchPoint;
-import com.universe.touchpoint.context.TaskContext;
-import com.universe.touchpoint.api.checker.TaskChecker;
+import com.universe.touchpoint.api.checker.ActionChecker;
 import com.universe.touchpoint.config.ConfigManager;
-import com.universe.touchpoint.config.metric.TaskMetricConfig;
+import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.monitor.MonitorResult;
 import com.universe.touchpoint.context.state.DriverState;
 import com.universe.touchpoint.context.state.enums.TaskState;
 
-public class TaskMonitor<T extends TouchPoint> implements TaskChecker<T, MonitorResult> {
+public class ActionMonitor<T extends TouchPoint> implements ActionChecker<T, MonitorResult> {
 
     @Override
     public MonitorResult run(T touchPoint, Context context) {
+        String ctxAction = touchPoint.getContext().getAction();
         String task = touchPoint.getContext().getTask();
-        TaskContext taskContext = touchPoint.getContext().getTaskContext();
-        TaskMetricConfig metricConfig = ConfigManager.selectTaskMetricConfig(task);
+        ActionMetricConfig metricConfig = ConfigManager.selectActionMetricConfig(ctxAction, task);
         MonitorResult monitorResult = new MonitorResult();
 
         assert metricConfig != null;
-        if (taskContext.getMetric().getRetryActionCount() > metricConfig.getMaxRetryActionCount()) {
+        if (touchPoint.getContext().getActionContext().getActionMetric(ctxAction).getPredictionCount() > metricConfig.getMaxPredictionCount()) {
             monitorResult.setState(new DriverState(
-                    TaskState.NEED_REORDER_ACTION.getCode(),
-                    "The task has too many action retries",
+                    TaskState.NEED_SWITCH_LANG_MODEL.getCode(),
+                    "The AI model has too many prediction rounds and still hasn't provided a final result",
                     touchPoint.getHeader().getToAction().getActionName()));
             return monitorResult;
         }
