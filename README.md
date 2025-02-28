@@ -40,7 +40,7 @@ The TPP protocol adheres to the philosophy of "All is Action", achieving a truly
 
 - **Supports Multiple AI Models**: The protocol supports various models, including GPT-3, GPT-3.5, GPT-4, Claude-3, Claude-3.5, DINOv2, SigLIP, etc.
 
-## 架构
+## Architecture
 
 <div align="center">
   <img src="architecture.jpg" alt="Architecture" />
