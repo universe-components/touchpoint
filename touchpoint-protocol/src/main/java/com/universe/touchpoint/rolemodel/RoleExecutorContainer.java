@@ -2,8 +2,8 @@ package com.universe.touchpoint.rolemodel;
 
 import com.universe.touchpoint.api.RoleConstants;
 import com.universe.touchpoint.api.RoleExecutor;
-import com.universe.touchpoint.monitor.action.monitor.TaskMonitor;
-import com.universe.touchpoint.monitor.action.monitor.ActionMonitor;
+import com.universe.touchpoint.monitor.action.alarm.TaskMonitor;
+import com.universe.touchpoint.monitor.action.alarm.ActionMonitor;
 
 import java.util.HashMap;
 import java.util.Map;
