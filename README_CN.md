@@ -43,7 +43,7 @@ TPP协议秉承 “ 一切皆行为 ” 的理念，实现了真正意义上的�
 ## 架构
 
 <div align="center">
-  <img src="architecture.jpg" alt="Architecture" />
+  <img src="architecture_cn.jpg" alt="Architecture" />
 </div>
 
 ## Quick start
