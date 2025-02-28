@@ -6,6 +6,7 @@ import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.api.checker.ActionChecker;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
+import com.universe.touchpoint.context.TouchPointContextManager;
 import com.universe.touchpoint.monitor.MonitorResult;
 import com.universe.touchpoint.context.state.DriverState;
 import com.universe.touchpoint.context.state.enums.TaskState;
@@ -20,7 +21,7 @@ public class ActionMonitor<T extends TouchPoint> implements ActionChecker<T, Mon
         MonitorResult monitorResult = new MonitorResult();
 
         assert metricConfig != null;
-        if (touchPoint.getContext().getActionContext().getActionMetric(ctxAction).getPredictionCount() > metricConfig.getMaxPredictionCount()) {
+        if (TouchPointContextManager.getTouchPointContext(task).getActionContext().getActionMetric(ctxAction).getPredictionCount() > metricConfig.getMaxPredictionCount()) {
             monitorResult.setState(new DriverState(
                     TaskState.NEED_SWITCH_LANG_MODEL.getCode(),
                     "The AI model has too many prediction rounds and still hasn't provided a final result",

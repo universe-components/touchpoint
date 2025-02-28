@@ -68,7 +68,7 @@ dependencies {
 // 以两个Agent都是apk为例
 AgentSocket.bind(./"weather_agent.apk", BinderType.ANDROID_BINDER);
 ```
-备注：仅同一节点部署需要显式绑定。
+备注：仅同一节点且多个Agent分属不同apk，部署需要显式绑定，如果多个Agent在一个apk内，无需显式绑定。
 
 ### 实现Agent
 
