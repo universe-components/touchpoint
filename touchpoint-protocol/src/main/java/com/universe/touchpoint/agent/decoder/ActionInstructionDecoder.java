@@ -1,6 +1,6 @@
 package com.universe.touchpoint.agent.decoder;
 
-import com.universe.touchpoint.ActionSequence;
+import com.universe.touchpoint.agent.ActionSequence;
 import com.universe.touchpoint.agent.ModelOutputDecoder;
 import java.util.Arrays;
 
@@ -12,7 +12,7 @@ public class ActionInstructionDecoder implements ModelOutputDecoder<ActionSequen
 
         // 确保传入的数组有7个元素
         if (actionData.length != 7) {
-            throw new IllegalArgumentException("actionData 必须是一个包含7个元素的数组");
+            throw new IllegalArgumentException("actionData must contain 7 elements");
         }
 
         // 创建位置变化对象
