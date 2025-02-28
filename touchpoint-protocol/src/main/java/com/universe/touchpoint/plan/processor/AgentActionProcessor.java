@@ -26,7 +26,7 @@ public class AgentActionProcessor<I extends TouchPoint, O extends TouchPoint> im
     public <NewInput extends TouchPoint, NewOutput extends TouchPoint> Pair<List<AgentAction<NewInput, NewOutput>>, AgentFinish> process(AgentAction<I, O> result, String goal, String task, Context context, Transport transportType) {
         LangModelConfig modelConfig = ConfigManager.selectModel(goal, result.getMeta(), task);
 
-        List<AgentActionMetaInfo> nextActions = Router.route(result, true);;
+        List<AgentActionMetaInfo> nextActions = Router.route(result, true);
 
         String input = PromptBuilder.createPromptGenerator(modelConfig.getType()).generatePrompt(nextActions, result, goal);
         Map<Object, List<Object>> choices = AIModelFactory.callModel(input, modelConfig);

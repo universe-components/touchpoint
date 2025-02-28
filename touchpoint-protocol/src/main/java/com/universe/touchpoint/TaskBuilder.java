@@ -1,5 +1,6 @@
 package com.universe.touchpoint;
 
+import android.content.Context;
 import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.context.TouchPoint;
 import java.util.HashMap;
@@ -11,21 +12,27 @@ public class TaskBuilder {
 
     private final String task;
     private final AgentConfig config = new AgentConfig();
+    private final TaskCallbackListener callbackListener;
     private static final Map<String, TaskBuilder> builderMap = new HashMap<>();
 
     public static TaskBuilder task(String task) {
+        return task(task, null);
+    }
+
+    public static TaskBuilder task(String task, TaskCallbackListener callbackListener) {
         if (!builderMap.containsKey(task)) {
             synchronized (lock) {
                 if (!builderMap.containsKey(task)) {
-                    builderMap.put(task, new TaskBuilder(task));
+                    builderMap.put(task, new TaskBuilder(task, callbackListener));
                 }
             }
         }
         return builderMap.get(task);
     }
 
-    public TaskBuilder(String task) {
+    public TaskBuilder(String task, TaskCallbackListener callbackListener) {
         this.task = task;
+        this.callbackListener = callbackListener;
     }
 
     public TaskBuilder model(Model model) {
@@ -61,6 +68,16 @@ public class TaskBuilder {
 
     public AgentConfig getConfig() {
         return config;
+    }
+
+    public TaskCallbackListener getCallbackListener() {
+        return callbackListener;
+    }
+
+    public static abstract class TaskCallbackListener {
+
+        public abstract <T> void onSuccess(T result, Context context);
+
     }
 
 }

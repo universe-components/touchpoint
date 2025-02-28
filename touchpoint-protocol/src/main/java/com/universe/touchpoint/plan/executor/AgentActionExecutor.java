@@ -44,7 +44,7 @@ public class AgentActionExecutor<I extends TouchPoint, O> extends ActionExecutor
     }
 
     @Override
-    public <RunResult> void afterRun(AgentAction<I, O> action, RunResult runResult, Context context) {
+    public <RunResult> AgentAction<I, O> afterRun(AgentAction<I, O> action, RunResult runResult, Context context) {
         String taskName = action.getContext().getTask();
         // If redirecting, rebuild the ActionGraph.
         new AgentSocketStateRouter<>().route(
@@ -53,6 +53,7 @@ public class AgentActionExecutor<I extends TouchPoint, O> extends ActionExecutor
                 new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.REDIRECT_ACTION_READY, action),
                 taskName);
         action.setOutput((O) runResult);
+        return action;
     }
 
 }

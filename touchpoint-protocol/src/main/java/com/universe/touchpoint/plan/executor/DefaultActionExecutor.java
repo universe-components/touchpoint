@@ -1,7 +1,6 @@
 package com.universe.touchpoint.plan.executor;
 
 import android.content.Context;
-
 import com.universe.touchpoint.api.executor.TouchPointExecutor;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.plan.ActionExecutor;
@@ -24,7 +23,8 @@ public class DefaultActionExecutor<T extends TouchPoint> extends ActionExecutor<
     }
 
     @Override
-    public <RunResult> void afterRun(T touchPoint, RunResult runResult, Context context) {
+    public <RunResult> T afterRun(T touchPoint, RunResult runResult, Context context) {
+        return null;
     }
 
 }
