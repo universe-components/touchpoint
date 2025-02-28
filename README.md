@@ -46,7 +46,7 @@ TPP协议秉承 “ 一切皆行为 ” 的理念，实现了真正意义上的�
   <img src="architecture.jpg" alt="Architecture" />
 </div>
 
-## 使用指南
+## Quick start
 
 ### 导入依赖
 
