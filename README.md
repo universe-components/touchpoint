@@ -43,7 +43,7 @@ The TPP protocol adheres to the philosophy of "All is Action", achieving a truly
 ## Architecture
 
 <div align="center">
-  <img src="architecture_cn.jpg" alt="Architecture" />
+  <img src="architecture.jpg" alt="Architecture" />
 </div>
 
 ## Quick start
