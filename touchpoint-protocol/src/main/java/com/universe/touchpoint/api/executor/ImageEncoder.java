@@ -9,7 +9,7 @@ import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.DriverRegion;
 
-public abstract class ImageActionExecutor implements RoleExecutor<ImageData, Double[]> {
+public abstract class ImageEncoder implements RoleExecutor<ImageData, Double[]> {
 
     @Override
     public Double[] run(ImageData imageData, Context context) {

@@ -14,8 +14,14 @@ data class Entry {
     @LangModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 指定模型, 默认使用o1
     val taskBuilder: TaskBuilder;
 
-    fun classifiedPlacement() {
+    fun classifiedPlacement(imageData: ImageData) {
         TaskBuilder.task("item_classification_placement").run("Please help me place these items you see into the fridge and the basket, respectively.", imageData)
+    }
+
+    class ImageData(private val data: Array<Array<Double>>) {
+        fun getData(): Array<Array<Double>> {
+            return data
+        }
     }
 
 }
@@ -29,7 +35,7 @@ data class Entry {
     toActions = {"item_classification_placement[\"action_executor\"]" })
 @VisionModel(name = Model.DINO_V2)
 @VisionLangModel(name = Model.SIGLIP)
-class RoobotVisionEncoder : ImageActionExecutor {
+class RoobotVisionEncoder : ImageEncoder {
 }
 ```
 

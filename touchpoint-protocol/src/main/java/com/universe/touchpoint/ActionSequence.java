@@ -1,4 +1,4 @@
-package com.universe.touchpoint.agent.params;
+package com.universe.touchpoint;
 
 import com.universe.touchpoint.context.TouchPoint;
 

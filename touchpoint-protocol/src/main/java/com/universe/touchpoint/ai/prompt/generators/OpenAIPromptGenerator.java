@@ -8,7 +8,7 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.ai.prompt.PromptGenerator;
 import com.universe.touchpoint.ai.prompt.template.OpenAITemplate;
-import com.universe.touchpoint.api.executor.ImageActionExecutor;
+import com.universe.touchpoint.api.executor.ImageEncoder;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.utils.ClassUtils;
 
@@ -43,7 +43,7 @@ public class OpenAIPromptGenerator implements PromptGenerator {
             String actionInput;
             String observation;
             try {
-                isImageAction = ClassUtils.implementsInterface(Class.forName(action.getMeta().getClassName()), ImageActionExecutor.class);
+                isImageAction = ClassUtils.implementsInterface(Class.forName(action.getMeta().getClassName()), ImageEncoder.class);
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }

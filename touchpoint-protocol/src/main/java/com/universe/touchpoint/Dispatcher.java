@@ -2,24 +2,21 @@ package com.universe.touchpoint;
 
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.agent.params.ModalArguments;
 import com.universe.touchpoint.context.TaskContext;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
 import com.universe.touchpoint.plan.ResultDispatcher;
 
-import java.util.Arrays;
-
 public class Dispatcher {
 
-    public static String dispatch(String content, String task, Object... args) {
+    public static <T extends TouchPoint> String dispatch(String content, String task, T params) {
         StringBuilder resultBuilder = new StringBuilder();
         ActionGraphBuilder.getTaskGraph(task).getFirstNodes().forEach(
             actionMeta -> {
-                AgentAction<ModalArguments, ?> action = new AgentAction<>(actionMeta.getActionName(), actionMeta, new TouchPoint.Header(actionMeta), task);
+                AgentAction<T, ?> action = new AgentAction<>(actionMeta.getActionName(), actionMeta, new TouchPoint.Header(actionMeta), task);
                 action.getContext().setTaskContext(new TaskContext(content));
-                if (args != null) {
-                    action.setInput(new ModalArguments(Arrays.asList(args)));
+                if (params != null) {
+                    action.setInput(params);
                 }
                 String result = ResultDispatcher.run(action, actionMeta, Agent.getContext());
                 resultBuilder.append(result).append("\n");

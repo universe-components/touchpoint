@@ -44,9 +44,7 @@ public class ActionGraphDistributedHandler implements AgentSocketStateHandler<Ac
             predecessors.forEach(action -> registry.register(context, actionMetaInfo, action.getActionName(), task));
             successors.forEach(action -> {
                 try {
-                    manager.registerAgentFinishReceiver(
-                            context,
-                            action.getActionName());
+                    manager.registerAgentFinishReceiver(context, action.getActionName());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

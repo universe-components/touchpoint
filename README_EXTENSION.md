@@ -9,9 +9,9 @@
 第一步：定义接口
 ```java
 public interface MediaPlayer {
-    
+
     void play(String fileName);
-    
+
 }
 ```
 
@@ -39,7 +39,7 @@ public class FlvPlayer implements MediaPlayer {
 ```
 ### 现在
 
-第一步：实现执行者行为
+第一步：实现执行者接口
 
 ```java
 class MovieFile extends TouchPoint {
@@ -52,7 +52,7 @@ class MovieFile extends TouchPoint {
     
 }
 
-@TouchPointAction(name = "mp4_player", toActions = {"movie[]"})
+@TouchPointAction(name = "mp4_player", desc = "play mp4 video", toActions = {"movie[]"})
 class Mp4Player implements AgentActionExecutor<MovieFile, TouchPoint> {
 
     @Override
@@ -67,11 +67,12 @@ class Mp4Player implements AgentActionExecutor<MovieFile, TouchPoint> {
 }
 ```
 
-第二步：通过协调者替换现有播放格式
+第二步：实现协调者，替换现有播放格式
 ```java
-@TouchPointAction(name = "media_coordinator", toActions = {"movie[]"})
+@TouchPointAction(name = "media_coordinator", desc = "switch video player", toActions = {"movie[]"})
+@Coordinator(task = "movie")
 class MediaCoordinator implements ActionGraphOperator<MovieFile> {
-    
+
     @Override
     private ActionGraph run(MovieFile file, Context context) {
         String task = file.getContext().getTask();
@@ -88,7 +89,7 @@ class MediaCoordinator implements ActionGraphOperator<MovieFile> {
         }
         return graph;
     }
-    
+
 }
 ```
 备注：开发者也可以为不同的文件格式定义不同的协调者，比如，分别实现 `mp4` 和 `flv` 的协调者。

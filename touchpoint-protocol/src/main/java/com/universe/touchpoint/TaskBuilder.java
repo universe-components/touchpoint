@@ -1,7 +1,7 @@
 package com.universe.touchpoint;
 
 import com.universe.touchpoint.config.ai.Model;
-
+import com.universe.touchpoint.context.TouchPoint;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,23 +10,14 @@ public class TaskBuilder {
     private static final Object lock = new Object();
 
     private final String task;
-    private Object modalArgs;
     private final AgentConfig config = new AgentConfig();
     private static final Map<String, TaskBuilder> builderMap = new HashMap<>();
 
     public static TaskBuilder task(String task) {
-        return task(task, (Object) null);
-    }
-
-    public static TaskBuilder task(String task, Object... modalArgs) {
         if (!builderMap.containsKey(task)) {
             synchronized (lock) {
                 if (!builderMap.containsKey(task)) {
-                    if (modalArgs == null) {
-                        builderMap.put(task, new TaskBuilder(task));
-                    } else {
-                        builderMap.put(task, new TaskBuilder(task, modalArgs));
-                    }
+                    builderMap.put(task, new TaskBuilder(task));
                 }
             }
         }
@@ -35,11 +26,6 @@ public class TaskBuilder {
 
     public TaskBuilder(String task) {
         this.task = task;
-    }
-
-    public TaskBuilder(String task, Object... modalArgs) {
-        this.task = task;
-        this.modalArgs = modalArgs;
     }
 
     public TaskBuilder model(Model model) {
@@ -62,7 +48,11 @@ public class TaskBuilder {
     }
 
     public String run(String goal) {
-        return Dispatcher.dispatch(goal, task, modalArgs);
+        return Dispatcher.dispatch(goal, task, null);
+    }
+
+    public <T extends TouchPoint> String run(String goal, T params) {
+        return Dispatcher.dispatch(goal, task, params);
     }
 
     public static TaskBuilder getBuilder(String task) {

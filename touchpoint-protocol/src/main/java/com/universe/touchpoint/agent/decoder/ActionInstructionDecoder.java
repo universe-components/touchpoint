@@ -1,6 +1,6 @@
 package com.universe.touchpoint.agent.decoder;
 
-import com.universe.touchpoint.agent.params.ActionSequence;
+import com.universe.touchpoint.ActionSequence;
 import com.universe.touchpoint.agent.ModelOutputDecoder;
 import java.util.Arrays;
 
