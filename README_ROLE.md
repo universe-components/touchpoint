@@ -91,7 +91,7 @@ class PM : ActionGraphOperator<TeamResponse> {
                 adjList.get(predecessor).add(successor);
             }
         }
-
+        // 移除研发小组节点
         adjList.remove(actionMeta);
         for (List<AgentActionMetaInfo> neighbors : adjList.values()) {
             neighbors.remove(actionMeta);
