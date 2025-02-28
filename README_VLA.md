@@ -14,14 +14,9 @@ data class Entry {
     @LangModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 指定模型, 默认使用o1
     val taskBuilder: TaskBuilder;
 
-    fun classifiedPlacement(imageData: ImageData) {
+    fun classifiedPlacement(imageBytes: Array<Array<Double>>) {
+        val imageData = ImageData(imageBytes)
         TaskBuilder.task("item_classification_placement").run("Please help me place these items you see into the fridge and the basket, respectively.", imageData)
-    }
-
-    class ImageData(private val data: Array<Array<Double>>) {
-        fun getData(): Array<Array<Double>> {
-            return data
-        }
     }
 
 }
