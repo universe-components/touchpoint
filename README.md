@@ -50,7 +50,7 @@ The TPP protocol adheres to the philosophy of "All is Action", achieving a truly
 
 ### Import dependencies
 
-Add the following dependency to your build.gradle file:
+Add the following dependency to your `build.gradle` file:
 ```gradle
 dependencies {
     implementation 'com.universe.touchpoint:touchpoint-protocol:1.0.0'
@@ -58,10 +58,10 @@ dependencies {
 ```
 
 ### Example
-Taking the Shanghai weather as an example, there is an entry Entry Agent and a Weather Agent.
+Taking the Shanghai weather as an example, there is an `Entry Agent` and a `Weather Agent`.
 
 ### Binding Agents
-If the Entry Agent and Weather Agent are deployed on the same node, you need to add the following code in Entry Agent to complete the binding:
+If the `Entry Agent` and `Weather Agent` are deployed on the same node, you need to add the following code in `Entry Agent` to complete the binding:
 ```kotlin
 // both Agents are APKs
 AgentSocket.bind(./"weather_agent.apk", BinderType.ANDROID_BINDER);
