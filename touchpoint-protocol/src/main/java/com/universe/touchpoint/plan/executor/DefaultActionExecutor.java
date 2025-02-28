@@ -7,7 +7,7 @@ import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.plan.ActionExecutor;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 
-public class DefaultExecutor<T extends TouchPoint> extends ActionExecutor<T> {
+public class DefaultActionExecutor<T extends TouchPoint> extends ActionExecutor<T> {
 
     @Override
     public boolean beforeRun(T touchPoint, Context context) {

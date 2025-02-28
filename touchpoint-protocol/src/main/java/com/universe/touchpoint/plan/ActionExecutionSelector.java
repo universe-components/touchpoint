@@ -5,7 +5,7 @@ import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.plan.executor.AgentActionExecutor;
 import com.universe.touchpoint.plan.executor.AgentFinishExecutor;
-import com.universe.touchpoint.plan.executor.DefaultExecutor;
+import com.universe.touchpoint.plan.executor.DefaultActionExecutor;
 
 public class ActionExecutionSelector {
 
@@ -16,7 +16,7 @@ public class ActionExecutionSelector {
         if (touchPoint instanceof AgentFinish) {
             return new AgentFinishExecutor();
         }
-        return new DefaultExecutor<>();
+        return new DefaultActionExecutor<>();
     }
 
 }
