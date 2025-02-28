@@ -246,3 +246,4 @@ class WeatherService {
 1. **支持DeepSeek、Claude等模型**
 2. **支持jar、exe、ipa、py等Agent文件类型**
 3. **支持多Action并行**
+4. **传输层Action化**
