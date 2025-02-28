@@ -14,9 +14,9 @@ public class TouchPointBroadcastReceiverRegistry implements TouchPointTransportR
 
     @Override
     public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String previousAction, String task) {
-        TouchPointBroadcastReceiver<? extends TouchPoint, ?, ?> tpReceiver;
+        TouchPointBroadcastReceiver<? extends TouchPoint> tpReceiver;
         try {
-            tpReceiver = new TouchPointBroadcastReceiver<>(AgentAction.class, context);
+            tpReceiver = new TouchPointBroadcastReceiver<>(AgentAction.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

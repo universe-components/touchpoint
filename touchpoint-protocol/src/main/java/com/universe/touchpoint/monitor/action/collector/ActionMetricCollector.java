@@ -1,4 +1,4 @@
-package com.universe.touchpoint.monitor.action;
+package com.universe.touchpoint.monitor.action.collector;
 
 import android.content.Context;
 

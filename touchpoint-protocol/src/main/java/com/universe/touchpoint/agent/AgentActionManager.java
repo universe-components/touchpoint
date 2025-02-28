@@ -80,7 +80,7 @@ public class AgentActionManager {
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     public void registerAgentFinishReceiver(Context appContext, String filter) {
-        TouchPointBroadcastReceiver<? extends TouchPoint, ?, ?> agentFinishReceiver = new TouchPointBroadcastReceiver<>(AgentFinish.class, appContext);
+        TouchPointBroadcastReceiver<? extends TouchPoint> agentFinishReceiver = new TouchPointBroadcastReceiver<>(AgentFinish.class);
 
         IntentFilter agentFinishFilter = new IntentFilter(TouchPointHelper.touchPointFilterName(filter));
         appContext.registerReceiver(agentFinishReceiver, agentFinishFilter, Context.RECEIVER_EXPORTED);

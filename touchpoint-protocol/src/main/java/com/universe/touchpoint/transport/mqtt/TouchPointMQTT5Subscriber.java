@@ -3,26 +3,13 @@ package com.universe.touchpoint.transport.mqtt;
 import android.content.Context;
 
 import com.universe.touchpoint.context.TouchPoint;
-import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
-import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.context.TaskContext;
-import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.config.transport.Transport;
-import com.universe.touchpoint.context.TouchPointState;
+import com.universe.touchpoint.plan.ActionExecutionSelector;
+import com.universe.touchpoint.plan.ActionExecutor;
 import com.universe.touchpoint.plan.ResultExchanger;
-import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
-import com.universe.touchpoint.rolemodel.coordinator.CoordinatorFactory;
-import com.universe.touchpoint.rolemodel.supervisor.SupervisorFactory;
-import com.universe.touchpoint.router.Router;
-import com.universe.touchpoint.socket.AgentSocketState;
-import com.universe.touchpoint.socket.AgentSocketStateMachine;
-import com.universe.touchpoint.socket.AgentSocketStateRouter;
 import com.universe.touchpoint.utils.SerializeUtils;
-
 import org.eclipse.paho.mqttv5.common.MqttMessage;
-
-import java.util.List;
 
 public class TouchPointMQTT5Subscriber<T extends TouchPoint, I extends TouchPoint, O extends TouchPoint> {
 
@@ -33,44 +20,13 @@ public class TouchPointMQTT5Subscriber<T extends TouchPoint, I extends TouchPoin
     }
 
 
-    public void handleMessage(String topic, MqttMessage message, Context context) {
+    public void handleMessage(MqttMessage message, Context context) {
         T touchPoint = SerializeUtils.deserializeFromByteArray(message.getPayload(), tpClass);
-        String task = touchPoint.getContext().getTask();
+        String taskName = touchPoint.getContext().getTask();
         TaskContext taskContext = touchPoint.getContext().getTaskContext();
 
-        if (touchPoint instanceof AgentAction) {
-            int stateCode = ((AgentAction<I, O>) touchPoint).getInput().getState().getCode();
-            if (stateCode >= 300 && stateCode < 400) {
-                CoordinatorFactory.getCoordinator(task).execute((AgentAction<I, O>) touchPoint, task, context);
-            } else if (stateCode >= 400) {
-                SupervisorFactory.getSupervisor(task).execute((AgentAction<I, O>) touchPoint, task, context);
-                new AgentSocketStateRouter<>().route(
-                        null,
-                        context,
-                        new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.REDIRECT_ACTION_READY, touchPoint),
-                        task);
-            } else {
-                RoleExecutor<I, O> tpReceiver = (RoleExecutor<I, O>) TaskRoleExecutor.getInstance(task).getExecutor(((AgentAction<?, ?>) touchPoint).getActionName());
-                O runResult = tpReceiver.run(((AgentAction<I, O>) touchPoint).getInput(), context);
-                new AgentSocketStateRouter<>().route(
-                        null,
-                        context,
-                        new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.REDIRECT_ACTION_READY, touchPoint),
-                        task);
-                ((AgentAction<I, O>) touchPoint).setOutput(runResult);
-                touchPoint.setState(new TouchPointState(AgentSocketState.REDIRECT_ACTION_READY.getCode()));
-            }
-        } else if(touchPoint instanceof AgentFinish) {
-            List<AgentActionMetaInfo> predecessors = Router.route(touchPoint, false);
-            if (predecessors == null) {
-                RoleExecutor<T, O> tpReceiver = (RoleExecutor<T, O>) TaskRoleExecutor.getInstance(task).getExecutor(topic);
-                tpReceiver.run(touchPoint, context);
-            }
-        } else {
-            RoleExecutor<T, O> tpReceiver = (RoleExecutor<T, O>) TaskRoleExecutor.getInstance(task).getExecutor(topic);
-            tpReceiver.run(touchPoint, context);
-        }
-        ResultExchanger.exchange(touchPoint, taskContext.getGoal(), null, null, Transport.BROADCAST);
+        ((ActionExecutor<T>) ActionExecutionSelector.getExecutor(touchPoint)).execute(touchPoint, context);
+        ResultExchanger.exchange(touchPoint, taskContext.getGoal(), taskName, context, Transport.BROADCAST);
     }
 
 }

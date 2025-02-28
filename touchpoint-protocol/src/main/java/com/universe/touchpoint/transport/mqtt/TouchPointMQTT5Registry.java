@@ -40,7 +40,7 @@ public class TouchPointMQTT5Registry implements TouchPointTransportRegistry<MQTT
                 // 接收到消息时的回调
                 TouchPointMQTT5Subscriber<?, ?, ?> subscriber = messageSubscribers.get(topic);
                 assert subscriber != null;
-                subscriber.handleMessage(topic, message, context);
+                subscriber.handleMessage(message, context);
             });
             messageSubscribers.put(
                     TouchPointHelper.touchPointFilterName(previousAction),
