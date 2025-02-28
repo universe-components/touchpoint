@@ -100,7 +100,7 @@ data class Entry {
 
 }
 ```
-Note: The configuration above is for the task scope. The Dubbo annotation specifies the communication protocol for the collaboration execution flow, defaulting to AndroidBroadcast.
+Note: The configuration above is for the task scope. The `Dubbo` annotation specifies the communication protocol for the collaboration execution flow, defaulting to `AndroidBroadcast`.
 
 #### Weather Agent
 
