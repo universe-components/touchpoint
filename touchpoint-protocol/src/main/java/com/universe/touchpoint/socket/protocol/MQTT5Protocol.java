@@ -8,7 +8,6 @@ import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.socket.AgentSocketHelper;
 import com.universe.touchpoint.socket.AgentSocketProtocol;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.AgentSocketStateRouter;
@@ -50,12 +49,12 @@ public class MQTT5Protocol implements AgentSocketProtocol {
         try {
             assert context != null;
             String role = context instanceof TaskActionContext ? ActionRole.PROPOSER.name() : ActionRole.PARTICIPANT.name();
-            String socketFilter = AgentSocketHelper.socketFilter(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, context.getBelongTask(), role);
+            String socketFilter = TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, context.getBelongTask(), role);
             client.subscribe(TouchPointHelper.touchPointFilterName(socketFilter), 1, (topic, message) -> {
                 if (message == null) {
                     return;
                 }
-                new AgentSocketStateRouter<>().route(context, appContext, message.getPayload(), AgentSocketHelper.extractTask(topic));
+                new AgentSocketStateRouter<>().route(context, appContext, message.getPayload(), TouchPointHelper.extractFilter(topic));
             });
         } catch (Exception e) {
             throw new RuntimeException(e);

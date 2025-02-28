@@ -8,11 +8,11 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.context.TouchPointState;
+import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
 import com.universe.touchpoint.rolemodel.RoleScope;
 import com.universe.touchpoint.rolemodel.coordinator.handler.ReorderActionReadyHandler;
 import com.universe.touchpoint.rolemodel.coordinator.handler.SwitchActionReadyHandler;
-import com.universe.touchpoint.socket.AgentSocketHelper;
 import com.universe.touchpoint.socket.AgentSocketState;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
@@ -72,7 +72,7 @@ public class Coordinator<SocketInput, SocketOutput> {
             || !Objects.equals(prevVisionModel, currVisionModel)
             || !Objects.equals(prevVisionLangModel, currVisionLangModel)
             || !Objects.equals(prevTransport, currTransport)) {
-            String filter = AgentSocketHelper.socketFilter(
+            String filter = TouchPointHelper.touchPointFilterName(
                     TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER,
                     task,
                     Objects.requireNonNull(socketStateMap.get(stateCode)).getRole().name());

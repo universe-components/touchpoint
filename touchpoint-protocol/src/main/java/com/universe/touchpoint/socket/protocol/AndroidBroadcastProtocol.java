@@ -11,7 +11,6 @@ import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.socket.AgentSocketHelper;
 import com.universe.touchpoint.socket.AgentSocketProtocol;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.AgentSocketStateRouter;
@@ -33,7 +32,7 @@ public class AndroidBroadcastProtocol implements AgentSocketProtocol {
         assert context != null;
         String task = context.getBelongTask();
         String role = context instanceof TaskActionContext ? ActionRole.PROPOSER.name() : ActionRole.PARTICIPANT.name();
-        String socketFilter = AgentSocketHelper.socketFilter(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, role);
+        String socketFilter = TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, role);
         IntentFilter filter = new IntentFilter(TouchPointHelper.touchPointFilterName(socketFilter));
         appContext.registerReceiver(new AgentSocketStateListener<>(context), filter, Context.RECEIVER_EXPORTED);
     }
@@ -56,7 +55,7 @@ public class AndroidBroadcastProtocol implements AgentSocketProtocol {
             if (stateContextBytes == null) {
                 return;
             }
-            String task = AgentSocketHelper.extractTask(Objects.requireNonNull(intent.getAction()));
+            String task = TouchPointHelper.extractFilter(Objects.requireNonNull(intent.getAction()));
             new AgentSocketStateRouter<>().route(context, appContext, stateContextBytes, task);
         }
 

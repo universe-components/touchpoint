@@ -38,10 +38,10 @@ public class AgentSocketStateRouter<C extends AgentContext> {
             assert stateHandler != null;
             AgentSocketState nextState = AgentSocketState.next(stateContext.getSocketState());
             if (nextState != null) {
-                String task = AgentSocketHelper.extractTask(filter);
-                String nextFilter = TouchPointHelper.touchPointFilterName(
-                        AgentSocketHelper.socketFilter(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, nextState.getRole().name()));
-                O output = stateHandler.onStateChange(stateContext.getContext(), context, appContext, task);
+                String scope = TouchPointHelper.extractFilter(filter);
+                String socketFilter = TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, scope, nextState.getRole().name());
+                String nextFilter = TouchPointHelper.touchPointFilterName(socketFilter);
+                O output = stateHandler.onStateChange(stateContext.getContext(), context, appContext, scope);
                 if (output != null) {
                     AgentSocketStateMachine.getInstance(context.getBelongTask()).send(
                             new AgentSocketStateMachine.AgentSocketStateContext<>(nextState, output), appContext, nextFilter);
