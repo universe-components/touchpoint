@@ -27,6 +27,7 @@ import com.universe.touchpoint.config.mapping.CoordinatorConfigMapping;
 import com.universe.touchpoint.config.mapping.SupervisorConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.monitor.MetricSyncerFactory;
+import com.universe.touchpoint.socket.AgentSocketHelper;
 import com.universe.touchpoint.socket.context.TaskActionContext;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.memory.Region;
@@ -155,7 +156,7 @@ public class TaskParticipant {
                                 AgentSocketState.PARTICIPANT_READY,
                                 driverRegion.getTouchPointAction(actionContext.getAction())),
                         context,
-                        task);
+                        AgentSocketHelper.socketFilter(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, ActionRole.PARTICIPANT.name()));
             }
         }
     }

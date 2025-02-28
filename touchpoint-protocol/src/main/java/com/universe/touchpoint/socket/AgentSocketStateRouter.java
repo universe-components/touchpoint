@@ -1,8 +1,6 @@
 package com.universe.touchpoint.socket;
 
 import android.content.Context;
-
-import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.router.RedirectActionHandler;
 import com.universe.touchpoint.socket.handler.ActionGraphDistributedHandler;
 import com.universe.touchpoint.socket.handler.ChannelEstablishedHandler;
@@ -13,7 +11,6 @@ import com.universe.touchpoint.utils.SerializeUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class AgentSocketStateRouter<C extends AgentContext> {
 
@@ -38,11 +35,11 @@ public class AgentSocketStateRouter<C extends AgentContext> {
             assert stateHandler != null;
             AgentSocketState nextState = AgentSocketState.next(stateContext.getSocketState());
             if (nextState != null) {
-                String filterSuffix = TouchPointHelper.extractSuffixFromFilter(Objects.requireNonNull(filter));
-                O output = stateHandler.onStateChange(stateContext.getContext(), context, appContext, filterSuffix);
+                String task = AgentSocketHelper.extractTask(filter);
+                O output = stateHandler.onStateChange(stateContext.getContext(), context, appContext, task);
                 if (output != null) {
                     AgentSocketStateMachine.getInstance(context.getBelongTask()).send(
-                            new AgentSocketStateMachine.AgentSocketStateContext<>(nextState, output), appContext, filterSuffix);
+                            new AgentSocketStateMachine.AgentSocketStateContext<>(nextState, output), appContext, filter);
                 }
             }
         } catch (Exception e) {

@@ -1,19 +1,19 @@
 package com.universe.touchpoint.socket.protocol;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.universe.touchpoint.TouchPointConstants;
+import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.socket.AgentSocketHelper;
 import com.universe.touchpoint.socket.AgentSocketProtocol;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.AgentSocketStateRouter;
+import com.universe.touchpoint.socket.context.TaskActionContext;
 import com.universe.touchpoint.utils.SerializeUtils;
-
 import org.eclipse.paho.mqttv5.client.MqttClient;
 import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
 import org.eclipse.paho.mqttv5.common.MqttException;
@@ -53,13 +53,15 @@ public class MQTT5Protocol implements AgentSocketProtocol {
     public <C extends AgentContext> void registerReceiver(Context appContext, @Nullable C context) {
         try {
             assert context != null;
-            client.subscribe(TouchPointHelper.touchPointFilterName(
-                    TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER,
-                    context.getBelongTask()), 1, (topic, message) -> {
+            String role = context instanceof TaskActionContext ? ActionRole.PROPOSER.name() : ActionRole.PARTICIPANT.name();
+            String socketFilter = AgentSocketHelper.socketFilter(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, context.getBelongTask(), role);
+            client.subscribe(TouchPointHelper.touchPointFilterName(socketFilter), 1, (topic, message) -> {
                 if (message == null) {
                     return;
                 }
-                new AgentSocketStateRouter<>().route(context, appContext, message.getPayload(), context.getBelongTask());
+                String nextRole = AgentSocketHelper.extractRole(topic).equals(ActionRole.PROPOSER.name()) ? ActionRole.PARTICIPANT.name() : ActionRole.PROPOSER.name();
+                String filter = AgentSocketHelper.replaceFilterRole(topic, nextRole);
+                new AgentSocketStateRouter<>().route(context, appContext, message.getPayload(), filter);
             });
         } catch (Exception e) {
             throw new RuntimeException(e);
