@@ -2,6 +2,8 @@ package com.universe.touchpoint.socket;
 
 import android.content.Context;
 import com.universe.touchpoint.annotations.socket.SocketProtocol;
+import com.universe.touchpoint.helper.TouchPointHelper;
+
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -26,7 +28,7 @@ public record AgentSocketStateMachine(AgentSocketProtocol socketProtocol) {
     }
 
     public void send(AgentSocketStateContext<?> stateContext, Context context, String filter) {
-        socketProtocol.send(stateContext, context, filter);
+        socketProtocol.send(stateContext, context, TouchPointHelper.touchPointFilterName(filter));
     }
 
     public <C extends AgentContext> void registerReceiver(Context appContext, @Nullable C context) {

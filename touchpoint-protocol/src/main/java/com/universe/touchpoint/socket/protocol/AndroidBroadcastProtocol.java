@@ -23,7 +23,7 @@ public class AndroidBroadcastProtocol implements AgentSocketProtocol {
 
     @Override
     public void send(AgentSocketStateMachine.AgentSocketStateContext<?> stateContext, Context context, String filter) {
-        Intent intent = new Intent(TouchPointHelper.touchPointFilterName(filter));
+        Intent intent = new Intent(filter);
         intent.putExtra(TouchPointConstants.TOUCH_POINT_TASK_STATE_EVENT, SerializeUtils.serializeToByteArray(stateContext));
         context.sendBroadcast(intent);
     }

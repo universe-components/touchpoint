@@ -36,14 +36,10 @@ public class MQTT5Protocol implements AgentSocketProtocol {
     }
 
     @Override
-    public void send(AgentSocketStateMachine.AgentSocketStateContext<?> stateContext, Context context, String filterSuffix) {
-        String topic = TouchPointHelper.touchPointFilterName(TouchPointHelper.touchPointFilterName(
-                TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER,
-                filterSuffix
-        ));
+    public void send(AgentSocketStateMachine.AgentSocketStateContext<?> stateContext, Context context, String filter) {
         try {
             MqttMessage message = new MqttMessage(SerializeUtils.serializeToByteArray(stateContext));
-            client.publish(topic, message);
+            client.publish(filter, message);
         } catch (MqttException e) {
             throw new RuntimeException(e);
         }
