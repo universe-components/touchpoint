@@ -59,9 +59,7 @@ public class MQTT5Protocol implements AgentSocketProtocol {
                 if (message == null) {
                     return;
                 }
-                String nextRole = AgentSocketHelper.extractRole(topic).equals(ActionRole.PROPOSER.name()) ? ActionRole.PARTICIPANT.name() : ActionRole.PROPOSER.name();
-                String filter = AgentSocketHelper.replaceFilterRole(topic, nextRole);
-                new AgentSocketStateRouter<>().route(context, appContext, message.getPayload(), filter);
+                new AgentSocketStateRouter<>().route(context, appContext, message.getPayload(), AgentSocketHelper.extractTask(topic));
             });
         } catch (Exception e) {
             throw new RuntimeException(e);

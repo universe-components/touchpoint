@@ -1,22 +1,30 @@
 package com.universe.touchpoint.socket;
 
+import com.universe.touchpoint.annotations.role.ActionRole;
+
 public enum AgentSocketState {
 
-    REDIRECT_ACTION_READY(100),
-    PARTICIPANT_READY(101),
-    GLOBAL_CONFIG_DISTRIBUTED(102),
-    GLOBAL_CONFIG_READY(103),
-    ACTION_GRAPH_DISTRIBUTED(104),
-    CHANNEL_ESTABLISHED(105);
+    REDIRECT_ACTION_READY(100, ActionRole.PARTICIPANT),
+    PARTICIPANT_READY(101, ActionRole.PROPOSER),
+    GLOBAL_CONFIG_DISTRIBUTED(102, ActionRole.PARTICIPANT),
+    GLOBAL_CONFIG_READY(103, ActionRole.PROPOSER),
+    ACTION_GRAPH_DISTRIBUTED(104, ActionRole.PARTICIPANT),
+    CHANNEL_ESTABLISHED(105, ActionRole.PROPOSER);
 
     private final int code;
+    private final ActionRole role;
 
-    AgentSocketState(int code) {
+    AgentSocketState(int code, ActionRole role) {
         this.code = code;
+        this.role = role;
     }
 
     public int getCode() {
         return code;
+    }
+
+    public ActionRole getRole() {
+        return role;
     }
 
     public static AgentSocketState next(AgentSocketState currentState) {

@@ -1,6 +1,9 @@
 package com.universe.touchpoint.socket;
 
 import android.content.Context;
+
+import com.universe.touchpoint.TouchPointConstants;
+import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.router.RedirectActionHandler;
 import com.universe.touchpoint.socket.handler.ActionGraphDistributedHandler;
 import com.universe.touchpoint.socket.handler.ChannelEstablishedHandler;
@@ -36,10 +39,12 @@ public class AgentSocketStateRouter<C extends AgentContext> {
             AgentSocketState nextState = AgentSocketState.next(stateContext.getSocketState());
             if (nextState != null) {
                 String task = AgentSocketHelper.extractTask(filter);
+                String nextFilter = TouchPointHelper.touchPointFilterName(
+                        AgentSocketHelper.socketFilter(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, nextState.getRole().name()));
                 O output = stateHandler.onStateChange(stateContext.getContext(), context, appContext, task);
                 if (output != null) {
                     AgentSocketStateMachine.getInstance(context.getBelongTask()).send(
-                            new AgentSocketStateMachine.AgentSocketStateContext<>(nextState, output), appContext, filter);
+                            new AgentSocketStateMachine.AgentSocketStateContext<>(nextState, output), appContext, nextFilter);
                 }
             }
         } catch (Exception e) {

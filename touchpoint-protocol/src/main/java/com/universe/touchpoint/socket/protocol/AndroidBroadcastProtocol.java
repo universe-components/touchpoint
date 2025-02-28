@@ -56,10 +56,8 @@ public class AndroidBroadcastProtocol implements AgentSocketProtocol {
             if (stateContextBytes == null) {
                 return;
             }
-            String role = AgentSocketHelper.extractRole(Objects.requireNonNull(intent.getAction()));
-            String nextRole = role.equals(ActionRole.PROPOSER.name()) ? ActionRole.PARTICIPANT.name() : ActionRole.PROPOSER.name();
-            String filter = AgentSocketHelper.replaceFilterRole(intent.getAction(), nextRole);
-            new AgentSocketStateRouter<>().route(context, appContext, stateContextBytes, filter);
+            String task = AgentSocketHelper.extractTask(Objects.requireNonNull(intent.getAction()));
+            new AgentSocketStateRouter<>().route(context, appContext, stateContextBytes, task);
         }
 
     }
