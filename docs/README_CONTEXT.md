@@ -1,15 +1,15 @@
 # Touchpoint Protocol
 
-`touchpoint-protocol` ，触点协议（TPP协议），一个Agent之间协作通信的协议，该协议通过AI模型驱动Agent之间协作，是智联网的协作通信标准。
+The Touchpoint Protocol (TPP) is a collaboration communication protocol between agents, driven by AI models to facilitate inter-agent collaboration. It serves as the collaboration communication standard for the Intelligent Network (Smart Internet).
 
-## 概述
-TPP协议允许开发者添加自定义的数据到上下文，在Action之间传递。
+## Overview
+The TPP protocol allows developers to add custom data to the context and pass it between Actions.
 
 ## Example
-你可以通过以下方式添加自定义数据到上下文：
+You can add custom data to the context as follows:
 
 ```kotlin
-@TouchPointAction(name = "robot_leader", desc = "机器人领队", toActions = {"housework["robotA"]"})
+@TouchPointAction(name = "robot_leader", desc = "Robot Leader", toActions = {"housework["robotA"]"})
 class RobotLeader : AgentActionExecutor<ActionSequence, TouchPoint> {
 
     override fun run(actionSequence: ActionSequence, context: Context): TouchPoint {
@@ -20,9 +20,9 @@ class RobotLeader : AgentActionExecutor<ActionSequence, TouchPoint> {
 }
 ```
 
-通过以下方式从上下文读取自定义数据：
+To read custom data from the context:
 ```kotlin
-@TouchPointAction(name = "robotA", desc = "机器人A", toActions = {"housework[]"})
+@TouchPointAction(name = "robotA", desc = "Robot A", toActions = {"housework[]"})
 class RobotA : AgentActionExecutor<ActionSequence, TouchPoint> {
 
     override fun run(actionSequence: ActionSequence, context: Context): TouchPoint {
