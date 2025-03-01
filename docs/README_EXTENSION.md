@@ -67,7 +67,7 @@ class Mp4Player implements AgentActionExecutor<MovieFile, TouchPoint> {
 }
 ```
 
-Step 2: Implement `Coordinator` to Switch Playback Format
+Step 2: Implement `Coordinator` to switch playback file format
 ```java
 @TouchPointAction(name = "media_coordinator", desc = "switch video player", toActions = {"movie[]"})
 @Coordinator(task = "movie")
