@@ -90,7 +90,6 @@ class PM : ActionGraphOperator<TeamResponse> {
         // Connect all predecessor nodes with successor nodes
         for (AgentActionMetaInfo predecessor : predecessors) {
             for (AgentActionMetaInfo successor : successors) {
-                // 将前置节点的后续节点指向后置节点
                 adjList.get(predecessor).add(successor);
             }
         }
