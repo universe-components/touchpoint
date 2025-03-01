@@ -95,7 +95,7 @@ data class Entry {
     val taskBuilder: TaskBuilder;
     
     fun queryWeather() {
-        TaskBuilder.task("query_weather").run("I want to query the weather in Shanghai")
+        taskBuilder.run("I want to query the weather in Shanghai")
     }
 
 }

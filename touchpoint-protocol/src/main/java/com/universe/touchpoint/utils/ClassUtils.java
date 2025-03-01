@@ -131,4 +131,29 @@ public class ClassUtils {
         return false;
     }
 
+    /**
+     * 判断指定类是否继承了指定的抽象类
+     *
+     * @param clazz       要检查的类
+     * @param superClass  要检查的抽象类类型
+     * @return 如果 clazz 继承了 superClass，则返回 true；否则返回 false
+     */
+    public static boolean extendsAbstractClass(Class<?> clazz, Class<?> superClass) {
+        if (clazz == null || superClass == null) {
+            throw new IllegalArgumentException("参数不能为空");
+        }
+        if (!superClass.isAssignableFrom(clazz)) {
+            return false;
+        }
+        // 逐级向上检查父类是否匹配
+        Class<?> current = clazz.getSuperclass();
+        while (current != null) {
+            if (current.equals(superClass)) {
+                return true;
+            }
+            current = current.getSuperclass();
+        }
+        return false;
+    }
+
 }

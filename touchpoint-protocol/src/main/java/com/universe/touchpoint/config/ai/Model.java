@@ -8,6 +8,7 @@ public enum Model {
     ClAUDE_3_5_SONNET("claudan-3.5"),
     DINO_V2("facebook/dinov2-base"),
     SIGLIP("google/siglip-base-patch16-224"),
+    OPEN_VLA("openvla/openvla-7b"),
     NONE("");
 
     private final String name;

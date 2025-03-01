@@ -1,12 +1,12 @@
 # Touchpoint Protocol
 
-`touchpoint-protocol` ，触点协议（TPP协议），一个Agent之间协作通信的协议，该协议通过AI模型驱动Agent之间协作，是智联网的协作通信标准。
+The Touchpoint Protocol (TPP) is a collaboration communication protocol between agents, driven by AI models to facilitate inter-agent collaboration. It serves as the collaboration communication standard for the Intelligent Network (Smart Internet).
 
-## 案例1：以自定义播放器播放功能为例
+## Case 1: Custom Media Player Playback Feature
 
-### 过去
+### Past
 
-第一步：定义接口
+Step 1: Define an Interface
 ```java
 public interface MediaPlayer {
 
@@ -15,7 +15,7 @@ public interface MediaPlayer {
 }
 ```
 
-第二步：实现接口
+Step 2: Implement the Interface
 ```java
 public class Mp4Player implements MediaPlayer {
 
@@ -37,9 +37,9 @@ public class FlvPlayer implements MediaPlayer {
 
 }
 ```
-### 现在
+### Now
 
-第一步：实现执行者接口
+Step 1: Implement `AgentActionExecutor` Interface
 
 ```java
 class MovieFile extends TouchPoint {
@@ -60,14 +60,14 @@ class Mp4Player implements AgentActionExecutor<MovieFile, TouchPoint> {
         // play video
         ......
         ......
-
+        
         return new TouchPoint();
     }
 
 }
 ```
 
-第二步：实现协调者，替换现有播放格式
+Step 2: Implement `Coordinator` to Switch Playback Format
 ```java
 @TouchPointAction(name = "media_coordinator", desc = "switch video player", toActions = {"movie[]"})
 @Coordinator(task = "movie")
@@ -76,7 +76,7 @@ class MediaCoordinator implements ActionGraphOperator<MovieFile> {
     @Override
     private ActionGraph run(MovieFile file, Context context) {
         String task = file.getContext().getTask();
-        ActionGraph graph = TouchPointContextManager.getTouchPointContext(task).getActionGraph(); // graph为当前任务的行为关系图
+        ActionGraph graph = TouchPointContextManager.getTouchPointContext(task).getActionGraph(); // `graph` represents the action relationship graph of the current task
         if (file.getFileName().endsWith(".mp4")) {
             // replace the player action to mp4 in graph
             ......
@@ -92,15 +92,15 @@ class MediaCoordinator implements ActionGraphOperator<MovieFile> {
 
 }
 ```
-备注：开发者也可以为不同的文件格式定义不同的协调者，比如，分别实现 `mp4` 和 `flv` 的协调者。
+Note: Developers can also define different coordinators for different file formats, such as separate implementations for `mp4` and `flv` coordinators.
 
-## 案例2：绕过TCP协议栈
+## Case 2: Bypassing the TCP Protocol Stack
 
-待更新
+To be updated
 
 ## 总结
-|      | 接口模式                     | 协调者模式（TPP协议）                |
+|      | Interface Pattern                    | Coordinator Pattern (TPP)   |
 |------|--------------------------|-----------------------------|
-| 友好性  | 需要系统内已定义接口，然后实现该接口               | 无需定义任何接口，所有扩展功能以Action方式实现  |
-| 灵活性  | 只能替换固定位接口，无法调整接口在工作流中的位置 | 不仅可以替换固定位接口，还可以调整接口在工作流中的位置 |
-| 可维护性 | 需重新编译打包，再进行发布            | 无需重新编译，在线添加扩展功能的Action即可    |
+| User-Friendliness  | Requires predefined system interfaces, then implements those interfaces               | No need to define any interfaces; all extended functionalities are implemented as Actions  |
+| Flexibility  | Can only replace fixed interfaces and cannot adjust their position in the workflow | Can replace fixed interfaces and also adjust their position in the workflow |
+| Maintainability | Requires recompilation and packaging before deployment            | No need to recompile; extended functionalities can be added online via    |

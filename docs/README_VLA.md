@@ -1,49 +1,47 @@
 # Touchpoint Protocol
 
-`touchpoint-protocol` ，触点协议（TPP协议），一个Agent之间协作通信的协议，该协议通过AI模型驱动Agent之间协作，是智联网的协作通信标准。
+The Touchpoint Protocol (TPP) is a collaboration communication protocol between agents, driven by AI models to facilitate inter-agent collaboration. It serves as the collaboration communication standard for the Intelligent Network (Smart Internet).
 
 ## Example
 
-### 以物品分类为例
+### Item Classification
 
-第一步：发起任务
+Step 1: Initiate task
 ```kotlin
 data class Entry {
 
-    @Task("item_classification_placement") // 指定task
-    @LangModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 指定模型, 默认使用o1
+    @Task("item_classification_placement") // Specify the task
     val taskBuilder: TaskBuilder;
 
-    fun classifiedPlacement(imageBytes: Array<Array<Double>>) {
+    fun classifiedPlacement(imageBytes: Array<Array<ByteArray>>) {
         val imageData = ImageData(imageBytes)
-        TaskBuilder.task("item_classification_placement").run("Please help me place these items you see into the fridge and the basket, respectively.", imageData)
+        taskBuilder.run("Please help me place these items you see into the fridge and the basket, respectively.", imageData)
     }
 
 }
 ```
 
-第二步：实时图像编码
+Step 2: Extend `ActionPredictor` to predict actions
 ```kotlin
 @TouchPointAction(
-    name = "robot_vision_encoder", 
-    desc = "图像编码",
+    name = "predict robot actions", 
+    desc = "Predict actions",
     toActions = {"item_classification_placement[\"action_executor\"]" })
-@VisionModel(name = Model.DINO_V2)
-@VisionLangModel(name = Model.SIGLIP)
-class RoobotVisionEncoder : ImageEncoder {
+@LangModel(name = Model.OPEN_VLA, apiHost = "http://127.0.0.1:8000")
+class RoobotActionPredictor : ActionPredictor {
 }
 ```
 
-第三步：执行行为序列
+Step 3: Execute action sequence
 ```kotlin
 @TouchPointAction(
     name = "action_executor", 
-    desc = "执行行为序列",
+    desc = "Execute action sequence",
     toActions = {"item_classification_placement[]"})
-class RobotActionExecutor : AgentActionExecutor<ActionSequence, TouchPoint> {
+class RobotActionExecutor : AgentActionExecutor<OpenVLA.ActionResponse, TouchPoint> {
 
-    override fun run(actionSequence: ActionSequence, context: Context): TouchPoint {
-        // 执行行为序列
+    override fun run(actionSequence: OpenVLA.ActionResponse, context: Context): TouchPoint {
+        // Execute the action sequence
         ......
         ......
         

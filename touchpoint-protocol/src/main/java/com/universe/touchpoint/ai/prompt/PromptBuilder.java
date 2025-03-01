@@ -3,6 +3,7 @@ package com.universe.touchpoint.ai.prompt;
 import com.universe.touchpoint.ai.AIModelType;
 import com.universe.touchpoint.ai.prompt.generators.AnthropicPromptGenerator;
 import com.universe.touchpoint.ai.prompt.generators.OpenAIPromptGenerator;
+import com.universe.touchpoint.ai.prompt.generators.OpenVLAPromptGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class PromptBuilder {
     static {
         modelGeneratorMap.put(AIModelType.OPEN_AI, OpenAIPromptGenerator.class);
         modelGeneratorMap.put(AIModelType.ANTHROPIC, AnthropicPromptGenerator.class);
+        modelGeneratorMap.put(AIModelType.OPEN_VLA, OpenVLAPromptGenerator.class);
     }
 
     public static PromptGenerator<?> createPromptGenerator(AIModelType modelType) {

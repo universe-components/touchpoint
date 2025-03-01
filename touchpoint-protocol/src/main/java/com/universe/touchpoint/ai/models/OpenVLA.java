@@ -44,7 +44,22 @@ public class OpenVLA extends AIModel<Retrofit, OpenVLA.ActionRequest, OpenVLA.Op
         Call<ActionResponse> predictAction(@Body ActionRequest request);
     }
 
-    public record ActionRequest(byte[][][] image, String instruction) {
+    public static class ActionRequest extends TouchPoint {
+        private final byte[][][] image;
+        private final String instruction;
+
+        public ActionRequest(byte[][][] image, String instruction) {
+            this.image = image;
+            this.instruction = instruction;
+        }
+
+        public byte[][][] getImage() {
+            return image;
+        }
+
+        public String getInstruction() {
+            return instruction;
+        }
     }
 
     public static class ActionResponse extends TouchPoint {

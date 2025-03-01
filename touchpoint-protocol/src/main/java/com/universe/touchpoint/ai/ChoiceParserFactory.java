@@ -2,6 +2,8 @@ package com.universe.touchpoint.ai;
 
 import com.universe.touchpoint.ai.parsers.AnthropicChoiceParser;
 import com.universe.touchpoint.ai.parsers.OpenAIChoiceParser;
+import com.universe.touchpoint.ai.parsers.OpenVLAChoiceParser;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +16,7 @@ public class ChoiceParserFactory {
     static {
         choiceParserMap.put(AIModelType.OPEN_AI, OpenAIChoiceParser.class);
         choiceParserMap.put(AIModelType.ANTHROPIC, AnthropicChoiceParser.class);
+        choiceParserMap.put(AIModelType.OPEN_VLA, OpenVLAChoiceParser.class);
     }
 
     public static <CH> ChoiceParser<CH> selectParser(AIModelType modelType) {

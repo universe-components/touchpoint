@@ -36,10 +36,10 @@ public class AgentActionMetaInfo {
         this.desc = actionDesc;
         this.role = role;
         try {
-            if (ClassUtils.implementsInterface(Class.forName(className), ActionPredictor.class)) {
-                this.type = ActionType.SENSOR;
+            if (ClassUtils.extendsAbstractClass(Class.forName(className), ActionPredictor.class)) {
+                this.type = ActionType.ACT;
             } else {
-                this.type = ActionType.INPUT;
+                this.type = ActionType.CHAT;
             }
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

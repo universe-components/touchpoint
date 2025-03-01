@@ -5,7 +5,7 @@ public enum AIModelType {
     OPEN_AI("openai"),
     ANTHROPIC("claude"),
     DEEPSEEK("deepseek"),
-    OPEN_VLA("openvla/openvla-7b");
+    OPEN_VLA("openvla");
 
     private final String type;
 

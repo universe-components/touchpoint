@@ -1,6 +1,9 @@
 package com.universe.touchpoint.ai;
 
 import com.universe.touchpoint.config.ai.LangModelConfig;
+import com.universe.touchpoint.config.ai.Model;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -10,6 +13,8 @@ public abstract class AIModel<Client, Request, Completion, Choice> {
     protected final Client client;
     protected final LangModelConfig config;
     protected Completion completionService;
+
+    public static final Map<Model, Object> modelConfigMap = new HashMap<>();
 
     public AIModel(Client client, LangModelConfig config) {
         this.client = client;

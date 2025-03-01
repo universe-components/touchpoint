@@ -35,7 +35,7 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
         }
 
         touchPoint = ((ActionExecutor<T, ?>) ActionExecutionSelector.getExecutor(touchPoint)).execute(touchPoint, context);
-        ResultExchanger.exchange(touchPoint, taskContext.getGoal(), taskName, context, Transport.BROADCAST);
+        new ResultExchanger().exchange(touchPoint, taskContext.getGoal(), taskName, context, Transport.BROADCAST);
     }
 
 }

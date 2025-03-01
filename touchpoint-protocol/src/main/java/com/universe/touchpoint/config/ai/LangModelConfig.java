@@ -1,9 +1,6 @@
 package com.universe.touchpoint.config.ai;
 
-import com.openai.models.ChatModel;
 import com.universe.touchpoint.ai.AIModelType;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LangModelConfig {
 
@@ -12,14 +9,6 @@ public class LangModelConfig {
     private String apiKey;
     private String apiHost;
     private AIModelType type;
-
-    public static final Map<Model, Object> modelConfigMap = new HashMap<>();
-    static {
-        modelConfigMap.put(Model.GPT_3_5, ChatModel.GPT_3_5_TURBO);
-        modelConfigMap.put(Model.GPT_4, ChatModel.GPT_4);
-        modelConfigMap.put(Model.o1, ChatModel.O1);
-        modelConfigMap.put(Model.ClAUDE_3_5_SONNET, com.anthropic.models.Model.CLAUDE_3_5_SONNET_LATEST);
-    }
 
     public LangModelConfig() {}
 
@@ -43,10 +32,9 @@ public class LangModelConfig {
         this.temperature = temperature;
         this.apiKey = apiKey;
         switch (model) {
-            case GPT_3_5, o1, GPT_4, NONE ->
-                    this.type = AIModelType.OPEN_AI;
-            case ClAUDE_3_5_SONNET ->
-                    this.type = AIModelType.ANTHROPIC;
+            case GPT_3_5, o1, GPT_4, NONE -> this.type = AIModelType.OPEN_AI;
+            case ClAUDE_3_5_SONNET -> this.type = AIModelType.ANTHROPIC;
+            case OPEN_VLA -> this.type = AIModelType.OPEN_VLA;
         }
     }
 

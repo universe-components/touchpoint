@@ -29,7 +29,7 @@ TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包�
 `ActionGraphOperator`：用于修改工作流。  
 `ActionOperator`：用于修改Action。  
 `DataOperator`：用于修改Action输入。  
-`ActionPredictor`：用于执行行为预测。
+`ImageEncoder`：用于执行视觉图像编码。
 
 ## Example
 比如，产品团队Leader收到一个研发小组团建的消息，于是，告知项目经理，他的项目绕过该研发小组，先和其他团队对接。

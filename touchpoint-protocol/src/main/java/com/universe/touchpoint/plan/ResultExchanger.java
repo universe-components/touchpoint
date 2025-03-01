@@ -17,13 +17,17 @@ import java.util.List;
 public class ResultExchanger {
 
     @Task("collect_metrics")
-    private TaskBuilder metricTaskBuilder;
+    private final TaskBuilder metricTaskBuilder;
 
-    public static <R extends TouchPoint> String exchange(
+    public ResultExchanger() {
+        this.metricTaskBuilder = TaskBuilder.task("collect_metrics");
+    }
+
+    public <R extends TouchPoint> String exchange(
             R result, String goal, String task, Context context, Transport transportType) {
         ResultProcessor<R> resultProcessor;
         if (result instanceof AgentAction<?, ?>) {
-            TaskBuilder.task("collect_metrics").run("I want to collect action and task metrics, where task metrics include the number of execution errors and prediction counts for multiple actions within the task, and action metrics include the prediction count for a single action.");
+            metricTaskBuilder.run("I want to collect action and task metrics, where task metrics include the number of execution errors and prediction counts for multiple actions within the task, and action metrics include the prediction count for a single action.");
             resultProcessor = (ResultProcessor<R>) new AgentActionProcessor();
         } else if (result instanceof AgentFinish) {
             resultProcessor = (ResultProcessor<R>) new AgentFinishProcessor();

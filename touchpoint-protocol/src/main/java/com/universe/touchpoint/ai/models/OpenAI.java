@@ -8,15 +8,21 @@ import com.openai.models.ChatModel;
 import com.openai.services.blocking.chat.CompletionService;
 import com.universe.touchpoint.ai.AIModel;
 import com.universe.touchpoint.config.ai.LangModelConfig;
+import com.universe.touchpoint.config.ai.Model;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class OpenAI extends AIModel<OpenAIClient, String, CompletionService, Map<ChatCompletion, List<ChatCompletion.Choice>>> {
+
+    static {
+        modelConfigMap.put(Model.GPT_3_5, ChatModel.GPT_3_5_TURBO);
+        modelConfigMap.put(Model.GPT_4, ChatModel.GPT_4);
+        modelConfigMap.put(Model.o1, ChatModel.O1);
+    }
 
     public OpenAI(LangModelConfig modelConfig) {
         super(OpenAIOkHttpClient.builder()
@@ -35,8 +41,7 @@ public class OpenAI extends AIModel<OpenAIClient, String, CompletionService, Map
         Map<ChatCompletion, List<ChatCompletion.Choice>> choices = new HashMap<>();
         ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
                 .addUserMessage(content)
-                .model((ChatModel) Objects.requireNonNull(
-                        LangModelConfig.modelConfigMap.get(config.getModel())))
+                .model((ChatModel) modelConfigMap.get(config.getModel()))
                 .temperature(config.getTemperature())
                 .build();
         ChatCompletion chatCompletion = completionService.create(params);

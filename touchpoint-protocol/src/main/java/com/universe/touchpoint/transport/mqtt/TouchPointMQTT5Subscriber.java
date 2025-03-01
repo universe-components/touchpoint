@@ -25,7 +25,7 @@ public class TouchPointMQTT5Subscriber<T extends TouchPoint> {
         TaskContext taskContext = touchPoint.getContext().getTaskContext();
 
         ((ActionExecutor<T, ?>) ActionExecutionSelector.getExecutor(touchPoint)).execute(touchPoint, context);
-        ResultExchanger.exchange(touchPoint, taskContext.getGoal(), taskName, context, Transport.BROADCAST);
+        new ResultExchanger().exchange(touchPoint, taskContext.getGoal(), taskName, context, Transport.BROADCAST);
     }
 
 }
