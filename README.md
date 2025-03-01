@@ -225,7 +225,7 @@ class WeatherService {
 Note: The above configuration applies to the action scope. The priority of all configuration scopes is: Action > Task > Agent.
 
 ## More Usage
-- [Dynamic Workflow](./docs/README_ROLE.md)
+- [Dynamic Routing](./docs/README_ROLE.md)
 - [Custom Context](./docs/README_CONTEXT.md)
 - [VLA Model](./docs/README_VLA.md)
 - [New Paradigm for Extended Functionality](./docs/README_EXTENSION.md)

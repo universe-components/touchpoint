@@ -2,9 +2,10 @@
 
 The Touchpoint Protocol (TPP) is a collaboration communication protocol between agents, driven by AI models to facilitate inter-agent collaboration. It serves as the collaboration communication standard for the Intelligent Network (Smart Internet).
 
-## 概述
-TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包括Action重新编排、Action修改、更换等。其通过前置Action触发调整工作流。具体接入方法如下：
-- 在前置Action输出中添加状态码，目前支持的状态码：  
+## Overview
+The TPP protocol is based on a state-role-driven model, which achieves dynamic routing through the triggering of pre-action. The integration method is as follows:
+
+- Add status codes to the output of the pre-action. The currently supported status codes are:  
   `OK(200)`,  
   `NEED_REORDER_ACTION(300)`,  
   `NEED_SWITCH_LANG_MODEL(301)`,   
@@ -15,26 +16,28 @@ TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包�
   `NEED_CHECK_ACTION(401)`,  
   `NEED_CHECK_ACTION_GRAPH(402)`,  
   `NEED_CHECK_DATA(403)`  
-  开发者也可以自定义状态码。
-- 后置Action添加角色注解，处理前置Action重定向过来的数据。当前支持4种角色：`Proposer` 、 `Executor` 、`Coordinator` 和 `Supervisor`。  
-  `Proposer`：发起者，用于发起任务。  
-  `Executor`：执行者，用于操作Data，执行Action。  
-  `Coordinator`：协调者，用于操作Action和工作流。  
-  `Supervisor`：监督者，用于检查Data、Action和工作流。
-- 后置Action实现角色接口，当前支持的接口和基类有：  
-`AgentActionExecutor`：用于执行Action。  
-`ActionChecker`：用于检查Action。  
-`DataChecker`：用于检查Action输入。  
-`TaskChecker`：用于检查任务和工作流。  
-`ActionGraphOperator`：用于修改工作流。  
-`ActionOperator`：用于修改Action。  
-`DataOperator`：用于修改Action输入。  
-`ActionPredictor`：用于执行行为预测。
+
+  Developers can also define custom status codes.
+
+- Add role annotations to the post-action to handle data redirected from the pre-action. Currently, there are four supported roles: `Proposer` 、 `Executor` 、`Coordinator` and `Supervisor`。    
+  `Proposer`：Initiator, used to start a task.  
+  `Executor`：Executor, used to operate on data and perform actions.  
+  `Coordinator`：Coordinator, used to edit on actions and workflows.  
+  `Supervisor`：Supervisor, used to check data, actions, and workflows.
+- The post-action implements role interfaces. The currently supported interfaces and super classes are:     
+`AgentActionExecutor`：execute actions.   
+`ActionChecker`：check actions.  
+`DataChecker`：check action inputs.  
+`TaskChecker`：check tasks and workflows.  
+`ActionGraphOperator`：modify workflows.  
+`ActionOperator`：modify actions.  
+`DataOperator`：modify action inputs.  
+`ActionPredictor`：predict actions.
 
 ## Example
-比如，产品团队Leader收到一个研发小组团建的消息，于是，告知项目经理，他的项目绕过该研发小组，先和其他团队对接。
+For example, the product team leader receives a message about a team-building event from a development team. As a result, the product leader informs the project manager to bypass that development team and first coordinate with other teams.
 
-实现 `Product Leader Action`，将 `NEED_REORDER_ACTION` 状态添加进方法输出：
+Implementing `Product Leader` action by adding the `NEED_REORDER_ACTION` status in the method output:
 ```kotlin
 @TouchPointAction( 
   name = "productLeader", 
@@ -47,9 +50,9 @@ class ProductLeader : AgentActionExecutor<TeamMessage, TeamResponse> {
      if (message.getContent().contains("team-building")) {
        teamResponse.getContext().setAction("R&D");
        teamResponse.setState(new TouchPointState(
-                 TaskState.NEED_REORDER_ACTION.getCode(), // 状态码为NEED_REORDER_ACTION，表示需要重新编排Action
-                 "The R&D team is team-building, followed by coordination with other teams", // 状态描述
-                 "pm"); // 状态码NEED_REORDER_ACTION对应的Action名称，即后置Action的名称
+                 TaskState.NEED_REORDER_ACTION.getCode(), // Status code NEED_REORDER_ACTION, indicating the need to reorder actions
+                 "The R&D team is team-building, followed by coordination with other teams", // Status description
+                 "pm"); // the Action name corresponding to the NEED_REORDER_ACTION status code, which is the name of the post-action
      }
      
      return teamResponse;
@@ -58,7 +61,7 @@ class ProductLeader : AgentActionExecutor<TeamMessage, TeamResponse> {
 }
 ```
 
-实现 `PM`，`PM`为协调者，实施绕过该研发小组，先和其他团队对接，即从Task中移除该研发小组：
+Implementing `PM` , where `PM` is the coordinator to bypass the development team and first coordinate with other teams by removing the `R&D` team from the task:
 ```kotlin
 @TouchPointAction( 
   name = "pm"
@@ -84,14 +87,14 @@ class PM : ActionGraphOperator<TeamResponse> {
             }
         }
 
-        // 连接所有前置节点与后置节点
+        // Connect all predecessor nodes with successor nodes
         for (AgentActionMetaInfo predecessor : predecessors) {
             for (AgentActionMetaInfo successor : successors) {
                 // 将前置节点的后续节点指向后置节点
                 adjList.get(predecessor).add(successor);
             }
         }
-        // 移除研发小组节点
+        // Remove the R&D team node
         adjList.remove(actionMeta);
         for (List<AgentActionMetaInfo> neighbors : adjList.values()) {
             neighbors.remove(actionMeta);
