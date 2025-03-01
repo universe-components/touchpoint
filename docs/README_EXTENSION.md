@@ -98,7 +98,7 @@ Note: Developers can also define different coordinators for different file forma
 
 To be updated
 
-## 总结
+## Conclusion
 |      | Interface Pattern                    | Coordinator Pattern (TPP)   |
 |------|--------------------------|-----------------------------|
 | User-Friendliness  | Requires predefined system interfaces, then implements those interfaces               | No need to define any interfaces; all extended functionalities are implemented as Actions  |
