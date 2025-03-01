@@ -4,17 +4,16 @@ import com.anthropic.client.okhttp.AnthropicOkHttpClient;
 import com.anthropic.models.Completion;
 import com.anthropic.models.CompletionCreateParams;
 import com.anthropic.models.Model;
-import com.google.common.collect.Lists;
+import com.anthropic.services.blocking.CompletionService;
 import com.universe.touchpoint.ai.AIModel;
 import com.anthropic.client.AnthropicClient;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
+public class Anthropic extends AIModel<AnthropicClient, String, CompletionService, Map<Completion, String>> {
 
     public Anthropic(LangModelConfig modelConfig) {
         super(AnthropicOkHttpClient.builder()
@@ -23,7 +22,13 @@ public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
     }
 
     @Override
-    public void createCompletion(String content) {
+    public void createCompletion() {
+        this.completionService = client.completions();
+    }
+
+    @Override
+    public Map<Completion, String> predict(String content) {
+        Map<Completion, String> choices = new HashMap<>();
         CompletionCreateParams params = CompletionCreateParams.builder()
                 .maxTokensToSample(1024L)
                 .prompt(content)
@@ -31,15 +36,8 @@ public class Anthropic extends AIModel<AnthropicClient, Completion, String> {
                         LangModelConfig.modelConfigMap.get(config.getModel())))
                 .temperature(config.getTemperature())
                 .build();
-        this.completions.add(client.completions().create(params));
-    }
-
-    @Override
-    public Map<Completion, List<String>> predict() {
-        Map<Completion, List<String>> choices = new HashMap<>();
-        for (Completion completion : completions) {
-            choices.put(completion, Lists.newArrayList(completion.completion()));
-        }
+        Completion completion = completionService.create(params);
+        choices.put(completion, completion.completion());
         return choices;
     }
 

@@ -9,12 +9,12 @@ import com.universe.touchpoint.plan.executor.DefaultActionExecutor;
 
 public class ActionExecutionSelector {
 
-    public static ActionExecutor<?> getExecutor(TouchPoint touchPoint) {
+    public static ActionExecutor<?, ?> getExecutor(TouchPoint touchPoint) {
         if (touchPoint instanceof AgentAction<?, ?>) {
             return new AgentActionExecutor<>();
         }
         if (touchPoint instanceof AgentFinish) {
-            return new AgentFinishExecutor();
+            return new AgentFinishExecutor<>();
         }
         return new DefaultActionExecutor<>();
     }

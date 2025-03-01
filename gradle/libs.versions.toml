@@ -25,6 +25,9 @@ dubbo = "3.3.0"
 paho = "1.2.5"
 commons-lang3 = "3.17.0"
 jep = "4.2.2"
+retrofit = "2.11.0"
+gson = "2.12.1"
+converter-gson = "2.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +57,9 @@ dubbo = { group = "org.apache.dubbo", name = "dubbo", version.ref = "dubbo" }
 paho = { group = "org.eclipse.paho", name = "org.eclipse.paho.mqttv5.client", version.ref = "paho" }
 commons-lang3 = { group = "org.apache.commons", name = "commons-lang3", version.ref = "commons-lang3" }
 jep = { group = "black.ninia", name = "jep", version.ref = "jep" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "converter-gson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

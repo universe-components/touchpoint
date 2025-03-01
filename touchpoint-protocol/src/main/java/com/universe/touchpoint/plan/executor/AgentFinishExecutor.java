@@ -1,7 +1,6 @@
 package com.universe.touchpoint.plan.executor;
 
 import android.content.Context;
-
 import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.agent.AgentFinish;
@@ -9,26 +8,26 @@ import com.universe.touchpoint.plan.ActionExecutor;
 import com.universe.touchpoint.router.Router;
 import java.util.List;
 
-public class AgentFinishExecutor extends ActionExecutor<AgentFinish> {
+public class AgentFinishExecutor<O> extends ActionExecutor<AgentFinish<O>, O> {
 
     @Override
-    public boolean beforeRun(AgentFinish touchPoint, Context context) {
+    public boolean beforeRun(AgentFinish<O> touchPoint, Context context) {
         return true;
     }
 
     @Override
-    public <O> O run(AgentFinish agentFinish, Context context) {
+    public O run(AgentFinish<O> agentFinish, Context context) {
         String taskName = agentFinish.getContext().getTask();
         List<AgentActionMetaInfo> predecessors = Router.route(agentFinish, false);
         if (predecessors == null) {
             TaskBuilder.TaskCallbackListener callbackListener = TaskBuilder.getBuilder(taskName).getCallbackListener();
             callbackListener.onSuccess(agentFinish, context);
         }
-        return (O) agentFinish.getOutput();
+        return agentFinish.getOutput();
     }
 
     @Override
-    public <RunResult> AgentFinish afterRun(AgentFinish agentFinish, RunResult runResult, Context context) {
+    public AgentFinish<O> afterRun(AgentFinish<O> agentFinish, O runResult, Context context) {
         return agentFinish;
     }
 

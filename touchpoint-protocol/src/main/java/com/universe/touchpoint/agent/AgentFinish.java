@@ -2,21 +2,21 @@ package com.universe.touchpoint.agent;
 
 import com.universe.touchpoint.context.TouchPoint;
 
-public class AgentFinish extends TouchPoint {
+public class AgentFinish<O> extends TouchPoint {
 
-    private String output;
+    private O output;
     private AgentActionMetaInfo meta;
 
-    public AgentFinish(String output, AgentActionMetaInfo meta) {
+    public AgentFinish(O output, AgentActionMetaInfo meta) {
         this.output = output;
         this.meta = meta;
     }
 
-    public String getOutput() {
+    public O getOutput() {
         return output;
     }
 
-    public void setOutput(String output) {
+    public void setOutput(O output) {
         this.output = output;
     }
 

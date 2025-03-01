@@ -1,7 +1,6 @@
 package com.universe.touchpoint.plan.executor;
 
 import android.content.Context;
-
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.context.TouchPoint;
@@ -14,7 +13,7 @@ import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.AgentSocketStateRouter;
 import com.universe.touchpoint.utils.ClassUtils;
 
-public class AgentActionExecutor<I extends TouchPoint, O> extends ActionExecutor<AgentAction<I, O>> {
+public class AgentActionExecutor<I extends TouchPoint, O> extends ActionExecutor<AgentAction<I, O>, O> {
 
     @Override
     public boolean beforeRun(AgentAction<I, O> action, Context context) {
@@ -37,14 +36,14 @@ public class AgentActionExecutor<I extends TouchPoint, O> extends ActionExecutor
     }
 
     @Override
-    public <Rsp> Rsp run(AgentAction<I, O> action, Context context) {
+    public O run(AgentAction<I, O> action, Context context) {
         String taskName = action.getContext().getTask();
         RoleExecutor<I, O> tpReceiver = (RoleExecutor<I, O>) TaskRoleExecutor.getInstance(taskName).getExecutor(action.getActionName());
-        return (Rsp) tpReceiver.run((I) ClassUtils.getFirstParam(action.getInput()), context);
+        return tpReceiver.run((I) ClassUtils.getFirstParam(action.getInput()), context);
     }
 
     @Override
-    public <RunResult> AgentAction<I, O> afterRun(AgentAction<I, O> action, RunResult runResult, Context context) {
+    public AgentAction<I, O> afterRun(AgentAction<I, O> action, O runResult, Context context) {
         String taskName = action.getContext().getTask();
         // If redirecting, rebuild the ActionGraph.
         new AgentSocketStateRouter<>().route(
@@ -52,7 +51,7 @@ public class AgentActionExecutor<I extends TouchPoint, O> extends ActionExecutor
                 context,
                 new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.REDIRECT_ACTION_READY, action),
                 taskName);
-        action.setOutput((O) runResult);
+        action.setOutput(runResult);
         return action;
     }
 

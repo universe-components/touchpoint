@@ -2,12 +2,15 @@ package com.universe.touchpoint;
 
 import android.content.Context;
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
 
 import com.google.common.collect.Lists;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.annotations.ai.LangModel;
+import com.universe.touchpoint.annotations.ai.VisionLangModel;
+import com.universe.touchpoint.annotations.ai.VisionModel;
+import com.universe.touchpoint.annotations.metric.MonitorActionMetrics;
+import com.universe.touchpoint.annotations.metric.MonitorTaskMetrics;
 import com.universe.touchpoint.annotations.socket.AgentSocket;
 import com.universe.touchpoint.annotations.task.Task;
 import com.universe.touchpoint.config.ai.LangModelConfig;
@@ -34,7 +37,13 @@ public class TaskProposer {
     @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     public static void init(Context context) {
         if (Agent.isAnnotationPresent(Task.class)) {
-            List<Class<? extends Annotation>> extractAnnotationClasses = Lists.newArrayList(LangModel.class, AgentSocket.class);
+            List<Class<? extends Annotation>> extractAnnotationClasses = Lists.newArrayList(
+                    LangModel.class,
+                    AgentSocket.class,
+                    VisionModel.class,
+                    VisionLangModel.class,
+                    MonitorTaskMetrics.class,
+                    MonitorActionMetrics.class);
             extractAnnotationClasses.addAll(TransportConfigMapping.getAnnotationClasses());
 
             List<String> transportAnnotationName = extractAnnotationClasses.stream()

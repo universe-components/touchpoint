@@ -1,7 +1,7 @@
 package com.universe.touchpoint.agent;
 
 import com.universe.touchpoint.annotations.role.ActionRole;
-import com.universe.touchpoint.api.executor.ImageEncoder;
+import com.universe.touchpoint.api.executor.ActionPredictor;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
 import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.config.task.ActionDependency;
@@ -36,7 +36,7 @@ public class AgentActionMetaInfo {
         this.desc = actionDesc;
         this.role = role;
         try {
-            if (ClassUtils.implementsInterface(Class.forName(className), ImageEncoder.class)) {
+            if (ClassUtils.implementsInterface(Class.forName(className), ActionPredictor.class)) {
                 this.type = ActionType.SENSOR;
             } else {
                 this.type = ActionType.INPUT;

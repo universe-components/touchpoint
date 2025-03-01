@@ -2,7 +2,6 @@ package com.universe.touchpoint.config.ai;
 
 import com.openai.models.ChatModel;
 import com.universe.touchpoint.ai.AIModelType;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +10,7 @@ public class LangModelConfig {
     private Model model;
     private float temperature;
     private String apiKey;
+    private String apiHost;
     private AIModelType type;
 
     public static final Map<Model, Object> modelConfigMap = new HashMap<>();
@@ -24,8 +24,13 @@ public class LangModelConfig {
     public LangModelConfig() {}
 
     public LangModelConfig(Model model, float temperature, AIModelType type) {
+        this(model, temperature, null, type);
+    }
+
+    public LangModelConfig(Model model, float temperature, String apiHost, AIModelType type) {
         this.model = model;
         this.temperature = temperature;
+        this.apiHost = apiHost;
         this.type = type;
     }
 
@@ -67,6 +72,10 @@ public class LangModelConfig {
 
     public void setTemperature(float temperature) {
         this.temperature = temperature;
+    }
+
+    public String getApiHost() {
+        return apiHost;
     }
 
     public AIModelType getType() {

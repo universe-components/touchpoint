@@ -6,7 +6,7 @@ The Touchpoint Protocol (TPP) is a collaboration communication protocol between 
 
 ### Why Use TPP?
 
-The TPP protocol adheres to the philosophy of "All is Action", achieving a truly adaptive multi-agent collaboration model.
+The TPP protocol adheres to the philosophy of "Anything is Action", achieving a truly adaptive multi-agent collaboration model.
 
 - **State-Role Driven Model**: Through the state-role driven model, multi-agents can autonomously adjust and optimize their collaboration relationships based on different scenarios and environments, without requiring human intervention.
 
@@ -26,7 +26,7 @@ The TPP protocol adheres to the philosophy of "All is Action", achieving a truly
 
 - **Supports Multiple Action Execution Modes**: Actions can be executed in parallel or sequentially.
 
-- **Supports Multiple Agent File Formats**: Compatible with APK, JAR, EXE, IPA, PY, etc.
+- **Supports Multiple Agent File Formats**: Compatible with Apk, Jar, exe, ipa, py, etc.
 
 - **Hot-swappable Agents**: Any agent in the network can join or leave online without affecting the entire agent network.
 
@@ -46,7 +46,7 @@ The TPP protocol adheres to the philosophy of "All is Action", achieving a truly
   <img src="architecture.jpg" alt="Architecture" />
 </div>
 
-## Quick start
+## Getting Started
 
 ### Import dependencies
 
@@ -225,11 +225,10 @@ class WeatherService {
 Note: The above configuration applies to the action scope. The priority of all configuration scopes is: Action > Task > Agent.
 
 ## More Usage
-- [Dynamic Workflow](./README_ROLE.md)
-- [Rule-Driven Workflow](./README_RULE.md)
-- [Custom Context](./README_CONTEXT.md)
-- [VLA Model](./README_VLA.md)
-- [New Paradigm for Extended Functionality](./README_EXTENSION.md)
+- [Dynamic Workflow](./docs/README_ROLE.md)
+- [Custom Context](./docs/README_CONTEXT.md)
+- [VLA Model](./docs/README_VLA.md)
+- [New Paradigm for Extended Functionality](./docs/README_EXTENSION.md)
 
 ## RoadMap
 

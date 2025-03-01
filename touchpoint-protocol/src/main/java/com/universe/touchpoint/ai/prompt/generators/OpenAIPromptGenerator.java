@@ -8,14 +8,11 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.ai.prompt.PromptGenerator;
 import com.universe.touchpoint.ai.prompt.template.OpenAITemplate;
-import com.universe.touchpoint.api.executor.ImageEncoder;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.utils.ClassUtils;
-
-import java.util.Arrays;
 import java.util.List;
 
-public class OpenAIPromptGenerator implements PromptGenerator {
+public class OpenAIPromptGenerator implements PromptGenerator<String> {
 
     @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Override
@@ -38,26 +35,10 @@ public class OpenAIPromptGenerator implements PromptGenerator {
         StringBuilder actionBody = new StringBuilder();
         String finalSuffix = OpenAITemplate.SUFFIX.replace("{question}", question);
         if (action != null) {
-            boolean isImageAction;
-            String actionName;
-            String actionInput;
-            String observation;
-            try {
-                isImageAction = ClassUtils.implementsInterface(Class.forName(action.getMeta().getClassName()), ImageEncoder.class);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            if (isImageAction) {
-                finalSuffix = finalSuffix.replace("{agent_scratchpad}", "I have visual and text features to help answer the question.");
-                actionName = "Use visual and text features to generate an answer.";
-                actionInput = String.join(", ", Arrays.stream((Double[]) action.getOutput()).map(String::valueOf).toArray(String[]::new));
-                observation = "Waiting for the model's response.";
-            } else {
-                finalSuffix = finalSuffix.replace("{agent_scratchpad}", action.getThought());
-                actionName = action.getActionName();
-                actionInput = ClassUtils.getFieldValues(action.getInput());
-                observation = action.getOutput().toString();
-            }
+            finalSuffix = finalSuffix.replace("{agent_scratchpad}", action.getThought());
+            String actionName = action.getActionName();
+            String actionInput = ClassUtils.getFieldValues(action.getInput());
+            String observation = action.getOutput().toString();
             actionBody.append(finalSuffix)
                     .append("\nAction:")
                     .append(actionName)

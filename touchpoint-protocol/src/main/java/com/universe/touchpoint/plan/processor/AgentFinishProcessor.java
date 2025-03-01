@@ -11,15 +11,14 @@ import com.universe.touchpoint.plan.ResultProcessor;
 import com.universe.touchpoint.router.Router;
 import java.util.List;
 
-public class AgentFinishProcessor implements ResultProcessor<AgentFinish> {
-
+public class AgentFinishProcessor implements ResultProcessor<AgentFinish<?>> {
     @Override
-    public Pair<List<AgentAction<?, ?>>, AgentFinish> process(AgentFinish result, String goal, String task, Context context, Transport transport) {
+    public <CH> Pair<List<AgentAction<?, ?>>, AgentFinish<?>> process(AgentFinish<?> result, String goal, String task, Context context, Transport transport) {
         if (transport == Transport.DUBBO) {
             return Pair.create(null, result);
         }
         List<AgentActionMetaInfo> nextActions = Router.route(result, false);
-        return Pair.create(null, new AgentFinish(result.getOutput(), nextActions.get(0)));
+        return Pair.create(null, new AgentFinish<>(result.getOutput(), nextActions.get(0)));
     }
 
 }

@@ -1,17 +1,15 @@
 package com.universe.touchpoint.ai;
 
 import com.universe.touchpoint.config.ai.LangModelConfig;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class AIModel<Client, Completion, Choice> {
+public abstract class AIModel<Client, Request, Completion, Choice> {
 
     protected final Client client;
     protected final LangModelConfig config;
-    protected List<Completion> completions = new ArrayList<>();
+    protected Completion completionService;
 
     public AIModel(Client client, LangModelConfig config) {
         this.client = client;
@@ -28,7 +26,7 @@ public abstract class AIModel<Client, Completion, Choice> {
         return client;
     }
 
-    public abstract void createCompletion(String content);
-    public abstract Map<Completion, List<Choice>> predict();
+    public abstract void createCompletion();
+    public abstract Choice predict(Request request);
 
 }

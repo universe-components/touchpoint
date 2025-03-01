@@ -4,13 +4,13 @@ import com.universe.touchpoint.context.TouchPoint;
 
 public class ImageData extends TouchPoint {
 
-    private Double[][] data;
+    private byte[][][] data;
 
-    public Double[][] getData() {
+    public byte[][][] getData() {
         return data;
     }
 
-    public void setData(Double[][] data) {
+    public void setData(byte[][][] data) {
         this.data = data;
     }
 

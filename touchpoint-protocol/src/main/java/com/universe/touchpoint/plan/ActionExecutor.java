@@ -2,11 +2,11 @@ package com.universe.touchpoint.plan;
 
 import android.content.Context;
 
-public abstract class ActionExecutor<T> {
+public abstract class ActionExecutor<T, O> {
 
     public T execute(T touchPoint, Context context) {
         if (beforeRun(touchPoint, context)) {
-            Object runResult = run(touchPoint, context);
+            O runResult = run(touchPoint, context);
             if (runResult != null) {
                 return afterRun(touchPoint, runResult, context);
             }
@@ -16,8 +16,8 @@ public abstract class ActionExecutor<T> {
 
     public abstract boolean beforeRun(T touchPoint, Context context);
 
-    public abstract <O> O run(T touchPoint, Context context);
+    public abstract O run(T touchPoint, Context context);
 
-    public abstract <RunResult> T afterRun(T touchPoint, RunResult runResult, Context context);
+    public abstract T afterRun(T touchPoint, O runResult, Context context);
 
 }

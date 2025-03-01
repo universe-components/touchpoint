@@ -15,6 +15,8 @@ public @interface LangModel {
 
     float temperature() default 0.0f;
 
+    String apiHost() default "";
+
     String apiKey() default "";
 
 }

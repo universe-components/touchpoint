@@ -5,6 +5,7 @@ import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.ChatCompletion;
 import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatModel;
+import com.openai.services.blocking.chat.CompletionService;
 import com.universe.touchpoint.ai.AIModel;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion.Choice> {
+public class OpenAI extends AIModel<OpenAIClient, String, CompletionService, Map<ChatCompletion, List<ChatCompletion.Choice>>> {
 
     public OpenAI(LangModelConfig modelConfig) {
         super(OpenAIOkHttpClient.builder()
@@ -25,23 +26,21 @@ public class OpenAI extends AIModel<OpenAIClient, ChatCompletion, ChatCompletion
     }
 
     @Override
-    public void createCompletion(String content) {
+    public void createCompletion() {
+        this.completionService = client.chat().completions();
+    }
+
+    @Override
+    public Map<ChatCompletion, List<ChatCompletion.Choice>> predict(String content) {
+        Map<ChatCompletion, List<ChatCompletion.Choice>> choices = new HashMap<>();
         ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
                 .addUserMessage(content)
                 .model((ChatModel) Objects.requireNonNull(
                         LangModelConfig.modelConfigMap.get(config.getModel())))
                 .temperature(config.getTemperature())
                 .build();
-
-        this.completions.add(client.chat().completions().create(params));
-    }
-
-    @Override
-    public Map<ChatCompletion, List<ChatCompletion.Choice>> predict() {
-        Map<ChatCompletion, List<ChatCompletion.Choice>> choices = new HashMap<>();
-        for (ChatCompletion chatCompletion : completions) {
-            choices.put(chatCompletion, chatCompletion.choices());
-        }
+        ChatCompletion chatCompletion = completionService.create(params);
+        choices.put(chatCompletion, chatCompletion.choices());
         return choices;
     }
 

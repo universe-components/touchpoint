@@ -9,22 +9,22 @@ import java.util.Map;
 
 public class PromptBuilder {
 
-    private static PromptGenerator promptGenerator;
+    private static PromptGenerator<?> promptGenerator;
     private static final Object lock = new Object();
 
-    private static final Map<AIModelType, Class<? extends PromptGenerator>> modelGeneratorMap = new HashMap<>();
+    private static final Map<AIModelType, Class<? extends PromptGenerator<?>>> modelGeneratorMap = new HashMap<>();
     static {
         modelGeneratorMap.put(AIModelType.OPEN_AI, OpenAIPromptGenerator.class);
         modelGeneratorMap.put(AIModelType.ANTHROPIC, AnthropicPromptGenerator.class);
     }
 
-    public static PromptGenerator createPromptGenerator(AIModelType modelType) {
+    public static PromptGenerator<?> createPromptGenerator(AIModelType modelType) {
         synchronized (lock) {
             if (promptGenerator == null) {
                 try {
 
                     // 获取模型类类型
-                    Class<? extends PromptGenerator> modelGeneratorClass = modelGeneratorMap.get(modelType);
+                    Class<? extends PromptGenerator<?>> modelGeneratorClass = modelGeneratorMap.get(modelType);
                     if (modelGeneratorClass == null) {
                         throw new IllegalArgumentException("Unknown model type: " + modelType);
                     }

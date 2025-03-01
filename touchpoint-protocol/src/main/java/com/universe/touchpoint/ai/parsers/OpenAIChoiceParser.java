@@ -1,18 +1,12 @@
 package com.universe.touchpoint.ai.parsers;
 
 import android.util.Pair;
-
 import com.openai.models.ChatCompletion;
-import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.ai.ChoiceParser;
-import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.memory.Region;
-import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.DriverRegion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +15,13 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatCompletion.Choice> {
+public class OpenAIChoiceParser implements ChoiceParser<Map<ChatCompletion, List<ChatCompletion.Choice>>> {
 
     private static final String FINAL_ANSWER_ACTION = "Final Answer: ";
 
     @Override
-    public <ReqInput extends TouchPoint, ReqOutput extends TouchPoint, RespInput extends TouchPoint, RespOutput extends TouchPoint> Pair<List<AgentAction<RespInput, RespOutput>>, AgentFinish> parse(Map<ChatCompletion, List<ChatCompletion.Choice>> choices, AgentAction<ReqInput, ReqOutput> currentAction) {
-        List<AgentAction<RespInput, RespOutput>> agentActions = new ArrayList<>();
+    public Pair<List<AgentAction<?, ?>>, AgentFinish<?>> parse(Map<ChatCompletion, List<ChatCompletion.Choice>> choices, AgentAction<?, ?> currentAction) {
+        List<AgentAction<?, ?>> agentActions = new ArrayList<>();
 
         for (Map.Entry<ChatCompletion, List<ChatCompletion.Choice>> entry : choices.entrySet()) {
             List<ChatCompletion.Choice> choiceList = entry.getValue(); // 对应的 Choice 列表
@@ -35,7 +29,7 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
                 String text = choice.message().content().get();
                 if (text.contains(FINAL_ANSWER_ACTION)) {
                     // 如果文本中包含 FINAL_ANSWER_ACTION，返回 AgentFinish
-                    return new Pair<>(null, new AgentFinish(text.split(FINAL_ANSWER_ACTION)[1].trim(), currentAction.getMeta()));
+                    return new Pair<>(null, new AgentFinish<>(text.split(FINAL_ANSWER_ACTION)[1].trim(), currentAction.getMeta()));
                 }
 
                 // 正则表达式，用于匹配 Action 和 Action Input
@@ -53,7 +47,6 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
                 String actionInput = matcher.group(3) == null ? "" : Objects.requireNonNull(matcher.group(2)).trim();
                 String thought = matcher.group(1) == null ? "" : Objects.requireNonNull(matcher.group(1)).trim();
 
-                DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
                 currentAction.setActionName(action);
                 currentAction.setThought(thought);
                 currentAction.setInput(AgentActionManager
@@ -61,9 +54,7 @@ public class OpenAIChoiceParser implements ChoiceParser<ChatCompletion, ChatComp
                         .paddingActionInput(
                                 action, actionInput.replaceAll("\"", "").trim(), Agent.getName()
                         ));
-                currentAction.setMeta( driverRegion.getTouchPointAction(
-                        TouchPointHelper.touchPointActionName(action, Agent.getName())));
-                agentActions.add((AgentAction<RespInput, RespOutput>) currentAction);
+                agentActions.add(currentAction);
             }
         }
         // 返回 AgentAction
