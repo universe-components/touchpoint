@@ -38,7 +38,7 @@ The TPP protocol adheres to the philosophy of "Anything is Action", achieving a 
 
 - **Multi-level Invocation Strategies**: Invocation strategies can be applied to both agents and actions.
 
-- **Supports Multiple AI Models**: The protocol supports various models, including GPT-3, GPT-3.5, GPT-4, Claude-3, Claude-3.5, DINOv2, SigLIP, etc.
+- **Supports Multiple AI Models**: The protocol supports various models, including GPT-3, GPT-3.5, GPT-4, Claude-3, Claude-3.5, DINOv2, SigLIP, OpenVLA etc.
 
 ## Architecture
 
