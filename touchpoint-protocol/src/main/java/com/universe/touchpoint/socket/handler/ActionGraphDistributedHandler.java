@@ -24,6 +24,7 @@ import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class ActionGraphDistributedHandler implements AgentSocketStateHandler<ActionGraph, Boolean> {
 
@@ -49,6 +50,15 @@ public class ActionGraphDistributedHandler implements AgentSocketStateHandler<Ac
                     throw new RuntimeException(e);
                 }
             });
+            for (Map.Entry<AgentActionMetaInfo, List<AgentActionMetaInfo>> entry : actionGraph.getAdjList().entrySet()) {
+                AgentActionMetaInfo node = entry.getKey();
+                List<AgentActionMetaInfo> adjacentNodes = entry.getValue();
+                driverRegion.putTouchPointAction(node.getActionName(), node);
+                // Process adjacent nodes (neighbors)
+                for (AgentActionMetaInfo adjacentNode : adjacentNodes) {
+                    driverRegion.putTouchPointAction(adjacentNode.getActionName(), adjacentNode);
+                }
+            }
 
             if (driverRegion.containActions(Collections.singletonList(ActionRole.COORDINATOR))) {
                 ActionGraphBuilder.putGraph(task, actionGraph);
