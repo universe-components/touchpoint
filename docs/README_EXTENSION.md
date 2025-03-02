@@ -138,7 +138,7 @@ Step 4: Add the environment variables to the context to trigger the `MediaCoordi
 ```java
 public class VideoProcessor {
 
-    @Task("videoProcessor")
+    @Task("movie")
     private final TaskBuilder videoProcessor = TaskBuilder.task("movie"); 
     
     public static void run(String fileName) {
