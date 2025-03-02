@@ -55,10 +55,15 @@ public class VideoProcessor {
 }
 ```
 
+Step 4: Compile and publish the project containing the interface.
+```shell
+mvn clean install & mvn deploy
+reboot player
+```
+
 ### Now
 
 Step 1: Implement `AgentActionExecutor` Interface
-
 ```java
 class MovieFile extends TouchPoint {
 
@@ -92,13 +97,20 @@ class Router implements AgentActionExecutor<MovieFile, TouchPoint> {
 
     @Override
     private TouchPoint run(MovieFile file, Context context) {
+        TouchPoint response = new TouchPoint();
         if (file.getFileName().endsWith(".mp4")) {
-            new Mp4Player().run(file, context);
+            response.setState(new TouchPointState(
+                    TaskState.OK.getCode(),
+                    "use mp4_player to play video",
+                    "mp4_player"));
         }
         if (file.getFileName().endsWith(".flv")) {
-            new FlvPlayer().run(file, context);
+            response.setState(new TouchPointState(
+                    TaskState.OK.getCode(),
+                    "use flv_player to play video",
+                    "flv_player"));
         }
-        return new TouchPoint();
+        return response;
     }
 
 }
@@ -119,6 +131,26 @@ class MediaCoordinator implements ActionGraphOperator<MovieFile> {
         return graph;
     }
 
+}
+```
+
+Step 4: Add the environment variables to the context to trigger the `MediaCoordinator` to automatically weave in the router, without compilation, publishing, or restarting.
+```java
+public class VideoProcessor {
+
+    @Task("videoProcessor")
+    private final TaskBuilder videoProcessor = TaskBuilder.task("movie"); 
+    
+    public static void run(String fileName) {
+        ......
+        ......
+
+        // The following code is already in the production environment and does not require modification.
+        // In this case, `route_player` is flag, and `media_coordinator` is the Action corresponding to that flag, which can be passed through parameters from the frontend.
+        file.getContext().getTaskContext().setActionGraphContext(new ActionGraphContext("route_player", "media_coordinator"));
+        videoProcessor.run("Video Playback Processing: Parse Protocol -> Parse Container Format -> Audio and Video Decoding -> Audio and Video Synchronization -> Rendering and Playback", file);
+    }
+    
 }
 ```
 
