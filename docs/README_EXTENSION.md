@@ -4,7 +4,7 @@ The Touchpoint Protocol (TPP) is a collaboration communication protocol between 
 
 ## Case 1: Custom Media Player Playback Feature
 
-通过文件名后缀，选择不同的播放器播放视频。
+Select different players to play the video based on the file extension.
 
 ### Past
 
