@@ -77,7 +77,7 @@ public class TaskParticipant {
                  */
                 boolean coordinatorResult = registerCoordinator(Class.forName(clazz), (String) properties.get(0));
                 boolean supervisorResult = registerSupervisor(Class.forName(clazz), (String) properties.get(0));
-                ActionRole role = coordinatorResult ? ActionRole.COORDINATOR : (supervisorResult ? ActionRole.SUPERVISOR : ActionRole.PARTICIPANT);
+                ActionRole role = coordinatorResult ? ActionRole.COORDINATOR : (supervisorResult ? ActionRole.SUPERVISOR : ActionRole.EXECUTOR);
 
                 ActionDependency actionDependency = new ActionDependency((String) properties.get(0));
                 actionDependency.setToActions(StringUtils.convert((String[]) properties.get(3)));
@@ -159,7 +159,7 @@ public class TaskParticipant {
                                 AgentSocketState.PARTICIPANT_READY,
                                 actionMeta),
                         context,
-                        TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, ActionRole.PARTICIPANT.name()));
+                        TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, ActionRole.EXECUTOR.name()));
             }
         }
     }
