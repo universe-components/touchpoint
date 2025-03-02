@@ -4,18 +4,18 @@ import com.universe.touchpoint.agent.AgentActionMetaInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ActionGraph {
 
     private String name = "default";
     // 使用 HashMap 存储邻接表，键为 AgentActionMetaInfo 节点，值为与该节点相邻的节点列表
-    private final Map<AgentActionMetaInfo, List<AgentActionMetaInfo>> adjList = new HashMap<>();
+    private final Map<AgentActionMetaInfo, List<AgentActionMetaInfo>> adjList = new ConcurrentHashMap<>();
 
     public String getName() {
         return name;
@@ -59,7 +59,9 @@ public class ActionGraph {
         // 如果节点不存在，则先添加节点
         addNode(from);
         addNode(to);
-        Objects.requireNonNull(adjList.get(from)).add(to);
+        synchronized (adjList) {
+            Objects.requireNonNull(adjList.get(from)).add(to);
+        }
     }
 
     public void addEdgeAtStart(AgentActionMetaInfo from, AgentActionMetaInfo to) {

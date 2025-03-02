@@ -3,13 +3,14 @@ package com.universe.touchpoint.memory.regions;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.memory.TouchPointRegion;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DriverRegion extends TouchPointRegion {
 
-    private final HashMap<String, AgentActionMetaInfo> touchPointActions = new HashMap<>();
-    private final HashMap<String, AgentActionMetaInfo> touchPointSwapActions = new HashMap<>();
+    private final Map<String, AgentActionMetaInfo> touchPointActions = new ConcurrentHashMap<>();
+    private final Map<String, AgentActionMetaInfo> touchPointSwapActions = new ConcurrentHashMap<>();
 
     public void putTouchPointAction(String name, AgentActionMetaInfo agentActionMetaInfo) {
         touchPointActions.put(name, agentActionMetaInfo);

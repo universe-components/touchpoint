@@ -5,12 +5,12 @@ import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.monitor.action.alarm.TaskMonitor;
 import com.universe.touchpoint.monitor.action.alarm.ActionMonitor;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RoleExecutorContainer {
 
-    private final Map<String, RoleExecutor<?, ?>> executorMap = new HashMap<>();
+    private final Map<String, RoleExecutor<?, ?>> executorMap = new ConcurrentHashMap<>();
     {
         executorMap.put(RoleConstants.ACTION_CAPABILITY_CHECKER, new ActionMonitor<>());
         executorMap.put(RoleConstants.TASK_EXECUTOR_CHECKER, new TaskMonitor<>());

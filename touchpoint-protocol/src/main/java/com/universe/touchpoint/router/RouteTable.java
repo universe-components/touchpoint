@@ -1,15 +1,15 @@
 package com.universe.touchpoint.router;
 
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
-
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RouteTable {
 
-    private final HashMap<String, List<AgentActionMetaInfo>> predecessors = new HashMap<>();
-    private final HashMap<String, List<AgentActionMetaInfo>> successors = new HashMap<>();
+    private final Map<String, List<AgentActionMetaInfo>> predecessors = new ConcurrentHashMap<>();
+    private final Map<String, List<AgentActionMetaInfo>> successors = new ConcurrentHashMap<>();
 
     private static RouteTable instance;
     private static final Object lock = new Object();

@@ -3,7 +3,6 @@ package com.universe.touchpoint.transport.broadcast;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.context.TaskContext;
@@ -28,11 +27,6 @@ public class TouchPointBroadcastReceiver<T extends TouchPoint> extends Broadcast
         T touchPoint = SerializeUtils.deserializeFromByteArray(touchPointBytes, tpClass);
         String taskName = touchPoint.getContext().getTask();
         TaskContext taskContext = touchPoint.getContext().getTaskContext();
-
-        if (touchPoint.getState().getCode() < 200) {
-            Log.i("CoordinateRelationEstablish", "Coordinate Relation Establishing...");
-            return;
-        }
 
         touchPoint = ((ActionExecutor<T, ?>) ActionExecutionSelector.getExecutor(touchPoint)).execute(touchPoint, context);
         new ResultExchanger().exchange(touchPoint, taskContext.getGoal(), taskName, context, Transport.BROADCAST);

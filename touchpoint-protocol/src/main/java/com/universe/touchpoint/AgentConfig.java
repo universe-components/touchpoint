@@ -16,10 +16,10 @@ import java.util.Map;
 
 public class AgentConfig {
 
-    private LangModelConfig modelConfig = new LangModelConfig();
+    private volatile LangModelConfig modelConfig = new LangModelConfig();
     private VisionModelConfig visionModelConfig = new VisionModelConfig();
     private VisionLangModelConfig visionLangModelConfig = new VisionLangModelConfig();
-    private TransportConfig<?> transportConfig;
+    private volatile TransportConfig<?> transportConfig;
     private AgentSocketConfig socketConfig = new AgentSocketConfig();
     private MetricSocketConfig metricSocketConfig = new MetricSocketConfig();
     private ActionMetricConfig actionMetricConfig = new ActionMetricConfig();
