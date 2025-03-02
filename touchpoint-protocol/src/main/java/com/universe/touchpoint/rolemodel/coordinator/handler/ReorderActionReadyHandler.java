@@ -1,9 +1,10 @@
 package com.universe.touchpoint.rolemodel.coordinator.handler;
 
 import android.content.Context;
+
+import com.universe.touchpoint.api.operator.ActionGraphOperator;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.api.operator.ActionGraphOperator;
 import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.plan.ActionGraph;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
@@ -13,7 +14,8 @@ public class ReorderActionReadyHandler<I extends TouchPoint, O extends TouchPoin
 
     @Override
     public <C extends AgentContext> ActionGraph onStateChange(AgentAction<I, O> action, C agentContext, Context context, String task) {
-        ActionGraphOperator<I> actionCoordinator = (ActionGraphOperator<I>) TaskRoleExecutor.getInstance(task).getExecutor(action.getInput().getState().getRedirectToAction());
+        String coordinator = action.getInput().getContext().getTaskContext().getActionGraphContext().action();
+        ActionGraphOperator<I> actionCoordinator = (ActionGraphOperator<I>) TaskRoleExecutor.getInstance(task).getExecutor(coordinator);
         return actionCoordinator.run(action.getInput(), context);
     }
 

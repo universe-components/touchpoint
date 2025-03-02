@@ -1,10 +1,10 @@
 package com.universe.touchpoint.socket;
 
 import android.content.Context;
-
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.router.RedirectActionHandler;
+import com.universe.touchpoint.rolemodel.coordinator.handler.ReorderActionReadyHandler;
+import com.universe.touchpoint.rolemodel.coordinator.handler.SwitchActionReadyHandler;
 import com.universe.touchpoint.socket.handler.ActionGraphDistributedHandler;
 import com.universe.touchpoint.socket.handler.ChannelEstablishedHandler;
 import com.universe.touchpoint.socket.handler.GlobalConfigDistributedHandler;
@@ -24,7 +24,8 @@ public class AgentSocketStateRouter<C extends AgentContext> {
         stateHandlerMap.put(AgentSocketState.GLOBAL_CONFIG_READY, new GlobalConfigReadyHandler());
         stateHandlerMap.put(AgentSocketState.ACTION_GRAPH_DISTRIBUTED, new ActionGraphDistributedHandler());
         stateHandlerMap.put(AgentSocketState.CHANNEL_ESTABLISHED, new ChannelEstablishedHandler());
-        stateHandlerMap.put(AgentSocketState.REDIRECT_ACTION_READY, new RedirectActionHandler<>());
+        stateHandlerMap.put(AgentSocketState.ACTION_GRAPH_READY, new ReorderActionReadyHandler<>());
+        stateHandlerMap.put(AgentSocketState.ACTION_READY, new SwitchActionReadyHandler<>());
     }
 
     public void route(C context, Context appContext, byte[] stateContextBytes, String filter) {

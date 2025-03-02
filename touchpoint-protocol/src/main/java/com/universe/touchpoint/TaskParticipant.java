@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionManager;
+import com.universe.touchpoint.agent.AgentActionMetaInfo;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
@@ -76,7 +77,7 @@ public class TaskParticipant {
                  */
                 boolean coordinatorResult = registerCoordinator(Class.forName(clazz), (String) properties.get(0));
                 boolean supervisorResult = registerSupervisor(Class.forName(clazz), (String) properties.get(0));
-                ActionRole role = coordinatorResult ? ActionRole.COORDINATOR : (supervisorResult ? ActionRole.SUPERVISOR : null);
+                ActionRole role = coordinatorResult ? ActionRole.COORDINATOR : (supervisorResult ? ActionRole.SUPERVISOR : ActionRole.PARTICIPANT);
 
                 ActionDependency actionDependency = new ActionDependency((String) properties.get(0));
                 actionDependency.setToActions(StringUtils.convert((String[]) properties.get(3)));
@@ -138,23 +139,25 @@ public class TaskParticipant {
             Map<String, List<String>> toActions = StringUtils.convert((String[]) properties.get(3));
             for (String task : toActions.keySet()) {
                 TaskActionContext actionContext = new TaskActionContext((String) properties.get(0), task);
+                DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
+                AgentActionMetaInfo actionMeta = driverRegion.getTouchPointAction(actionContext.getAction());
 
                 AgentSocketConfig socketConfig = ConfigManager.selectAgentSocket(task);
                 assert socketConfig != null;
                 AgentSocketStateMachine.registerInstance(task, socketConfig.getBindProtocol());
                 AgentSocketStateMachine.getInstance(task).socketProtocol().initialize(socketConfig);
-                AgentSocketStateMachine.getInstance(task).registerReceiver(context, actionContext);
+                AgentSocketStateMachine.getInstance(task).registerReceiver(context, actionContext, actionMeta.getRole());
 
                 MetricSocketConfig metricSocketConfig = ConfigManager.selectMetricSocket(task);
                 assert metricSocketConfig != null;
                 MetricSyncerFactory.registerSyncer(task, metricSocketConfig.getBindProtocol()).initialize(metricSocketConfig);
                 MetricSyncerFactory.getSyncer(task).registerListener(task, context);
 
-                DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
+
                 AgentSocketStateMachine.getInstance(task).send(
                         new AgentSocketStateMachine.AgentSocketStateContext<>(
                                 AgentSocketState.PARTICIPANT_READY,
-                                driverRegion.getTouchPointAction(actionContext.getAction())),
+                                actionMeta),
                         context,
                         TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, ActionRole.PARTICIPANT.name()));
             }

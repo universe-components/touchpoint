@@ -6,12 +6,10 @@ import androidx.annotation.NonNull;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentActionMetaInfo;
-import com.universe.touchpoint.context.state.enums.TaskState;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.provider.TouchPointContent;
 import com.universe.touchpoint.provider.TouchPointContentFactory;
-
 import java.lang.reflect.Field;
 
 public class TouchPoint {

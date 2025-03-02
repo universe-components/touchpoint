@@ -14,7 +14,6 @@ import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.socket.AgentSocketProtocol;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.AgentSocketStateRouter;
-import com.universe.touchpoint.socket.context.TaskActionContext;
 import com.universe.touchpoint.utils.SerializeUtils;
 import java.util.Objects;
 
@@ -28,11 +27,10 @@ public class AndroidBroadcastProtocol implements AgentSocketProtocol {
     }
 
     @Override
-    public <C extends AgentContext> void registerReceiver(Context appContext, @Nullable C context) {
+    public <C extends AgentContext> void registerReceiver(Context appContext, @Nullable C context, ActionRole role) {
         assert context != null;
         String task = context.getBelongTask();
-        String role = context instanceof TaskActionContext ? ActionRole.PROPOSER.name() : ActionRole.PARTICIPANT.name();
-        String socketFilter = TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, role);
+        String socketFilter = TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, role.name());
         IntentFilter filter = new IntentFilter(TouchPointHelper.touchPointFilterName(socketFilter));
         appContext.registerReceiver(new AgentSocketStateListener<>(context), filter, Context.RECEIVER_EXPORTED);
     }

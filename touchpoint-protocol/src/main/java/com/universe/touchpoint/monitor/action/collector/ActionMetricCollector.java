@@ -1,11 +1,10 @@
 package com.universe.touchpoint.monitor.action.collector;
 
 import android.content.Context;
-
 import com.universe.touchpoint.annotations.task.TouchPointAction;
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.context.TouchPoint;
-import com.universe.touchpoint.context.TouchPointContextManager;
+import com.universe.touchpoint.TouchPointContextManager;
 
 @TouchPointAction(
         name = "action_metric_collector",

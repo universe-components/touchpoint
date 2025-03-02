@@ -5,7 +5,7 @@ import android.util.Pair;
 
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.config.metric.MetricSocketConfig;
-import com.universe.touchpoint.context.TouchPointContextManager;
+import com.universe.touchpoint.TouchPointContextManager;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.monitor.MetricSyncer;
 import com.universe.touchpoint.monitor.metric.ActionMetric;

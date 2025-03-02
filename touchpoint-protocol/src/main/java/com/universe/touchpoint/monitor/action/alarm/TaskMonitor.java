@@ -2,17 +2,16 @@ package com.universe.touchpoint.monitor.action.alarm;
 
 import android.content.Context;
 
+import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.context.TouchPoint;
-import com.universe.touchpoint.context.TaskContext;
-import com.universe.touchpoint.api.checker.TaskChecker;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
-import com.universe.touchpoint.context.TouchPointContextManager;
+import com.universe.touchpoint.TouchPointContextManager;
+import com.universe.touchpoint.context.TouchPointState;
 import com.universe.touchpoint.monitor.MonitorResult;
-import com.universe.touchpoint.context.state.DriverState;
-import com.universe.touchpoint.context.state.enums.TaskState;
+import com.universe.touchpoint.context.TaskState;
 
-public class TaskMonitor<T extends TouchPoint> implements TaskChecker<T, MonitorResult> {
+public class TaskMonitor<T extends TouchPoint> implements AgentActionExecutor<T, MonitorResult> {
 
     @Override
     public MonitorResult run(T touchPoint, Context context) {
@@ -22,14 +21,14 @@ public class TaskMonitor<T extends TouchPoint> implements TaskChecker<T, Monitor
 
         assert metricConfig != null;
         if (TouchPointContextManager.getTouchPointContext(task).getTaskContext().getMetric().getRetryActionCount() > metricConfig.getMaxRetryActionCount()) {
-            monitorResult.setState(new DriverState(
+            monitorResult.setState(new TouchPointState(
                     TaskState.NEED_REORDER_ACTION.getCode(),
                     "The task has too many action retries",
                     touchPoint.getHeader().getToAction().getActionName()));
             return monitorResult;
         }
 
-        monitorResult.setState(new DriverState(TaskState.OK.getCode(), "success"));
+        monitorResult.setState(new TouchPointState(TaskState.OK.getCode(), "success"));
         return new MonitorResult();
     }
 

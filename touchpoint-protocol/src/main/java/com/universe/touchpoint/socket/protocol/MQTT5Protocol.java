@@ -11,7 +11,6 @@ import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.socket.AgentSocketProtocol;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.AgentSocketStateRouter;
-import com.universe.touchpoint.socket.context.TaskActionContext;
 import com.universe.touchpoint.utils.SerializeUtils;
 import org.eclipse.paho.mqttv5.client.MqttClient;
 import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
@@ -45,11 +44,10 @@ public class MQTT5Protocol implements AgentSocketProtocol {
     }
 
     @Override
-    public <C extends AgentContext> void registerReceiver(Context appContext, @Nullable C context) {
+    public <C extends AgentContext> void registerReceiver(Context appContext, @Nullable C context, ActionRole role) {
         try {
             assert context != null;
-            String role = context instanceof TaskActionContext ? ActionRole.PROPOSER.name() : ActionRole.PARTICIPANT.name();
-            String socketFilter = TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, context.getBelongTask(), role);
+            String socketFilter = TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, context.getBelongTask(), role.name());
             client.subscribe(TouchPointHelper.touchPointFilterName(socketFilter), 1, (topic, message) -> {
                 if (message == null) {
                     return;

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.context.TouchPoint;
-import com.universe.touchpoint.context.TouchPointContextManager;
+import com.universe.touchpoint.TouchPointContextManager;
 
 @TouchPointAction(
         name = "task_metric_collector",

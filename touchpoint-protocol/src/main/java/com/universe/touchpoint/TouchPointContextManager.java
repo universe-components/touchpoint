@@ -1,11 +1,13 @@
-package com.universe.touchpoint.context;
+package com.universe.touchpoint;
 
 import android.content.Context;
 import android.net.Uri;
 
-import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.context.TaskContext;
+import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.transport.TouchPointChannelManager;
 import com.universe.touchpoint.helper.TouchPointHelper;

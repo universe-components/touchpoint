@@ -11,8 +11,7 @@ import java.util.List;
 public class AgentFinishExecutor<O> extends ActionExecutor<AgentFinish<O>, O> {
 
     @Override
-    public boolean beforeRun(AgentFinish<O> touchPoint, Context context) {
-        return true;
+    public void beforeRun(AgentFinish<O> touchPoint, Context context) {
     }
 
     @Override

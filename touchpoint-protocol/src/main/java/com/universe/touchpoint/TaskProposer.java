@@ -11,6 +11,7 @@ import com.universe.touchpoint.annotations.ai.VisionLangModel;
 import com.universe.touchpoint.annotations.ai.VisionModel;
 import com.universe.touchpoint.annotations.metric.MonitorActionMetrics;
 import com.universe.touchpoint.annotations.metric.MonitorTaskMetrics;
+import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.socket.AgentSocket;
 import com.universe.touchpoint.annotations.task.Task;
 import com.universe.touchpoint.config.ai.LangModelConfig;
@@ -87,7 +88,7 @@ public class TaskProposer {
                     }
                 }
 
-                AgentSocketStateMachine.getInstance(taskProperty.getKey()).registerReceiver(context, new TaskContext(taskProperty.getKey()));
+                AgentSocketStateMachine.getInstance(taskProperty.getKey()).registerReceiver(context, new TaskContext(taskProperty.getKey()), ActionRole.PROPOSER);
             }
         }
     }

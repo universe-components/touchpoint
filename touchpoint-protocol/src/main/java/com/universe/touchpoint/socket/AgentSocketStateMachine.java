@@ -1,6 +1,8 @@
 package com.universe.touchpoint.socket;
 
 import android.content.Context;
+
+import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.socket.SocketProtocol;
 import com.universe.touchpoint.helper.TouchPointHelper;
 
@@ -31,8 +33,8 @@ public record AgentSocketStateMachine(AgentSocketProtocol socketProtocol) {
         socketProtocol.send(stateContext, context, TouchPointHelper.touchPointFilterName(filter));
     }
 
-    public <C extends AgentContext> void registerReceiver(Context appContext, @Nullable C context) {
-        socketProtocol.registerReceiver(appContext, context);
+    public <C extends AgentContext> void registerReceiver(Context appContext, @Nullable C context, ActionRole role) {
+        socketProtocol.registerReceiver(appContext, context, role);
     }
 
     public static class AgentSocketStateContext<C> {
