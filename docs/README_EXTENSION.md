@@ -4,13 +4,15 @@ The Touchpoint Protocol (TPP) is a collaboration communication protocol between 
 
 ## Case 1: Custom Media Player Playback Feature
 
+通过文件名后缀，选择不同的播放器播放视频。
+
 ### Past
 
 Step 1: Define an Interface
 ```java
 public interface MediaPlayer {
 
-    void play(String fileName);
+    void play();
 
 }
 ```
@@ -20,7 +22,7 @@ Step 2: Implement the Interface
 public class Mp4Player implements MediaPlayer {
 
     @Override
-    public void play(String fileName) {
+    public void play() {
         // play video
     }
 
@@ -31,12 +33,28 @@ public class Mp4Player implements MediaPlayer {
 public class FlvPlayer implements MediaPlayer {
 
     @Override
-    public void play(String fileName) {
+    public void play() {
         // play video
     }
 
 }
 ```
+
+Step 3: In the playback handling logic, add this interface and call it to play the video.
+```java
+public class VideoProcessor {
+    
+    public static void run(String fileName) {
+        ......
+        ......
+        
+        MediaPlayer player = new MediaPlayerSelector().select(fileName);
+        player.play();
+    }
+    
+}
+```
+
 ### Now
 
 Step 1: Implement `AgentActionExecutor` Interface
@@ -67,9 +85,28 @@ class Mp4Player implements AgentActionExecutor<MovieFile, TouchPoint> {
 }
 ```
 
-Step 2: Implement `Coordinator` to switch playback file format
+Step 2: Define the router's Action to choose different players based on the file extension to play the video.
 ```java
-@TouchPointAction(name = "media_coordinator", desc = "switch video player", toActions = {"movie[]"})
+@TouchPointAction(name = "router", desc = "select player to play video", toActions = {"movie[]"})
+class Router implements AgentActionExecutor<MovieFile, TouchPoint> {
+
+    @Override
+    private TouchPoint run(MovieFile file, Context context) {
+        if (file.getFileName().endsWith(".mp4")) {
+            new Mp4Player().run(file, context);
+        }
+        if (file.getFileName().endsWith(".flv")) {
+            new FlvPlayer().run(file, context);
+        }
+        return new TouchPoint();
+    }
+
+}
+```
+
+Step 3: Implement `Coordinator` to weave the router into the playback process.
+```java
+@TouchPointAction(name = "media_coordinator", desc = "add router to playback process", toActions = {"movie[]"})
 @Coordinator(task = "movie")
 class MediaCoordinator implements ActionGraphOperator<MovieFile> {
 
@@ -77,22 +114,13 @@ class MediaCoordinator implements ActionGraphOperator<MovieFile> {
     private ActionGraph run(MovieFile file, Context context) {
         String task = file.getContext().getTask();
         ActionGraph graph = TouchPointContextManager.getTouchPointContext(task).getActionGraph(); // `graph` represents the action relationship graph of the current task
-        if (file.getFileName().endsWith(".mp4")) {
-            // replace the player action to mp4 in graph
-            ......
-            ......
-        }
-        if (file.getFileName().endsWith(".flv")) {
-            // replace the player action to flv in graph
-            ......
-            ......
-        }
+        // Weave the router into the action graph, connecting the actions before and after playback
+        
         return graph;
     }
 
 }
 ```
-Note: Developers can also define different coordinators for different file formats, such as separate implementations for `mp4` and `flv` coordinators.
 
 ## Case 2: Bypassing the TCP Protocol Stack
 
