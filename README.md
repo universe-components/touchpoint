@@ -8,7 +8,7 @@ The Touchpoint Protocol (TPP) is a collaboration communication protocol between 
 
 The TPP protocol adheres to the philosophy of "Anything is Action", achieving a truly adaptive multi-agent collaboration model.
 
-- **State-Role Driven Model**: Through the state-role driven model, multi-agents can autonomously adjust and optimize their collaboration relationships based on different scenarios and environments, without requiring human intervention.
+- **Context-Role Driven Model**: Through the context-role driven model, multi-agents can autonomously adjust and optimize their collaboration relationships based on different scenarios and environments, without requiring human intervention.
 
 - **Compatibility with Mainstream Internet Technologies**: The TPP protocol is primarily implemented in Java and is fully compatible with mainstream programming languages and operating systems in the Internet era. Based on annotations, developers almost never need to modify the app to turn it into an agent.
 

@@ -3,7 +3,7 @@
 The Touchpoint Protocol (TPP) is a collaboration communication protocol between agents, driven by AI models to facilitate inter-agent collaboration. It serves as the collaboration communication standard for the Intelligent Network (Smart Internet).
 
 ## 概述
-TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包括Action重新编排、Action修改、更换等。其通过前置Action触发调整工作流。具体接入方法如下：
+TPP协议基于上下文 - 角色驱动模型，通过前置Action实现动态路由。具体接入方法如下：
 - 在前置Action输出中添加状态码，目前支持的状态码：  
   `OK(200)`,  
   `NEED_REORDER_ACTION(300)`,  
@@ -15,7 +15,7 @@ TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包�
   `NEED_CHECK_ACTION(401)`,  
   `NEED_CHECK_ACTION_GRAPH(402)`,  
   `NEED_CHECK_DATA(403)`  
-  开发者也可以自定义状态码。
+  备注：状态码不是必须的，开发者也可以自定义状态码。
 - 后置Action添加角色注解，处理前置Action重定向过来的数据。当前支持4种角色：`Proposer` 、 `Executor` 、`Coordinator` 和 `Supervisor`。  
   `Proposer`：发起者，用于发起任务。  
   `Executor`：执行者，用于操作Data，执行Action。  
@@ -23,80 +23,50 @@ TPP协议基于状态 - 角色驱动模型实现工作流的动态调整，包�
   `Supervisor`：监督者，用于检查Data、Action和工作流。
 - 后置Action实现角色接口，当前支持的接口和基类有：  
 `AgentActionExecutor`：用于执行Action。  
-`ActionChecker`：用于检查Action。  
-`DataChecker`：用于检查Action输入。  
-`TaskChecker`：用于检查任务和工作流。  
+`DefaultDataChecker`：用于检查Action输入。  
 `ActionGraphOperator`：用于修改工作流。  
 `ActionOperator`：用于修改Action。  
-`DataOperator`：用于修改Action输入。  
-`ImageEncoder`：用于执行视觉图像编码。
+`ActionPredictor`：用于预测行为。
 
 ## Example
-比如，产品团队Leader收到一个研发小组团建的消息，于是，告知项目经理，他的项目绕过该研发小组，先和其他团队对接。
+比如，当地水果农户准备通过代理，将自己的水果销售出去，于是，拟定了一份代理授权书，但是，他不确定授权书是否有漏洞，所以，找律师检查一下，检查通过后，给到代理商。
 
-实现 `Product Leader Action`，将 `NEED_REORDER_ACTION` 状态添加进方法输出：
+第一步：实现 `DraftAuthLetter`，将 `NEED_CHECK_DATA` 状态添加进方法输出：
 ```kotlin
 @TouchPointAction( 
-  name = "productLeader", 
-  desc = "hand off to pm",
-  toActions = { "projectA[\"productManager\"]" })
-class ProductLeader : AgentActionExecutor<TeamMessage, TeamResponse> {
+  name = "drafting a letter of authorization", 
+  desc = "drafting a letter of authorization to sell fruits",
+  toActions = { "sales[\"Authorized Agent\"]" })
+class DraftAuthLetter : AgentActionExecutor<FruitInfo, AuthLetter> {
    
-   override fun run(message: TeamMessage, context: Context) : TeamResponse {
-     TeamResponse teamResponse = new TeamResponse();
-     if (message.getContent().contains("team-building")) {
-       teamResponse.getContext().setAction("R&D");
-       teamResponse.setState(new TouchPointState(
-                 TaskState.NEED_REORDER_ACTION.getCode(), // 状态码为NEED_REORDER_ACTION，表示需要重新编排Action
-                 "The R&D team is team-building, followed by coordination with other teams", // 状态描述
-                 "pm"); // 状态码NEED_REORDER_ACTION对应的Action名称，即后置Action的名称
-     }
+   override fun run(message: FruitInfo, context: Context) : AuthLetter {
+     AuthLetter letter = new AuthLetter();
+     letter.setState(new TouchPointState(
+               TaskState.NEED_CHECK_DATA.getCode(), // 状态码为NEED_CHECK_DATA，表示下一步需要检查数据
+               "Please help check if there are any issues with the authorization letter?", // 状态描述
+               "lawyer"); // 状态码状态码为NEED_CHECK_DATA对应的Action名称，即后置Action
      
-     return teamResponse;
+     return letter;
    }
  
 }
 ```
 
-实现 `PM`，`PM`为协调者，实施绕过该研发小组，先和其他团队对接，即从Task中移除该研发小组：
+第二步：实现 `Lawyer`，标记`Lawyer`为监督者，检查授权书是否有漏洞，如果通过，则将授权书发送给代理商：
 ```kotlin
 @TouchPointAction( 
-  name = "pm"
-  desc = "remove R&D team from task"
-  toActions = { "projectA[]" })
-@Coordinator(task = "projectA")
-class PM : ActionGraphOperator<TeamResponse> {
+  name = "lawyer"
+  desc = "check if there are any issues with the authorization letter?"
+  toActions = { "sales[\"Authorized Agent\"]" })
+@Supervisor(task = "sales")
+class Lawyer : DefaultDataChecker<AuthLetter> {
 
-    override fun run(teamResponse: TeamResponse, context: Context): ActionGraph {
-        String taskName = teamResponse.getContext().getTask();
-        ActionGraph actionGraph = TouchPointContextManager.getTouchPointContext(taskName).getActionGraph();
-        AgentActionMetaInfo actionMeta = TouchPointContextManager.getTouchPointContext(taskName).getActionContext().getActionMetaInfo(teamResponse.getContext().getAction());
-        adjList = actionGraph.getAdjList()
-        List<AgentActionMetaInfo> successors = actionGraph.getAdjList().get(actionMeta);
-
-        List<AgentActionMetaInfo> predecessors = new ArrayList<>();
-        for (Map.Entry<AgentActionMetaInfo, List<AgentActionMetaInfo>> entry : adjList.entrySet()) {
-            AgentActionMetaInfo node = entry.getKey();
-            List<AgentActionMetaInfo> neighbors = entry.getValue();
-    
-            if (neighbors.contains(actionMeta)) {
-              predecessors.add(node);
-            }
+    override fun run(letter: AuthLetter, context: Context): Boolean {
+        // 检查授权书是否有漏洞
+        if (letter.hasIssues()) {
+            return false
         }
-
-        // 连接所有前置节点与后置节点
-        for (AgentActionMetaInfo predecessor : predecessors) {
-            for (AgentActionMetaInfo successor : successors) {
-                // 将前置节点的后续节点指向后置节点
-                adjList.get(predecessor).add(successor);
-            }
-        }
-        // 移除研发小组节点
-        adjList.remove(actionMeta);
-        for (List<AgentActionMetaInfo> neighbors : adjList.values()) {
-            neighbors.remove(actionMeta);
-        }
-        return actionGraph
+        return true
     }
 
 }
