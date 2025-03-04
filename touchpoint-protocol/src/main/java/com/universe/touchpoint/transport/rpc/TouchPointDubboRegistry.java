@@ -1,8 +1,6 @@
 package com.universe.touchpoint.transport.rpc;
 
-import android.content.Context;
-
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 import com.universe.touchpoint.transport.TouchPointTransportRegistry;
 
@@ -15,7 +13,7 @@ import org.apache.dubbo.config.bootstrap.builders.ServiceBuilder;
 public class TouchPointDubboRegistry implements TouchPointTransportRegistry<DubboConfig> {
 
     @Override
-    public void init(Context context, DubboConfig transportConfig) {
+    public void init( DubboConfig transportConfig) {
         DubboBootstrap.getInstance()
                 .application(transportConfig.getApplicationName())
                 .registry(new RegistryConfig(transportConfig.getRegistryAddress()))
@@ -25,10 +23,10 @@ public class TouchPointDubboRegistry implements TouchPointTransportRegistry<Dubb
     }
 
     @Override
-    public void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String previousAction, String task) {
-        DubboConfig dubboConfig = (DubboConfig) agentActionMetaInfo.getTransportConfig().config();
+    public void register(AgentActionMeta agentActionMeta, String previousAction, String task, boolean isRequested) {
+        DubboConfig dubboConfig = (DubboConfig) agentActionMeta.getTransportConfig().config();
         try {
-            Class<?> providerClass = Class.forName(agentActionMetaInfo.getClassName());
+            Class<?> providerClass = Class.forName(agentActionMeta.getClassName());
             DubboBootstrap.getInstance()
                     .service(ServiceBuilder.newBuilder()
                     .interfaceClass(dubboConfig.interfaceClass)

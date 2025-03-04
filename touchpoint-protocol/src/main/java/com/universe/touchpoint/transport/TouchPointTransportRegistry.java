@@ -1,14 +1,12 @@
 package com.universe.touchpoint.transport;
 
-import android.content.Context;
-
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
 
 public interface TouchPointTransportRegistry<C> {
 
-    void init(Context context, C transportConfig);
+    void init(C transportConfig);
 
-    void register(Context context, AgentActionMetaInfo agentActionMetaInfo, String filter, String task);
+    void register(AgentActionMeta agentActionMeta, String filter, String task, boolean isRequested);
 
 
 }

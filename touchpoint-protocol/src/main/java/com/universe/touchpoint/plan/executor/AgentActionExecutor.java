@@ -1,7 +1,5 @@
 package com.universe.touchpoint.plan.executor;
 
-import android.content.Context;
-
 import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.annotations.role.ActionRole;
@@ -24,23 +22,23 @@ public class AgentActionExecutor<I extends TouchPoint, O> extends ActionExecutor
     }
 
     @Override
-    public void beforeRun(AgentAction<I, O> action, Context context) {
+    public void beforeRun(AgentAction<I, O> action) {
         String taskName = action.getContext().getTask();
-        CoordinatorFactory.getCoordinator(taskName).execute(action, taskName, context);
+        CoordinatorFactory.getCoordinator(taskName).execute(action, taskName);
         if (action.getMeta().getRole() == ActionRole.SUPERVISOR) {
-            SupervisorFactory.getSupervisor(taskName).execute(action, taskName, context);
+            SupervisorFactory.getSupervisor(taskName).execute(action, taskName);
         }
     }
 
     @Override
-    public O run(AgentAction<I, O> action, Context context) {
+    public O run(AgentAction<I, O> action) {
         String taskName = action.getContext().getTask();
         RoleExecutor<I, O> tpReceiver = (RoleExecutor<I, O>) TaskRoleExecutor.getInstance(taskName).getExecutor(action.getActionName());
-        return tpReceiver.run((I) ClassUtils.getFirstParam(action.getInput()), context);
+        return tpReceiver.run((I) ClassUtils.getFirstParam(action.getInput()));
     }
 
     @Override
-    public AgentAction<I, O> afterRun(AgentAction<I, O> action, O runResult, Context context) {
+    public AgentAction<I, O> afterRun(AgentAction<I, O> action, O runResult) {
         action.setOutput(runResult);
         metricTaskBuilder.run("I want to collect action and task metrics, where task metrics include the number of execution errors and prediction counts for multiple actions within the task, and action metrics include the prediction count for a single action.");
         return action;

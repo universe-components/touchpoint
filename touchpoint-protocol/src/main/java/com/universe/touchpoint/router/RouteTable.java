@@ -1,6 +1,6 @@
 package com.universe.touchpoint.router;
 
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -8,8 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class RouteTable {
 
-    private final Map<String, List<AgentActionMetaInfo>> predecessors = new ConcurrentHashMap<>();
-    private final Map<String, List<AgentActionMetaInfo>> successors = new ConcurrentHashMap<>();
+    private final Map<String, List<AgentActionMeta>> predecessors = new ConcurrentHashMap<>();
+    private final Map<String, List<AgentActionMeta>> successors = new ConcurrentHashMap<>();
 
     private static RouteTable instance;
     private static final Object lock = new Object();
@@ -23,25 +23,25 @@ public class RouteTable {
         }
     }
 
-    public void putPredecessors(String name, List<AgentActionMetaInfo> predecessors) {
+    public void putPredecessors(String name, List<AgentActionMeta> predecessors) {
         this.predecessors.put(name, predecessors);
     }
 
-    public List<AgentActionMetaInfo> getPredecessors(String name) {
+    public List<AgentActionMeta> getPredecessors(String name) {
         return predecessors.get(name);
     }
 
-    public void putSuccessors(String name, List<AgentActionMetaInfo> successors) {
+    public void putSuccessors(String name, List<AgentActionMeta> successors) {
         this.successors.put(name, successors);
     }
 
-    public List<AgentActionMetaInfo> getSuccessors(String name) {
+    public List<AgentActionMeta> getSuccessors(String name) {
         return successors.get(name);
     }
 
     public boolean containsItem(String from, String to) {
-        for (AgentActionMetaInfo toMeta : Objects.requireNonNull(successors.get(from))) {
-            if (toMeta.getActionName().equals(to)) {
+        for (AgentActionMeta toMeta : Objects.requireNonNull(successors.get(from))) {
+            if (toMeta.getName().equals(to)) {
                 return true;
             }
         }

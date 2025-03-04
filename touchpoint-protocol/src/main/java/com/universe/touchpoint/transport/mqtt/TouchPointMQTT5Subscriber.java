@@ -1,6 +1,5 @@
 package com.universe.touchpoint.transport.mqtt;
 
-import android.content.Context;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.context.TaskContext;
 import com.universe.touchpoint.config.transport.Transport;
@@ -19,13 +18,13 @@ public class TouchPointMQTT5Subscriber<T extends TouchPoint> {
     }
 
 
-    public void handleMessage(MqttMessage message, Context context) {
+    public void handleMessage(MqttMessage message) {
         T touchPoint = SerializeUtils.deserializeFromByteArray(message.getPayload(), tpClass);
         String taskName = touchPoint.getContext().getTask();
         TaskContext taskContext = touchPoint.getContext().getTaskContext();
 
-        ((ActionExecutor<T, ?>) ActionExecutionSelector.getExecutor(touchPoint)).execute(touchPoint, context);
-        new ResultExchanger().exchange(touchPoint, taskContext.getGoal(), taskName, context, Transport.BROADCAST);
+        touchPoint = ((ActionExecutor<T, ?>) ActionExecutionSelector.getExecutor(touchPoint)).execute(touchPoint);
+        new ResultExchanger().exchange(touchPoint, taskContext.getGoal(), taskName, Transport.BROADCAST);
     }
 
 }

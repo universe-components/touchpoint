@@ -1,12 +1,13 @@
 package com.universe.touchpoint.ai.parsers;
 
-import android.util.Pair;
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.ai.models.OpenVLA;
 import com.universe.touchpoint.router.Router;
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,16 +18,16 @@ public class OpenVLAChoiceParser implements ChoiceParser<OpenVLA.ActionResponse>
         List<AgentAction<?, ?>> agentActions = new ArrayList<>();
 
         AgentAction<OpenVLA.ActionResponse, ?> correctAction = (AgentAction<OpenVLA.ActionResponse, ?>) currentAction;
-        List<AgentActionMetaInfo> nextActions = Router.route(correctAction, true);
+        List<AgentActionMeta> nextActions = Router.route(correctAction, true);
         if (nextActions != null) {
-            for (AgentActionMetaInfo nextAction : nextActions) {
-                correctAction.setActionName(nextAction.getActionName());
+            for (AgentActionMeta nextAction : nextActions) {
+                correctAction.setActionName(nextAction.getName());
                 correctAction.setInput(choices);
                 agentActions.add(correctAction);
             }
-            return new Pair<>(agentActions, null);
+            return Pair.of(agentActions, null);
         }
-        return new Pair<>(null, new AgentFinish<>(choices, currentAction.getMeta()));
+        return Pair.of(null, new AgentFinish<>(choices, currentAction.getMeta()));
     }
 
 }

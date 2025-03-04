@@ -1,5 +1,6 @@
 package com.universe.touchpoint.agent;
 
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.context.TouchPointContext;
 
@@ -9,9 +10,9 @@ public class AgentAction<I extends TouchPoint, O> extends TouchPoint {
     private String thought;
     private O output;
     private I input;
-    private AgentActionMetaInfo meta;
+    private AgentActionMeta meta;
 
-    public AgentAction(String actionName, AgentActionMetaInfo actionMeta, Header header, String task) {
+    public AgentAction(String actionName, AgentActionMeta actionMeta, Header header, String task) {
         super(header, new TouchPointContext(task));
         this.actionName = actionName;
         this.meta = actionMeta;
@@ -49,11 +50,11 @@ public class AgentAction<I extends TouchPoint, O> extends TouchPoint {
         this.input = input;
     }
 
-    public void setMeta(AgentActionMetaInfo meta) {
+    public void setMeta(AgentActionMeta meta) {
         this.meta = meta;
     }
 
-    public AgentActionMetaInfo getMeta() {
+    public AgentActionMeta getMeta() {
         return meta;
     }
 

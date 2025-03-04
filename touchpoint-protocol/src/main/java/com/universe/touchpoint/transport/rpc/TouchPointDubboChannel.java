@@ -1,6 +1,5 @@
 package com.universe.touchpoint.transport.rpc;
 
-import android.content.Context;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
@@ -10,8 +9,8 @@ import org.apache.dubbo.config.bootstrap.builders.ReferenceBuilder;
 
 public class TouchPointDubboChannel extends TouchPointRpcChannel<DubboConfig> {
 
-    public TouchPointDubboChannel(Context context, DubboConfig transportConfig) {
-        super(context, transportConfig);
+    public TouchPointDubboChannel(DubboConfig transportConfig) {
+        super(transportConfig);
     }
 
     @Override
@@ -30,7 +29,7 @@ public class TouchPointDubboChannel extends TouchPointRpcChannel<DubboConfig> {
                 result = action.invoke(touchPointService.getDeclaredConstructor().newInstance(), touchpoint);
                 assert result != null;
                 ((AgentAction<?, O>) touchpoint).setOutput((O) result);
-                return new ResultExchanger().exchange(touchpoint, touchpoint.getContext().getTaskContext().getGoal(), null, null, null);
+                return new ResultExchanger().exchange(touchpoint, touchpoint.getContext().getTaskContext().getGoal(), null, null);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

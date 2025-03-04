@@ -1,6 +1,5 @@
 package com.universe.touchpoint.rolemodel.coordinator;
 
-import android.content.Context;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.config.transport.Transport;
@@ -12,7 +11,7 @@ import java.util.Objects;
 
 public class Coordinator {
 
-    public void execute(AgentAction<?, ?> agentAction, String task, Context context) {
+    public void execute(AgentAction<?, ?> agentAction, String task) {
         String prevGraphName = ActionGraphBuilder.getTaskGraph(task).getName();
         String currGraphName = agentAction.getContext().getTaskContext().getActionGraphContext().env();
         Model prevlangModel = agentAction.getMeta().getModel().getModel();
@@ -27,7 +26,6 @@ public class Coordinator {
         if (!Objects.equals(prevGraphName, currGraphName)) {
             new AgentSocketStateRouter<>().route(
                     null,
-                    context,
                     new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.ACTION_GRAPH_READY, agentAction),
                     task
             );
@@ -37,7 +35,6 @@ public class Coordinator {
                 || !Objects.equals(prevTransport, currTransport)) {
             new AgentSocketStateRouter<>().route(
                     null,
-                    context,
                     new AgentSocketStateMachine.AgentSocketStateContext<>(AgentSocketState.ACTION_READY, agentAction),
                     task
             );

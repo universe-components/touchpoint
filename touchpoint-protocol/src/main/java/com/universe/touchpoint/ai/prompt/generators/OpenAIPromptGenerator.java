@@ -1,30 +1,26 @@
 package com.universe.touchpoint.ai.prompt.generators;
 
-import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
 import com.universe.touchpoint.ai.prompt.PromptGenerator;
 import com.universe.touchpoint.ai.prompt.template.OpenAITemplate;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.utils.ClassUtils;
 import java.util.List;
+import javax.annotation.Nonnull;
 
 public class OpenAIPromptGenerator implements PromptGenerator<String> {
 
-    @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Override
-    public <I extends TouchPoint, O> String generatePrompt(@NonNull List<AgentActionMetaInfo> nextActions, AgentAction<I, O> action, String question) {
+    public <I extends TouchPoint, O> String generatePrompt(@Nonnull List<AgentActionMeta> nextActions, AgentAction<I, O> action, String question) {
         StringBuilder toolList = new StringBuilder();
         StringBuilder agentNames = new StringBuilder();
 
-        for (AgentActionMetaInfo actionMetaInfo : nextActions) {
-            toolList.append(actionMetaInfo.getActionName())
+        for (AgentActionMeta actionMetaInfo : nextActions) {
+            toolList.append(actionMetaInfo.getName())
                     .append(": ")
                     .append(actionMetaInfo.getDesc()).append("\n");
-            agentNames.append(actionMetaInfo.getActionName()).append(", ");
+            agentNames.append(actionMetaInfo.getName()).append(", ");
         }
 
         // Remove trailing comma and space from agentNames

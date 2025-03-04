@@ -3,9 +3,6 @@ package com.universe.touchpoint.helper;
 import com.universe.touchpoint.TouchPointConstants;
 
 public class TouchPointHelper {
-    public static String touchPointPluginName(String name) {
-        return TouchPointConstants.AGENT_NAME_PREFIX + "." + name;
-    }
 
     public static String touchPointFilterName(String filter) {
         return TouchPointConstants.TOUCH_POINT_FILTER_PREFIX + "." + filter;
@@ -17,10 +14,6 @@ public class TouchPointHelper {
 
     public static String touchPointFilterName(String filter, String middle, String suffix) {
         return String.join(".", TouchPointConstants.TOUCH_POINT_FILTER_PREFIX, filter, middle, suffix);
-    }
-
-    public static String touchPointActionName(String actionName, String agentName) {
-        return agentName + "." + actionName;
     }
 
     public static String extractFilter(String input) {
@@ -39,18 +32,6 @@ public class TouchPointHelper {
     public static String extractSuffixFromFilter(String filter) {
         int index = filter.lastIndexOf(".");
         return filter.substring(index + 1);
-    }
-
-    public static String touchPointReceiverClassName(String type) {
-        return String.format(TouchPointConstants.TOUCH_POINT_PKG + ".%sBroadcastReceiver", type);
-    }
-
-    public static String touchPointSubscriberClassName(String type) {
-        return String.format(TouchPointConstants.TOUCH_POINT_PKG + ".%sSubscriber", type);
-    }
-
-    public static String touchPointContentProviderUri(String prefix, String objectName) {
-        return String.format("content://%s/%s", prefix, objectName);
     }
 
 }

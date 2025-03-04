@@ -1,9 +1,7 @@
 package com.universe.touchpoint.socket;
 
-import android.content.Context;
-
 public interface AgentSocketStateHandler<I, O> {
 
-    <C extends AgentContext> O onStateChange(I input, C agentContext, Context context, String filterSuffix);
+    <C extends AgentContext> O onStateChange(I input, C agentContext, String filterSuffix);
 
 }

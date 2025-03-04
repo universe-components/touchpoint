@@ -1,7 +1,5 @@
 package com.universe.touchpoint.socket;
 
-import android.content.Context;
-
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.socket.SocketProtocol;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -29,12 +27,12 @@ public record AgentSocketStateMachine(AgentSocketProtocol socketProtocol) {
         return stateMachineMap.get(task);
     }
 
-    public void send(AgentSocketStateContext<?> stateContext, Context context, String filter) {
-        socketProtocol.send(stateContext, context, TouchPointHelper.touchPointFilterName(filter));
+    public void send(AgentSocketStateContext<?> stateContext, String filter) {
+        socketProtocol.send(stateContext, TouchPointHelper.touchPointFilterName(filter));
     }
 
-    public <C extends AgentContext> void registerReceiver(Context appContext, @Nullable C context, ActionRole role) {
-        socketProtocol.registerReceiver(appContext, context, role);
+    public <C extends AgentContext> void registerReceiver(@Nullable C context, ActionRole role) {
+        socketProtocol.registerReceiver(context, role);
     }
 
     public static class AgentSocketStateContext<C> {

@@ -26,7 +26,7 @@ The TPP protocol adheres to the philosophy of "Anything is Action", achieving a 
 
 - **Supports Multiple Action Execution Modes**: Actions can be executed in parallel or sequentially.
 
-- **Supports Multiple Agent File Formats**: Compatible with Apk, Jar, exe, ipa, py, etc.
+- **Supports Multiple Agent File Formats**: Compatible with Apk, Jar(Spring), exe, ipa, py, etc.
 
 - **Hot-swappable Agents**: Any agent in the network can join or leave online without affecting the entire agent network.
 
@@ -66,7 +66,9 @@ If the `Entry Agent` and `Weather Agent` are deployed on the same node, you need
 // both Agents are APKs
 AgentSocket.bind(./"weather_agent.apk", BinderType.ANDROID_BINDER);
 ```
-Note: Explicit binding is required only when multiple Agents are deployed in different APKs on the same node. If the multiple Agents are in the same APK, no explicit binding is required.
+Note:
+(1) Explicit binding is required only when multiple Agents are deployed in different APKs on the same node. If the multiple Agents are in the same APK, no explicit binding is required.
+(2) In all other cases, explicit binding is not required.
 
 ### Implementing Agents
 

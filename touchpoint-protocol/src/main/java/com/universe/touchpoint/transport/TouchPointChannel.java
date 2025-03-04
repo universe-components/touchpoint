@@ -1,16 +1,9 @@
 package com.universe.touchpoint.transport;
 
-import android.content.Context;
 import com.universe.touchpoint.context.TouchPoint;
 
-public abstract class TouchPointChannel<R> {
+public interface TouchPointChannel<R> {
 
-    protected final Context context;
-
-    public TouchPointChannel(Context context) {
-        this.context = context;
-    }
-
-    public abstract <I extends TouchPoint, O extends TouchPoint> R send(I touchpoint);
+    <I extends TouchPoint, O extends TouchPoint> R send(I touchpoint);
 
 }

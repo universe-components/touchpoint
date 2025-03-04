@@ -1,22 +1,43 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-plugins {
-    alias(libs.plugins.android.application) apply false
-    alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.android.library) apply false
-    id("com.google.dagger.hilt.android") version "2.51.1" apply false
-    id("com.google.devtools.ksp") version "2.1.0-1.0.29"
-}
+import com.diffplug.gradle.spotless.SpotlessExtension
+import org.gradle.api.tasks.SourceSetContainer
+import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension
 
 buildscript {
+    dependencies {
+        classpath(libs.androidPlugin)
+        classpath(libs.kotlin.gradlePlugin)
+        classpath(libs.mavenPublishPlugin)
+        classpath(libs.animalSnifferPlugin)
+        classpath(libs.spotlessPlugin)
+        classpath(libs.googleJavaFormat)
+    }
     repositories {
-        maven {
-            setUrl("https://jitpack.io")
-            content {
-                includeGroup("com.github.aasitnikov")
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+    }
+}
+
+subprojects {
+    tasks.withType<JavaCompile>().configureEach {
+        options.encoding = "UTF-8"
+    }
+
+    plugins.withId("java-library") {
+        plugins.apply("ru.vyarus.animalsniffer")
+        extensions.configure<AnimalSnifferExtension>("animalsniffer") {
+            sourceSets = listOf(extensions.getByType(SourceSetContainer::class.java).getByName("main"))
+        }
+
+        plugins.apply("com.diffplug.spotless")
+        extensions.configure<SpotlessExtension>("spotless") {
+            java {
+                googleJavaFormat(libs.googleJavaFormat.get().version)
+                    .formatJavadoc(false)
+                removeUnusedImports()
+                target("src/*/java*/**/*.java")
             }
         }
     }
-    dependencies {
-        classpath("com.github.aasitnikov:fat-aar-android:1.4.1")
-    }
+
 }

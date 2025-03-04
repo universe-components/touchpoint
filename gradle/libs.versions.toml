@@ -1,24 +1,14 @@
 [versions]
-agp = "8.7.2"
+agp = "8.8.2"
 kotlin = "2.0.0"
-coreKtx = "1.15.0"
+spotless = "7.0.2"
+animalsniffer = "2.0.0"
+android = "4.1.1.4"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-appcompat = "1.6.1"
-#material = "1.10.0"
-material = "1.13.0-alpha08"
-jetbrainsKotlinJvm = "2.0.0"
-replugin = "3.1.3"
 kryo = "5.6.2"
 fury = "0.9.0"
-eventbus = "3.3.1"
-localbroadcast = "1.1.0"
-roomCompilerProcessing = "2.6.1"
-incap = "1.0.0"
 auto-service = "1.1.1"
 auto-value = "1.11.0"
-hilt = "2.55"
 openai = "0.20.0"
 anthropic = "0.1.0"
 dubbo = "3.3.0"
@@ -28,29 +18,29 @@ jep = "4.2.2"
 retrofit = "2.11.0"
 gson = "2.12.1"
 converter-gson = "2.11.0"
+spring = "6.2.3"
+googleJavaFormat = "1.25.2"
+replugin = "3.1.3"
+moquette = "0.18.0"
 
 [libraries]
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidPlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+spotlessPlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+animalSnifferPlugin = { module = "ru.vyarus:gradle-animalsniffer-plugin", version.ref = "animalsniffer" }
+mavenPublishPlugin = "com.vanniktech:gradle-maven-publish-plugin:0.30.0"
+
+android = { module = "com.google.android:android", version.ref = "android" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-androidx-localbroadcast = { group = "androidx.localbroadcastmanager", name = "localbroadcastmanager", version.ref = "localbroadcast" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-replugin-plugin-lib = { module = "com.qihoo360.replugin:replugin-plugin-lib", version.ref = "replugin" }
-replugin-host-lib = { module = "com.qihoo360.replugin:replugin-host-lib", version.ref = "replugin" }
 kryo = { group = "com.esotericsoftware", name = "kryo", version.ref = "kryo" }
 fury = { group = "org.apache.fury", name = "fury-kotlin", version.ref = "fury" }
-eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
-androidx-room-compiler-processing = { group = "androidx.room", name = "room-compiler-processing", version.ref = "roomCompilerProcessing" }
-incap = { group = "net.ltgt.gradle.incap", name = "incap", version.ref = "incap" }
-incap-processor = { group = "net.ltgt.gradle.incap", name = "incap-processor", version.ref = "incap" }
+#eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
+replugin-plugin-lib = { module = "com.qihoo360.replugin:replugin-plugin-lib", version.ref = "replugin" }
+replugin-host-lib = { module = "com.qihoo360.replugin:replugin-host-lib", version.ref = "replugin" }
 auto-service = { group = "com.google.auto.service", name = "auto-service", version.ref = "auto-service"}
 auto-service-annotations = { group = "com.google.auto.service", name = "auto-service-annotations", version.ref = "auto-service"}
 auto-value = { group = "com.google.auto.value", name = "auto-value", version.ref = "auto-value" }
 auto-value-annotations = { group = "com.google.auto.value", name = "auto-value-annotations", version.ref = "auto-value" }
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 openai = { group = "com.openai", name = "openai-java", version.ref = "openai" }
 anthropic = { group = "com.anthropic", name = "anthropic-java", version.ref = "anthropic"}
 dubbo = { group = "org.apache.dubbo", name = "dubbo", version.ref = "dubbo" }
@@ -60,9 +50,6 @@ jep = { group = "black.ninia", name = "jep", version.ref = "jep" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "converter-gson" }
-
-[plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.9.24" }
-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
-android-library = { id = "com.android.library", version.ref = "agp" }
+spring-context = { group = "org.springframework", name = "spring-context", version.ref = "spring" }
+googleJavaFormat = { module = "com.google.googlejavaformat:google-java-format", version.ref = "googleJavaFormat" }
+moquette = { module = "com.github.moquette-io.moquette:moquette-broker", version.ref = "moquette" }

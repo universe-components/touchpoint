@@ -1,13 +1,12 @@
 package com.universe.touchpoint.ai.parsers;
 
-import android.util.Pair;
 import com.openai.models.ChatCompletion;
-import com.universe.touchpoint.agent.Agent;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.ai.ChoiceParser;
 
+import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class OpenAIChoiceParser implements ChoiceParser<Map<ChatCompletion, List
                 String text = choice.message().content().get();
                 if (text.contains(FINAL_ANSWER_ACTION)) {
                     // 如果文本中包含 FINAL_ANSWER_ACTION，返回 AgentFinish
-                    return new Pair<>(null, new AgentFinish<>(text.split(FINAL_ANSWER_ACTION)[1].trim(), currentAction.getMeta()));
+                    return Pair.of(null, new AgentFinish<>(text.split(FINAL_ANSWER_ACTION)[1].trim(), currentAction.getMeta()));
                 }
 
                 // 正则表达式，用于匹配 Action 和 Action Input
@@ -52,13 +51,13 @@ public class OpenAIChoiceParser implements ChoiceParser<Map<ChatCompletion, List
                 currentAction.setInput(AgentActionManager
                         .getInstance()
                         .paddingActionInput(
-                                action, actionInput.replaceAll("\"", "").trim(), Agent.getName()
+                                action, actionInput.replaceAll("\"", "").trim()
                         ));
                 agentActions.add(currentAction);
             }
         }
         // 返回 AgentAction
-        return new Pair<>(agentActions, null);
+        return Pair.of(agentActions, null);
     }
 
 }

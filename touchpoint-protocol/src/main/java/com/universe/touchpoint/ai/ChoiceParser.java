@@ -1,8 +1,9 @@
 package com.universe.touchpoint.ai;
 
-import android.util.Pair;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
+
+import org.apache.commons.lang3.tuple.Pair;
 import java.util.List;
 
 public interface ChoiceParser<CH> {

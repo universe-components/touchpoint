@@ -1,6 +1,5 @@
 package com.universe.touchpoint;
 
-import android.content.Context;
 import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.context.TouchPoint;
 import java.util.HashMap;
@@ -76,7 +75,7 @@ public class TaskBuilder {
 
     public static abstract class TaskCallbackListener {
 
-        public abstract <T> void onSuccess(T result, Context context);
+        public abstract <T> void onSuccess(T result);
 
     }
 

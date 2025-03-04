@@ -1,22 +1,18 @@
 package com.universe.touchpoint.socket.handler;
 
-import android.content.Context;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import com.universe.touchpoint.agent.AgentActionManager;
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
+import com.universe.touchpoint.registry.meta.AgentAnnotationMeta;
 import com.universe.touchpoint.socket.context.TaskActionContext;
 import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.plan.ActionGraph;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.DriverRegion;
+import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.router.RouteTable;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 import com.universe.touchpoint.transport.TouchPointTransportRegistry;
@@ -28,39 +24,32 @@ import java.util.Map;
 
 public class ActionGraphDistributedHandler implements AgentSocketStateHandler<ActionGraph, Boolean> {
 
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
-    public <C extends AgentContext> Boolean onStateChange(ActionGraph actionGraph, C actionContext, Context context, String task) {
+    public <C extends AgentContext> Boolean onStateChange(ActionGraph actionGraph, C actionContext, String task) {
         TaskActionContext taskActionContext = (TaskActionContext) actionContext;
         if (actionGraph != null) {
-            DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
-            AgentActionMetaInfo actionMetaInfo = driverRegion.getTouchPointAction(taskActionContext.getAction());
-            List<AgentActionMetaInfo> predecessors  = actionGraph.getPredecessors(actionMetaInfo);
-            List<AgentActionMetaInfo> successors = actionGraph.getSuccessors(actionMetaInfo);
+            MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
+            AgentActionMeta actionMetaInfo = metaRegion.getTouchPointAction(taskActionContext.getAction());
+            List<AgentActionMeta> predecessors  = actionGraph.getPredecessors(actionMetaInfo);
+            List<AgentActionMeta> successors = actionGraph.getSuccessors(actionMetaInfo);
 
             TransportConfig<?> transportConfig = ConfigManager.selectTransport(taskActionContext.getAction(), taskActionContext.getBelongTask());
             TouchPointTransportRegistry<?> registry = TouchPointTransportRegistryFactory.getRegistry(transportConfig.transportType());
             AgentActionManager manager = AgentActionManager.getInstance();
 
-            predecessors.forEach(action -> registry.register(context, actionMetaInfo, action.getActionName(), task));
-            successors.forEach(action -> {
-                try {
-                    manager.registerAgentFinishReceiver(context, action.getActionName());
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            for (Map.Entry<AgentActionMetaInfo, List<AgentActionMetaInfo>> entry : actionGraph.getAdjList().entrySet()) {
-                AgentActionMetaInfo node = entry.getKey();
-                List<AgentActionMetaInfo> adjacentNodes = entry.getValue();
-                driverRegion.putTouchPointAction(node.getActionName(), node);
+            predecessors.forEach(action -> registry.register(actionMetaInfo, action.getName(), task, true));
+            successors.forEach(action -> registry.register(actionMetaInfo, action.getName(), task, false));
+            for (Map.Entry<AgentActionMeta, List<AgentActionMeta>> entry : actionGraph.getAdjList().entrySet()) {
+                AgentActionMeta node = entry.getKey();
+                List<AgentActionMeta> adjacentNodes = entry.getValue();
+                metaRegion.putTouchPointAction(node.getName(), node);
                 // Process adjacent nodes (neighbors)
-                for (AgentActionMetaInfo adjacentNode : adjacentNodes) {
-                    driverRegion.putTouchPointAction(adjacentNode.getActionName(), adjacentNode);
+                for (AgentActionMeta adjacentNode : adjacentNodes) {
+                    metaRegion.putTouchPointAction(adjacentNode.getName(), adjacentNode);
                 }
             }
 
-            if (driverRegion.containActions(Collections.singletonList(ActionRole.COORDINATOR))) {
+            if (metaRegion.containActions(Collections.singletonList(ActionRole.COORDINATOR))) {
                 ActionGraphBuilder.putGraph(task, actionGraph);
             }
 

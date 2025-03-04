@@ -1,16 +1,9 @@
 package com.universe.touchpoint.context;
 
-import android.net.Uri;
-import androidx.annotation.NonNull;
-
-import com.universe.touchpoint.TouchPointConstants;
-import com.universe.touchpoint.agent.Agent;
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
 import com.universe.touchpoint.transport.TouchPointChannel;
-import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.provider.TouchPointContent;
-import com.universe.touchpoint.provider.TouchPointContentFactory;
 import java.lang.reflect.Field;
+import javax.annotation.Nonnull;
 
 public class TouchPoint {
 
@@ -52,7 +45,7 @@ public class TouchPoint {
         return state;
     }
 
-    @NonNull
+    @Nonnull
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
@@ -82,13 +75,6 @@ public class TouchPoint {
 
     public boolean finish() {
         try {
-            String contentProviderUri = TouchPointHelper.touchPointContentProviderUri(
-                    TouchPointConstants.CONTENT_PROVIDER_PREFIX, header.fromAction.getActionName());
-            TouchPointContent touchPointContent = TouchPointContentFactory.createContent(Uri.parse(contentProviderUri), Agent.getContext());
-            boolean rs = touchPointContent.insertOrUpdate(this);
-            if (!rs) {
-                throw new RuntimeException("insertOrUpdate failed");
-            }
             header.channel.send(this);
             return true;
         } catch (Exception e) {
@@ -98,35 +84,35 @@ public class TouchPoint {
 
     public static class Header {
 
-        private AgentActionMetaInfo fromAction = null;
-        private AgentActionMetaInfo toAction = null;
+        private AgentActionMeta fromAction = null;
+        private AgentActionMeta toAction = null;
         private transient TouchPointChannel<?> channel;
 
         public Header() {
         }
 
-        public Header(AgentActionMetaInfo fromAction) {
+        public Header(AgentActionMeta fromAction) {
             this.fromAction = fromAction;
         }
 
-        public Header(AgentActionMetaInfo fromAction, TouchPointChannel<?> channel) {
+        public Header(AgentActionMeta fromAction, TouchPointChannel<?> channel) {
             this.fromAction = fromAction;
             this.channel = channel;
         }
 
-        public AgentActionMetaInfo getFromAction() {
+        public AgentActionMeta getFromAction() {
             return fromAction;
         }
 
         public void setToAction(String toAction) {
-            this.toAction = new AgentActionMetaInfo(toAction);
+            this.toAction = new AgentActionMeta(toAction);
         }
 
-        public void setToAction(AgentActionMetaInfo toAction) {
+        public void setToAction(AgentActionMeta toAction) {
             this.toAction = toAction;
         }
 
-        public AgentActionMetaInfo getToAction() {
+        public AgentActionMeta getToAction() {
             return toAction;
         }
 

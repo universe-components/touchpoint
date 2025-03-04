@@ -1,11 +1,11 @@
 package com.universe.touchpoint.ai.parsers;
 
-import android.util.Pair;
-
 import com.anthropic.models.Completion;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.ai.ChoiceParser;
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.List;
 import java.util.Map;
 

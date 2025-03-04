@@ -1,20 +1,14 @@
 package com.universe.touchpoint.config;
 
 import com.universe.touchpoint.TaskBuilder;
-import com.universe.touchpoint.agent.Agent;
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.agent.meta.AgentMeta;
+import com.universe.touchpoint.agent.meta.TaskMeta;
 import com.universe.touchpoint.ai.AIModelType;
-import com.universe.touchpoint.annotations.ai.LangModel;
-import com.universe.touchpoint.annotations.ai.VisionLangModel;
-import com.universe.touchpoint.annotations.ai.VisionModel;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
 import com.universe.touchpoint.config.ai.VisionModelConfig;
-import com.universe.touchpoint.config.mapping.ActionMetricConfigMapping;
-import com.universe.touchpoint.config.mapping.AgentSocketConfigMapping;
-import com.universe.touchpoint.config.mapping.MetricSocketConfigMapping;
-import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.config.metric.MetricSocketConfig;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
@@ -23,14 +17,11 @@ import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.DriverRegion;
-import com.universe.touchpoint.utils.AnnotationUtils;
-
-import java.util.Map;
+import com.universe.touchpoint.memory.regions.MetaRegion;
 
 public class ConfigManager {
 
-    public static LangModelConfig selectModel(String input, AgentActionMetaInfo actionMeta, String task) {
+    public static LangModelConfig selectModel(String input, AgentActionMeta actionMeta, String task) {
         // 首先检查 action 中的模型
         if (actionMeta != null) {
             LangModelConfig modelConfig = actionMeta.getModel();
@@ -47,9 +38,11 @@ public class ConfigManager {
         }
 
         // 如果 action 中没有模型，再检查 Agent 的模型
-        Model model = (Model) Agent.getProperty("model", LangModel.class);
+        assert actionMeta != null;
+        AgentMeta agentMeta = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointAgent(actionMeta.getAgentName());
+        Model model = agentMeta.getModel().getModel();
         if (model != null) {
-            float temperature = (float) Agent.getProperty("temperature", LangModel.class);
+            float temperature = agentMeta.getModel().getTemperature();
             return new LangModelConfig(
                     model,
                     temperature,
@@ -61,7 +54,7 @@ public class ConfigManager {
         return new LangModelConfig(Model.o1, 0.0f, AIModelType.OPEN_AI);
     }
 
-    public static VisionModelConfig selectVisionModel(String input, AgentActionMetaInfo actionMeta, String task) {
+    public static VisionModelConfig selectVisionModel(String input, AgentActionMeta actionMeta, String task) {
         // 首先检查 action 中的模型
         if (actionMeta != null) {
             VisionModelConfig modelConfig = actionMeta.getVisionModel();
@@ -78,19 +71,18 @@ public class ConfigManager {
         }
 
         // 如果 action 中没有模型，再检查 Agent 的模型
-        Model model = (Model) Agent.getProperty("model", VisionModel.class);
+        assert actionMeta != null;
+        AgentMeta agentMeta = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointAgent(actionMeta.getAgentName());
+        Model model = agentMeta.getVisionModel().getModel();
         if (model != null) {
-            float temperature = (float) Agent.getProperty("temperature", VisionModel.class);
-            return new VisionModelConfig(
-                    model,
-                    temperature
-            );
+            float temperature = agentMeta.getVisionModel().getTemperature();
+            return new VisionModelConfig(model, temperature);
         }
 
         return null;
     }
 
-    public static VisionLangModelConfig selectVisionLangModel(String input, AgentActionMetaInfo actionMeta, String task) {
+    public static VisionLangModelConfig selectVisionLangModel(String input, AgentActionMeta actionMeta, String task) {
         // 首先检查 action 中的模型
         if (actionMeta != null) {
             VisionLangModelConfig modelConfig = actionMeta.getVisionLangModel();
@@ -107,21 +99,19 @@ public class ConfigManager {
         }
 
         // 如果 action 中没有模型，再检查 Agent 的模型
-        Model model = (Model) Agent.getProperty("model", VisionLangModel.class);
+        AgentMeta agentMeta = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointAgent(actionMeta.getAgentName());
+        Model model = agentMeta.getVisionLangModel().getModel();
         if (model != null) {
-            float temperature = (float) Agent.getProperty("temperature", VisionLangModel.class);
-            return new VisionLangModelConfig(
-                    model,
-                    temperature
-            );
+            float temperature = agentMeta.getVisionLangModel().getTemperature();
+            return new VisionLangModelConfig(model, temperature);
         }
 
         return null;
     }
 
     public static <C> TransportConfig<C> selectTransport(String action, String task) {
-        DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
-        AgentActionMetaInfo actionMeta = driverRegion.getTouchPointAction(action);
+        MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
+        AgentActionMeta actionMeta = metaRegion.getTouchPointAction(action);
         TransportConfig<C> config = (TransportConfig<C>) actionMeta.getTransportConfig();
 
         if (config != null) {
@@ -134,13 +124,11 @@ public class ConfigManager {
         }
 
         try {
-            Map<Transport, C> transportConfigMap = (Map<Transport, C>) AnnotationUtils.annotation2Config(
-                    Agent.getApplicationClass(),
-                    TransportConfigMapping.annotation2Config,
-                    TransportConfigMapping.annotation2Type);
+            AgentMeta agentMeta = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointAgent(actionMeta.getAgentName());
+            TransportConfig<C> transportConfig = (TransportConfig<C>) agentMeta.getTransportConfig();
 
-            if (!transportConfigMap.isEmpty()) {
-                return (TransportConfig<C>) transportConfigMap.get(transportConfigMap.keySet().iterator().next());
+            if (transportConfig != null) {
+                return transportConfig;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -156,9 +144,10 @@ public class ConfigManager {
         }
 
         try {
-            AgentSocketConfig socketConfig = (AgentSocketConfig) AnnotationUtils.annotation2Config(
-                    Agent.getApplicationClass(),
-                    AgentSocketConfigMapping.annotation2Config);
+            MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
+            TaskMeta taskMeta = metaRegion.getTouchPointTask(task);
+            AgentMeta agentMeta = metaRegion.getTouchPointAgent(taskMeta.getAgentName());
+            AgentSocketConfig socketConfig = agentMeta.getAgentSocketConfig();
 
             if (socketConfig != null) {
                 return socketConfig;
@@ -177,9 +166,10 @@ public class ConfigManager {
         }
 
         try {
-            MetricSocketConfig socketConfig = (MetricSocketConfig) AnnotationUtils.annotation2Config(
-                    Agent.getApplicationClass(),
-                    MetricSocketConfigMapping.annotation2Config);
+            MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
+            TaskMeta taskMeta = metaRegion.getTouchPointTask(task);
+            AgentMeta agentMeta = metaRegion.getTouchPointAgent(taskMeta.getAgentName());
+            MetricSocketConfig socketConfig = agentMeta.getMetricSocketConfig();
 
             if (socketConfig != null) {
                 return socketConfig;
@@ -198,9 +188,10 @@ public class ConfigManager {
         }
 
         try {
-            TaskMetricConfig taskMetricConfigFromAgent = (TaskMetricConfig) AnnotationUtils.annotation2Config(
-                    Agent.getApplicationClass(),
-                    ActionMetricConfigMapping.annotation2Config);
+            MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
+            TaskMeta taskMeta = metaRegion.getTouchPointTask(task);
+            AgentMeta agentMeta = metaRegion.getTouchPointAgent(taskMeta.getAgentName());
+            TaskMetricConfig taskMetricConfigFromAgent = agentMeta.getTaskMetricConfig();
 
             if (taskMetricConfigFromAgent != null) {
                 return taskMetricConfigFromAgent;
@@ -213,8 +204,8 @@ public class ConfigManager {
     }
 
     public static ActionMetricConfig selectActionMetricConfig(String action, String task) {
-        DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
-        AgentActionMetaInfo actionMeta = driverRegion.getTouchPointAction(action);
+        MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
+        AgentActionMeta actionMeta = metaRegion.getTouchPointAction(action);
         ActionMetricConfig config = actionMeta.getActionMetricConfig();
 
         if (config != null) {
@@ -227,9 +218,8 @@ public class ConfigManager {
         }
 
         try {
-            ActionMetricConfig actionMetricConfigFromAgent = (ActionMetricConfig) AnnotationUtils.annotation2Config(
-                    Agent.getApplicationClass(),
-                    ActionMetricConfigMapping.annotation2Config);
+            AgentMeta agentMeta = metaRegion.getTouchPointAgent(actionMeta.getAgentName());
+            ActionMetricConfig actionMetricConfigFromAgent = agentMeta.getActionMetricConfig();
 
             if (actionMetricConfigFromAgent != null) {
                 return actionMetricConfigFromAgent;

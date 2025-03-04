@@ -1,13 +1,14 @@
 package com.universe.touchpoint.agent;
 
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
 import com.universe.touchpoint.context.TouchPoint;
 
 public class AgentFinish<O> extends TouchPoint {
 
     private O output;
-    private AgentActionMetaInfo meta;
+    private AgentActionMeta meta;
 
-    public AgentFinish(O output, AgentActionMetaInfo meta) {
+    public AgentFinish(O output, AgentActionMeta meta) {
         this.output = output;
         this.meta = meta;
     }
@@ -20,11 +21,11 @@ public class AgentFinish<O> extends TouchPoint {
         this.output = output;
     }
 
-    public AgentActionMetaInfo getMeta() {
+    public AgentActionMeta getMeta() {
         return meta;
     }
 
-    public void setMeta(AgentActionMetaInfo meta) {
+    public void setMeta(AgentActionMeta meta) {
         this.meta = meta;
     }
 

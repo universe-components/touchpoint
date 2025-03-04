@@ -1,13 +1,10 @@
 package com.universe.touchpoint.transport;
 
-import android.content.Context;
-
-public abstract class TouchPointRpcChannel<C> extends TouchPointChannel<String> {
+public abstract class TouchPointRpcChannel<C> implements TouchPointChannel<String> {
 
     protected final C transportConfig;
 
-    public TouchPointRpcChannel(Context context, C transportConfig) {
-        super(context);
+    public TouchPointRpcChannel(C transportConfig) {
         this.transportConfig = transportConfig;
     }
 

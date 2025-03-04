@@ -1,14 +1,12 @@
 package com.universe.touchpoint.transport;
 
-import android.content.Context;
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.RPCConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
-import com.universe.touchpoint.transport.broadcast.TouchPointBroadcastChannel;
 import com.universe.touchpoint.transport.mqtt.TouchPointMQTT5Publisher;
 import com.universe.touchpoint.transport.rpc.TouchPointDubboChannel;
 
@@ -25,41 +23,37 @@ public class TouchPointChannelManager {
         channelMapping.put(Transport.MQTT, TouchPointMQTT5Publisher.class);
     }
 
-    public static TouchPointChannel<?> defaultChannel(Context context) {
+    public static TouchPointChannel<?> defaultChannel() {
         try {
-            return new TouchPointBroadcastChannel(context);
+            return new TouchPointMQTT5Publisher();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static <C> TouchPointChannel<?> selectChannel(AgentActionMetaInfo actionMeta, String task, Context context) {
-        TransportConfig<C> transportConfig = ConfigManager.selectTransport(actionMeta.getActionName(), task);
+    public static <C> TouchPointChannel<?> selectChannel(AgentActionMeta actionMeta, String task) {
+        TransportConfig<C> transportConfig = ConfigManager.selectTransport(actionMeta.getName(), task);
         Transport transport = transportConfig.transportType();
         C config = transportConfig.config();
-
-        if (transport == null) {
-            return new TouchPointBroadcastChannel(context);
-        }
 
         if (channelMapping.containsKey(transport)) {
             try {
                 if (config instanceof RPCConfig) {
                     return (TouchPointChannel<?>) Objects.requireNonNull(
                                     channelMapping.get(transport))
-                                    .getConstructor(Context.class, config.getClass())
-                                    .newInstance(context, config);
+                                    .getConstructor(config.getClass())
+                                    .newInstance(config);
                 }
                 return (TouchPointChannel<?>) Objects.requireNonNull(
                         channelMapping.get(transport))
-                        .getConstructor(Context.class)
-                        .newInstance(context);
+                        .getConstructor()
+                        .newInstance();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
 
-        return new TouchPointBroadcastChannel(context);
+        return new TouchPointMQTT5Publisher();
     }
 
     public static void registerContextReceiver(String actionName, String actionClassName, String task) {

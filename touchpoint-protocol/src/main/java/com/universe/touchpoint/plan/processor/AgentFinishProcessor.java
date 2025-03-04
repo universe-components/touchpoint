@@ -1,24 +1,23 @@
 package com.universe.touchpoint.plan.processor;
 
-import android.content.Context;
-import android.util.Pair;
-
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.plan.ResultProcessor;
 import com.universe.touchpoint.router.Router;
+
+import org.apache.commons.lang3.tuple.Pair;
 import java.util.List;
 
 public class AgentFinishProcessor implements ResultProcessor<AgentFinish<?>> {
     @Override
-    public <CH> Pair<List<AgentAction<?, ?>>, AgentFinish<?>> process(AgentFinish<?> result, String goal, String task, Context context, Transport transport) {
+    public <CH> Pair<List<AgentAction<?, ?>>, AgentFinish<?>> process(AgentFinish<?> result, String goal, String task, Transport transport) {
         if (transport == Transport.DUBBO) {
-            return Pair.create(null, result);
+            return Pair.of(null, result);
         }
-        List<AgentActionMetaInfo> nextActions = Router.route(result, false);
-        return Pair.create(null, new AgentFinish<>(result.getOutput(), nextActions.get(0)));
+        List<AgentActionMeta> nextActions = Router.route(result, false);
+        return Pair.of(null, new AgentFinish<>(result.getOutput(), nextActions.get(0)));
     }
 
 }

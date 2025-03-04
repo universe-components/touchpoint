@@ -1,11 +1,11 @@
 package com.universe.touchpoint.context;
 
-import com.universe.touchpoint.agent.AgentActionMetaInfo;
+import com.universe.touchpoint.agent.meta.AgentActionMeta;
 import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.DriverRegion;
+import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.monitor.metric.ActionMetric;
 
 import java.util.HashMap;
@@ -72,9 +72,9 @@ public class ActionContext {
         return actionMetrics.computeIfAbsent(action, k -> new ActionMetric());
     }
 
-    public AgentActionMetaInfo getActionMetaInfo(String action) {
-        DriverRegion driverRegion = TouchPointMemory.getRegion(Region.DRIVER);
-        return driverRegion.getTouchPointAction(action);
+    public AgentActionMeta getActionMetaInfo(String action) {
+        MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
+        return metaRegion.getTouchPointAction(action);
     }
 
 }

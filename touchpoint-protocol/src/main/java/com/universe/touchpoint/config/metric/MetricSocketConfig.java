@@ -5,7 +5,7 @@ import com.universe.touchpoint.annotations.socket.SocketProtocol;
 public class MetricSocketConfig {
 
     private SocketProtocol bindProtocol;
-    String brokerUri;
+    String brokerUri = "tcp://localhost:1883";
 
     public SocketProtocol getBindProtocol() {
         return bindProtocol;

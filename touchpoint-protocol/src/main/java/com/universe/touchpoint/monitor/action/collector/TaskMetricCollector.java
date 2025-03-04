@@ -1,7 +1,5 @@
 package com.universe.touchpoint.monitor.action.collector;
 
-import android.content.Context;
-
 import com.universe.touchpoint.annotations.task.TouchPointAction;
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.context.TouchPoint;
@@ -14,7 +12,7 @@ import com.universe.touchpoint.TouchPointContextManager;
 public class TaskMetricCollector implements AgentActionExecutor<TouchPoint, TouchPoint> {
 
     @Override
-    public TouchPoint run(TouchPoint touchPoint, Context context) {
+    public TouchPoint run(TouchPoint touchPoint) {
         String task = touchPoint.getContext().getTask();
         String countAction = touchPoint.getContext().getActionContext().getCurrentAction();
         int actionRetryCount = touchPoint.getContext().getActionContext().getActionMetric(countAction).getPredictionCount();

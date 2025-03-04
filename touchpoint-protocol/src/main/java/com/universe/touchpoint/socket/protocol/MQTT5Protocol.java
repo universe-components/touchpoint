@@ -1,8 +1,5 @@
 package com.universe.touchpoint.socket.protocol;
 
-import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
@@ -17,24 +14,39 @@ import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
 import org.eclipse.paho.mqttv5.common.MqttException;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 
+import java.io.IOException;
+import java.util.Properties;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import io.moquette.broker.Server;
+import io.moquette.broker.config.MemoryConfig;
+
 public class MQTT5Protocol implements AgentSocketProtocol {
 
     private MqttClient client;
 
     @Override
-    public void initialize(@NonNull AgentSocketConfig socketConfig) {
+    public void initialize(@Nonnull AgentSocketConfig socketConfig) {
         try {
+            if (socketConfig.getBrokerUri().contains("localhost")) {
+                Server mqttBroker = new Server();
+                Properties configProps = new Properties();
+                configProps.setProperty("port", "1883");
+                mqttBroker.startServer(new MemoryConfig(configProps));
+            }
             client = new MqttClient(socketConfig.getBrokerUri(), "agent_socket_mqtt_broker");
             MqttConnectionOptions connectOptions = new MqttConnectionOptions();
             connectOptions.setCleanStart(true);
             client.connect(connectOptions);
-        } catch (MqttException e) {
+        } catch (MqttException | IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void send(AgentSocketStateMachine.AgentSocketStateContext<?> stateContext, Context context, String filter) {
+    public void send(AgentSocketStateMachine.AgentSocketStateContext<?> stateContext, String filter) {
         try {
             MqttMessage message = new MqttMessage(SerializeUtils.serializeToByteArray(stateContext));
             client.publish(filter, message);
@@ -44,7 +56,7 @@ public class MQTT5Protocol implements AgentSocketProtocol {
     }
 
     @Override
-    public <C extends AgentContext> void registerReceiver(Context appContext, @Nullable C context, ActionRole role) {
+    public <C extends AgentContext> void registerReceiver(@Nullable C context, ActionRole role) {
         try {
             assert context != null;
             String socketFilter = TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, context.getBelongTask(), role.name());
@@ -52,7 +64,7 @@ public class MQTT5Protocol implements AgentSocketProtocol {
                 if (message == null) {
                     return;
                 }
-                new AgentSocketStateRouter<>().route(context, appContext, message.getPayload(), TouchPointHelper.extractFilter(topic));
+                new AgentSocketStateRouter<>().route(context, message.getPayload(), TouchPointHelper.extractFilter(topic));
             });
         } catch (Exception e) {
             throw new RuntimeException(e);

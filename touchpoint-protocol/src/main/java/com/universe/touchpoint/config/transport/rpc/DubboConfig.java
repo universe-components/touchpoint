@@ -1,7 +1,6 @@
 package com.universe.touchpoint.config.transport.rpc;
 
 import com.universe.touchpoint.config.transport.RPCConfig;
-
 import java.lang.reflect.Method;
 
 public class DubboConfig extends RPCConfig {
@@ -226,7 +225,7 @@ public class DubboConfig extends RPCConfig {
     /**
      * methods support
      *
-     * @return
+     *
      */
     public Method[] methods;
 
@@ -244,7 +243,7 @@ public class DubboConfig extends RPCConfig {
 
     /**
      * bean name of service executor(thread pool), used for thread pool isolation between services
-     * @return
+     *
      */
     public String executor;
 
