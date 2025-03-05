@@ -1,7 +1,7 @@
 package com.universe.touchpoint.plan;
 
 import com.universe.touchpoint.context.TouchPoint;
-import com.universe.touchpoint.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import com.universe.touchpoint.transport.TouchPointChannelManager;
 import javax.annotation.Nullable;

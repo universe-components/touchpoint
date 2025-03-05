@@ -1,7 +1,7 @@
 package com.universe.touchpoint.socket.handler;
 
 import com.universe.touchpoint.agent.AgentActionManager;
-import com.universe.touchpoint.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.TransportConfig;

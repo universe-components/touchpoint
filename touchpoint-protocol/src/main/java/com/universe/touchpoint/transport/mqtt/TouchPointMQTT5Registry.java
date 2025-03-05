@@ -2,7 +2,7 @@ package com.universe.touchpoint.transport.mqtt;
 
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
-import com.universe.touchpoint.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.config.transport.MQTTConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.transport.TouchPointChannelManager;

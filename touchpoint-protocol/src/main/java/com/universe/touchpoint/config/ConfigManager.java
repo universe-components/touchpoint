@@ -1,9 +1,9 @@
 package com.universe.touchpoint.config;
 
 import com.universe.touchpoint.TaskBuilder;
-import com.universe.touchpoint.meta.AgentActionMeta;
-import com.universe.touchpoint.meta.AgentMeta;
-import com.universe.touchpoint.meta.Task;
+import com.universe.touchpoint.meta.data.AgentActionMeta;
+import com.universe.touchpoint.meta.data.AgentMeta;
+import com.universe.touchpoint.meta.data.Task;
 import com.universe.touchpoint.ai.AIModelType;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.Model;

@@ -1,8 +1,8 @@
 package com.universe.touchpoint.spring;
 
-import com.universe.touchpoint.meta.Task;
+import com.universe.touchpoint.meta.data.Task;
 import com.universe.touchpoint.annotations.role.ActionRole;
-import com.universe.touchpoint.registry.meta.TaskAnnotationMeta;
+import com.universe.touchpoint.meta.annotation.TaskAnnotationMeta;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.context.TaskContext;
 import com.universe.touchpoint.spring.utils.BeanUtils;

@@ -1,6 +1,6 @@
 package com.universe.touchpoint.socket.handler;
 
-import com.universe.touchpoint.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.plan.ActionGraphBuilder;

@@ -1,4 +1,4 @@
-package com.universe.touchpoint.meta;
+package com.universe.touchpoint.meta.data;
 
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
@@ -8,6 +8,7 @@ import com.universe.touchpoint.config.metric.MetricSocketConfig;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
+import com.universe.touchpoint.meta.BaseMeta;
 
 public class AgentMeta extends BaseMeta {
 

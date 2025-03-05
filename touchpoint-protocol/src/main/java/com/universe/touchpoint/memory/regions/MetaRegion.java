@@ -1,8 +1,8 @@
 package com.universe.touchpoint.memory.regions;
 
-import com.universe.touchpoint.meta.AgentActionMeta;
-import com.universe.touchpoint.meta.AgentMeta;
-import com.universe.touchpoint.meta.Task;
+import com.universe.touchpoint.meta.data.AgentActionMeta;
+import com.universe.touchpoint.meta.data.AgentMeta;
+import com.universe.touchpoint.meta.data.Task;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.memory.TouchPointRegion;
 import java.util.List;

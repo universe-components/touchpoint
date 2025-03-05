@@ -1,7 +1,7 @@
-package com.universe.touchpoint.registry.meta;
+package com.universe.touchpoint.meta.annotation;
 
 import com.universe.touchpoint.config.task.ActionDependency;
-import com.universe.touchpoint.registry.BaseAnnotationMeta;
+import com.universe.touchpoint.meta.BaseAnnotationMeta;
 import com.universe.touchpoint.utils.StringUtils;
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.universe.touchpoint.registry;
+package com.universe.touchpoint.meta;
 
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;

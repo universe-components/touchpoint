@@ -1,6 +1,6 @@
 package com.universe.touchpoint.agent;
 
-import com.universe.touchpoint.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.context.TouchPoint;
 
 public class AgentFinish<O> extends TouchPoint {

@@ -1,4 +1,4 @@
-package com.universe.touchpoint.meta;
+package com.universe.touchpoint.meta.data;
 
 import com.universe.touchpoint.agent.ActionType;
 import com.universe.touchpoint.annotations.role.ActionRole;
@@ -9,6 +9,7 @@ import com.universe.touchpoint.config.task.ActionDependency;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
+import com.universe.touchpoint.meta.BaseMeta;
 import com.universe.touchpoint.utils.ClassUtils;
 
 public class AgentActionMeta extends BaseMeta {

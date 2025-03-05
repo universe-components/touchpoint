@@ -1,6 +1,6 @@
 package com.universe.touchpoint.rolemodel.coordinator.handler;
 
-import com.universe.touchpoint.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;

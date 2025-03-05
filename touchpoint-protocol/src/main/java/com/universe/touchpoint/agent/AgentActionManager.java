@@ -1,6 +1,6 @@
 package com.universe.touchpoint.agent;
 
-import com.universe.touchpoint.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
 import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.annotations.role.ActionRole;

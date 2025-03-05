@@ -1,11 +1,11 @@
 package com.universe.touchpoint.spring;
 
-import com.universe.touchpoint.meta.AgentMeta;
+import com.universe.touchpoint.meta.data.AgentMeta;
 import com.universe.touchpoint.annotations.task.TouchPointAgent;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
-import com.universe.touchpoint.registry.meta.AgentAnnotationMeta;
+import com.universe.touchpoint.meta.annotation.AgentAnnotationMeta;
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.EnvironmentAware;

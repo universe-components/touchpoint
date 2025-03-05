@@ -1,6 +1,6 @@
-package com.universe.touchpoint.registry.meta;
+package com.universe.touchpoint.meta.annotation;
 
-import com.universe.touchpoint.registry.BaseAnnotationMeta;
+import com.universe.touchpoint.meta.BaseAnnotationMeta;
 import java.util.Map;
 
 public class TaskAnnotationMeta extends BaseAnnotationMeta {

@@ -1,7 +1,7 @@
 package com.universe.touchpoint.ai.prompt.generators;
 
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.ai.models.OpenVLA;
 import com.universe.touchpoint.ai.prompt.PromptGenerator;
 import com.universe.touchpoint.context.TouchPoint;
