@@ -12,6 +12,8 @@ The TPP protocol adheres to the philosophy of "Anything is Action", achieving a 
 
 - **Compatibility with Mainstream Internet Technologies**: The TPP protocol is primarily implemented in Java and is fully compatible with mainstream programming languages and operating systems in the Internet era. Based on annotations, developers almost never need to modify the app to turn it into an agent.
 
+- **Disrupting Traditional API**: The TPP protocol revolutionizes traditional API integration methods. The two parties involved only need to agree on the touchpoint structure, without specifying communication protocols such as REST or RPC. The AI model will automatically select the appropriate protocol to facilitate communication between both sides.
+
 - **Disrupting Traditional Function Extension Methods**: The TPP protocol presents a revolutionary collaborator paradigm. With this paradigm, developers can extend agent functionality in a non-intrusive, smooth, and lossless manner.
 
 - **The Super Fusion of VLA and Agent Collaboration**: The TPP protocol thoroughly fuses the VLA model and agent collaboration, enabling deployment across any terminal, including but not limited to servers, mobile, glasses, cars, robots, drones, etc., truly achieving an "All in One".
