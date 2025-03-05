@@ -1,6 +1,6 @@
 package com.universe.touchpoint.config.mapping;
 
-import com.universe.touchpoint.annotations.ai.LangModel;
+import com.universe.touchpoint.annotations.ai.AIModel;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 
 import java.lang.annotation.Annotation;
@@ -11,7 +11,7 @@ public class LangModelConfigMapping {
 
     public static final Map<Class<? extends Annotation>, Class<?>> annotation2Config = new HashMap<>();
     static {
-        annotation2Config.put(LangModel.class, LangModelConfig.class);
+        annotation2Config.put(AIModel.class, LangModelConfig.class);
     }
 
 }

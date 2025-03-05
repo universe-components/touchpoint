@@ -95,7 +95,7 @@ data class Entry {
     
     @Task("query_weather") // Specify the task
     @Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // Optional global configuration to specify the Dubbo app name and registry address
-    @LangModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // Specify the model, default is o1
+    @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // Specify the model, default is o1
     @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
     val taskBuilder: TaskBuilder = TaskBuilder.task("query_weather");
     
@@ -125,7 +125,7 @@ public class Entry {
     
     @Task("query_weather") // Specify the task
     @Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // Optional global configuration to specify the Dubbo app name and registry address
-    @LangModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // Specify the model, default is o1
+    @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // Specify the model, default is o1
     @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
     private Task task;
     
@@ -152,7 +152,7 @@ If you want the `Weather Agent` to use a specific LLM, configure as follows:
  * The default model is o1
  */
 @TouchPointAgent(name = "weather_agent", desc = "Query weather information of a city")
-@LangModel(name = Model.GPT_4, temperature = 0.0f) // Specify the model and temperature, default is o1
+@AIModel(name = Model.GPT_4, temperature = 0.0f) // Specify the model and temperature, default is o1
 class WeatherApplication : AgentApplication()
 ```
 Note: The configuration above applies to the agent scope. Any unconfigured actions on the agent will use this configuration.
@@ -187,7 +187,7 @@ Listen for actions from the `Entry Agent` and return the weather information:
         "task2[next_action, next_action1, next_action2"]
     } //Format：task_name[action_name1, action_name2, ...]
 ) 
-@LangModel(name = Model.GPT_4, temperature = 0.0f) // specify the model, default is o1
+@AIModel(name = Model.GPT_4, temperature = 0.0f) // specify the model, default is o1
 class WeatherService : AgentActionExecutor<WeatherRequest, WeatherResponse> {
 
     override fun run(cityRequest: WeatherRequest, context: Context) : WeatherResponse {
@@ -232,7 +232,7 @@ If you want the `weather_action` to use the `Dubbo` protocol, configure as follo
     name = "weather_action"
     desc = "Query weather information of a city",
 ) 
-@LangModel(name = Model.GPT_4, temperature = 0.0f)
+@AIModel(name = Model.GPT_4, temperature = 0.0f)
 @DubboService(interfaceClass = IWeatherService::class) //Must specify the interface, this annotation is built-in for Dubbo
 class WeatherService {
 

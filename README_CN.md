@@ -95,7 +95,7 @@ data class Entry {
     
     @Task("query_weather") // 指定task
     @Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // 可选的全局配置，指定dubbo应用名和注册中心地址
-    @LangModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 指定模型, 默认使用o1
+    @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 指定模型, 默认使用o1
     @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
     val taskBuilder: TaskBuilder;
     
@@ -122,7 +122,7 @@ class WeatherApplication : AgentApplication()
  * model默认使用o1
  */
 @TouchPointAgent(name = "weather_agent", desc = "查询城市的天气信息")
-@LangModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
+@AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 class WeatherApplication : AgentApplication()
 ```
 备注：以上配置作用域为Agent。Agent上所有未配置Action都使用以上配置。
@@ -145,7 +145,7 @@ data class WeatherResponse(val weather: String, val temperature: String) : Touch
         "task2[next_action, next_action1, next_action2"]
     } //格式为：task_name[action_name1, action_name2, ...]
 ) 
-@LangModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
+@AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 class WeatherService : AgentActionExecutor<WeatherRequest, WeatherResponse> {
 
     override fun run(cityRequest: WeatherRequest, context: Context) : WeatherResponse {
@@ -194,7 +194,7 @@ class WeatherService : AgentActionExecutor<WeatherRequest, WeatherResponse> {
     name = "weather_action"
     desc = "查询城市的天气信息",
 ) 
-@LangModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
+@AIModel(name = Model.GPT_4, temperature = 0.0f) // 指定模型, 默认使用o1
 @DubboService(interfaceClass = IWeatherService::class) //必须指定接口，该注解为Dubbo自带注解
 class WeatherService {
 

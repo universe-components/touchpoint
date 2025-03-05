@@ -27,7 +27,7 @@ Step 2: Extend `ActionPredictor` to predict actions
     name = "predict robot actions", 
     desc = "Predict actions",
     toActions = {"item_classification_placement[\"action_executor\"]" })
-@LangModel(name = Model.OPEN_VLA, apiHost = "http://127.0.0.1:8000")
+@AIModel(name = Model.OPEN_VLA, apiHost = "http://127.0.0.1:8000")
 class RoobotActionPredictor : ActionPredictor {
 }
 ```

@@ -4,7 +4,7 @@ import android.content.Context;
 import com.google.common.collect.Lists;
 import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.android.utils.ApkUtils;
-import com.universe.touchpoint.annotations.ai.LangModel;
+import com.universe.touchpoint.annotations.ai.AIModel;
 import com.universe.touchpoint.annotations.ai.VisionLangModel;
 import com.universe.touchpoint.annotations.ai.VisionModel;
 import com.universe.touchpoint.annotations.metric.MonitorActionMetrics;
@@ -35,7 +35,7 @@ public class TaskProposer {
     public static void init(Context context) {
         if (Agent.isAnnotationPresent(Task.class)) {
             List<Class<? extends Annotation>> extractAnnotationClasses = Lists.newArrayList(
-                    LangModel.class,
+                    AIModel.class,
                     AgentSocket.class,
                     VisionModel.class,
                     VisionLangModel.class,
