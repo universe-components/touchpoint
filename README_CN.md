@@ -81,7 +81,7 @@ AgentSocket.bind(./"weather_agent.apk", BinderType.ANDROID_BINDER);
 `EntryApplication` 继承 `AgentApplication`
 ```kotlin
 /**
- * 其中，bindProtocol指定协作关系建立流程使用的协议，其作用域为所在Agent上的所有task，默认为AndroidBroadcast
+ * 其中，bindProtocol指定协作关系建立流程使用的协议，其作用域为所在Agent上的所有task，默认为MQTT5
  */
 @TouchPointAgent(name = "entry_agent")
 @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
@@ -105,7 +105,7 @@ data class Entry {
 
 }
 ```
-备注：以上配置作用域为Task。其中，`Dubbo` 指定协作执行流的通信协议，默认为AndroidBroadcast。
+备注：以上配置作用域为Task。其中，`Dubbo` 指定协作执行流的通信协议，默认为MQTT5。
 
 #### Weather Agent
 
