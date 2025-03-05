@@ -2,7 +2,7 @@ package com.universe.touchpoint.spring;
 
 import com.universe.touchpoint.TaskParticipant;
 import com.universe.touchpoint.TouchPointConstants;
-import com.universe.touchpoint.agent.AgentActionManager;
+import com.universe.touchpoint.meta.MetaManager;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.role.Coordinator;
@@ -63,7 +63,7 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
 
             try {
                 assert actionName != null;
-                AgentActionMeta actionMeta = AgentActionManager.getInstance().buildAction(
+                AgentActionMeta actionMeta = MetaManager.buildAction(
                         actionClassName,
                         environment.getProperty("spring.application.name", "default"),
                         actionAnnotationMeta.getLangModel(),
