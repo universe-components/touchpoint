@@ -6,7 +6,7 @@ The Touchpoint Protocol (TPP) is a collaboration communication protocol between 
 
 ### Why Use TPP?
 
-The TPP protocol adheres to the philosophy of "Anything is Action", achieving a truly adaptive multi-agent collaboration model.
+The TPP protocol adheres to the philosophy of "Anything is Action", redefining Agent Collaboration, achieving a truly adaptive multi-agent collaboration model.
 
 - **Context-Role Driven Model**: Through the context-role driven model, multi-agents can autonomously adjust and optimize their collaboration relationships based on different scenarios and environments, without requiring human intervention.
 
