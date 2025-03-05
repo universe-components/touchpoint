@@ -80,7 +80,7 @@ public class AgentApplication extends Application {
         TaskProposer.init(ctx);
 
         TaskParticipant.registerActions(receiverFilterPair);
-        TaskParticipant.listenTasks(ctx, receiverFilterPair);
+        TaskParticipant.listenTasks(receiverFilterPair);
 
         //Todo Maybe remove this in the future
         TouchPointContentFactory.registerContentProvider(ctx);

@@ -93,7 +93,7 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
                             new AgentSocketStateMachine.AgentSocketStateContext<>(
                                     AgentSocketState.PARTICIPANT_READY,
                                     actionMeta),
-                            TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, ActionRole.EXECUTOR.name()));
+                            TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, ActionRole.PROPOSER.name()));
                 }
             } catch (Exception ex) {
                 throw new RuntimeException(ex);

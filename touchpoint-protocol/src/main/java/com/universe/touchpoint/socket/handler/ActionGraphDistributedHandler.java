@@ -1,6 +1,5 @@
 package com.universe.touchpoint.socket.handler;
 
-import com.universe.touchpoint.agent.AgentActionManager;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.ConfigManager;
@@ -34,7 +33,6 @@ public class ActionGraphDistributedHandler implements AgentSocketStateHandler<Ac
 
             TransportConfig<?> transportConfig = ConfigManager.selectTransport(taskActionContext.getAction(), taskActionContext.getBelongTask());
             TouchPointTransportRegistry<?> registry = TouchPointTransportRegistryFactory.getRegistry(transportConfig.transportType());
-            AgentActionManager manager = AgentActionManager.getInstance();
 
             predecessors.forEach(action -> registry.register(actionMetaInfo, action.getName(), task, true));
             successors.forEach(action -> registry.register(actionMetaInfo, action.getName(), task, false));

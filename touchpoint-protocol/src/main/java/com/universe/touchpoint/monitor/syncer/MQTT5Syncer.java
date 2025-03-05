@@ -49,7 +49,7 @@ public class MQTT5Syncer implements MetricSyncer {
         try {
             client.subscribe(TouchPointHelper.touchPointFilterName(
                     task,
-                    TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER),
+                    TouchPointConstants.METRIC_FILTER),
                     1, (topic, message) -> {
                 if (message == null) {
                     return;

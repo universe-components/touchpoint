@@ -1,8 +1,6 @@
 package com.universe.touchpoint.android;
 
-import android.content.Context;
 import android.util.Pair;
-
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.api.RoleExecutor;
@@ -133,7 +131,7 @@ public class TaskParticipant {
         }
     }
 
-    public static void listenTasks(Context context, List<Pair<String, List<Object>>> receiverFilterPair) {
+    public static void listenTasks(List<Pair<String, List<Object>>> receiverFilterPair) {
         for (Pair<String, List<Object>> pair : receiverFilterPair) {
             List<Object> properties = pair.second;  // 获取 List<Object>
             Map<String, List<String>> toActions = StringUtils.convert((String[]) properties.get(3));
