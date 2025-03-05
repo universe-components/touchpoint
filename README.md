@@ -159,6 +159,7 @@ Note: The configuration above applies to the agent scope. Any unconfigured actio
 ```java
 @TouchPointAgent(name = "weather_agent", desc = "Query weather information of a city")
 @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
+@SpringBootApplication
 public class WeatherApplication {
     public static void main(String[] args) {
         SpringApplication.run(WeatherApplication.class, args);
