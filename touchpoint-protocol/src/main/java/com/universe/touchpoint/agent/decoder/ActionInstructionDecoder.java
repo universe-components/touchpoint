@@ -1,10 +1,10 @@
 package com.universe.touchpoint.agent.decoder;
 
 import com.universe.touchpoint.agent.ActionSequence;
-import com.universe.touchpoint.agent.ModelOutputDecoder;
+import com.universe.touchpoint.agent.AIModelOutputDecoder;
 import java.util.Arrays;
 
-public class ActionInstructionDecoder implements ModelOutputDecoder<ActionSequence, Double[]> {
+public class ActionInstructionDecoder implements AIModelOutputDecoder<ActionSequence, Double[]> {
 
     @Override
     public ActionSequence run(String params, Class<Double[]> clazz) {

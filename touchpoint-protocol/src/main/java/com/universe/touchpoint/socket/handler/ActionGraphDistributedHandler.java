@@ -1,12 +1,11 @@
 package com.universe.touchpoint.socket.handler;
 
 import com.universe.touchpoint.agent.AgentActionManager;
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
-import com.universe.touchpoint.registry.meta.AgentAnnotationMeta;
 import com.universe.touchpoint.socket.context.TaskActionContext;
 import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.plan.ActionGraph;

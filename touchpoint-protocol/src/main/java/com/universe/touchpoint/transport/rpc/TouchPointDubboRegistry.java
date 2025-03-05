@@ -1,6 +1,6 @@
 package com.universe.touchpoint.transport.rpc;
 
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 import com.universe.touchpoint.transport.TouchPointTransportRegistry;
 

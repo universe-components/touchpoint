@@ -1,6 +1,6 @@
 package com.universe.touchpoint.transport;
 
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
 
 public interface TouchPointTransportRegistry<C> {
 

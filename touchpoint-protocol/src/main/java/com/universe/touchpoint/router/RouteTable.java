@@ -1,6 +1,6 @@
 package com.universe.touchpoint.router;
 
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;

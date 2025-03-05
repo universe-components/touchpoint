@@ -26,7 +26,6 @@ dependencies {
     annotationProcessor(libs.auto.service.annotations)
     api(libs.auto.value)
     api(libs.auto.value.annotations)
-    api(libs.spring.context)
     api(libs.openai)
     api(libs.anthropic)
     api(libs.dubbo)

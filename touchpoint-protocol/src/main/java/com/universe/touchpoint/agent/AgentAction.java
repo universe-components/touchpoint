@@ -1,6 +1,6 @@
 package com.universe.touchpoint.agent;
 
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
 import com.universe.touchpoint.context.TouchPoint;
 import com.universe.touchpoint.context.TouchPointContext;
 

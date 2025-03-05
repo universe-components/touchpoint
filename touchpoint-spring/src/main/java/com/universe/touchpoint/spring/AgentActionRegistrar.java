@@ -1,9 +1,9 @@
-package com.universe.touchpoint.registry.spring;
+package com.universe.touchpoint.spring;
 
 import com.universe.touchpoint.TaskParticipant;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.AgentActionManager;
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.role.Coordinator;
 import com.universe.touchpoint.annotations.role.Supervisor;

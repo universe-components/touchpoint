@@ -1,6 +1,6 @@
 package com.universe.touchpoint.plan;
 
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;

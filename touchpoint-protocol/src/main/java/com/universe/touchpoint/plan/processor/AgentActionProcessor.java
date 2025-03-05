@@ -1,7 +1,7 @@
 package com.universe.touchpoint.plan.processor;
 
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.ai.AIModelFactory;
 import com.universe.touchpoint.ai.ChoiceParser;

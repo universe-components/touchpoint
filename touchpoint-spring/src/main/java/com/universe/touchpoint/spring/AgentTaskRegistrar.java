@@ -1,14 +1,11 @@
-package com.universe.touchpoint.registry.spring;
+package com.universe.touchpoint.spring;
 
-import com.universe.touchpoint.agent.meta.TaskMeta;
+import com.universe.touchpoint.meta.Task;
 import com.universe.touchpoint.annotations.role.ActionRole;
-import com.universe.touchpoint.annotations.task.Task;
-import com.universe.touchpoint.memory.Region;
-import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.registry.meta.TaskAnnotationMeta;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.context.TaskContext;
+import com.universe.touchpoint.spring.utils.BeanUtils;
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.EnvironmentAware;
@@ -32,15 +29,15 @@ public class AgentTaskRegistrar implements ImportBeanDefinitionRegistrar, Enviro
     @Override
     public void registerBeanDefinitions(@Nonnull AnnotationMetadata importingClassMetadata, @Nonnull BeanDefinitionRegistry registry) {
         Class<?> taskClass = ClassUtils.resolveClassName(importingClassMetadata.getClassName(), null);
-        if (importingClassMetadata.hasAnnotation(Task.class.getName())) {
-            String taskClassName = Task.class.getName();
+        if (importingClassMetadata.hasAnnotation(com.universe.touchpoint.annotations.task.Task.class.getName())) {
+            String taskClassName = com.universe.touchpoint.annotations.task.Task.class.getName();
             Map<String, Object> taskAttributes = importingClassMetadata.getAnnotationAttributes(taskClassName);
             assert taskAttributes != null;
             String taskName = (String) taskAttributes.get("value");
             TaskAnnotationMeta taskAnnotationMeta = new TaskAnnotationMeta(taskClass, taskAttributes);
             try {
                 assert taskName != null;
-                ((MetaRegion) TouchPointMemory.getRegion(Region.META)).putTouchPointTask(taskName, new TaskMeta(
+                BeanUtils.findBeanFactory(registry).registerSingleton(taskName, new Task(
                                     taskName,
                                     environment.getProperty("spring.application.name", "default"),
                                     taskClassName,

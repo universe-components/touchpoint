@@ -1,7 +1,7 @@
 package com.universe.touchpoint.plan.executor;
 
 import com.universe.touchpoint.TaskBuilder;
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.plan.ActionExecutor;
 import com.universe.touchpoint.router.Router;

@@ -1,6 +1,5 @@
-package com.universe.touchpoint.agent.meta;
+package com.universe.touchpoint.meta;
 
-import com.universe.touchpoint.agent.BaseMeta;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
 import com.universe.touchpoint.config.ai.VisionModelConfig;

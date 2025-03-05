@@ -1,6 +1,6 @@
 package com.universe.touchpoint.agent;
 
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
 import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.annotations.role.ActionRole;
@@ -82,7 +82,7 @@ public class AgentActionManager {
         }
 
         // 分割输入
-        ModelOutputDecoder<T, T> actionParamsDecoder = (ModelOutputDecoder<T, T>) ModelOutputDecoderSelector.selectParamsDecoder(agentActionMeta.getType());
+        AIModelOutputDecoder<T, T> actionParamsDecoder = (AIModelOutputDecoder<T, T>) AIModelOutputDecoderSelector.selectParamsDecoder(agentActionMeta.getType());
         return actionParamsDecoder.run(actionInput, inputClass);
     }
 

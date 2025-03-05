@@ -1,6 +1,6 @@
 package com.universe.touchpoint.context;
 
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import java.lang.reflect.Field;
 import javax.annotation.Nonnull;

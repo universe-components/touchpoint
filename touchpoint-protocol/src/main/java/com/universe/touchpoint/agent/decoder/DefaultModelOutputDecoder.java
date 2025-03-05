@@ -1,11 +1,11 @@
 package com.universe.touchpoint.agent.decoder;
 
-import com.universe.touchpoint.agent.ModelOutputDecoder;
+import com.universe.touchpoint.agent.AIModelOutputDecoder;
 import com.universe.touchpoint.utils.ClassUtils;
 
 import java.lang.reflect.Field;
 
-public class DefaultModelOutputDecoder<C> implements ModelOutputDecoder<C, C> {
+public class DefaultModelOutputDecoder<C> implements AIModelOutputDecoder<C, C> {
 
     @Override
     public C run(String params, Class<C> clazz) {

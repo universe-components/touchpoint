@@ -1,8 +1,8 @@
 package com.universe.touchpoint.memory.regions;
 
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
-import com.universe.touchpoint.agent.meta.AgentMeta;
-import com.universe.touchpoint.agent.meta.TaskMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentMeta;
+import com.universe.touchpoint.meta.Task;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.memory.TouchPointRegion;
 import java.util.List;
@@ -13,7 +13,7 @@ public class MetaRegion extends TouchPointRegion {
 
     private final Map<String, AgentActionMeta> touchPointActions = new ConcurrentHashMap<>();
     private final Map<String, AgentActionMeta> touchPointSwapActions = new ConcurrentHashMap<>();
-    private final Map<String, TaskMeta> touchPointTasks = new ConcurrentHashMap<>();
+    private final Map<String, Task> touchPointTasks = new ConcurrentHashMap<>();
     private final Map<String, AgentMeta> touchPointAgents = new ConcurrentHashMap<>();
 
     public void putTouchPointAction(String name, AgentActionMeta agentActionMeta) {
@@ -40,7 +40,7 @@ public class MetaRegion extends TouchPointRegion {
         return touchPointSwapActions.get(name);
     }
 
-    public void putTouchPointTask(String name, TaskMeta taskMeta) {
+    public void putTouchPointTask(String name, Task taskMeta) {
         touchPointTasks.put(name, taskMeta);
     }
 
@@ -48,7 +48,7 @@ public class MetaRegion extends TouchPointRegion {
         return touchPointTasks.containsKey(name);
     }
 
-    public TaskMeta getTouchPointTask(String name) {
+    public Task getTouchPointTask(String name) {
         return touchPointTasks.get(name);
     }
 

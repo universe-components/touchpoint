@@ -1,9 +1,9 @@
 package com.universe.touchpoint.config;
 
 import com.universe.touchpoint.TaskBuilder;
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
-import com.universe.touchpoint.agent.meta.AgentMeta;
-import com.universe.touchpoint.agent.meta.TaskMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentMeta;
+import com.universe.touchpoint.meta.Task;
 import com.universe.touchpoint.ai.AIModelType;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.Model;
@@ -145,7 +145,7 @@ public class ConfigManager {
 
         try {
             MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
-            TaskMeta taskMeta = metaRegion.getTouchPointTask(task);
+            Task taskMeta = metaRegion.getTouchPointTask(task);
             AgentMeta agentMeta = metaRegion.getTouchPointAgent(taskMeta.getAgentName());
             AgentSocketConfig socketConfig = agentMeta.getAgentSocketConfig();
 
@@ -167,7 +167,7 @@ public class ConfigManager {
 
         try {
             MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
-            TaskMeta taskMeta = metaRegion.getTouchPointTask(task);
+            Task taskMeta = metaRegion.getTouchPointTask(task);
             AgentMeta agentMeta = metaRegion.getTouchPointAgent(taskMeta.getAgentName());
             MetricSocketConfig socketConfig = agentMeta.getMetricSocketConfig();
 
@@ -189,7 +189,7 @@ public class ConfigManager {
 
         try {
             MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
-            TaskMeta taskMeta = metaRegion.getTouchPointTask(task);
+            Task taskMeta = metaRegion.getTouchPointTask(task);
             AgentMeta agentMeta = metaRegion.getTouchPointAgent(taskMeta.getAgentName());
             TaskMetricConfig taskMetricConfigFromAgent = agentMeta.getTaskMetricConfig();
 

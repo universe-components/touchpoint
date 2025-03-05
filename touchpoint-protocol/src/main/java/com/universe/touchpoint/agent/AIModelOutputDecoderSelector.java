@@ -5,15 +5,15 @@ import com.universe.touchpoint.agent.decoder.DefaultModelOutputDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ModelOutputDecoderSelector {
+public class AIModelOutputDecoderSelector {
 
-    private static final Map<ActionType, ModelOutputDecoder<?, ?>> actionDecoderMap = new HashMap<>();
+    private static final Map<ActionType, AIModelOutputDecoder<?, ?>> actionDecoderMap = new HashMap<>();
     static {
         actionDecoderMap.put(ActionType.CHAT, new DefaultModelOutputDecoder<>());
         actionDecoderMap.put(ActionType.ACT, new ActionInstructionDecoder());
     }
 
-    public static ModelOutputDecoder<?, ?> selectParamsDecoder(ActionType type) {
+    public static AIModelOutputDecoder<?, ?> selectParamsDecoder(ActionType type) {
         return actionDecoderMap.getOrDefault(type, new DefaultModelOutputDecoder<>());
     }
 

@@ -1,6 +1,6 @@
 package com.universe.touchpoint.context;
 
-import com.universe.touchpoint.agent.meta.AgentActionMeta;
+import com.universe.touchpoint.meta.AgentActionMeta;
 import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.memory.Region;
