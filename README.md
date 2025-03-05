@@ -66,7 +66,7 @@ If the `Entry Agent` and `Weather Agent` are deployed on the same node, you need
 // both Agents are APKs
 AgentSocket.bind(./"weather_agent.apk", BinderType.ANDROID_BINDER);
 ```
-Note:
+Note:  
 (1) Explicit binding is required only when multiple Agents are deployed in different APKs on the same node. If the multiple Agents are in the same APK, no explicit binding is required.
 (2) In all other cases, explicit binding is not required.
 
