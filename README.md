@@ -74,11 +74,12 @@ Note:
 
 #### Entry Agent
 
+##### Android Application
 `EntryApplication` extends `AgentApplication`:
 ```kotlin
 /**
  * The bindProtocol specifies the protocol used to establish the collaboration relationship,
- * which applies to all tasks within the agent. The default is AndroidBroadcast.
+ * which applies to all tasks within the agent. The default is MQTT5.
  */
 @TouchPointAgent(name = "entry_agent")
 @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
@@ -94,7 +95,7 @@ data class Entry {
     @Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // Optional global configuration to specify the Dubbo app name and registry address
     @LangModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // Specify the model, default is o1
     @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
-    val taskBuilder: TaskBuilder;
+    val taskBuilder: TaskBuilder = TaskBuilder.task("query_weather");
     
     fun queryWeather() {
         taskBuilder.run("I want to query the weather in Shanghai")
@@ -104,8 +105,38 @@ data class Entry {
 ```
 Note: The configuration above is for the task scope. The `Dubbo` annotation specifies the communication protocol for the collaboration execution flow, defaulting to `AndroidBroadcast`.
 
+##### Spring Application
+```java
+@TouchPointAgent(name = "entry_agent")
+@AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
+@SpringBootApplication
+public class EntryApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(EntryApplication.class, args);
+    }
+}
+```
+
+In `Entry Agent` , add the following code:
+```kotlin
+public class Entry {
+    
+    @Task("query_weather") // Specify the task
+    @Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // Optional global configuration to specify the Dubbo app name and registry address
+    @LangModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // Specify the model, default is o1
+    @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
+    private Task task;
+    
+    fun queryWeather() {
+        task.run("I want to query the weather in Shanghai")
+    }
+
+}
+```
+
 #### Weather Agent
 
+##### Android Application
 `WeatherApplication` extends `AgentApplication`
 ```kotlin
 @TouchPointAgent(name = "weather_agent", desc = "Query weather information of a city")
@@ -123,6 +154,17 @@ If you want the `Weather Agent` to use a specific LLM, configure as follows:
 class WeatherApplication : AgentApplication()
 ```
 Note: The configuration above applies to the agent scope. Any unconfigured actions on the agent will use this configuration.
+
+##### Spring Application
+```java
+@TouchPointAgent(name = "weather_agent", desc = "Query weather information of a city")
+@AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
+public class WeatherApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(WeatherApplication.class, args);
+    }
+}
+```
 
 Define the request and response classes for fetching weather:
 ```kotlin
