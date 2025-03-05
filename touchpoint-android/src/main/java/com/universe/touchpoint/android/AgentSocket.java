@@ -1,7 +1,7 @@
-package com.universe.touchpoint;
+package com.universe.touchpoint.android;
 
-import com.universe.touchpoint.binder.BinderFactory;
-import com.universe.touchpoint.binder.BinderType;
+import com.universe.touchpoint.android.binder.BinderFactory;
+import com.universe.touchpoint.android.binder.BinderType;
 
 public class AgentSocket {
 

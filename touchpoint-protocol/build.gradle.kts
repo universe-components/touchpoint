@@ -9,9 +9,6 @@ java {
 }
 
 dependencies {
-    compileOnly(libs.android)
-    implementation(libs.replugin.plugin.lib)
-    implementation(libs.replugin.host.lib)
     api(libs.kryo)
     api(libs.fury)
     api(libs.moquette) {
@@ -34,6 +31,8 @@ dependencies {
     api(libs.converter.gson)
     api(libs.gson)
     api(libs.commons.lang3)
+    api(libs.logback)
+    api(libs.slf4j.api)
     implementation(libs.jep)
     testImplementation(libs.junit)
 }

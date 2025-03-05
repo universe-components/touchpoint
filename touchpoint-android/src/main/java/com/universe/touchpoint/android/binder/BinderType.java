@@ -1,4 +1,4 @@
-package com.universe.touchpoint.binder;
+package com.universe.touchpoint.android.binder;
 
 public enum BinderType {
 

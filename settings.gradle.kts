@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 rootProject.name = "touchpoint"
 include(":touchpoint-protocol")
 include(":touchpoint-spring")
+include(":touchpoint-android")
