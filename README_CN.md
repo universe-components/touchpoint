@@ -246,7 +246,6 @@ class WeatherService {
 
 ## 高级用法
 - [动态路由](./README_ROLE.md)
-- [规则驱动工作流](./README_RULE.md)
 - [自定义上下文](./README_CONTEXT.md)
 - [VLA模型](./README_VLA.md)
 - [扩展功能新范式](./README_EXTENSION.md)
