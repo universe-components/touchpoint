@@ -1,5 +1,8 @@
-package com.universe.touchpoint.context;
+package com.universe.touchpoint;
 
+import com.universe.touchpoint.context.TaskState;
+import com.universe.touchpoint.context.TouchPointContext;
+import com.universe.touchpoint.context.TouchPointState;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import java.lang.reflect.Field;
@@ -7,7 +10,7 @@ import javax.annotation.Nonnull;
 
 public class TouchPoint {
 
-    protected Header header;
+    protected Header header = new Header();
     protected TouchPointContext context;
     protected TouchPointState state;
 
@@ -87,6 +90,7 @@ public class TouchPoint {
         private AgentActionMeta fromAction = null;
         private AgentActionMeta toAction = null;
         private transient TouchPointChannel<?> channel;
+        private TaskSocket.TaskCallbackListener callbackListener;
 
         public Header() {
         }
@@ -122,6 +126,14 @@ public class TouchPoint {
 
         public void setChannel(TouchPointChannel<?> channel) {
             this.channel = channel;
+        }
+
+        public TaskSocket.TaskCallbackListener getCallbackListener() {
+            return callbackListener;
+        }
+
+        public void setCallbackListener(TaskSocket.TaskCallbackListener callbackListener) {
+            this.callbackListener = callbackListener;
         }
 
     }

@@ -97,10 +97,10 @@ data class Entry {
     @Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // Optional global configuration to specify the Dubbo app name and registry address
     @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // Specify the model, default is o1
     @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
-    val taskBuilder: TaskBuilder = TaskBuilder.task("query_weather");
+    val taskMeta: TaskMeta;
     
     fun queryWeather() {
-        taskBuilder.run("I want to query the weather in Shanghai")
+        new AgentSocket(taskMeta.getName()).send("I want to query the weather in Shanghai")
     }
 
 }
@@ -123,14 +123,15 @@ In `Entry Agent` , add the following code:
 ```kotlin
 public class Entry {
     
+    @Autowired
     @Task("query_weather") // Specify the task
     @Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // Optional global configuration to specify the Dubbo app name and registry address
     @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // Specify the model, default is o1
     @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
-    private Task task;
+    private TaskSocket socket;
     
     fun queryWeather() {
-        task.run("I want to query the weather in Shanghai")
+        socket.send("I want to query the weather in Shanghai")
     }
 
 }

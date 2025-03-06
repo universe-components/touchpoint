@@ -1,6 +1,6 @@
 package com.universe.touchpoint.transport.mqtt;
 
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.context.TaskContext;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.plan.ActionExecutionSelector;

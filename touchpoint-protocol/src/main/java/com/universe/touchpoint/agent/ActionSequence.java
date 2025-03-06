@@ -1,6 +1,6 @@
 package com.universe.touchpoint.agent;
 
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
 
 public class ActionSequence extends TouchPoint {
 

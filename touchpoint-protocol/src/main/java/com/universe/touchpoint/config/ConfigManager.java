@@ -1,9 +1,8 @@
 package com.universe.touchpoint.config;
 
-import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.meta.data.AgentMeta;
-import com.universe.touchpoint.meta.data.Task;
+import com.universe.touchpoint.meta.data.TaskMeta;
 import com.universe.touchpoint.ai.AIModelType;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.Model;
@@ -31,10 +30,9 @@ public class ConfigManager {
             }
         }
 
-        // 如果 Agent.getModel() 也为空，再检查 AgentBuilder 中的配置
-        LangModelConfig modelFromBuilder = TaskBuilder.getBuilder(task).getConfig().getModelConfig();
-        if (modelFromBuilder != null) {
-            return modelFromBuilder;
+        LangModelConfig modelFromTask = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointTask(task).getModel();
+        if (modelFromTask != null) {
+            return modelFromTask;
         }
 
         // 如果 action 中没有模型，再检查 Agent 的模型
@@ -64,10 +62,9 @@ public class ConfigManager {
             }
         }
 
-        // 如果 Agent.getModel() 也为空，再检查 AgentBuilder 中的配置
-        VisionModelConfig modelFromBuilder = TaskBuilder.getBuilder(task).getConfig().getVisionModelConfig();
-        if (modelFromBuilder != null) {
-            return modelFromBuilder;
+        VisionModelConfig modelFromTask = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointTask(task).getVisionModel();
+        if (modelFromTask != null) {
+            return modelFromTask;
         }
 
         // 如果 action 中没有模型，再检查 Agent 的模型
@@ -92,10 +89,9 @@ public class ConfigManager {
             }
         }
 
-        // 如果 Agent.getModel() 也为空，再检查 AgentBuilder 中的配置
-        VisionLangModelConfig modelFromBuilder = TaskBuilder.getBuilder(task).getConfig().getVisionLangModelConfig();
-        if (modelFromBuilder != null) {
-            return modelFromBuilder;
+        VisionLangModelConfig modelFromTask = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointTask(task).getVisionLangModel();
+        if (modelFromTask != null) {
+            return modelFromTask;
         }
 
         // 如果 action 中没有模型，再检查 Agent 的模型
@@ -118,7 +114,7 @@ public class ConfigManager {
             return (TransportConfig<C>) actionMeta.getTransportConfig();
         }
 
-        TransportConfig<?> transportConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getTransportConfig();
+        TransportConfig<?> transportConfigFromTask = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointTask(task).getTransportConfig();
         if (transportConfigFromTask != null) {
             return (TransportConfig<C>) transportConfigFromTask;
         }
@@ -138,14 +134,14 @@ public class ConfigManager {
     }
 
     public static AgentSocketConfig selectAgentSocket(String task) {
-        AgentSocketConfig socketConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getSocketConfig();
+        AgentSocketConfig socketConfigFromTask = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointTask(task).getAgentSocketConfig();
         if (socketConfigFromTask != null) {
             return socketConfigFromTask;
         }
 
         try {
             MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
-            Task taskMeta = metaRegion.getTouchPointTask(task);
+            TaskMeta taskMeta = metaRegion.getTouchPointTask(task);
             AgentMeta agentMeta = metaRegion.getTouchPointAgent(taskMeta.getAgentName());
             AgentSocketConfig socketConfig = agentMeta.getAgentSocketConfig();
 
@@ -160,14 +156,14 @@ public class ConfigManager {
     }
 
     public static MetricSocketConfig selectMetricSocket(String task) {
-        MetricSocketConfig socketConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getMetricSocketConfig();
+        MetricSocketConfig socketConfigFromTask = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointTask(task).getMetricSocketConfig();
         if (socketConfigFromTask != null) {
             return socketConfigFromTask;
         }
 
         try {
             MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
-            Task taskMeta = metaRegion.getTouchPointTask(task);
+            TaskMeta taskMeta = metaRegion.getTouchPointTask(task);
             AgentMeta agentMeta = metaRegion.getTouchPointAgent(taskMeta.getAgentName());
             MetricSocketConfig socketConfig = agentMeta.getMetricSocketConfig();
 
@@ -182,14 +178,14 @@ public class ConfigManager {
     }
 
     public static TaskMetricConfig selectTaskMetricConfig(String task) {
-        TaskMetricConfig taskMetricConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getTaskMetricConfig();
+        TaskMetricConfig taskMetricConfigFromTask = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointTask(task).getTaskMetricConfig();
         if (taskMetricConfigFromTask != null) {
             return taskMetricConfigFromTask;
         }
 
         try {
             MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
-            Task taskMeta = metaRegion.getTouchPointTask(task);
+            TaskMeta taskMeta = metaRegion.getTouchPointTask(task);
             AgentMeta agentMeta = metaRegion.getTouchPointAgent(taskMeta.getAgentName());
             TaskMetricConfig taskMetricConfigFromAgent = agentMeta.getTaskMetricConfig();
 
@@ -212,7 +208,7 @@ public class ConfigManager {
             return actionMeta.getActionMetricConfig();
         }
 
-        ActionMetricConfig actionMetricConfigFromTask = TaskBuilder.getBuilder(task).getConfig().getActionMetricConfig();
+        ActionMetricConfig actionMetricConfigFromTask = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointTask(task).getActionMetricConfig();
         if (actionMetricConfigFromTask != null) {
             return actionMetricConfigFromTask;
         }

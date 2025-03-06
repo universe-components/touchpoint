@@ -1,7 +1,7 @@
 package com.universe.touchpoint.plan.executor;
 
 import com.universe.touchpoint.api.RoleExecutor;
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.plan.ActionExecutor;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 

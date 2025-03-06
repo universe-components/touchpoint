@@ -2,7 +2,7 @@ package com.universe.touchpoint.ai.prompt;
 
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
 import java.util.List;
 
 public interface PromptGenerator<Prompt> {

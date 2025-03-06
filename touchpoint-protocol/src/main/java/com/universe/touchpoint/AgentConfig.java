@@ -7,6 +7,7 @@ import com.universe.touchpoint.config.metric.MetricSocketConfig;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
+import com.universe.touchpoint.config.transport.MQTTConfig;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.TransportConfig;
@@ -28,6 +29,7 @@ public class AgentConfig {
     private final Map<Transport, Class<?>> transportConfigMap = new HashMap<>();
     {
         transportConfigMap.put(Transport.DUBBO, DubboConfig.class);
+        transportConfigMap.put(Transport.MQTT, MQTTConfig.class);
     }
 
     public LangModelConfig getModelConfig() {

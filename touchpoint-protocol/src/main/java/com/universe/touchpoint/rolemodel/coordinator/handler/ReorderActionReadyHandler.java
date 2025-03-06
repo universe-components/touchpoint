@@ -1,7 +1,7 @@
 package com.universe.touchpoint.rolemodel.coordinator.handler;
 
 import com.universe.touchpoint.api.operator.ActionGraphOperator;
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
 import com.universe.touchpoint.socket.AgentContext;

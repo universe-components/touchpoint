@@ -1,11 +1,12 @@
 package com.universe.touchpoint.plan.executor;
 
-import com.universe.touchpoint.TaskBuilder;
+import com.universe.touchpoint.TaskSocket;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.task.Task;
 import com.universe.touchpoint.api.RoleExecutor;
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.meta.data.TaskMeta;
 import com.universe.touchpoint.plan.ActionExecutor;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.rolemodel.coordinator.CoordinatorFactory;
@@ -15,11 +16,7 @@ import com.universe.touchpoint.utils.ClassUtils;
 public class AgentActionExecutor<I extends TouchPoint, O> extends ActionExecutor<AgentAction<I, O>, O> {
 
     @Task("collect_metrics")
-    private final TaskBuilder metricTaskBuilder;
-
-    public AgentActionExecutor() {
-        this.metricTaskBuilder = TaskBuilder.task("collect_metrics");
-    }
+    private TaskMeta metricTaskMeta;
 
     @Override
     public void beforeRun(AgentAction<I, O> action) {
@@ -40,7 +37,7 @@ public class AgentActionExecutor<I extends TouchPoint, O> extends ActionExecutor
     @Override
     public AgentAction<I, O> afterRun(AgentAction<I, O> action, O runResult) {
         action.setOutput(runResult);
-        metricTaskBuilder.run("I want to collect action and task metrics, where task metrics include the number of execution errors and prediction counts for multiple actions within the task, and action metrics include the prediction count for a single action.");
+        new TaskSocket(metricTaskMeta.getName()).send("I want to collect action and task metrics, where task metrics include the number of execution errors and prediction counts for multiple actions within the task, and action metrics include the prediction count for a single action.");
         return action;
     }
 

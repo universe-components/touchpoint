@@ -1,6 +1,6 @@
 package com.universe.touchpoint.socket;
 
-import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import javax.annotation.Nullable;
 
@@ -10,6 +10,6 @@ public interface AgentSocketProtocol {
 
     void send(AgentSocketStateMachine.AgentSocketStateContext<?> stateContext, String filterSuffix);
 
-    <C extends AgentContext> void registerReceiver(@Nullable C context, ActionRole role);
+    <C extends AgentContext> void registerReceiver(@Nullable C context, RoleType role);
 
 }

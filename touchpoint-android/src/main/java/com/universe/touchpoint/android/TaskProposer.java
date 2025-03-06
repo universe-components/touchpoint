@@ -2,14 +2,13 @@ package com.universe.touchpoint.android;
 
 import android.content.Context;
 import com.google.common.collect.Lists;
-import com.universe.touchpoint.TaskBuilder;
 import com.universe.touchpoint.android.utils.ApkUtils;
 import com.universe.touchpoint.annotations.ai.AIModel;
 import com.universe.touchpoint.annotations.ai.VisionLangModel;
 import com.universe.touchpoint.annotations.ai.VisionModel;
 import com.universe.touchpoint.annotations.metric.MonitorActionMetrics;
 import com.universe.touchpoint.annotations.metric.MonitorTaskMetrics;
-import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.annotations.socket.AgentSocket;
 import com.universe.touchpoint.annotations.task.Task;
 import com.universe.touchpoint.config.ConfigManager;
@@ -21,6 +20,10 @@ import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.MetaRegion;
+import com.universe.touchpoint.meta.data.TaskMeta;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.context.TaskContext;
 import com.universe.touchpoint.utils.ClassUtils;
@@ -52,39 +55,46 @@ public class TaskProposer {
             for (Map.Entry<String, Map<String, Map<String, Object>>> taskProperty : taskProperties.entrySet()) {
                 AgentSocketStateMachine.registerInstance(taskProperty.getKey(), Objects.requireNonNull(ConfigManager.selectAgentSocket(taskProperty.getKey())).getBindProtocol());
 
+                TaskMeta taskMeta = new TaskMeta(taskProperty.getKey());
                 for (Map.Entry<String, Map<String, Object>> property : taskProperty.getValue().entrySet()) {
                     if (Objects.equals(property.getKey(), "LangModel")) {
-                        LangModelConfig langModelConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getModelConfig();
+                        LangModelConfig langModelConfig = new LangModelConfig();
                         ClassUtils.setProperties(langModelConfig, property.getValue());
+                        taskMeta.setModel(langModelConfig);
                     }
                     if (Objects.equals(property.getKey(), "VisionModel")) {
-                        VisionModelConfig visionModelConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getVisionModelConfig();
+                        VisionModelConfig visionModelConfig = new VisionModelConfig();
                         ClassUtils.setProperties(visionModelConfig, property.getValue());
+                        taskMeta.setVisionModel(visionModelConfig);
                     }
                     if (Objects.equals(property.getKey(), "VisionLangModel")) {
-                        VisionLangModelConfig visionLangModelConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getVisionLangModelConfig();
+                        VisionLangModelConfig visionLangModelConfig = new VisionLangModelConfig();
                         ClassUtils.setProperties(visionLangModelConfig, property.getValue());
+                        taskMeta.setVisionLangModel(visionLangModelConfig);
                     }
                     if (transportAnnotationName.contains(property.getKey())) {
-                        TransportConfig<?> transportConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getTransportConfig();
+                        TransportConfig<?> transportConfig = new TransportConfig<>(null, null);
                         ClassUtils.setProperties(transportConfig.config(), property.getValue());
                     }
                     if (Objects.equals(property.getKey(), "AgentSocket")) {
-                        AgentSocketConfig socketConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getSocketConfig();
+                        AgentSocketConfig socketConfig = new AgentSocketConfig();
                         ClassUtils.setProperties(socketConfig, property.getValue());
+                        taskMeta.setAgentSocketConfig(socketConfig);
                         AgentSocketStateMachine.getInstance(taskProperty.getKey()).socketProtocol().initialize(socketConfig);
                     }
                     if (Objects.equals(property.getKey(), "MonitorActionMetrics")) {
-                        ActionMetricConfig actionMetricConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getActionMetricConfig();
+                        ActionMetricConfig actionMetricConfig = new ActionMetricConfig();
                         ClassUtils.setProperties(actionMetricConfig, property.getValue());
+                        taskMeta.setActionMetricConfig(actionMetricConfig);
                     }
                     if (Objects.equals(property.getKey(), "MonitorTaskMetrics")) {
-                        TaskMetricConfig taskMetricConfig = TaskBuilder.task(taskProperty.getKey()).getConfig().getTaskMetricConfig();
+                        TaskMetricConfig taskMetricConfig = new TaskMetricConfig();
                         ClassUtils.setProperties(taskMetricConfig, property.getValue());
+                        taskMeta.setTaskMetricConfig(taskMetricConfig);
                     }
                 }
-
-                AgentSocketStateMachine.getInstance(taskProperty.getKey()).registerReceiver(new TaskContext(taskProperty.getKey()), ActionRole.PROPOSER);
+                ((MetaRegion) TouchPointMemory.getRegion(Region.META)).putTouchPointTask(taskProperty.getKey(), taskMeta);
+                AgentSocketStateMachine.getInstance(taskProperty.getKey()).registerReceiver(new TaskContext(taskProperty.getKey()), RoleType.OWNER);
             }
         }
     }

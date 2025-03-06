@@ -1,7 +1,7 @@
 package com.universe.touchpoint.socket.protocol;
 
 import com.universe.touchpoint.TouchPointConstants;
-import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.socket.AgentContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -56,7 +56,7 @@ public class MQTT5Protocol implements AgentSocketProtocol {
     }
 
     @Override
-    public <C extends AgentContext> void registerReceiver(@Nullable C context, ActionRole role) {
+    public <C extends AgentContext> void registerReceiver(@Nullable C context, RoleType role) {
         try {
             assert context != null;
             String socketFilter = TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, context.getBelongTask(), role.name());

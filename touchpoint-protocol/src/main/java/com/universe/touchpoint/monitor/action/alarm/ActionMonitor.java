@@ -1,7 +1,7 @@
 package com.universe.touchpoint.monitor.action.alarm;
 
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.TouchPointContextManager;

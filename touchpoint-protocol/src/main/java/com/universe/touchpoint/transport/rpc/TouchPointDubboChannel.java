@@ -1,6 +1,6 @@
 package com.universe.touchpoint.transport.rpc;
 
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 import com.universe.touchpoint.plan.ResultExchanger;

@@ -3,6 +3,7 @@ package com.universe.touchpoint.android;
 import android.util.Pair;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.ai.LangModelConfig;
@@ -144,7 +145,7 @@ public class TaskParticipant {
                 assert socketConfig != null;
                 AgentSocketStateMachine.registerInstance(task, socketConfig.getBindProtocol());
                 AgentSocketStateMachine.getInstance(task).socketProtocol().initialize(socketConfig);
-                AgentSocketStateMachine.getInstance(task).registerReceiver(actionContext, actionMeta.getRole());
+                AgentSocketStateMachine.getInstance(task).registerReceiver(actionContext, actionMeta.getRoleType());
 
                 MetricSocketConfig metricSocketConfig = ConfigManager.selectMetricSocket(task);
                 assert metricSocketConfig != null;
@@ -156,7 +157,7 @@ public class TaskParticipant {
                         new AgentSocketStateMachine.AgentSocketStateContext<>(
                                 AgentSocketState.PARTICIPANT_READY,
                                 actionMeta),
-                        TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, ActionRole.PROPOSER.name()));
+                        TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, RoleType.OWNER.name()));
             }
         }
     }

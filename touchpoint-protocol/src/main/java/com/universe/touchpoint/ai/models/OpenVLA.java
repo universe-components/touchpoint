@@ -2,7 +2,7 @@ package com.universe.touchpoint.ai.models;
 
 import com.universe.touchpoint.ai.AIModel;
 import com.universe.touchpoint.config.ai.LangModelConfig;
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
 import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Response;

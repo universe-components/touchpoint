@@ -1,7 +1,11 @@
 package com.universe.touchpoint.spring;
 
-import com.universe.touchpoint.meta.data.Task;
-import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.TaskSocket;
+import com.universe.touchpoint.annotations.role.RoleType;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.MetaRegion;
+import com.universe.touchpoint.meta.data.TaskMeta;
 import com.universe.touchpoint.meta.annotation.TaskAnnotationMeta;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.context.TaskContext;
@@ -37,7 +41,7 @@ public class AgentTaskRegistrar implements ImportBeanDefinitionRegistrar, Enviro
             TaskAnnotationMeta taskAnnotationMeta = new TaskAnnotationMeta(taskClass, taskAttributes);
             try {
                 assert taskName != null;
-                BeanUtils.findBeanFactory(registry).registerSingleton(taskName, new Task(
+                ((MetaRegion) TouchPointMemory.getRegion(Region.META)).putTouchPointTask(taskName, new TaskMeta(
                                     taskName,
                                     environment.getProperty("spring.application.name", "default"),
                                     taskClassName,
@@ -51,7 +55,8 @@ public class AgentTaskRegistrar implements ImportBeanDefinitionRegistrar, Enviro
                                     taskAnnotationMeta.getTaskMetricConfig(),
                                     taskAnnotationMeta.getActionMetricConfig()
                             ));
-                AgentSocketStateMachine.getInstance(taskName).registerReceiver(new TaskContext(taskName), ActionRole.PROPOSER);
+                BeanUtils.findBeanFactory(registry).registerSingleton(taskName, new TaskSocket(taskName));
+                AgentSocketStateMachine.getInstance(taskName).registerReceiver(new TaskContext(taskName), RoleType.OWNER);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }

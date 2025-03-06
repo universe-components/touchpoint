@@ -1,6 +1,6 @@
 package com.universe.touchpoint.socket;
 
-import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.annotations.socket.SocketProtocol;
 import com.universe.touchpoint.helper.TouchPointHelper;
 
@@ -31,7 +31,7 @@ public record AgentSocketStateMachine(AgentSocketProtocol socketProtocol) {
         socketProtocol.send(stateContext, TouchPointHelper.touchPointFilterName(filter));
     }
 
-    public <C extends AgentContext> void registerReceiver(@Nullable C context, ActionRole role) {
+    public <C extends AgentContext> void registerReceiver(@Nullable C context, RoleType role) {
         socketProtocol.registerReceiver(context, role);
     }
 

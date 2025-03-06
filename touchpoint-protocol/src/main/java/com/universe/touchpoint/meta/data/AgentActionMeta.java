@@ -2,6 +2,7 @@ package com.universe.touchpoint.meta.data;
 
 import com.universe.touchpoint.agent.ActionType;
 import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.api.executor.ActionPredictor;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
 import com.universe.touchpoint.config.ai.VisionModelConfig;
@@ -15,6 +16,7 @@ import com.universe.touchpoint.utils.ClassUtils;
 public class AgentActionMeta extends BaseMeta {
 
     private ActionRole role;
+    private RoleType roleType;
     private ActionType type;
     private String inputClassName;
     private String outputClassName;
@@ -54,6 +56,7 @@ public class AgentActionMeta extends BaseMeta {
             actionMetricConfig
         );
         this.role = role;
+        this.roleType = role == ActionRole.PROPOSER ? RoleType.OWNER : RoleType.MEMBER;
         try {
             if (ClassUtils.extendsAbstractClass(Class.forName(className), ActionPredictor.class)) {
                 this.type = ActionType.ACT;
@@ -74,6 +77,14 @@ public class AgentActionMeta extends BaseMeta {
 
     public void setRole(ActionRole role) {
         this.role = role;
+    }
+
+    public RoleType getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
     }
 
     public ActionType getType() {

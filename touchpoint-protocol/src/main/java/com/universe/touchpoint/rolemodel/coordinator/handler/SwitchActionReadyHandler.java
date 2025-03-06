@@ -2,7 +2,7 @@ package com.universe.touchpoint.rolemodel.coordinator.handler;
 
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.api.RoleExecutor;
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;

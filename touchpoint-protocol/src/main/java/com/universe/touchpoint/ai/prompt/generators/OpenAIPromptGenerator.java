@@ -4,7 +4,7 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.ai.prompt.PromptGenerator;
 import com.universe.touchpoint.ai.prompt.template.OpenAITemplate;
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.utils.ClassUtils;
 import java.util.List;
 import javax.annotation.Nonnull;

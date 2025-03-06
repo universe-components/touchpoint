@@ -2,7 +2,7 @@ package com.universe.touchpoint.monitor.action.collector;
 
 import com.universe.touchpoint.annotations.task.TouchPointAction;
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointContextManager;
 
 @TouchPointAction(

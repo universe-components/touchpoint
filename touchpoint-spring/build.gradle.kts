@@ -18,6 +18,7 @@ dependencies {
     }
     api(libs.spring.context)
     testImplementation(libs.junit)
+    testImplementation(libs.springboot.test)
 }
 
 tasks.jar {

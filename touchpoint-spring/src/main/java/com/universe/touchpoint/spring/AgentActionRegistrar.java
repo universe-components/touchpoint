@@ -2,6 +2,7 @@ package com.universe.touchpoint.spring;
 
 import com.universe.touchpoint.TaskParticipant;
 import com.universe.touchpoint.TouchPointConstants;
+import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.meta.MetaManager;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.annotations.role.ActionRole;
@@ -82,7 +83,8 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
                     assert socketConfig != null;
                     AgentSocketStateMachine.registerInstance(task, socketConfig.getBindProtocol());
                     AgentSocketStateMachine.getInstance(task).socketProtocol().initialize(socketConfig);
-                    AgentSocketStateMachine.getInstance(task).registerReceiver(new TaskActionContext(actionName, task), role);
+                    assert actionMeta != null;
+                    AgentSocketStateMachine.getInstance(task).registerReceiver(new TaskActionContext(actionName, task), actionMeta.getRoleType());
 
                     MetricSocketConfig metricSocketConfig = ConfigManager.selectMetricSocket(task);
                     assert metricSocketConfig != null;
@@ -93,7 +95,7 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
                             new AgentSocketStateMachine.AgentSocketStateContext<>(
                                     AgentSocketState.PARTICIPANT_READY,
                                     actionMeta),
-                            TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, ActionRole.PROPOSER.name()));
+                            TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, RoleType.OWNER.name()));
                 }
             } catch (Exception ex) {
                 throw new RuntimeException(ex);

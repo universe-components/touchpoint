@@ -1,6 +1,6 @@
 package com.universe.touchpoint.api.executor;
 
-import com.universe.touchpoint.context.TouchPoint;
+import com.universe.touchpoint.TouchPoint;
 
 public class ImageData extends TouchPoint {
 
