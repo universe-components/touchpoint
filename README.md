@@ -121,14 +121,19 @@ public class EntryApplication {
 
 In `Entry Agent` , add the following code:
 ```kotlin
+@Task("query_weather") // Specify the task
+@Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // Optional global configuration to specify the Dubbo app name and registry address
+@AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // Specify the model, default is o1
+@AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
+public class QueryWeatherTask : TaskSocket() {
+}
+```
+
+```kotlin
 public class Entry {
     
     @Autowired
-    @Task("query_weather") // Specify the task
-    @Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // Optional global configuration to specify the Dubbo app name and registry address
-    @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // Specify the model, default is o1
-    @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
-    private TaskSocket socket;
+    private QueryWeatherTask socket;
     
     fun queryWeather() {
         socket.send("I want to query the weather in Shanghai")

@@ -8,11 +8,14 @@ The Touchpoint Protocol (TPP) is a collaboration communication protocol between 
 
 Step 1: Initiate task
 ```kotlin
+@Task("item_classification_placement") // Specify the task
+data class ItemClassificationPlacementSocket : TaskSocket() {}
+```
+```kotlin
 data class Entry {
 
     @Autowired
-    @Task("item_classification_placement") // Specify the task
-    val taskSocket: TaskSocket;
+    val taskSocket: ItemClassificationPlacementSocket;
 
     fun classifiedPlacement(imageBytes: Array<Array<ByteArray>>) {
         val imageData = ImageData(imageBytes)

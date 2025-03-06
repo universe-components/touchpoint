@@ -1,6 +1,5 @@
 package com.universe.touchpoint.spring;
 
-import com.universe.touchpoint.TaskSocket;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.memory.Region;
@@ -57,7 +56,8 @@ public class AgentTaskRegistrar implements ImportBeanDefinitionRegistrar, Enviro
                                     taskAnnotationMeta.getTaskMetricConfig(),
                                     taskAnnotationMeta.getActionMetricConfig()
                             ));
-                BeanUtils.findBeanFactory(registry).registerSingleton(taskName, new TaskSocket(taskName));
+                Object taskObj = taskClass.getDeclaredConstructor(String.class).newInstance(taskName);
+                BeanUtils.findBeanFactory(registry).registerSingleton(taskName, taskObj);
                 AgentSocketStateMachine.getInstance(taskName).registerReceiver(new TaskContext(taskName), RoleType.OWNER);
                 AgentSocketProtocolSelector.selectProtocol(
                         taskAnnotationMeta.getAgentSocketConfig().getBindProtocol()).registerReceiver(

@@ -136,11 +136,16 @@ class MediaCoordinator implements ActionGraphOperator<MovieFile> {
 
 Step 4: Add the environment variables to the context to trigger the `MediaCoordinator` to automatically weave in the router, without compilation, publishing, or restarting.
 ```java
+@Task("movie")
+public class VideoSocket extends TaskSocket {
+}
+```
+
+```java
 public class VideoProcessor {
 
     @Autowired
-    @Task("movie")
-    private final TaskSocket videoSocket; 
+    private final VideoSocket videoSocket; 
     
     public static void run(String fileName) {
         ......

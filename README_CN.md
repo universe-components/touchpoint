@@ -91,14 +91,19 @@ class EntryApplication : AgentApplication()
 
 在` Entry Agent` 中添加代码如下：
 ```kotlin
+@Task("query_weather") // Specify the task
+@Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // Optional global configuration to specify the Dubbo app name and registry address
+@AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // Specify the model, default is o1
+@AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
+public class QueryWeatherTask : TaskSocket() {
+}
+```
+
+```kotlin
 data class Entry {
     
     @Autowired
-    @Task("query_weather") // 指定task
-    @Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // 可选的全局配置，指定dubbo应用名和注册中心地址
-    @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 指定模型, 默认使用o1
-    @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
-    val taskSocket: TaskSocket;
+    val taskSocket: QueryWeatherTask;
     
     fun queryWeather() {
         taskSocket.send("我想查询上海天气")
