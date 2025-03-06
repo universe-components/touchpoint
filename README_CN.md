@@ -245,10 +245,10 @@ class WeatherService {
 备注：以上配置作用域为Action。配置优先级：Action > Task > Agent。
 
 ## 高级用法
-- [动态路由](./README_ROLE.md)
-- [自定义上下文](./README_CONTEXT.md)
-- [VLA模型](./README_VLA.md)
-- [扩展功能新范式](./README_EXTENSION.md)
+- [动态路由](./docs/README_ROLE.md)
+- [自定义上下文](./docs/README_CONTEXT.md)
+- [VLA模型](./docs/README_VLA.md)
+- [扩展功能新范式](./docs/README_EXTENSION.md)
 
 ## RoadMap
 
