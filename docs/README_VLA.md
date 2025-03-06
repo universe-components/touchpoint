@@ -10,12 +10,13 @@ Step 1: Initiate task
 ```kotlin
 data class Entry {
 
+    @Autowired
     @Task("item_classification_placement") // Specify the task
-    val taskBuilder: TaskBuilder;
+    val taskSocket: TaskSocket;
 
     fun classifiedPlacement(imageBytes: Array<Array<ByteArray>>) {
         val imageData = ImageData(imageBytes)
-        taskBuilder.run("Please help me place these items you see into the fridge and the basket, respectively.", imageData)
+        taskSocket.send("Please help me place these items you see into the fridge and the basket, respectively.", imageData)
     }
 
 }

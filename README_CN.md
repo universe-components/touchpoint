@@ -93,14 +93,15 @@ class EntryApplication : AgentApplication()
 ```kotlin
 data class Entry {
     
+    @Autowired
     @Task("query_weather") // 指定task
     @Dubbo(applicationName = "entry_agent", registryAddress = "127.0.0.1:2181") // 可选的全局配置，指定dubbo应用名和注册中心地址
     @AIModel(name = Model.GPT_4, temperature = 0.0f, apiKey = "My API Key") // 指定模型, 默认使用o1
     @AgentSocket(bindProtocol = SocketProtocol.MQTT5, brokerUri = "tcp://127.0.0.1:1883")
-    val taskBuilder: TaskBuilder;
+    val taskSocket: TaskSocket;
     
     fun queryWeather() {
-        TaskBuilder.task("query_weather").run("我想查询上海天气")
+        taskSocket.send("我想查询上海天气")
     }
 
 }

@@ -138,17 +138,18 @@ Step 4: Add the environment variables to the context to trigger the `MediaCoordi
 ```java
 public class VideoProcessor {
 
+    @Autowired
     @Task("movie")
-    private final TaskBuilder videoProcessor = TaskBuilder.task("movie"); 
+    private final TaskSocket videoSocket; 
     
     public static void run(String fileName) {
         ......
         ......
 
         // The following code is already in the production environment and does not require modification.
-        // In this case, `route_player` is flag, and `media_coordinator` is the Action corresponding to that flag, which can be passed through parameters from the frontend.
+        // In this case, `route_player` is flag, and `media_coordinator` is the Action corresponding to that flag, which is passed through parameters from the sensor.
         file.getContext().getTaskContext().setActionGraphContext(new ActionGraphContext("route_player", "media_coordinator"));
-        videoProcessor.run("Video Playback Processing: Parse Protocol -> Parse Container Format -> Audio and Video Decoding -> Audio and Video Synchronization -> Rendering and Playback", file);
+        videoSocket.send("Video Playback Processing: Parse Protocol -> Parse Container Format -> Audio and Video Decoding -> Audio and Video Synchronization -> Rendering and Playback", file);
     }
     
 }
