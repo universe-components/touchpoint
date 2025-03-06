@@ -10,11 +10,11 @@ public class AgentSocket extends TaskSocket {
         super(task);
     }
 
-    public void bind(String path, BinderType binderType) {
+    public static void bind(String path, BinderType binderType) {
         BinderFactory.getBinder(binderType).bind(path);
     }
 
-    public void unbind(String path, BinderType binderType) {
+    public static void unbind(String path, BinderType binderType) {
         BinderFactory.getBinder(binderType).unbind(path);
     }
 
