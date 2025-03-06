@@ -8,8 +8,8 @@ public interface AgentSocketProtocol {
 
     void initialize(AgentSocketConfig socketConfig);
 
-    void send(AgentSocketStateMachine.AgentSocketStateContext<?> stateContext, String filterSuffix);
+    <M> void send(M message, String filterSuffix);
 
-    <C extends AgentContext> void registerReceiver(@Nullable C context, RoleType role);
+    <C extends AgentContext> void registerReceiver(@Nullable C context, String filter, RoleType role);
 
 }

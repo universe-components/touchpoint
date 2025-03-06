@@ -8,6 +8,8 @@ public class TouchPointConstants {
 
     public static final String TOUCH_POINT_TASK_STATE_FILTER = "task_state";
 
+    public static final String TOUCH_POINT_TASK_CONTEXT_FILTER = "task_context";
+
     public static final String METRIC_FILTER = "metric";
 
     public static final String TOUCH_POINT_CLEAN_FILTER = "clean";

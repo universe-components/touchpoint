@@ -12,9 +12,7 @@ import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
 import org.eclipse.paho.mqttv5.common.MqttException;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
 
 import io.moquette.broker.Server;
 import io.moquette.broker.config.MemoryConfig;
@@ -22,7 +20,6 @@ import io.moquette.broker.config.MemoryConfig;
 public class TouchPointMQTT5Registry implements TouchPointTransportRegistry<MQTTConfig> {
 
     private MqttClient client;
-    private final Map<String, TouchPointMQTT5Subscriber<?>> messageSubscribers = new ConcurrentHashMap<>();
 
     @Override
     public void init(MQTTConfig transportConfig) {
@@ -47,13 +44,8 @@ public class TouchPointMQTT5Registry implements TouchPointTransportRegistry<MQTT
         try {
             client.subscribe(TouchPointHelper.touchPointFilterName(previousAction), 1, (topic, message) -> {
                 // 接收到消息时的回调
-                TouchPointMQTT5Subscriber<?> subscriber = messageSubscribers.get(topic);
-                assert subscriber != null;
-                subscriber.handleMessage(message);
+                new TouchPointMQTT5Subscriber<>(isRequested ? AgentAction.class : AgentFinish.class).handleMessage(message);
             });
-            messageSubscribers.put(
-                    TouchPointHelper.touchPointFilterName(previousAction),
-                    new TouchPointMQTT5Subscriber<>(isRequested ? AgentAction.class : AgentFinish.class));
             TouchPointChannelManager.registerContextReceiver(agentActionMeta.getName(), agentActionMeta.getClassName(), task);
         } catch (Exception e) {
             throw new RuntimeException(e);

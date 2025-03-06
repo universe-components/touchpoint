@@ -3,7 +3,7 @@ package com.universe.touchpoint.monitor.action.collector;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.TouchPointContextManager;
+import com.universe.touchpoint.context.TouchPointContextManager;
 
 @TouchPointAction(
         name = "task_metric_collector",

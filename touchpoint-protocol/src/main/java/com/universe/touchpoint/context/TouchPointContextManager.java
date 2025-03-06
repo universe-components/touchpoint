@@ -1,6 +1,5 @@
-package com.universe.touchpoint;
+package com.universe.touchpoint.context;
 
-import com.universe.touchpoint.context.TouchPointContext;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +17,10 @@ public class TouchPointContextManager {
             }
         }
         return touchPointContextMap.get(task);
+    }
+
+    public static void putTouchPointContext(String task, TouchPointContext touchPointContext) {
+        touchPointContextMap.put(task, touchPointContext);
     }
 
 }

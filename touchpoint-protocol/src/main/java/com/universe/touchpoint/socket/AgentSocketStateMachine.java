@@ -1,8 +1,10 @@
 package com.universe.touchpoint.socket;
 
+import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.annotations.socket.SocketProtocol;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.socket.selector.AgentSocketProtocolSelector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +34,7 @@ public record AgentSocketStateMachine(AgentSocketProtocol socketProtocol) {
     }
 
     public <C extends AgentContext> void registerReceiver(@Nullable C context, RoleType role) {
-        socketProtocol.registerReceiver(context, role);
+        socketProtocol.registerReceiver(context, TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, role);
     }
 
     public static class AgentSocketStateContext<C> {

@@ -2,7 +2,6 @@ package com.universe.touchpoint;
 
 import com.universe.touchpoint.context.TaskState;
 import com.universe.touchpoint.context.TouchPointContext;
-import com.universe.touchpoint.context.TouchPointState;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.transport.TouchPointChannel;
 import java.lang.reflect.Field;
@@ -138,4 +137,49 @@ public class TouchPoint {
 
     }
 
+    public static class TouchPointState {
+
+        protected int code;
+        protected String message;
+        protected String redirectToAction;
+
+        public TouchPointState(int code) {
+            this.code = code;
+        }
+
+        public TouchPointState(int code, String message) {
+            this(code, message, null);
+        }
+
+        public TouchPointState(int code, String message, String action) {
+            this.code = code;
+            this.message = message;
+            this.redirectToAction = action;
+        }
+
+        public void setCode(int code) {
+            this.code = code;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setRedirectToAction(String redirectToAction) {
+            this.redirectToAction = redirectToAction;
+        }
+
+        public String getRedirectToAction() {
+            return redirectToAction;
+        }
+
+    }
 }

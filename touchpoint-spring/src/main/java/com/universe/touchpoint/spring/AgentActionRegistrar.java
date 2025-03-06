@@ -18,6 +18,7 @@ import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.monitor.MetricSyncerFactory;
 import com.universe.touchpoint.meta.annotation.ActionAnnotationMeta;
+import com.universe.touchpoint.socket.selector.AgentSocketProtocolSelector;
 import com.universe.touchpoint.socket.AgentSocketState;
 import com.universe.touchpoint.socket.AgentSocketStateMachine;
 import com.universe.touchpoint.socket.context.TaskActionContext;
@@ -85,6 +86,10 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
                     AgentSocketStateMachine.getInstance(task).socketProtocol().initialize(socketConfig);
                     assert actionMeta != null;
                     AgentSocketStateMachine.getInstance(task).registerReceiver(new TaskActionContext(actionName, task), actionMeta.getRoleType());
+
+                    AgentSocketProtocolSelector.selectProtocol(socketConfig.getBindProtocol()).registerReceiver(
+                            new TaskActionContext(actionName, task),
+                            TouchPointConstants.TOUCH_POINT_TASK_CONTEXT_FILTER, RoleType.ALL);
 
                     MetricSocketConfig metricSocketConfig = ConfigManager.selectMetricSocket(task);
                     assert metricSocketConfig != null;
