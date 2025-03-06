@@ -12,7 +12,7 @@ The TPP protocol adheres to the philosophy of "Anything is Action", redefining A
 
 - **Compatibility with Mainstream Internet Technologies**: The TPP protocol is primarily implemented in Java and is fully compatible with mainstream programming languages and operating systems in the Internet era. Based on annotations, developers almost never need to modify the app to turn it into an agent.
 
-- **Disrupting Traditional API**: The TPP protocol revolutionizes traditional API integration methods. The two parties involved only need to agree on the touchpoint structure and action, without specifying communication protocols such as REST or RPC. The AI model will automatically select the appropriate protocol to facilitate communication between both sides. The Action can be a tool, such as a search engine or a browser, or it can be TCP, a load balancer, or even a simple "Hello World" line.
+- **Disrupting Traditional API**: The TPP protocol revolutionizes traditional API integration methods. The two parties involved only need to agree on the touchpoint structure and action, without specifying communication protocols such as REST or RPC. The AI model will automatically select the appropriate protocol to facilitate communication between both sides. The Action is not limited to tools like search engines or browsers; it can also be TCP, a load balancer, or even a simple "Hello World" line.
 
 - **Disrupting Traditional Function Extension Methods**: The TPP protocol presents a revolutionary collaborator paradigm. With this paradigm, developers can extend agent functionality in a non-intrusive, smooth, and lossless manner.
 
