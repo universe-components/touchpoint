@@ -25,6 +25,14 @@ public class TaskSocket {
         send(goal, null, callbackListener);
     }
 
+    public <T extends TouchPoint> void send(T params) {
+        if (params.getContext() != null) {
+            AgentSocketProtocolSelector.selectProtocol(SocketProtocol.MQTT5).send(
+                    params.getContext(),
+                    TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_CONTEXT_FILTER, task, RoleType.ALL.name()));
+        }
+    }
+
     public <T extends TouchPoint> String send(String goal, T params, TaskCallbackListener callbackListener) {
         if (params.getContext() != null) {
             AgentSocketProtocolSelector.selectProtocol(SocketProtocol.MQTT5).send(

@@ -12,7 +12,7 @@ The TPP protocol adheres to the philosophy of "Anything is Action", redefining A
 
 - **Compatibility with Mainstream Internet Technologies**: The TPP protocol is primarily implemented in Java and is fully compatible with mainstream programming languages and operating systems in the Internet era. Based on annotations, developers almost never need to modify the app to turn it into an agent.
 
-- **Disrupting Traditional API**: The TPP protocol revolutionizes traditional API integration methods. The two parties involved only need to agree on the touchpoint structure, without specifying communication protocols such as REST or RPC. The AI model will automatically select the appropriate protocol to facilitate communication between both sides.
+- **Disrupting Traditional API**: The TPP protocol revolutionizes traditional API integration methods. The two parties involved only need to agree on the touchpoint structure and action, without specifying communication protocols such as REST or RPC. The AI model will automatically select the appropriate protocol to facilitate communication between both sides. The Action can be a tool, such as a search engine or a browser, or it can be TCP, a load balancer, or even a simple "Hello World" line.
 
 - **Disrupting Traditional Function Extension Methods**: The TPP protocol presents a revolutionary collaborator paradigm. With this paradigm, developers can extend agent functionality in a non-intrusive, smooth, and lossless manner.
 
@@ -22,7 +22,7 @@ The TPP protocol adheres to the philosophy of "Anything is Action", redefining A
 
 - **Supports Multi-modal**: Handles text, images, audio, video, sensor data, etc., implementing the fusion of VLA and intelligent agents.
 
-- **Supports Multiple Agent Forms**: Agents can be software, such as apps or TCP, or hardware, such as robots, cars, drones, server node, etc.
+- **Supports Multiple Agent Forms**: Agents can be software, such as apps, or hardware, such as robots, cars, drones, server node, etc.
 
 - **Supports Multiple Agent Architectures**: Agents can coexist within a single process, belong to different processes, or be deployed on different terminals.
 
