@@ -5,7 +5,6 @@ import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.context.TouchPointContextManager;
-import com.universe.touchpoint.monitor.MonitorResult;
 import com.universe.touchpoint.context.TaskState;
 
 public class ActionMonitor<T extends TouchPoint> implements AgentActionExecutor<T, MonitorResult> {
