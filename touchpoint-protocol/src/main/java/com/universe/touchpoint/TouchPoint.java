@@ -39,6 +39,10 @@ public class TouchPoint {
         return context;
     }
 
+    public void setContext(TouchPointContext context) {
+        this.context = context;
+    }
+
     public void setState(TouchPointState state) {
         this.state = state;
     }

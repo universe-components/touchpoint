@@ -65,21 +65,11 @@ reboot player
 
 Step 1: Implement `AgentActionExecutor` Interface
 ```java
-class MovieFile extends TouchPoint {
-
-    private String fileName;
-
-    public String getFileName() {
-        return fileName;
-    }
-    
-}
-
 @TouchPointAction(name = "mp4_player", desc = "play mp4 video", toActions = {"movie[]"})
-class Mp4Player implements AgentActionExecutor<MovieFile, TouchPoint> {
+class Mp4Player implements AgentActionExecutor<String, TouchPoint> {
 
     @Override
-    private TouchPoint run(MovieFile file) {
+    private TouchPoint run(String file, TouchPointContext context) {
         // play video
         ......
         ......
@@ -93,10 +83,10 @@ class Mp4Player implements AgentActionExecutor<MovieFile, TouchPoint> {
 Step 2: Define the router's Action to choose different players based on the file extension to play the video.
 ```java
 @TouchPointAction(name = "router", desc = "select player to play video", toActions = {"movie[]"})
-class Router implements AgentActionExecutor<MovieFile, TouchPoint> {
+class Router implements AgentActionExecutor<String, TouchPoint> {
 
     @Override
-    private TouchPoint run(MovieFile file) {
+    private TouchPoint run(String file, TouchPointContext context) {
         TouchPoint response = new TouchPoint();
         if (file.getFileName().endsWith(".mp4")) {
             response.setState(new TouchPointState(
@@ -120,11 +110,11 @@ Step 3: Implement `Coordinator` to weave the router into the playback process.
 ```java
 @TouchPointAction(name = "media_coordinator", desc = "add router to playback process", toActions = {"movie[]"})
 @Coordinator(task = "movie")
-class MediaCoordinator implements ActionGraphOperator<MovieFile> {
+class MediaCoordinator implements ActionGraphOperator<String> {
 
     @Override
-    private ActionGraph run(MovieFile file) {
-        String task = file.getContext().getTask();
+    private ActionGraph run(String file, TouchPointContext context) {
+        String task = context.getTask();
         ActionGraph graph = TouchPointContextManager.getTouchPointContext(task).getActionGraph(); // `graph` represents the action relationship graph of the current task
         // Weave the router into the action graph, connecting the actions before and after playback
         
@@ -153,8 +143,9 @@ public class VideoProcessor {
 
         // The following code is already in the production environment and does not require modification.
         // In this case, `route_player` is flag, and `media_coordinator` is the Action corresponding to that flag, which is passed through parameters from the sensor.
-        file.getContext().getTaskContext().setActionGraphContext(new ActionGraphContext("route_player", "media_coordinator"));
-        videoSocket.send("Video Playback Processing: Parse Protocol -> Parse Container Format -> Audio and Video Decoding -> Audio and Video Synchronization -> Rendering and Playback", file);
+        TouchPointContext ctx = new TouchPointContext("movie");
+        ctx.getTaskContext().setActionGraphContext(new ActionGraphContext("route_player", "media_coordinator"));
+        videoSocket.send("Video Playback Processing: Parse Protocol -> Parse Container Format -> Audio and Video Decoding -> Audio and Video Synchronization -> Rendering and Playback", ctx);
     }
     
 }

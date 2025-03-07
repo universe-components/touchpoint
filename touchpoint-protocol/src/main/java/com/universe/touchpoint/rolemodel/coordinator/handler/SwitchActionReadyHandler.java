@@ -16,7 +16,7 @@ public class SwitchActionReadyHandler<I extends TouchPoint, O extends TouchPoint
     @Override
     public <C extends AgentContext> AgentActionMeta onStateChange(AgentAction<I, O> action, C agentContext, String task) {
         RoleExecutor<I, O> actionCoordinator = (RoleExecutor<I, O>) TaskRoleExecutor.getInstance(task).getExecutor(action.getInput().getState().getRedirectToAction());
-        AgentAction<I, O> newAction = (AgentAction<I, O>) actionCoordinator.run(action.getInput());
+        AgentAction<I, O> newAction = (AgentAction<I, O>) actionCoordinator.run(action.getInput(), action.getContext());
         MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
         metaRegion.putTouchPointAction(newAction.getActionName(), newAction.getMeta());
         return newAction.getMeta();

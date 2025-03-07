@@ -4,14 +4,15 @@ import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
+import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.context.TouchPointContextManager;
 import com.universe.touchpoint.context.TaskState;
 
-public class TaskMonitor<T extends TouchPoint> implements AgentActionExecutor<T, MonitorResult> {
+public class TaskMonitor<T extends TouchPoint> extends AgentActionExecutor<T, MonitorResult> {
 
     @Override
-    public MonitorResult run(T touchPoint) {
-        String task = touchPoint.getContext().getTask();
+    public MonitorResult run(T touchPoint, TouchPointContext context) {
+        String task = context.getTask();
         TaskMetricConfig metricConfig = ConfigManager.selectTaskMetricConfig(task);
         MonitorResult monitorResult = new MonitorResult();
 

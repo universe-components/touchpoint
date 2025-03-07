@@ -42,8 +42,8 @@ Step 1: Implement `DraftAuthLetter` and add the `NEED_CHECK_DATA` status to the 
   toActions = { "sales[\"Authorized Agent\"]" })
 class DraftAuthLetter : AgentActionExecutor<FruitInfo, AuthLetter> {
 
-  override fun run(message: FruitInfo) : AuthLetter {
-    AuthLetter letter = new AuthLetter();
+  override fun run(message: FruitInfo, context: TouchPointContext) : AuthLetter {
+    AuthLetter letter = new AuthLetter(message);
     letter.setState(new TouchPointState(
             TaskState.NEED_CHECK_DATA.getCode(), // The status code NEED_CHECK_DATA indicates that the next step requires data verification
       "Please help check if there are any issues with the authorization letter?", // Status description
@@ -64,7 +64,7 @@ Step 2: Implement `Lawyer`, mark Lawyer as a `supervisor`, and check if there ar
 @Supervisor(task = "sales")
 class Lawyer : DefaultDataChecker<AuthLetter> {
 
-  override fun run(letter: AuthLetter): Boolean {
+  override fun run(letter: AuthLetter, context: TouchPointContext): Boolean {
     // Check if there are any issues with the authorization letter
     if (letter.hasIssues()) {
       return false

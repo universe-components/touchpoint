@@ -6,7 +6,6 @@ import com.universe.touchpoint.annotations.ai.AIModel;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.task.Task;
 import com.universe.touchpoint.api.RoleExecutor;
-import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.meta.data.TaskMeta;
 import com.universe.touchpoint.plan.ActionExecutor;
@@ -15,7 +14,7 @@ import com.universe.touchpoint.rolemodel.coordinator.CoordinatorFactory;
 import com.universe.touchpoint.rolemodel.supervisor.SupervisorFactory;
 import com.universe.touchpoint.utils.ClassUtils;
 
-public class AgentActionExecutor<I extends TouchPoint, O> extends ActionExecutor<AgentAction<I, O>, O> {
+public class AgentActionExecutor<I, O> extends ActionExecutor<AgentAction<I, O>, O> {
 
     @Task("collect_metrics")
     @AIModel(name = Model.o1)
@@ -34,7 +33,7 @@ public class AgentActionExecutor<I extends TouchPoint, O> extends ActionExecutor
     public O run(AgentAction<I, O> action) {
         String taskName = action.getContext().getTask();
         RoleExecutor<I, O> tpReceiver = (RoleExecutor<I, O>) TaskRoleExecutor.getInstance(taskName).getExecutor(action.getActionName());
-        return tpReceiver.run((I) ClassUtils.getFirstParam(action.getInput()));
+        return tpReceiver.run((I) ClassUtils.getFirstParam(action.getInput()), action.getContext());
     }
 
     @Override

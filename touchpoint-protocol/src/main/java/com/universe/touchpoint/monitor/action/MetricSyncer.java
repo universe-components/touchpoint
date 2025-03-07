@@ -3,6 +3,7 @@ package com.universe.touchpoint.monitor.action;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.context.TouchPointContextManager;
 import com.universe.touchpoint.monitor.MetricSyncerFactory;
 import com.universe.touchpoint.monitor.metric.ActionMetric;
@@ -15,11 +16,11 @@ import java.util.Map;
         name = "metrics_syncer",
         desc = "sync task and action metrics",
         toAgents = {"collect_metrics[]"})
-public class MetricSyncer implements AgentActionExecutor<TouchPoint, TouchPoint> {
+public class MetricSyncer extends AgentActionExecutor<TouchPoint, TouchPoint> {
 
     @Override
-    public TouchPoint run(TouchPoint touchPoint) {
-        String task = touchPoint.getContext().getTask();
+    public TouchPoint run(TouchPoint touchPoint, TouchPointContext context) {
+        String task = context.getTask();
         TaskMetric taskMetric = TouchPointContextManager.getTouchPointContext(task).getTaskContext().getMetric();
         Map<String, ActionMetric> actionMetrics = TouchPointContextManager.getTouchPointContext(task).getActionContext().getActionMetrics();
         MetricSyncerFactory.getSyncer(task).sendMetrics(Pair.of(taskMetric, actionMetrics), task);

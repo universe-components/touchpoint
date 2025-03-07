@@ -4,9 +4,12 @@ import com.universe.touchpoint.monitor.metric.TaskMetric;
 
 public class TaskContext {
 
-    private final String goal;
+    private String goal;
     private ActionGraphContext actionGraphContext;
     private TaskMetric metric;
+
+    public TaskContext() {
+    }
 
     public TaskContext(String goal) {
         this.goal = goal;

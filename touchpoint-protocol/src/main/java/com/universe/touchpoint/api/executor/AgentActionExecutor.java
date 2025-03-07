@@ -1,7 +1,15 @@
 package com.universe.touchpoint.api.executor;
 
 import com.universe.touchpoint.api.RoleExecutor;
-import com.universe.touchpoint.TouchPoint;
 
-public interface AgentActionExecutor<Req extends TouchPoint, Resp extends TouchPoint> extends RoleExecutor<Req, Resp> {
+import java.util.List;
+
+public abstract class AgentActionExecutor<Req, Resp> implements RoleExecutor<Req, Resp> {
+
+    protected List<String> internalParams;
+
+    public List<String> getInternalParams() {
+        return internalParams;
+    }
+
 }

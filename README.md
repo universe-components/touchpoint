@@ -177,9 +177,6 @@ public class WeatherApplication {
 
 Define the request and response classes for fetching weather:
 ```kotlin
-data class WeatherRequest(val city: String) : TouchPoint()
-```
-```kotlin
 data class WeatherResponse(val weather: String, val temperature: String) : TouchPoint()
 ```
 
@@ -194,9 +191,9 @@ Listen for actions from the `Entry Agent` and return the weather information:
     } //Format：task_name[action_name1, action_name2, ...]
 ) 
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // specify the model, default is o1
-class WeatherService : AgentActionExecutor<WeatherRequest, WeatherResponse> {
+class WeatherService : AgentActionExecutor<String, WeatherResponse> {
 
-    override fun run(cityRequest: WeatherRequest) : WeatherResponse {
+    override fun run(city: String) : WeatherResponse {
         val client = OkHttpClient()
 
         val url = "$BASE_URL?q=$city&appid=$WEATHER_API_KEY&units=metric&lang=zh_cn"
@@ -230,7 +227,6 @@ class WeatherService : AgentActionExecutor<WeatherRequest, WeatherResponse> {
 
 }
 ```
-Note: The `onReceive` method input and output in the above code must inherit `TouchPoint`.
 
 If you want the `weather_action` to use the `Dubbo` protocol, configure as follows:
 ```kotlin

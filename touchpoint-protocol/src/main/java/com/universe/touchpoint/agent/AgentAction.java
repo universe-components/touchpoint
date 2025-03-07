@@ -4,7 +4,7 @@ import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.context.TouchPointContext;
 
-public class AgentAction<I extends TouchPoint, O> extends TouchPoint {
+public class AgentAction<I, O> extends TouchPoint {
 
     private String actionName;
     private String thought;

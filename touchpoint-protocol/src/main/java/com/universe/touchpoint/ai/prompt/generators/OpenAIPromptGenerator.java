@@ -4,7 +4,6 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.ai.prompt.PromptGenerator;
 import com.universe.touchpoint.ai.prompt.template.OpenAITemplate;
-import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.utils.ClassUtils;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -12,7 +11,7 @@ import javax.annotation.Nonnull;
 public class OpenAIPromptGenerator implements PromptGenerator<String> {
 
     @Override
-    public <I extends TouchPoint, O> String generatePrompt(@Nonnull List<AgentActionMeta> nextActions, AgentAction<I, O> action, String question) {
+    public <I, O> String generatePrompt(@Nonnull List<AgentActionMeta> nextActions, AgentAction<I, O> action, String question) {
         StringBuilder toolList = new StringBuilder();
         StringBuilder agentNames = new StringBuilder();
 

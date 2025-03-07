@@ -16,7 +16,7 @@ public class DefaultActionExecutor<T extends TouchPoint, O> extends ActionExecut
         String taskName = touchPoint.getContext().getTask();
         RoleExecutor<T, ?> touchPointExecutor = (RoleExecutor<T, ?>) TaskRoleExecutor.getInstance(taskName)
                 .getExecutor(touchPoint.getHeader().getFromAction().getName());
-        touchPointExecutor.run(touchPoint);
+        touchPointExecutor.run(touchPoint, touchPoint.getContext());
         return null;
     }
 

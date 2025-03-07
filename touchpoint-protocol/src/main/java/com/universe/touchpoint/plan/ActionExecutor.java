@@ -1,6 +1,8 @@
 package com.universe.touchpoint.plan;
 
-public abstract class ActionExecutor<T, O> {
+import com.universe.touchpoint.TouchPoint;
+
+public abstract class ActionExecutor<T extends TouchPoint, O> {
 
     public T execute(T touchPoint) {
         beforeRun(touchPoint);

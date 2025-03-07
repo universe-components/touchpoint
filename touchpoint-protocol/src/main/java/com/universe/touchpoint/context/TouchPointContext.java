@@ -7,7 +7,7 @@ import java.util.Map;
 public class TouchPointContext {
 
     private final String task;
-    private TaskContext taskContext;
+    private TaskContext taskContext = new TaskContext();
     private final ActionContext actionContext = new ActionContext();
     private String action;
     private Map<String, Object> extContext;

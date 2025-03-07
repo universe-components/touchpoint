@@ -15,7 +15,7 @@ public class ReorderActionReadyHandler<I extends TouchPoint, O extends TouchPoin
     public <C extends AgentContext> ActionGraph onStateChange(AgentAction<I, O> action, C agentContext, String task) {
         String coordinator = action.getInput().getContext().getTaskContext().getActionGraphContext().action();
         ActionGraphOperator<I> actionCoordinator = (ActionGraphOperator<I>) TaskRoleExecutor.getInstance(task).getExecutor(coordinator);
-        ActionGraph graph = actionCoordinator.run(action.getInput());
+        ActionGraph graph = actionCoordinator.run(action.getInput(), action.getContext());
         ActionGraphBuilder.putGraph(task, graph);
         return graph;
     }
