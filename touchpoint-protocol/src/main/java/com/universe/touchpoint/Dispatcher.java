@@ -5,10 +5,13 @@ import com.universe.touchpoint.context.TaskContext;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
 import com.universe.touchpoint.plan.ResultDispatcher;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Dispatcher {
 
-    public static <T extends TouchPoint> String dispatch(String content, String task, T params, TaskSocket.TaskCallbackListener callbackListener) {
-        StringBuilder resultBuilder = new StringBuilder();
+    public static <T extends TouchPoint, F> List<F> dispatch(String content, String task, T params, TaskSocket.TaskCallbackListener callbackListener) {
+        List<F> finalResult = new ArrayList<>();
         ActionGraphBuilder.getTaskGraph(task).getFirstNodes().forEach(
             actionMeta -> {
                 AgentAction<T, ?> action = new AgentAction<>(actionMeta.getName(), actionMeta, new TouchPoint.Header(actionMeta), task);
@@ -17,11 +20,10 @@ public class Dispatcher {
                 if (params != null) {
                     action.setInput(params);
                 }
-                String result = ResultDispatcher.run(action, actionMeta);
-                resultBuilder.append(result).append("\n");
+                finalResult.add(ResultDispatcher.run(action, actionMeta));
             }
         );
-        return resultBuilder.toString();
+        return finalResult;
     }
 
 }

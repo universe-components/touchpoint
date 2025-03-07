@@ -5,6 +5,8 @@ import com.universe.touchpoint.annotations.socket.SocketProtocol;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.socket.selector.AgentSocketProtocolSelector;
 
+import java.util.List;
+
 public class TaskSocket {
 
     protected final String task;
@@ -13,11 +15,11 @@ public class TaskSocket {
         this.task = task;
     }
 
-    public String send(String goal) {
+    public <F> List<F> send(String goal) {
         return send(goal, null, null);
     }
 
-    public <T extends TouchPoint> String send(String goal, T params) {
+    public <T extends TouchPoint, F> List<F> send(String goal, T params) {
         return send(goal, params, null);
     }
 
@@ -33,7 +35,7 @@ public class TaskSocket {
         }
     }
 
-    public <T extends TouchPoint> String send(String goal, T params, TaskCallbackListener callbackListener) {
+    public <T extends TouchPoint, F> List<F> send(String goal, T params, TaskCallbackListener callbackListener) {
         if (params.getContext() != null) {
             AgentSocketProtocolSelector.selectProtocol(SocketProtocol.MQTT5).send(
                     params.getContext(),
