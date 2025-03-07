@@ -79,7 +79,7 @@ class MovieFile extends TouchPoint {
 class Mp4Player implements AgentActionExecutor<MovieFile, TouchPoint> {
 
     @Override
-    private TouchPoint run(MovieFile file, Context context) {
+    private TouchPoint run(MovieFile file) {
         // play video
         ......
         ......
@@ -96,7 +96,7 @@ Step 2: Define the router's Action to choose different players based on the file
 class Router implements AgentActionExecutor<MovieFile, TouchPoint> {
 
     @Override
-    private TouchPoint run(MovieFile file, Context context) {
+    private TouchPoint run(MovieFile file) {
         TouchPoint response = new TouchPoint();
         if (file.getFileName().endsWith(".mp4")) {
             response.setState(new TouchPointState(
@@ -123,7 +123,7 @@ Step 3: Implement `Coordinator` to weave the router into the playback process.
 class MediaCoordinator implements ActionGraphOperator<MovieFile> {
 
     @Override
-    private ActionGraph run(MovieFile file, Context context) {
+    private ActionGraph run(MovieFile file) {
         String task = file.getContext().getTask();
         ActionGraph graph = TouchPointContextManager.getTouchPointContext(task).getActionGraph(); // `graph` represents the action relationship graph of the current task
         // Weave the router into the action graph, connecting the actions before and after playback

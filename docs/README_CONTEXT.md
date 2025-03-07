@@ -12,7 +12,7 @@ You can add custom data to the context as follows:
 @TouchPointAction(name = "robot_leader", desc = "Robot Leader", toActions = {"housework["robotA"]"})
 class RobotLeader : AgentActionExecutor<ActionSequence, TouchPoint> {
 
-    override fun run(actionSequence: ActionSequence, context: Context): TouchPoint {
+    override fun run(actionSequence: ActionSequence): TouchPoint {
         actionSequence.getContext().addExtContext("flag", "flagA");
         return new TouchPoint();
     }
@@ -25,7 +25,7 @@ To read custom data from the context:
 @TouchPointAction(name = "robotA", desc = "Robot A", toActions = {"housework[]"})
 class RobotA : AgentActionExecutor<ActionSequence, TouchPoint> {
 
-    override fun run(actionSequence: ActionSequence, context: Context): TouchPoint {
+    override fun run(actionSequence: ActionSequence): TouchPoint {
         actionSequence.getContext().getExtContext("flag");
         return new TouchPoint();
     }

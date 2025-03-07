@@ -44,7 +44,7 @@ Step 3: Execute action sequence
     toActions = {"item_classification_placement[]"})
 class RobotActionExecutor : AgentActionExecutor<OpenVLA.ActionResponse, TouchPoint> {
 
-    override fun run(actionSequence: OpenVLA.ActionResponse, context: Context): TouchPoint {
+    override fun run(actionSequence: OpenVLA.ActionResponse): TouchPoint {
         // Execute the action sequence
         ......
         ......

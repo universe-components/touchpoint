@@ -196,7 +196,7 @@ Listen for actions from the `Entry Agent` and return the weather information:
 @AIModel(name = Model.GPT_4, temperature = 0.0f) // specify the model, default is o1
 class WeatherService : AgentActionExecutor<WeatherRequest, WeatherResponse> {
 
-    override fun run(cityRequest: WeatherRequest, context: Context) : WeatherResponse {
+    override fun run(cityRequest: WeatherRequest) : WeatherResponse {
         val client = OkHttpClient()
 
         val url = "$BASE_URL?q=$city&appid=$WEATHER_API_KEY&units=metric&lang=zh_cn"
