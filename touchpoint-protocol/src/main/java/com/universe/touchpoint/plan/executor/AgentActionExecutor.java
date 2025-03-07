@@ -2,10 +2,12 @@ package com.universe.touchpoint.plan.executor;
 
 import com.universe.touchpoint.TaskSocket;
 import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.annotations.ai.AIModel;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.task.Task;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.meta.data.TaskMeta;
 import com.universe.touchpoint.plan.ActionExecutor;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
@@ -16,6 +18,7 @@ import com.universe.touchpoint.utils.ClassUtils;
 public class AgentActionExecutor<I extends TouchPoint, O> extends ActionExecutor<AgentAction<I, O>, O> {
 
     @Task("collect_metrics")
+    @AIModel(name = Model.o1)
     private TaskMeta metricTaskMeta;
 
     @Override
