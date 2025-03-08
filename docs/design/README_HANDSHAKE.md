@@ -21,8 +21,8 @@ In TPP, the coordinator changes an Action or the entire Action Graph in a task t
 #### Socket
 The Socket provides an interface for external communication with TPP, where task context data is passed through this Socket. The data sources for this interface include:
 
-- **User Space**: Programs in user space add data to the context by calling socket.send().
-- **Kernel Space**: Hardware drivers in the kernel add data to the context by calling socket.send(). For example, a sensor driver calls socket.send() to add visual images to the context.
+- **User Space**: Programs in user space add data to the context by calling `socket.send()`.
+- **Kernel Space**: Hardware drivers in the kernel add data to the context by calling `socket.send()`. For example, a sensor driver calls socket.send() to add visual images to the context.
 
 Through the interaction of context and the coordinator, local collaboration states are triggered.
 
