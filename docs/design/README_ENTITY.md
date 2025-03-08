@@ -1,4 +1,4 @@
-# 实体关系模型
+# Entity Relationship Model
 
 ## Design and implementation
 <div align="center">
