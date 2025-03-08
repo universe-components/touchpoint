@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class ActionGraphDistributedHandler implements AgentSocketStateHandler<ActionGraph, Boolean> {
+public class RouterReadyHandler implements AgentSocketStateHandler<ActionGraph, Boolean> {
 
     @Override
     public <C extends AgentContext> Boolean onStateChange(ActionGraph actionGraph, C actionContext, String task) {

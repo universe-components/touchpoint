@@ -279,6 +279,11 @@ Note: The above configuration applies to the action scope. The priority of all c
 - [VLA Model](./docs/README_VLA.md)
 - [New Paradigm for Extended Functionality](./docs/README_EXTENSION.md)
 
+## Design Notes
+- [Entity Relationship Model](./docs/design/README_ENTITY.md)
+- [Negotiation Handshake](./docs/design/README_HANDSHAKE.md)
+- [State Synchronization](./docs/design/README_STATE_SYNC.md)
+
 ## RoadMap
 
 1. **Supports models like DeepSeek, Claude, etc.**

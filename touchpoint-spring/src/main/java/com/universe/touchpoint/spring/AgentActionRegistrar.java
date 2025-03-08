@@ -98,7 +98,7 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
 
                     AgentSocketStateMachine.getInstance(task).send(
                             new AgentSocketStateMachine.AgentSocketStateContext<>(
-                                    AgentSocketState.PARTICIPANT_READY,
+                                    AgentSocketState.ACTION_GRAPH_READY,
                                     actionMeta),
                             TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, task, RoleType.OWNER.name()));
                 }

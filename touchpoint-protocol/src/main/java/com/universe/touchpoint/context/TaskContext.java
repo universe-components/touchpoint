@@ -19,6 +19,10 @@ public class TaskContext {
         return goal;
     }
 
+    public void setGoal(String goal) {
+        this.goal = goal;
+    }
+
     public ActionGraphContext getActionGraphContext() {
         return actionGraphContext;
     }

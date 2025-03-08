@@ -1,7 +1,6 @@
 package com.universe.touchpoint;
 
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.context.TaskContext;
 import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
 import com.universe.touchpoint.plan.ResultDispatcher;
@@ -17,7 +16,7 @@ public class Dispatcher {
             actionMeta -> {
                 AgentAction<T, ?> action = new AgentAction<>(actionMeta.getName(), actionMeta, new TouchPoint.Header(actionMeta), task);
                 action.setContext(context);
-                action.getContext().setTaskContext(new TaskContext(content));
+                action.getContext().getTaskContext().setGoal(content);
                 action.getHeader().setCallbackListener(callbackListener);
                 if (params != null) {
                     action.setInput(params);

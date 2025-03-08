@@ -10,7 +10,7 @@ import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.socket.AgentSocketStateHandler;
 import java.util.Map;
 
-public class TaskParticipantReadyHandler<Config> implements AgentSocketStateHandler<AgentActionMeta, Map<String, Config>> {
+public class ActionGraphReadyHandler<Config> implements AgentSocketStateHandler<AgentActionMeta, Map<String, Config>> {
 
     @Override
     public <C extends AgentContext> Map<String, Config> onStateChange(AgentActionMeta actionMeta, C agentContext, String task) {

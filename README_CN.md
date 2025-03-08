@@ -250,6 +250,11 @@ class WeatherService {
 - [VLA模型](./docs/README_VLA.md)
 - [扩展功能新范式](./docs/README_EXTENSION.md)
 
+## Design Notes
+- [实体关系模型](./docs/design/README_ENTITY_CN.md)
+- [协商握手](./docs/design/README_HANDSHAKE_CN)
+- [状态同步](./docs/design/README_STATE_SYNC.md)
+
 ## RoadMap
 
 1. **支持DeepSeek、Claude等模型**
