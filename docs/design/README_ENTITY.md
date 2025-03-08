@@ -16,7 +16,7 @@
 The `Socket` configuration applies to `Agents`, the `Task` configuration applies to `Tasks`, and other configurations can apply to `Agents`, `Tasks`, and `Actions`.
 
 ### Models and Mechanisms
-- `SocketMachine`: Establishes collaboration relationships between Agents using a handshake mechanism. See [Negotiation Handshake](./README_HANDSHAKE)。
+- `SocketMachine`: Establishes collaboration relationships between Agents using a handshake mechanism. See [Negotiation Handshake](./README_HANDSHAKE.md)。
 - `AIModel`: Mainly responsible for AI model invocation and result processing.
 - `RoleModel`: Handles processes related to collaborators and supervisors.
 - `Transport`: Defines the communication protocol selection between Actions.
