@@ -1,6 +1,6 @@
-package com.universe.touchpoint.socket.context;
+package com.universe.touchpoint.negotiation.context;
 
-import com.universe.touchpoint.socket.AgentContext;
+import com.universe.touchpoint.negotiation.AgentContext;
 
 public class TaskActionContext extends AgentContext {
 

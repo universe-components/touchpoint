@@ -1,4 +1,4 @@
-package com.universe.touchpoint.socket;
+package com.universe.touchpoint.negotiation;
 
 import com.universe.touchpoint.annotations.role.RoleType;
 

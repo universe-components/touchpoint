@@ -1,10 +1,11 @@
-package com.universe.touchpoint.socket;
+package com.universe.touchpoint.sync;
 
 import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
+import com.universe.touchpoint.negotiation.AgentContext;
 import javax.annotation.Nullable;
 
-public interface AgentSocketProtocol {
+public interface AgentSyncProtocol {
 
     void initialize(AgentSocketConfig socketConfig);
 

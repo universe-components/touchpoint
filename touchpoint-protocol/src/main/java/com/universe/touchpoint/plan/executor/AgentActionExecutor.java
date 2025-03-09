@@ -10,7 +10,6 @@ import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.meta.data.TaskMeta;
 import com.universe.touchpoint.plan.ActionExecutor;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
-import com.universe.touchpoint.rolemodel.coordinator.CoordinatorFactory;
 import com.universe.touchpoint.rolemodel.supervisor.SupervisorFactory;
 import com.universe.touchpoint.utils.ClassUtils;
 
@@ -23,7 +22,6 @@ public class AgentActionExecutor<I, O> extends ActionExecutor<AgentAction<I, O>,
     @Override
     public void beforeRun(AgentAction<I, O> action) {
         String taskName = action.getContext().getTask();
-        CoordinatorFactory.getCoordinator(taskName).execute(action, taskName);
         if (action.getMeta().getRole() == ActionRole.SUPERVISOR) {
             SupervisorFactory.getSupervisor(taskName).execute(action, taskName);
         }

@@ -7,9 +7,9 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
-import com.universe.touchpoint.socket.AgentContext;
+import com.universe.touchpoint.negotiation.AgentContext;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
-import com.universe.touchpoint.socket.AgentSocketStateHandler;
+import com.universe.touchpoint.negotiation.AgentSocketStateHandler;
 
 public class SwitchActionReadyHandler<I extends TouchPoint, O extends TouchPoint> implements AgentSocketStateHandler<AgentAction<I, O>, AgentActionMeta> {
 

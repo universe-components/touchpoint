@@ -1,4 +1,4 @@
-package com.universe.touchpoint.socket;
+package com.universe.touchpoint.negotiation;
 
 public interface AgentSocketStateHandler<I, O> {
 

@@ -1,9 +1,9 @@
-package com.universe.touchpoint.socket.handler;
+package com.universe.touchpoint.negotiation.handler;
 
 import com.universe.touchpoint.plan.ActionGraph;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
-import com.universe.touchpoint.socket.AgentContext;
-import com.universe.touchpoint.socket.AgentSocketStateHandler;
+import com.universe.touchpoint.negotiation.AgentContext;
+import com.universe.touchpoint.negotiation.AgentSocketStateHandler;
 
 public class RequestGraphReadyHandler implements AgentSocketStateHandler<Boolean, ActionGraph> {
 

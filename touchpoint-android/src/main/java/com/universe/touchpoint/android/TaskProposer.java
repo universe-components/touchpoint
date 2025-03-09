@@ -24,8 +24,8 @@ import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.meta.data.TaskMeta;
-import com.universe.touchpoint.socket.AgentSocketStateMachine;
-import com.universe.touchpoint.socket.context.TaskContext;
+import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
+import com.universe.touchpoint.negotiation.context.TaskContext;
 import com.universe.touchpoint.utils.ClassUtils;
 
 import java.lang.annotation.Annotation;

@@ -4,10 +4,10 @@ import com.universe.touchpoint.api.operator.ActionGraphOperator;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
-import com.universe.touchpoint.socket.AgentContext;
+import com.universe.touchpoint.negotiation.AgentContext;
 import com.universe.touchpoint.plan.ActionGraph;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
-import com.universe.touchpoint.socket.AgentSocketStateHandler;
+import com.universe.touchpoint.negotiation.AgentSocketStateHandler;
 
 public class ReorderActionReadyHandler<I extends TouchPoint, O extends TouchPoint> implements AgentSocketStateHandler<AgentAction<I, O>, ActionGraph> {
 

@@ -32,9 +32,9 @@ import com.universe.touchpoint.meta.MetaManager;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.monitor.MetricSyncerFactory;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
-import com.universe.touchpoint.socket.AgentSocketState;
-import com.universe.touchpoint.socket.AgentSocketStateMachine;
-import com.universe.touchpoint.socket.context.TaskActionContext;
+import com.universe.touchpoint.negotiation.AgentSocketState;
+import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
+import com.universe.touchpoint.negotiation.context.TaskActionContext;
 import com.universe.touchpoint.utils.AnnotationUtils;
 import com.universe.touchpoint.utils.StringUtils;
 

@@ -1,4 +1,4 @@
-package com.universe.touchpoint.socket.handler;
+package com.universe.touchpoint.negotiation.handler;
 
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.ai.LangModelConfig;
@@ -11,9 +11,9 @@ import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.meta.data.TaskMeta;
-import com.universe.touchpoint.socket.AgentContext;
-import com.universe.touchpoint.socket.context.TaskActionContext;
-import com.universe.touchpoint.socket.AgentSocketStateHandler;
+import com.universe.touchpoint.negotiation.AgentContext;
+import com.universe.touchpoint.negotiation.context.TaskActionContext;
+import com.universe.touchpoint.negotiation.AgentSocketStateHandler;
 import com.universe.touchpoint.transport.TouchPointTransportRegistry;
 import com.universe.touchpoint.transport.TouchPointTransportRegistryFactory;
 import java.util.Map;

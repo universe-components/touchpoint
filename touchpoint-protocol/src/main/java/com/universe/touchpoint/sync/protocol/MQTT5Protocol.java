@@ -1,11 +1,11 @@
-package com.universe.touchpoint.socket.protocol;
+package com.universe.touchpoint.sync.protocol;
 
 import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
-import com.universe.touchpoint.socket.AgentContext;
+import com.universe.touchpoint.negotiation.AgentContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.socket.AgentSocketProtocol;
-import com.universe.touchpoint.socket.selector.AgentSocketReceiverSelector;
+import com.universe.touchpoint.sync.AgentSyncProtocol;
+import com.universe.touchpoint.negotiation.selector.AgentSocketReceiverSelector;
 import com.universe.touchpoint.utils.SerializeUtils;
 import org.eclipse.paho.mqttv5.client.MqttClient;
 import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import io.moquette.broker.Server;
 import io.moquette.broker.config.MemoryConfig;
 
-public class MQTT5Protocol implements AgentSocketProtocol {
+public class MQTT5Protocol implements AgentSyncProtocol {
 
     private MqttClient client;
 

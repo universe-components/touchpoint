@@ -1,16 +1,17 @@
-package com.universe.touchpoint.socket;
+package com.universe.touchpoint.negotiation;
 
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.annotations.socket.SocketProtocol;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.socket.selector.AgentSocketProtocolSelector;
+import com.universe.touchpoint.sync.AgentSyncProtocol;
+import com.universe.touchpoint.sync.AgentSyncProtocolSelector;
 
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 
-public record AgentSocketStateMachine(AgentSocketProtocol socketProtocol) {
+public record AgentSocketStateMachine(AgentSyncProtocol socketProtocol) {
 
     private static final Object mLock = new Object();
     private static final Map<String, AgentSocketStateMachine> stateMachineMap = new HashMap<>();
@@ -19,7 +20,7 @@ public record AgentSocketStateMachine(AgentSocketProtocol socketProtocol) {
         if (!stateMachineMap.containsKey(task)) {
             synchronized (mLock) {
                 if (!stateMachineMap.containsKey(task)) {
-                    stateMachineMap.put(task, new AgentSocketStateMachine(AgentSocketProtocolSelector.selectProtocol(protocol)));
+                    stateMachineMap.put(task, new AgentSocketStateMachine(AgentSyncProtocolSelector.selectProtocol(protocol)));
                 }
             }
         }

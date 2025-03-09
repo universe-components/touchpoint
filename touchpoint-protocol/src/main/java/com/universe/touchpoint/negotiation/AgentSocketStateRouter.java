@@ -1,14 +1,14 @@
-package com.universe.touchpoint.socket;
+package com.universe.touchpoint.negotiation;
 
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.rolemodel.coordinator.handler.ReorderActionReadyHandler;
 import com.universe.touchpoint.rolemodel.coordinator.handler.SwitchActionReadyHandler;
-import com.universe.touchpoint.socket.handler.RouterReadyHandler;
-import com.universe.touchpoint.socket.handler.NegotiationConcludedHandler;
-import com.universe.touchpoint.socket.handler.GlobalConfigReadyHandler;
-import com.universe.touchpoint.socket.handler.RequestGraphReadyHandler;
-import com.universe.touchpoint.socket.handler.ActionGraphReadyHandler;
+import com.universe.touchpoint.negotiation.handler.RouterReadyHandler;
+import com.universe.touchpoint.negotiation.handler.NegotiationConcludedHandler;
+import com.universe.touchpoint.negotiation.handler.GlobalConfigReadyHandler;
+import com.universe.touchpoint.negotiation.handler.RequestGraphReadyHandler;
+import com.universe.touchpoint.negotiation.handler.ActionGraphReadyHandler;
 import com.universe.touchpoint.utils.SerializeUtils;
 
 import java.util.HashMap;
