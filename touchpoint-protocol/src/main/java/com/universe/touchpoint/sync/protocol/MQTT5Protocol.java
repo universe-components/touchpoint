@@ -58,7 +58,7 @@ public class MQTT5Protocol implements AgentSyncProtocol {
     public <C extends AgentContext> void registerReceiver(@Nullable C context, String filter, RoleType role) {
         try {
             assert context != null;
-            String socketFilter = TouchPointHelper.touchPointFilterName(filter, context.getBelongTask(), role.name());
+            String socketFilter = String.join("/", "$share", context.getBelongTask(), TouchPointHelper.touchPointFilterName(filter, context.getBelongTask(), role.name()));
             client.subscribe(socketFilter, 1, (topic, message) -> {
                 if (message == null) {
                     return;
