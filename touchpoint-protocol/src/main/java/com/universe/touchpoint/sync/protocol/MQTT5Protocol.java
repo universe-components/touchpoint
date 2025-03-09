@@ -5,7 +5,7 @@ import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.negotiation.AgentContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.sync.AgentSyncProtocol;
-import com.universe.touchpoint.negotiation.selector.AgentSocketReceiverSelector;
+import com.universe.touchpoint.sync.AgentReceiverSelector;
 import com.universe.touchpoint.utils.SerializeUtils;
 import org.eclipse.paho.mqttv5.client.MqttClient;
 import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
@@ -63,7 +63,7 @@ public class MQTT5Protocol implements AgentSyncProtocol {
                 if (message == null) {
                     return;
                 }
-                Objects.requireNonNull(AgentSocketReceiverSelector.selectReceiver(filter)).handleMessage(context, message, topic);
+                Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter)).handleMessage(context, message, topic);
             });
         } catch (Exception e) {
             throw new RuntimeException(e);

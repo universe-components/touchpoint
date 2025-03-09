@@ -1,11 +1,10 @@
-package com.universe.touchpoint.negotiation.selector;
+package com.universe.touchpoint.sync;
 
 import com.universe.touchpoint.TouchPointConstants;
-import com.universe.touchpoint.sync.AgentReceiver;
 import com.universe.touchpoint.negotiation.AgentContextReceiver;
 import com.universe.touchpoint.rolemodel.AgentStateReceiver;
 
-public class AgentSocketReceiverSelector {
+public class AgentReceiverSelector {
 
     public static AgentReceiver selectReceiver(String filter) {
         return switch (filter) {
