@@ -9,6 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Coordinator {
 
-    String task();
-
+  String task();
 }

@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MetricSocket {
 
-    SocketProtocol bindProtocol() default SocketProtocol.MQTT5;
-    String brokerUri() default "";
+  SocketProtocol bindProtocol() default SocketProtocol.MQTT5;
 
+  String brokerUri() default "";
 }

@@ -2,14 +2,13 @@ package com.universe.touchpoint.config.role;
 
 public class SupervisorConfig {
 
-    private String task;
+  private String task;
 
-    public void setTask(String task) {
-        this.task = task;
-    }
+  public void setTask(String task) {
+    this.task = task;
+  }
 
-    public String getTask() {
-        return task;
-    }
-
+  public String getTask() {
+    return task;
+  }
 }

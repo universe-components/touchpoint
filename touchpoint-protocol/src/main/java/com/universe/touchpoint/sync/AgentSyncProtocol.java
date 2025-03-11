@@ -7,10 +7,10 @@ import javax.annotation.Nullable;
 
 public interface AgentSyncProtocol<M> {
 
-    void initialize(AgentSocketConfig socketConfig);
+  void initialize(AgentSocketConfig socketConfig);
 
-    void send(M message, String filterSuffix);
+  void send(M message, String filterSuffix);
 
-    <C extends AgentContext> void registerReceiver(@Nullable C context, String filter, RoleType role, Class<M> messageType);
-
+  <C extends AgentContext> void registerReceiver(
+      @Nullable C context, String filter, RoleType role, Class<M> messageType);
 }

@@ -4,6 +4,5 @@ import com.universe.touchpoint.TouchPoint;
 
 public interface CallbackListener {
 
-    void onResponse(TouchPoint touchPoint);
-
+  void onResponse(TouchPoint touchPoint);
 }

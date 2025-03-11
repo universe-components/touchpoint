@@ -8,11 +8,10 @@ import javax.annotation.Nullable;
 
 public class ResultDispatcher {
 
-    public static <R extends TouchPoint, F> F run(R result, @Nullable AgentActionMeta actionMeta) {
-        assert actionMeta != null;
-        String task = result.getContext().getTask();
-        TouchPointChannel<?> channel = TouchPointChannelManager.selectChannel(actionMeta, task);
-        return (F) channel.send(result);
-    }
-
+  public static <R extends TouchPoint, F> F run(R result, @Nullable AgentActionMeta actionMeta) {
+    assert actionMeta != null;
+    String task = result.getContext().getTask();
+    TouchPointChannel<?> channel = TouchPointChannelManager.selectChannel(actionMeta, task);
+    return (F) channel.send(result);
+  }
 }

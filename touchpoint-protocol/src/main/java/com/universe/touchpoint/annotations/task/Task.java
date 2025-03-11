@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Task {
 
-    String value();
-    Class<?> callbackListener() default DefaultCallbackListener.class;
+  String value();
 
+  Class<?> callbackListener() default DefaultCallbackListener.class;
 }

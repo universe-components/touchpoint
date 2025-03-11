@@ -8,9 +8,10 @@ import com.universe.touchpoint.monitor.metric.TaskMetric;
 
 public class TaskMetricFetcher<T extends TouchPoint> extends AgentActionExecutor<T, TaskMetric> {
 
-    @Override
-    public TaskMetric run(T input, TouchPointContext context) {
-        return TouchPointContextManager.getTouchPointContext(input.getContext().getTask()).getTaskContext().getMetric();
-    }
-
+  @Override
+  public TaskMetric run(T input, TouchPointContext context) {
+    return TouchPointContextManager.getTouchPointContext(input.getContext().getTask())
+        .getTaskContext()
+        .getMetric();
+  }
 }

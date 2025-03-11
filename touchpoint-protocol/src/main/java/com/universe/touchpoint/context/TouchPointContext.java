@@ -6,59 +6,58 @@ import java.util.Map;
 
 public class TouchPointContext {
 
-    private final String task;
-    private TaskContext taskContext = new TaskContext();
-    private final ActionContext actionContext = new ActionContext();
-    private String action;
-    private Map<String, Object> extContext;
-    private String token;
+  private final String task;
+  private TaskContext taskContext = new TaskContext();
+  private final ActionContext actionContext = new ActionContext();
+  private String action;
+  private Map<String, Object> extContext;
+  private String token;
 
-    public TouchPointContext(String task) {
-        this.task = task;
-    }
+  public TouchPointContext(String task) {
+    this.task = task;
+  }
 
-    public String getTask() {
-        return task;
-    }
+  public String getTask() {
+    return task;
+  }
 
-    public String getToken() {
-        return token;
-    }
+  public String getToken() {
+    return token;
+  }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+  public void setToken(String token) {
+    this.token = token;
+  }
 
-    public TaskContext getTaskContext() {
-        return taskContext;
-    }
+  public TaskContext getTaskContext() {
+    return taskContext;
+  }
 
-    public void setTaskContext(TaskContext taskContext) {
-        this.taskContext = taskContext;
-    }
+  public void setTaskContext(TaskContext taskContext) {
+    this.taskContext = taskContext;
+  }
 
-    public String getAction() {
-        return action;
-    }
+  public String getAction() {
+    return action;
+  }
 
-    public void setAction(String action) {
-        this.action = action;
-    }
+  public void setAction(String action) {
+    this.action = action;
+  }
 
-    public ActionContext getActionContext() {
-        return actionContext;
-    }
+  public ActionContext getActionContext() {
+    return actionContext;
+  }
 
-    public ActionGraph getActionGraph() {
-        return ActionGraphBuilder.getTaskGraph(task);
-    }
+  public ActionGraph getActionGraph() {
+    return ActionGraphBuilder.getTaskGraph(task);
+  }
 
-    public void addExtContext(String name, Object context) {
-        extContext.put(name, context);
-    }
+  public void addExtContext(String name, Object context) {
+    extContext.put(name, context);
+  }
 
-    public Object getExtContext(String name) {
-        return extContext.get(name);
-    }
-
+  public Object getExtContext(String name) {
+    return extContext.get(name);
+  }
 }

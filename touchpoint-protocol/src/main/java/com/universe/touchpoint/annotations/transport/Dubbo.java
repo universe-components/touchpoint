@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dubbo {
 
-    String applicationName();
-    String registryAddress() default "";
+  String applicationName();
 
+  String registryAddress() default "";
 }

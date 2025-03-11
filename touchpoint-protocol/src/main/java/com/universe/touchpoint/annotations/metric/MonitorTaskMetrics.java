@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MonitorTaskMetrics {
 
-    int maxFaultActionCount() default 10;
-    int maxRetryActionCount() default 10;
+  int maxFaultActionCount() default 10;
 
+  int maxRetryActionCount() default 10;
 }

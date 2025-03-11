@@ -7,9 +7,9 @@ import com.universe.touchpoint.sync.AgentReceiver;
 
 public class AgentContextReceiver extends AgentReceiver<TouchPointContext> {
 
-    @Override
-    public <C extends AgentContext> void handleMessage(C context, TouchPointContext ctx, String topic) {
-        CoordinatorFactory.getCoordinator(context.getBelongTask()).execute(ctx);
-    }
-
+  @Override
+  public <C extends AgentContext> void handleMessage(
+      C context, TouchPointContext ctx, String topic) {
+    CoordinatorFactory.getCoordinator(context.getBelongTask()).execute(ctx);
+  }
 }

@@ -6,17 +6,17 @@ import java.util.Map;
 
 public class TouchPointMemory {
 
-    private static final Map<Region, TouchPointRegion> regions = new HashMap<>();
-    static {
-        regions.put(Region.META, TouchPointRegion.getInstance(MetaRegion.class));
-    }
+  private static final Map<Region, TouchPointRegion> regions = new HashMap<>();
 
-    public static <R extends TouchPointRegion> R getRegion(Region region) {
-        return (R) regions.get(region);
-    }
+  static {
+    regions.put(Region.META, TouchPointRegion.getInstance(MetaRegion.class));
+  }
 
-    public static void clear() {
-        regions.clear();
-    }
+  public static <R extends TouchPointRegion> R getRegion(Region region) {
+    return (R) regions.get(region);
+  }
 
+  public static void clear() {
+    regions.clear();
+  }
 }

@@ -15,32 +15,34 @@ import com.universe.touchpoint.utils.ClassUtils;
 
 public class AgentActionExecutor<I, O> extends ActionExecutor<AgentAction<I, O>, O> {
 
-    @Task("collect_metrics")
-    @AIModel(name = Model.o1)
-    private TaskMeta metricTaskMeta;
+  @Task("collect_metrics")
+  @AIModel(name = Model.o1)
+  private TaskMeta metricTaskMeta;
 
-    @Override
-    public void beforeRun(AgentAction<I, O> action) {
-        String taskName = action.getContext().getTask();
-        if (action.getMeta().getRole() == ActionRole.SUPERVISOR) {
-            SupervisorFactory.getSupervisor(taskName).execute(action, taskName);
-        }
+  @Override
+  public void beforeRun(AgentAction<I, O> action) {
+    String taskName = action.getContext().getTask();
+    if (action.getMeta().getRole() == ActionRole.SUPERVISOR) {
+      SupervisorFactory.getSupervisor(taskName).execute(action, taskName);
     }
+  }
 
-    @Override
-    public O run(AgentAction<I, O> action) {
-        String taskName = action.getContext().getTask();
-        RoleExecutor<I, O> tpReceiver = (RoleExecutor<I, O>) TaskRoleExecutor.getInstance(taskName).getExecutor(action.getActionName());
-        return tpReceiver.run((I) ClassUtils.getFirstParam(action.getInput()), action.getContext());
-    }
+  @Override
+  public O run(AgentAction<I, O> action) {
+    String taskName = action.getContext().getTask();
+    RoleExecutor<I, O> tpReceiver =
+        (RoleExecutor<I, O>)
+            TaskRoleExecutor.getInstance(taskName).getExecutor(action.getActionName());
+    return tpReceiver.run((I) ClassUtils.getFirstParam(action.getInput()), action.getContext());
+  }
 
-    @Override
-    public AgentAction<I, O> afterRun(AgentAction<I, O> action, O runResult) {
-        action.setOutput(runResult);
-        new TaskSocket(metricTaskMeta.getName()).send(
-                "I want to collect action and task metrics, where task metrics include the number of execution errors and prediction counts for multiple actions within the task, and action metrics include the prediction count for a single action.",
-                action);
-        return action;
-    }
-
+  @Override
+  public AgentAction<I, O> afterRun(AgentAction<I, O> action, O runResult) {
+    action.setOutput(runResult);
+    new TaskSocket(metricTaskMeta.getName())
+        .send(
+            "I want to collect action and task metrics, where task metrics include the number of execution errors and prediction counts for multiple actions within the task, and action metrics include the prediction count for a single action.",
+            action);
+    return action;
+  }
 }

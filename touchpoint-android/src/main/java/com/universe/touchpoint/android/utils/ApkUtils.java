@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
-import android.util.Pair;
-
 import com.universe.touchpoint.utils.AnnotationUtils;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
 import java.io.IOException;
@@ -96,7 +96,7 @@ public class ApkUtils {
                             }
                         }
                         // 将类名和注解属性值列表加入结果
-                        result.add(new Pair<>(className, annotationValues));
+                        result.add(Pair.of(className, annotationValues));
                     }
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();

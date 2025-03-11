@@ -5,8 +5,6 @@ import com.universe.touchpoint.negotiation.CallbackListener;
 
 public class DefaultCallbackListener implements CallbackListener {
 
-    @Override
-    public void onResponse(TouchPoint touchPoint) {
-    }
-
+  @Override
+  public void onResponse(TouchPoint touchPoint) {}
 }

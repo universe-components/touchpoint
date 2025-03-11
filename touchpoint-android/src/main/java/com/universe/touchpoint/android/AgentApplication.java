@@ -1,12 +1,8 @@
 package com.universe.touchpoint.android;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.os.Bundle;
-import android.util.Pair;
-import androidx.annotation.NonNull;
 
 import com.qihoo360.mobilesafe.api.AppVar;
 import com.qihoo360.replugin.RePlugin;
@@ -16,14 +12,13 @@ import com.qihoo360.replugin.RePluginFramework;
 import com.qihoo360.replugin.RePluginHost;
 import com.universe.touchpoint.android.utils.ApkUtils;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
-import com.universe.touchpoint.provider.TouchPointContentFactory;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class AgentApplication extends Application {
-
-    private Activity currentActivity;
 
     protected RePluginConfig createConfig() {
         return new RePluginConfig();
@@ -31,10 +26,6 @@ public class AgentApplication extends Application {
 
     protected RePluginCallbacks createCallbacks() {
         return null;
-    }
-
-    public Activity getCurrentActivity() {
-        return currentActivity;
     }
 
     @Override
@@ -81,47 +72,6 @@ public class AgentApplication extends Application {
 
         TaskParticipant.registerActions(receiverFilterPair);
         TaskParticipant.listenTasks(receiverFilterPair);
-
-        //Todo Maybe remove this in the future
-        TouchPointContentFactory.registerContentProvider(ctx);
-
-        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(@NonNull Activity activity, Bundle savedInstanceState) {
-                // Activity 被创建时的回调
-                currentActivity = activity;
-            }
-
-            @Override
-            public void onActivityStarted(@NonNull Activity activity) {
-                // Activity 被启动时的回调
-            }
-
-            @Override
-            public void onActivityResumed(@NonNull Activity activity) {
-                // 每次 Activity 恢复时，记录当前的 Activity 实例
-            }
-
-            @Override
-            public void onActivityPaused(@NonNull Activity activity) {
-                // 当 Activity 被暂停时，可以做一些清理工作
-            }
-
-            @Override
-            public void onActivityStopped(@NonNull Activity activity) {
-                // 当 Activity 停止时，可以做一些清理工作
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
-                // 保存 Activity 状态的回调
-            }
-
-            @Override
-            public void onActivityDestroyed(@NonNull Activity activity) {
-                // 当 Activity 被销毁时，可以做一些清理工作
-            }
-        });
     }
 
     @Override

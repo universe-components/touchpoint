@@ -2,73 +2,76 @@ package com.universe.touchpoint.sync.protocol;
 
 import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
-import com.universe.touchpoint.negotiation.AgentContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.negotiation.AgentContext;
 import com.universe.touchpoint.sync.AgentReceiver;
-import com.universe.touchpoint.sync.AgentSyncProtocol;
 import com.universe.touchpoint.sync.AgentReceiverSelector;
+import com.universe.touchpoint.sync.AgentSyncProtocol;
 import com.universe.touchpoint.utils.SerializeUtils;
+import io.moquette.broker.Server;
+import io.moquette.broker.config.MemoryConfig;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.Properties;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.eclipse.paho.mqttv5.client.MqttClient;
 import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
 import org.eclipse.paho.mqttv5.common.MqttException;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 
-import java.io.IOException;
-import java.util.Objects;
-import java.util.Properties;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import io.moquette.broker.Server;
-import io.moquette.broker.config.MemoryConfig;
-
 public class MQTT5Protocol implements AgentSyncProtocol<MqttMessage> {
 
-    private MqttClient client;
+  private MqttClient client;
 
-    @Override
-    public void initialize(@Nonnull AgentSocketConfig socketConfig) {
-        try {
-            if (socketConfig.getBrokerUri().contains("localhost")) {
-                Server mqttBroker = new Server();
-                Properties configProps = new Properties();
-                configProps.setProperty("port", "1883");
-                mqttBroker.startServer(new MemoryConfig(configProps));
+  @Override
+  public void initialize(@Nonnull AgentSocketConfig socketConfig) {
+    try {
+      if (socketConfig.getBrokerUri().contains("localhost")) {
+        Server mqttBroker = new Server();
+        Properties configProps = new Properties();
+        configProps.setProperty("port", "1883");
+        mqttBroker.startServer(new MemoryConfig(configProps));
+      }
+      client = new MqttClient(socketConfig.getBrokerUri(), "agent_socket_mqtt_broker");
+      MqttConnectionOptions connectOptions = new MqttConnectionOptions();
+      connectOptions.setCleanStart(true);
+      client.connect(connectOptions);
+    } catch (MqttException | IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public void send(MqttMessage message, String filter) {
+    try {
+      MqttMessage mqttMessage = new MqttMessage(SerializeUtils.serializeToByteArray(message));
+      client.publish(filter, mqttMessage);
+    } catch (MqttException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public <C extends AgentContext> void registerReceiver(
+      @Nullable C context, String filter, RoleType role, Class<MqttMessage> messageType) {
+    try {
+      assert context != null;
+      String socketFilter =
+          TouchPointHelper.touchPointFilterName(filter, context.getBelongTask(), role.name());
+      client.subscribe(
+          socketFilter,
+          1,
+          (topic, message) -> {
+            if (message == null) {
+              return;
             }
-            client = new MqttClient(socketConfig.getBrokerUri(), "agent_socket_mqtt_broker");
-            MqttConnectionOptions connectOptions = new MqttConnectionOptions();
-            connectOptions.setCleanStart(true);
-            client.connect(connectOptions);
-        } catch (MqttException | IOException e) {
-            throw new RuntimeException(e);
-        }
+            ((AgentReceiver<MqttMessage>)
+                    Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter)))
+                .handleMessage(context, message, topic, messageType);
+          });
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
-
-    @Override
-    public void send(MqttMessage message, String filter) {
-        try {
-            MqttMessage mqttMessage = new MqttMessage(SerializeUtils.serializeToByteArray(message));
-            client.publish(filter, mqttMessage);
-        } catch (MqttException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public <C extends AgentContext> void registerReceiver(@Nullable C context, String filter, RoleType role, Class<MqttMessage> messageType) {
-        try {
-            assert context != null;
-            String socketFilter = TouchPointHelper.touchPointFilterName(filter, context.getBelongTask(), role.name());
-            client.subscribe(socketFilter, 1, (topic, message) -> {
-                if (message == null) {
-                    return;
-                }
-                ((AgentReceiver<MqttMessage>) Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter))).handleMessage(context, message, topic, messageType);
-            });
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
+  }
 }

@@ -10,12 +10,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TouchPointAgent {
 
-    String name();
+  String name();
 
-    String desc() default "";
+  String desc() default "";
 
-    String iconName() default "";
+  String iconName() default "";
 
-    SocketProtocol socketBindProtocol() default SocketProtocol.MQTT5;
-
+  SocketProtocol socketBindProtocol() default SocketProtocol.MQTT5;
 }

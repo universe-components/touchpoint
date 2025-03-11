@@ -4,8 +4,7 @@ import com.universe.touchpoint.negotiation.AgentContext;
 
 public class TaskContext extends AgentContext {
 
-    public TaskContext(String taskName) {
-        super(taskName);
-    }
-
+  public TaskContext(String taskName) {
+    super(taskName);
+  }
 }

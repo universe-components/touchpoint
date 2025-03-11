@@ -1,8 +1,6 @@
 package com.universe.touchpoint.annotations.socket;
 
 public enum SocketProtocol {
-
-        MQTT5,
-        ACTOR
-
+  MQTT5,
+  ACTOR
 }

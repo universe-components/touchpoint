@@ -1,6 +1,5 @@
 package com.universe.touchpoint.android;
 
-import android.util.Pair;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.role.RoleType;
@@ -34,8 +33,12 @@ import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.negotiation.AgentSocketState;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.negotiation.context.TaskActionContext;
+import com.universe.touchpoint.sync.AgentSyncProtocol;
+import com.universe.touchpoint.sync.AgentSyncProtocolSelector;
 import com.universe.touchpoint.utils.AnnotationUtils;
 import com.universe.touchpoint.utils.StringUtils;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 import java.util.Map;
@@ -44,8 +47,8 @@ public class TaskParticipant {
 
     public static void registerActions(List<Pair<String, List<Object>>> receiverFilterPair) {
         for (Pair<String, List<Object>> pair : receiverFilterPair) {
-            String clazz = pair.first;  // 获取 String
-            List<Object> properties = pair.second;  // 获取 List<Object>
+            String clazz = pair.getLeft();  // 获取 String
+            List<Object> properties = pair.getRight();  // 获取 List<Object>
 
             Map<Transport, Object> transportConfigMap;
             try {
@@ -133,7 +136,7 @@ public class TaskParticipant {
 
     public static void listenTasks(List<Pair<String, List<Object>>> receiverFilterPair) {
         for (Pair<String, List<Object>> pair : receiverFilterPair) {
-            List<Object> properties = pair.second;  // 获取 List<Object>
+            List<Object> properties = pair.getRight();  // 获取 List<Object>
             Map<String, List<String>> toActions = StringUtils.convert((String[]) properties.get(3));
             for (String task : toActions.keySet()) {
                 TaskActionContext actionContext = new TaskActionContext((String) properties.get(0), task);
@@ -148,8 +151,9 @@ public class TaskParticipant {
 
                 MetricSocketConfig metricSocketConfig = ConfigManager.selectMetricSocket(task);
                 assert metricSocketConfig != null;
-                MetricSyncerFactory.registerSyncer(task, metricSocketConfig.getBindProtocol()).initialize(metricSocketConfig);
-                MetricSyncerFactory.getSyncer(task).registerListener(task);
+                ((AgentSyncProtocol<Pair>) AgentSyncProtocolSelector.selectProtocol(socketConfig.getBindProtocol())).registerReceiver(
+                        actionContext,
+                        TouchPointConstants.METRIC_FILTER, RoleType.MEMBER, Pair.class);
 
 
                 AgentSocketStateMachine.getInstance(task).send(

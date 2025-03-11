@@ -1,20 +1,18 @@
 package com.universe.touchpoint.ai;
 
 public enum AIModelType {
+  OPEN_AI("openai"),
+  ANTHROPIC("claude"),
+  DEEPSEEK("deepseek"),
+  OPEN_VLA("openvla");
 
-    OPEN_AI("openai"),
-    ANTHROPIC("claude"),
-    DEEPSEEK("deepseek"),
-    OPEN_VLA("openvla");
+  private final String type;
 
-    private final String type;
+  AIModelType(String type) {
+    this.type = type;
+  }
 
-    AIModelType(String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return type;
-    }
-
+  public String getType() {
+    return type;
+  }
 }

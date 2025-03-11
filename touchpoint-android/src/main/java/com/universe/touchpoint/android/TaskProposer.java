@@ -33,6 +33,7 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class TaskProposer {
 
@@ -47,9 +48,10 @@ public class TaskProposer {
                     MonitorActionMetrics.class);
             extractAnnotationClasses.addAll(TransportConfigMapping.getAnnotationClasses());
 
-            List<String> transportAnnotationName = extractAnnotationClasses.stream()
+            List<String> transportAnnotationName;
+            transportAnnotationName = extractAnnotationClasses.stream()
                     .map(Class::getName)
-                    .toList();
+                    .collect(Collectors.toList());
 
             Map<String, Map<String, Map<String, Object>>> taskProperties = ApkUtils.getFieldAnnotationValues(context,
                     Task.class, extractAnnotationClasses, "value", false);

@@ -9,6 +9,7 @@ java {
 }
 
 dependencies {
+    compileOnly(libs.animalSnifferAnnotations)
     api(libs.kryo)
     api(libs.fury)
     api(libs.moquette) {

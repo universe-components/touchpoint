@@ -7,17 +7,16 @@ import java.util.Map;
 
 public class ActionAnnotationMeta extends BaseAnnotationMeta {
 
-    public ActionAnnotationMeta(Class<?> importingClass, Map<String, Object> attributes) {
-        super(importingClass, attributes);
-    }
+  public ActionAnnotationMeta(Class<?> importingClass, Map<String, Object> attributes) {
+    super(importingClass, attributes);
+  }
 
-    public ActionDependency getActionDependency() {
-        String actionName = (String) attributes.get("name");
-        String[] toActions = (String[]) attributes.get("toActions");
-        ActionDependency actionDependency = new ActionDependency(actionName);
-        assert toActions != null;
-        actionDependency.setToActions(StringUtils.convert(toActions));
-        return actionDependency;
-    }
-
+  public ActionDependency getActionDependency() {
+    String actionName = (String) attributes.get("name");
+    String[] toActions = (String[]) attributes.get("toActions");
+    ActionDependency actionDependency = new ActionDependency(actionName);
+    assert toActions != null;
+    actionDependency.setToActions(StringUtils.convert(toActions));
+    return actionDependency;
+  }
 }

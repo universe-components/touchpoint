@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface PromptGenerator<Prompt> {
 
-    <I, O> Prompt generatePrompt(List<AgentActionMeta> taskActions, AgentAction<I, O> action, String question);
-
+  <I, O> Prompt generatePrompt(
+      List<AgentActionMeta> taskActions, AgentAction<I, O> action, String question);
 }

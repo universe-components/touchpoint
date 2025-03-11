@@ -3,6 +3,7 @@ agp = "8.8.2"
 kotlin = "2.0.0"
 spotless = "7.0.2"
 animalsniffer = "2.0.0"
+animalsniffer-annotations = "1.24"
 android = "4.1.1.4"
 junit = "4.13.2"
 kryo = "5.6.2"
@@ -33,6 +34,7 @@ androidPlugin = { module = "com.android.tools.build:gradle", version.ref = "agp"
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 spotlessPlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 animalSnifferPlugin = { module = "ru.vyarus:gradle-animalsniffer-plugin", version.ref = "animalsniffer" }
+animalSnifferAnnotations = { module = "org.codehaus.mojo:animal-sniffer-annotations", version.ref = "animalsniffer-annotations" }
 mavenPublishPlugin = "com.vanniktech:gradle-maven-publish-plugin:0.30.0"
 
 android = { module = "com.google.android:android", version.ref = "android" }

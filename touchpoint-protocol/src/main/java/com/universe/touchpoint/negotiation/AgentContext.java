@@ -2,14 +2,13 @@ package com.universe.touchpoint.negotiation;
 
 public abstract class AgentContext {
 
-    protected String belongTask;
+  protected String belongTask;
 
-    public AgentContext(String taskName) {
-        this.belongTask = taskName;
-    }
+  public AgentContext(String taskName) {
+    this.belongTask = taskName;
+  }
 
-    public String getBelongTask() {
-        return belongTask;
-    }
-
+  public String getBelongTask() {
+    return belongTask;
+  }
 }

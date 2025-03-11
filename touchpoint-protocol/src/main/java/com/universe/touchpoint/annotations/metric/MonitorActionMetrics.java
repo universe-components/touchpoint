@@ -9,6 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MonitorActionMetrics {
 
-    int maxPredictionCount() default 10;
-
+  int maxPredictionCount() default 10;
 }

@@ -10,14 +10,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TouchPointAction {
 
-    String name();
+  String name();
 
-    String desc();
+  String desc();
 
-    ActionRole role() default ActionRole.EXECUTOR;
+  ActionRole role() default ActionRole.EXECUTOR;
 
-    String[] toAgents() default {};
+  String[] toAgents() default {};
 
-    String[] toActions() default {};
-
+  String[] toActions() default {};
 }

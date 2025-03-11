@@ -1,4 +1,3 @@
 package com.universe.touchpoint.ai.parsers;
 
-public class DeepSeekChoiceParser {
-}
+public class DeepSeekChoiceParser {}

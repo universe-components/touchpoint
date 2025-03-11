@@ -2,26 +2,24 @@ package com.universe.touchpoint.spring.annotation;
 
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.spring.AgentActionRegistrar;
-import org.springframework.context.annotation.Import;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import org.springframework.context.annotation.Import;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Import(AgentActionRegistrar.class)
 public @interface TouchPointAction {
 
-    String name();
+  String name();
 
-    String desc();
+  String desc();
 
-    ActionRole role() default ActionRole.EXECUTOR;
+  ActionRole role() default ActionRole.EXECUTOR;
 
-    String[] toAgents() default {};
+  String[] toAgents() default {};
 
-    String[] toActions() default {};
-
+  String[] toActions() default {};
 }
