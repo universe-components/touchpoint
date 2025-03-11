@@ -18,7 +18,17 @@ dependencies {
             }
         }
     }
-//    api(libs.eventbus)
+    api(platform(libs.akka.bom)) {
+        repositories {
+            maven {
+                url = uri("https://repo.akka.io/maven")
+            }
+        }
+    }
+    api(libs.akka.actor.typed)
+    api(libs.akka.actor)
+    api(libs.jwt.api)
+    api(libs.jwt.jackson)
     api(libs.auto.service)
     annotationProcessor(libs.auto.service.annotations)
     api(libs.auto.value)

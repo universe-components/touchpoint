@@ -7,6 +7,7 @@ import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.meta.data.TaskMeta;
 import com.universe.touchpoint.meta.annotation.TaskAnnotationMeta;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
+import com.universe.touchpoint.negotiation.CallbackListener;
 import com.universe.touchpoint.negotiation.context.TaskContext;
 import com.universe.touchpoint.spring.utils.BeanUtils;
 
@@ -37,6 +38,7 @@ public class AgentTaskRegistrar implements ImportBeanDefinitionRegistrar, Enviro
             Map<String, Object> taskAttributes = importingClassMetadata.getAnnotationAttributes(taskClassName);
             assert taskAttributes != null;
             String taskName = (String) taskAttributes.get("value");
+            Class<?> callbackListenerClass = (Class<?>) taskAttributes.get("callbackListener");
             TaskAnnotationMeta taskAnnotationMeta = new TaskAnnotationMeta(taskClass, taskAttributes);
             try {
                 assert taskName != null;
@@ -56,7 +58,10 @@ public class AgentTaskRegistrar implements ImportBeanDefinitionRegistrar, Enviro
                             ));
                 Object taskObj = taskClass.getDeclaredConstructor(String.class).newInstance(taskName);
                 BeanUtils.findBeanFactory(registry).registerSingleton(taskName, taskObj);
-                AgentSocketStateMachine.getInstance(taskName).registerReceiver(new TaskContext(taskName), RoleType.OWNER);
+                AgentSocketStateMachine.getInstance(taskName).registerReceiver(
+                        new TaskContext(taskName),
+                        (CallbackListener) callbackListenerClass.getDeclaredConstructor().newInstance(),
+                        RoleType.OWNER);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }

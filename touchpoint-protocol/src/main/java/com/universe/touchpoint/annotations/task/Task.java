@@ -10,5 +10,6 @@ import java.lang.annotation.Target;
 public @interface Task {
 
     String value();
+    Class<?> callbackListener() default DefaultCallbackListener.class;
 
 }

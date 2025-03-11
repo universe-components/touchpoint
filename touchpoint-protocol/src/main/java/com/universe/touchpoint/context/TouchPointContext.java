@@ -11,6 +11,7 @@ public class TouchPointContext {
     private final ActionContext actionContext = new ActionContext();
     private String action;
     private Map<String, Object> extContext;
+    private String token;
 
     public TouchPointContext(String task) {
         this.task = task;
@@ -18,6 +19,14 @@ public class TouchPointContext {
 
     public String getTask() {
         return task;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public TaskContext getTaskContext() {

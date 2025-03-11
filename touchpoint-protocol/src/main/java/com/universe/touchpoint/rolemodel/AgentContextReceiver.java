@@ -1,12 +1,13 @@
-package com.universe.touchpoint.negotiation;
+package com.universe.touchpoint.rolemodel;
 
 import com.universe.touchpoint.context.TouchPointContext;
+import com.universe.touchpoint.negotiation.AgentContext;
 import com.universe.touchpoint.rolemodel.coordinator.CoordinatorFactory;
 import com.universe.touchpoint.sync.AgentReceiver;
 import com.universe.touchpoint.utils.SerializeUtils;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 
-public class AgentContextReceiver implements AgentReceiver {
+public class AgentContextReceiver implements AgentReceiver<MqttMessage> {
 
     @Override
     public <C extends AgentContext> void handleMessage(C context, MqttMessage message, String topic) {

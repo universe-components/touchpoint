@@ -4,6 +4,7 @@ import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.negotiation.AgentContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.sync.AgentReceiver;
 import com.universe.touchpoint.sync.AgentSyncProtocol;
 import com.universe.touchpoint.sync.AgentReceiverSelector;
 import com.universe.touchpoint.utils.SerializeUtils;
@@ -45,10 +46,10 @@ public class MQTT5Protocol implements AgentSyncProtocol {
     }
 
     @Override
-    public <M> void send(M stateContext, String filter) {
+    public <M> void send(M message, String filter) {
         try {
-            MqttMessage message = new MqttMessage(SerializeUtils.serializeToByteArray(stateContext));
-            client.publish(filter, message);
+            MqttMessage mqttMessage = new MqttMessage(SerializeUtils.serializeToByteArray(message));
+            client.publish(filter, mqttMessage);
         } catch (MqttException e) {
             throw new RuntimeException(e);
         }
@@ -58,12 +59,12 @@ public class MQTT5Protocol implements AgentSyncProtocol {
     public <C extends AgentContext> void registerReceiver(@Nullable C context, String filter, RoleType role) {
         try {
             assert context != null;
-            String socketFilter = String.join("/", "$share", context.getBelongTask(), TouchPointHelper.touchPointFilterName(filter, context.getBelongTask(), role.name()));
+            String socketFilter = TouchPointHelper.touchPointFilterName(filter, context.getBelongTask(), role.name());
             client.subscribe(socketFilter, 1, (topic, message) -> {
                 if (message == null) {
                     return;
                 }
-                Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter)).handleMessage(context, message, topic);
+                ((AgentReceiver<MqttMessage>) Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter))).handleMessage(context, message, topic);
             });
         } catch (Exception e) {
             throw new RuntimeException(e);

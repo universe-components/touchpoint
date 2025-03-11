@@ -11,10 +11,16 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 
-public record AgentSocketStateMachine(AgentSyncProtocol socketProtocol) {
+public class AgentSocketStateMachine {
 
     private static final Object mLock = new Object();
     private static final Map<String, AgentSocketStateMachine> stateMachineMap = new HashMap<>();
+    private CallbackListener callbackListener;
+    private final AgentSyncProtocol socketProtocol;
+
+    public AgentSocketStateMachine(AgentSyncProtocol socketProtocol) {
+        this.socketProtocol = socketProtocol;
+    }
 
     public static void registerInstance(String task, SocketProtocol protocol) {
         if (!stateMachineMap.containsKey(task)) {
@@ -36,6 +42,20 @@ public record AgentSocketStateMachine(AgentSyncProtocol socketProtocol) {
 
     public <C extends AgentContext> void registerReceiver(@Nullable C context, RoleType role) {
         socketProtocol.registerReceiver(context, TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, role);
+    }
+
+    public <C extends AgentContext> void registerReceiver(@Nullable C context, CallbackListener callbackListener, RoleType role) {
+        socketProtocol.registerReceiver(context, TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, role);
+        assert context != null;
+        this.callbackListener = callbackListener;
+    }
+
+    public AgentSyncProtocol getSocketProtocol() {
+        return socketProtocol;
+    }
+
+    public CallbackListener getCallbackListener() {
+        return callbackListener;
     }
 
     public static class AgentSocketStateContext<C> {

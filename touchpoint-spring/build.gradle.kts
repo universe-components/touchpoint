@@ -14,6 +14,9 @@ dependencies {
             maven {
                 url = uri("https://jitpack.io")
             }
+            maven {
+                url = uri("https://repo.akka.io/maven")
+            }
         }
     }
     api(libs.spring.context)

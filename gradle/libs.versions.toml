@@ -25,6 +25,8 @@ moquette = "0.18.0"
 slf4j = "2.0.17"
 logback = "1.5.17"
 springboot = "3.4.3"
+akka = "2.10.2"
+jwt = "0.12.6"
 
 [libraries]
 androidPlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -37,7 +39,6 @@ android = { module = "com.google.android:android", version.ref = "android" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kryo = { group = "com.esotericsoftware", name = "kryo", version.ref = "kryo" }
 fury = { group = "org.apache.fury", name = "fury-kotlin", version.ref = "fury" }
-#eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
 replugin-plugin-lib = { module = "com.qihoo360.replugin:replugin-plugin-lib", version.ref = "replugin" }
 replugin-host-lib = { module = "com.qihoo360.replugin:replugin-host-lib", version.ref = "replugin" }
 auto-service = { group = "com.google.auto.service", name = "auto-service", version.ref = "auto-service"}
@@ -59,6 +60,11 @@ moquette = { module = "com.github.moquette-io.moquette:moquette-broker", version
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 springboot-test = { group = "org.springframework.boot", name = "spring-boot-starter-test", version.ref = "springboot" }
+akka-bom = { group = "com.typesafe.akka", name = "akka-bom_2.13", version.ref = "akka" }
+akka-actor-typed = { group = "com.typesafe.akka", name = "akka-actor-typed_2.13", version.ref = "akka" }
+akka-actor = { group = "com.typesafe.akka", name = "akka-actor_2.13", version.ref = "akka" }
+jwt-api = { group = "io.jsonwebtoken", name = "jjwt-api", version.ref = "jwt" }
+jwt-jackson = { group = "io.jsonwebtoken", name = "jjwt-jackson", version.ref = "jwt" }
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }

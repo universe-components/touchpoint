@@ -282,7 +282,7 @@ Note: The above configuration applies to the action scope. The priority of all c
 ## Design Notes
 - [Entity Relationship Model](./docs/design/README_ENTITY.md)
 - [Negotiation Handshake](./docs/design/README_HANDSHAKE.md)
-- [State Synchronization](./docs/design/README_STATE_SYNC.md)
+- [State Synchronization](./docs/design/README_STATELESS)
 
 ## RoadMap
 

@@ -20,7 +20,7 @@ The `Socket` configuration applies to `Agents`, the `Task` configuration applies
 - `AIModel`: Mainly responsible for AI model invocation and result processing.
 - `RoleModel`: Handles processes related to collaborators and supervisors.
 - `Transport`: Defines the communication protocol selection between Actions.
-- `Metric`: Collects and synchronizes Task and Action performance metrics. See [State Synchronization](./README_STATE_SYNC.md)。
+- `Metric`: Collects and synchronizes Task and Action performance metrics. See [State Synchronization](./README_STATELESS)。
 
 All models and mechanisms align with their respective configuration scopes. For example:
 - If AIModel is applied at the Agent level, all Actions within that Agent use the specified model.

@@ -25,6 +25,7 @@ import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.meta.data.TaskMeta;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
+import com.universe.touchpoint.negotiation.CallbackListener;
 import com.universe.touchpoint.negotiation.context.TaskContext;
 import com.universe.touchpoint.utils.ClassUtils;
 
@@ -56,6 +57,7 @@ public class TaskProposer {
                 AgentSocketStateMachine.registerInstance(taskProperty.getKey(), Objects.requireNonNull(ConfigManager.selectAgentSocket(taskProperty.getKey())).getBindProtocol());
 
                 TaskMeta taskMeta = new TaskMeta(taskProperty.getKey());
+                Class<?> callbackListener = null;
                 for (Map.Entry<String, Map<String, Object>> property : taskProperty.getValue().entrySet()) {
                     if (Objects.equals(property.getKey(), "LangModel")) {
                         LangModelConfig langModelConfig = new LangModelConfig();
@@ -92,9 +94,20 @@ public class TaskProposer {
                         ClassUtils.setProperties(taskMetricConfig, property.getValue());
                         taskMeta.setTaskMetricConfig(taskMetricConfig);
                     }
+                    if (Objects.equals(property.getKey(), "callbackListener")) {
+                        callbackListener = (Class<?>) property.getValue().get("callbackListener");
+                    }
                 }
                 ((MetaRegion) TouchPointMemory.getRegion(Region.META)).putTouchPointTask(taskProperty.getKey(), taskMeta);
-                AgentSocketStateMachine.getInstance(taskProperty.getKey()).registerReceiver(new TaskContext(taskProperty.getKey()), RoleType.OWNER);
+                try {
+                    assert callbackListener != null;
+                    AgentSocketStateMachine.getInstance(taskProperty.getKey()).registerReceiver(
+                            new TaskContext(taskProperty.getKey()),
+                            (CallbackListener) callbackListener.getDeclaredConstructor().newInstance(),
+                            RoleType.OWNER);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

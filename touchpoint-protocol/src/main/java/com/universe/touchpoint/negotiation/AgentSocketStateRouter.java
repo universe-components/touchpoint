@@ -27,29 +27,31 @@ public class AgentSocketStateRouter<C extends AgentContext> {
         stateHandlerMap.put(AgentSocketState.ACTION_READY, new SwitchActionReadyHandler<>());
     }
 
-    public void route(C context, byte[] stateContextBytes, String filter) {
+    public boolean route(C context, byte[] stateContextBytes, String filter) {
         AgentSocketStateMachine.AgentSocketStateContext<?> stateContext = SerializeUtils.deserializeFromByteArray(stateContextBytes, AgentSocketStateMachine.AgentSocketStateContext.class);
-        route(context, stateContext, filter);
+        return route(context, stateContext, filter);
     }
 
-    public <I, O> void route(C context, AgentSocketStateMachine.AgentSocketStateContext<I> stateContext, String filter) {
+    public <I, O> boolean route(C context, AgentSocketStateMachine.AgentSocketStateContext<I> stateContext, String filter) {
         try {
             AgentSocketStateHandler<I, O> stateHandler = (AgentSocketStateHandler<I, O>) stateHandlerMap.get(stateContext.getSocketState());
             assert stateHandler != null;
             AgentSocketState nextState = AgentSocketState.next(stateContext.getSocketState());
-            if (nextState != null) {
-                String scope = TouchPointHelper.extractFilter(filter);
-                String socketFilter = TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, scope, nextState.getRole().name());
-                String nextFilter = TouchPointHelper.touchPointFilterName(socketFilter);
-                O output = stateHandler.onStateChange(stateContext.getContext(), context, scope);
-                if (output != null) {
-                    AgentSocketStateMachine.getInstance(context.getBelongTask()).send(
-                            new AgentSocketStateMachine.AgentSocketStateContext<>(nextState, output), nextFilter);
-                }
+            if (nextState == null) {
+                return true;
+            }
+            String scope = TouchPointHelper.extractFilter(filter);
+            String socketFilter = TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, scope, nextState.getRole().name());
+            String nextFilter = TouchPointHelper.touchPointFilterName(socketFilter);
+            O output = stateHandler.onStateChange(stateContext.getContext(), context, scope);
+            if (output != null) {
+                AgentSocketStateMachine.getInstance(context.getBelongTask()).send(
+                        new AgentSocketStateMachine.AgentSocketStateContext<>(nextState, output), nextFilter);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        return false;
     }
 
 }

@@ -42,7 +42,8 @@ public class TouchPointMQTT5Registry implements TouchPointTransportRegistry<MQTT
     @Override
     public void register(AgentActionMeta agentActionMeta, String previousAction, String task, boolean isRequested) {
         try {
-            client.subscribe(TouchPointHelper.touchPointFilterName(previousAction), 1, (topic, message) -> {
+            String filter = String.join("/", "$share", agentActionMeta.getName(), TouchPointHelper.touchPointFilterName(previousAction));
+            client.subscribe(filter, 1, (topic, message) -> {
                 // 接收到消息时的回调
                 new TouchPointMQTT5Subscriber<>(isRequested ? AgentAction.class : AgentFinish.class).handleMessage(message);
             });

@@ -7,18 +7,19 @@ import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
-import com.universe.touchpoint.plan.ActionGraphBuilder;
 import com.universe.touchpoint.negotiation.AgentSocketState;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.negotiation.AgentSocketStateRouter;
+import com.universe.touchpoint.security.processor.JWTProcessor;
 import java.util.Objects;
 
 public class Coordinator {
 
     public void execute(TouchPointContext context) {
+        TouchPointContext prevContext = (TouchPointContext) new JWTProcessor<>().parseToken(context.getToken());
         String agentAction = context.getAction();
         AgentActionMeta actionMeta = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointAction(agentAction);
-        String prevGraphName = ActionGraphBuilder.getTaskGraph(context.getTask()).getName();
+        String prevGraphName = prevContext.getActionGraph().getName();
         String currGraphName = context.getTaskContext().getActionGraphContext().env();
         Model prevlangModel = actionMeta.getModel().getModel();
         Model prevVisionModel = actionMeta.getVisionModel().getModel();

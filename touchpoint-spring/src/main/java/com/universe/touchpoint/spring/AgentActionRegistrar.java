@@ -82,7 +82,7 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
                     AgentSocketConfig socketConfig = ConfigManager.selectAgentSocket(task);
                     assert socketConfig != null;
                     AgentSocketStateMachine.registerInstance(task, socketConfig.getBindProtocol());
-                    AgentSocketStateMachine.getInstance(task).socketProtocol().initialize(socketConfig);
+                    AgentSocketStateMachine.getInstance(task).getSocketProtocol().initialize(socketConfig);
                     assert actionMeta != null;
                     AgentSocketStateMachine.getInstance(task).registerReceiver(new TaskActionContext(actionName, task), actionMeta.getRoleType());
 
