@@ -1,6 +1,6 @@
 package com.universe.touchpoint.security;
 
-public interface TokenProcessor<T> {
+public interface Tokenizer<T> {
 
     String generateToken(T obj);
 

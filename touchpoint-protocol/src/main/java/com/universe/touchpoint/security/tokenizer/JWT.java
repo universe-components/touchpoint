@@ -1,7 +1,7 @@
-package com.universe.touchpoint.security.processor;
+package com.universe.touchpoint.security.tokenizer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.universe.touchpoint.security.TokenProcessor;
+import com.universe.touchpoint.security.Tokenizer;
 
 import java.util.Date;
 import javax.crypto.SecretKey;
@@ -11,7 +11,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.jackson.io.JacksonDeserializer;
 import io.jsonwebtoken.jackson.io.JacksonSerializer;
 
-public class JWTProcessor<T> implements TokenProcessor<T> {
+public class JWT<T> implements Tokenizer<T> {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final SecretKey key = Jwts.SIG.HS256.key().build();

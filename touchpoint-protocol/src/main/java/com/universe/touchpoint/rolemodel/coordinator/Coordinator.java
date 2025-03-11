@@ -10,13 +10,13 @@ import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.negotiation.AgentSocketState;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.negotiation.AgentSocketStateRouter;
-import com.universe.touchpoint.security.processor.JWTProcessor;
+import com.universe.touchpoint.security.TokenizerSelector;
 import java.util.Objects;
 
 public class Coordinator {
 
     public void execute(TouchPointContext context) {
-        TouchPointContext prevContext = (TouchPointContext) new JWTProcessor<>().parseToken(context.getToken());
+        TouchPointContext prevContext = (TouchPointContext) TokenizerSelector.getTokenizer("jwt").parseToken(context.getToken());
         String agentAction = context.getAction();
         AgentActionMeta actionMeta = ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointAction(agentAction);
         String prevGraphName = prevContext.getActionGraph().getName();
