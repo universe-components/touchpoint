@@ -37,7 +37,9 @@ public class AgentActionExecutor<I, O> extends ActionExecutor<AgentAction<I, O>,
     @Override
     public AgentAction<I, O> afterRun(AgentAction<I, O> action, O runResult) {
         action.setOutput(runResult);
-        new TaskSocket(metricTaskMeta.getName()).send("I want to collect action and task metrics, where task metrics include the number of execution errors and prediction counts for multiple actions within the task, and action metrics include the prediction count for a single action.");
+        new TaskSocket(metricTaskMeta.getName()).send(
+                "I want to collect action and task metrics, where task metrics include the number of execution errors and prediction counts for multiple actions within the task, and action metrics include the prediction count for a single action.",
+                action);
         return action;
     }
 

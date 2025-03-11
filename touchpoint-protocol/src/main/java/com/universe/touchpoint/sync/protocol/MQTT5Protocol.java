@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import io.moquette.broker.Server;
 import io.moquette.broker.config.MemoryConfig;
 
-public class MQTT5Protocol implements AgentSyncProtocol {
+public class MQTT5Protocol implements AgentSyncProtocol<MqttMessage> {
 
     private MqttClient client;
 
@@ -46,7 +46,7 @@ public class MQTT5Protocol implements AgentSyncProtocol {
     }
 
     @Override
-    public <M> void send(M message, String filter) {
+    public void send(MqttMessage message, String filter) {
         try {
             MqttMessage mqttMessage = new MqttMessage(SerializeUtils.serializeToByteArray(message));
             client.publish(filter, mqttMessage);
@@ -56,7 +56,7 @@ public class MQTT5Protocol implements AgentSyncProtocol {
     }
 
     @Override
-    public <C extends AgentContext> void registerReceiver(@Nullable C context, String filter, RoleType role) {
+    public <C extends AgentContext> void registerReceiver(@Nullable C context, String filter, RoleType role, Class<MqttMessage> messageType) {
         try {
             assert context != null;
             String socketFilter = TouchPointHelper.touchPointFilterName(filter, context.getBelongTask(), role.name());
@@ -64,7 +64,7 @@ public class MQTT5Protocol implements AgentSyncProtocol {
                 if (message == null) {
                     return;
                 }
-                ((AgentReceiver<MqttMessage>) Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter))).handleMessage(context, message, topic);
+                ((AgentReceiver<MqttMessage>) Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter))).handleMessage(context, message, topic, messageType);
             });
         } catch (Exception e) {
             throw new RuntimeException(e);

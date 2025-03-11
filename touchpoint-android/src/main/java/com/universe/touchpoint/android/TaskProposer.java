@@ -82,7 +82,7 @@ public class TaskProposer {
                         AgentSocketConfig socketConfig = new AgentSocketConfig();
                         ClassUtils.setProperties(socketConfig, property.getValue());
                         taskMeta.setAgentSocketConfig(socketConfig);
-                        AgentSocketStateMachine.getInstance(taskProperty.getKey()).socketProtocol().initialize(socketConfig);
+                        AgentSocketStateMachine.getInstance(taskProperty.getKey()).getSocketProtocol().initialize(socketConfig);
                     }
                     if (Objects.equals(property.getKey(), "MonitorActionMetrics")) {
                         ActionMetricConfig actionMetricConfig = new ActionMetricConfig();

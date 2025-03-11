@@ -16,9 +16,9 @@ public class AgentSocketStateMachine {
     private static final Object mLock = new Object();
     private static final Map<String, AgentSocketStateMachine> stateMachineMap = new HashMap<>();
     private CallbackListener callbackListener;
-    private final AgentSyncProtocol socketProtocol;
+    private final AgentSyncProtocol<AgentSocketStateContext> socketProtocol;
 
-    public AgentSocketStateMachine(AgentSyncProtocol socketProtocol) {
+    public AgentSocketStateMachine(AgentSyncProtocol<AgentSocketStateContext> socketProtocol) {
         this.socketProtocol = socketProtocol;
     }
 
@@ -26,7 +26,7 @@ public class AgentSocketStateMachine {
         if (!stateMachineMap.containsKey(task)) {
             synchronized (mLock) {
                 if (!stateMachineMap.containsKey(task)) {
-                    stateMachineMap.put(task, new AgentSocketStateMachine(AgentSyncProtocolSelector.selectProtocol(protocol)));
+                    stateMachineMap.put(task, new AgentSocketStateMachine((AgentSyncProtocol<AgentSocketStateContext>) AgentSyncProtocolSelector.selectProtocol(protocol)));
                 }
             }
         }
@@ -41,16 +41,16 @@ public class AgentSocketStateMachine {
     }
 
     public <C extends AgentContext> void registerReceiver(@Nullable C context, RoleType role) {
-        socketProtocol.registerReceiver(context, TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, role);
+        socketProtocol.registerReceiver(context, TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, role, AgentSocketStateContext.class);
     }
 
     public <C extends AgentContext> void registerReceiver(@Nullable C context, CallbackListener callbackListener, RoleType role) {
-        socketProtocol.registerReceiver(context, TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, role);
+        socketProtocol.registerReceiver(context, TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER, role, AgentSocketStateContext.class);
         assert context != null;
         this.callbackListener = callbackListener;
     }
 
-    public AgentSyncProtocol getSocketProtocol() {
+    public AgentSyncProtocol<?> getSocketProtocol() {
         return socketProtocol;
     }
 

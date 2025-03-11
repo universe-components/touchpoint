@@ -9,7 +9,6 @@ import com.universe.touchpoint.negotiation.handler.NegotiationConcludedHandler;
 import com.universe.touchpoint.negotiation.handler.GlobalConfigReadyHandler;
 import com.universe.touchpoint.negotiation.handler.RequestGraphReadyHandler;
 import com.universe.touchpoint.negotiation.handler.ActionGraphReadyHandler;
-import com.universe.touchpoint.utils.SerializeUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,11 +24,6 @@ public class AgentSocketStateRouter<C extends AgentContext> {
         stateHandlerMap.put(AgentSocketState.NEGOTIATION_CONCLUDED, new NegotiationConcludedHandler());
         stateHandlerMap.put(AgentSocketState.COORDINATOR_ACTION_GRAPH_READY, new ReorderActionReadyHandler<>());
         stateHandlerMap.put(AgentSocketState.ACTION_READY, new SwitchActionReadyHandler<>());
-    }
-
-    public boolean route(C context, byte[] stateContextBytes, String filter) {
-        AgentSocketStateMachine.AgentSocketStateContext<?> stateContext = SerializeUtils.deserializeFromByteArray(stateContextBytes, AgentSocketStateMachine.AgentSocketStateContext.class);
-        return route(context, stateContext, filter);
     }
 
     public <I, O> boolean route(C context, AgentSocketStateMachine.AgentSocketStateContext<I> stateContext, String filter) {

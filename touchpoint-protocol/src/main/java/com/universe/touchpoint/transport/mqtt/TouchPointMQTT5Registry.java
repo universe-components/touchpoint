@@ -11,12 +11,6 @@ import org.eclipse.paho.mqttv5.client.MqttClient;
 import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
 import org.eclipse.paho.mqttv5.common.MqttException;
 
-import java.io.IOException;
-import java.util.Properties;
-
-import io.moquette.broker.Server;
-import io.moquette.broker.config.MemoryConfig;
-
 public class TouchPointMQTT5Registry implements TouchPointTransportRegistry<MQTTConfig> {
 
     private MqttClient client;
@@ -24,17 +18,11 @@ public class TouchPointMQTT5Registry implements TouchPointTransportRegistry<MQTT
     @Override
     public void init(MQTTConfig transportConfig) {
         try {
-            if (transportConfig.brokerUri.contains("localhost")) {
-                Server mqttBroker = new Server();
-                Properties configProps = new Properties();
-                configProps.setProperty("port", "1883");
-                mqttBroker.startServer(new MemoryConfig(configProps));
-            }
             client = new MqttClient(transportConfig.brokerUri, "touchpoint_mqtt_broker");
             MqttConnectionOptions connectOptions = new MqttConnectionOptions();
             connectOptions.setCleanStart(true);
             client.connect(connectOptions);
-        } catch (MqttException | IOException e) {
+        } catch (MqttException e) {
             throw new RuntimeException(e);
         }
     }

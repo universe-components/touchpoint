@@ -4,6 +4,7 @@ import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.annotations.socket.SocketProtocol;
 import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.sync.AgentSyncProtocol;
 import com.universe.touchpoint.sync.AgentSyncProtocolSelector;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class TaskSocket {
 
     public <T extends TouchPoint> void send(T params) {
         if (params.getContext() != null) {
-            AgentSyncProtocolSelector.selectProtocol(SocketProtocol.MQTT5).send(
+            ((AgentSyncProtocol<TouchPointContext>) AgentSyncProtocolSelector.selectProtocol(SocketProtocol.MQTT5)).send(
                     params.getContext(),
                     TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_CONTEXT_FILTER, task, RoleType.MEMBER.name()));
         }
@@ -41,7 +42,7 @@ public class TaskSocket {
 
     public <T, F> List<F> send(String goal, T params, TouchPointContext context, TaskCallbackListener callbackListener) {
         if (context != null) {
-            AgentSyncProtocolSelector.selectProtocol(SocketProtocol.MQTT5).send(
+            ((AgentSyncProtocol<TouchPointContext>) AgentSyncProtocolSelector.selectProtocol(SocketProtocol.MQTT5)).send(
                     context,
                     TouchPointHelper.touchPointFilterName(TouchPointConstants.TOUCH_POINT_TASK_CONTEXT_FILTER, task, RoleType.MEMBER.name()));
         }

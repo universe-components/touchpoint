@@ -30,7 +30,6 @@ import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.meta.MetaManager;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
-import com.universe.touchpoint.monitor.MetricSyncerFactory;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.negotiation.AgentSocketState;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
@@ -144,7 +143,7 @@ public class TaskParticipant {
                 AgentSocketConfig socketConfig = ConfigManager.selectAgentSocket(task);
                 assert socketConfig != null;
                 AgentSocketStateMachine.registerInstance(task, socketConfig.getBindProtocol());
-                AgentSocketStateMachine.getInstance(task).socketProtocol().initialize(socketConfig);
+                AgentSocketStateMachine.getInstance(task).getSocketProtocol().initialize(socketConfig);
                 AgentSocketStateMachine.getInstance(task).registerReceiver(actionContext, actionMeta.getRoleType());
 
                 MetricSocketConfig metricSocketConfig = ConfigManager.selectMetricSocket(task);

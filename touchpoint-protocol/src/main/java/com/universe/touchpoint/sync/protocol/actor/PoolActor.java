@@ -9,24 +9,26 @@ import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import akka.actor.typed.javadsl.Routers;
 
-public class PoolActor extends AbstractBehavior<Object> {
+public class PoolActor<M> extends AbstractBehavior<M> {
 
-    private final ActorRef<Object> receiverPool;
+    private final ActorRef<M> receiverPool;
+    private final Class<M> messageType;
 
-    public <C extends AgentContext> PoolActor(ActorContext<Object> context, C agentContext, String filter, String topic) {
+    public <C extends AgentContext> PoolActor(ActorContext<M> context, C agentContext, String filter, String topic, Class<M> messageType) {
         super(context);
-        var router = Routers.pool(5, ActorReceiver.create(agentContext, filter, topic));
+        var router = Routers.pool(5, new ActorReceiver<>(context, agentContext, filter, topic, messageType).create());
+        this.messageType = messageType;
         receiverPool = context.spawn(router, "receiver-pool");
     }
 
-    public static <C extends AgentContext> Behavior<Object> create(C agentContext, String filter, String topic) {
-        return Behaviors.setup(context -> new PoolActor(context, agentContext, filter, topic));
+    public static <C extends AgentContext, M> Behavior<M> create(C agentContext, String filter, String topic, Class<M> messageType) {
+        return Behaviors.setup(context -> new PoolActor<>(context, agentContext, filter, topic, messageType));
     }
 
     @Override
-    public Receive<Object> createReceive() {
+    public Receive<M> createReceive() {
         return newReceiveBuilder()
-                .onMessage(Object.class, message -> {
+                .onMessage(messageType, message -> {
                     receiverPool.tell(message);
                     return Behaviors.same();
                 })

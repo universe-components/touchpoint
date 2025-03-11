@@ -16,12 +16,14 @@ import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
-import com.universe.touchpoint.monitor.MetricSyncerFactory;
 import com.universe.touchpoint.meta.annotation.ActionAnnotationMeta;
 import com.universe.touchpoint.negotiation.AgentSocketState;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.negotiation.context.TaskActionContext;
+import com.universe.touchpoint.sync.AgentSyncProtocol;
+import com.universe.touchpoint.sync.AgentSyncProtocolSelector;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -88,8 +90,9 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
 
                     MetricSocketConfig metricSocketConfig = ConfigManager.selectMetricSocket(task);
                     assert metricSocketConfig != null;
-                    MetricSyncerFactory.registerSyncer(task, metricSocketConfig.getBindProtocol()).initialize(metricSocketConfig);
-                    MetricSyncerFactory.getSyncer(task).registerListener(task);
+                    ((AgentSyncProtocol<Pair>) AgentSyncProtocolSelector.selectProtocol(socketConfig.getBindProtocol())).registerReceiver(
+                            new TaskActionContext(actionName, task),
+                            TouchPointConstants.METRIC_FILTER, RoleType.MEMBER, Pair.class);
 
                     AgentSocketStateMachine.getInstance(task).send(
                             new AgentSocketStateMachine.AgentSocketStateContext<>(

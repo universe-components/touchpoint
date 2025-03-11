@@ -9,24 +9,24 @@ import com.universe.touchpoint.sync.AgentSyncProtocol;
 import javax.annotation.Nullable;
 import akka.actor.typed.ActorSystem;
 
-public class ActorProtocol implements AgentSyncProtocol {
+public class ActorProtocol<M> implements AgentSyncProtocol<M> {
 
-    private ActorSystem<Object> system;
+    private ActorSystem<M> system;
 
     @Override
     public void initialize(AgentSocketConfig socketConfig) {
     }
 
     @Override
-    public <M> void send(M message, String filterSuffix) {
+    public void send(M message, String filterSuffix) {
         system.tell(message);
     }
 
     @Override
-    public <C extends AgentContext> void registerReceiver(@Nullable C context, String filter, RoleType role) {
+    public <C extends AgentContext> void registerReceiver(@Nullable C context, String filter, RoleType role, Class<M> messageType) {
         assert context != null;
         String socketFilter = TouchPointHelper.touchPointFilterName(filter, context.getBelongTask(), role.name());
-        system = ActorSystem.create(PoolActor.create(context, filter, socketFilter), socketFilter);
+        system = ActorSystem.create(PoolActor.create(context, filter, socketFilter, messageType), socketFilter);
     }
 
 }

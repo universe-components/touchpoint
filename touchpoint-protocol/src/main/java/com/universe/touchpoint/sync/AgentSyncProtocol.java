@@ -5,12 +5,12 @@ import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.negotiation.AgentContext;
 import javax.annotation.Nullable;
 
-public interface AgentSyncProtocol {
+public interface AgentSyncProtocol<M> {
 
     void initialize(AgentSocketConfig socketConfig);
 
-    <M> void send(M message, String filterSuffix);
+    void send(M message, String filterSuffix);
 
-    <C extends AgentContext> void registerReceiver(@Nullable C context, String filter, RoleType role);
+    <C extends AgentContext> void registerReceiver(@Nullable C context, String filter, RoleType role, Class<M> messageType);
 
 }

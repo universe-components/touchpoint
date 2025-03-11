@@ -11,30 +11,32 @@ import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 
-public class ActorReceiver<C extends AgentContext> extends AbstractBehavior<Object> {
+public class ActorReceiver<C extends AgentContext, M> extends AbstractBehavior<M> {
 
     private final String filter;
     private final String topic;
     private final C agentContext;
+    private final Class<M> messageType;
 
-    public ActorReceiver(ActorContext<Object> context, C agentContext, String filter, String topic) {
+    public ActorReceiver(ActorContext<M> context, C agentContext, String filter, String topic, Class<M> messageType) {
         super(context);
         this.agentContext = agentContext;
         this.filter = filter;
         this.topic = topic;
+        this.messageType = messageType;
     }
 
-    public static <C extends AgentContext> Behavior<Object> create(C agentContext, String filter, String topic) {
-        return Behaviors.setup(context -> new ActorReceiver<>(context, agentContext, filter, topic));
+    public Behavior<M> create() {
+        return Behaviors.setup(context -> this);
     }
 
     @Override
-    public Receive<Object> createReceive() {
-        return newReceiveBuilder().onMessage(Object.class, this::onMessageReceived).build();
+    public Receive<M> createReceive() {
+        return newReceiveBuilder().onMessage(messageType, this::onMessageReceived).build();
     }
 
-    public Behavior<Object> onMessageReceived(Object message) {
-        ((AgentReceiver<Object>) Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter))).handleMessage(agentContext, message, topic);
+    public Behavior<M> onMessageReceived(M message) {
+        ((AgentReceiver<M>) Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter))).handleMessage(agentContext, message, topic, messageType);
         return this;
     }
 

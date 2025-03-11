@@ -6,13 +6,12 @@ import com.universe.touchpoint.plan.ActionGraph;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
 import com.universe.touchpoint.security.TokenizerSelector;
 import com.universe.touchpoint.sync.AgentReceiver;
-import org.eclipse.paho.mqttv5.common.MqttMessage;
 
-public class AgentStateReceiver implements AgentReceiver<MqttMessage> {
+public class AgentStateReceiver extends AgentReceiver<AgentSocketStateMachine.AgentSocketStateContext<?>> {
 
     @Override
-    public <C extends AgentContext> void handleMessage(C context, MqttMessage message, String topic) {
-        boolean rs = new AgentSocketStateRouter<>().route(context, message.getPayload(), topic);
+    public <C extends AgentContext> void handleMessage(C context, AgentSocketStateMachine.AgentSocketStateContext<?> message, String topic) {
+        boolean rs = new AgentSocketStateRouter<>().route(context, message, topic);
         if (rs) {
             TouchPoint touchPoint = new TouchPoint();
             ActionGraph actionGraph = ActionGraphBuilder.getTaskGraph(context.getBelongTask());
