@@ -1,6 +1,7 @@
 package com.universe.touchpoint.sync.protocol.actor;
 
 import com.universe.touchpoint.negotiation.AgentContext;
+import com.universe.touchpoint.sync.AgentReceiver;
 import com.universe.touchpoint.sync.AgentReceiverSelector;
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ public class ActorReceiver<C extends AgentContext> extends AbstractBehavior<Obje
     }
 
     public Behavior<Object> onMessageReceived(Object message) {
-        Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter)).handleMessage(agentContext, message, topic);
+        ((AgentReceiver<Object>) Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter))).handleMessage(agentContext, message, topic);
         return this;
     }
 
