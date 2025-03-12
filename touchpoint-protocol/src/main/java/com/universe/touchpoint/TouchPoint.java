@@ -23,7 +23,7 @@ public class TouchPoint {
     this.state.setCode(TaskState.OK.getCode());
   }
 
-  public void setChannel(TouchPointChannel<?> channel) {
+  public void setChannel(TouchPointChannel<?, ?> channel) {
     this.header.setChannel(channel);
   }
 
@@ -79,20 +79,11 @@ public class TouchPoint {
     return result.toString();
   }
 
-  public boolean finish() {
-    try {
-      header.channel.send(this);
-      return true;
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   public static class Header {
 
     private AgentActionMeta fromAction = null;
     private AgentActionMeta toAction = null;
-    private transient TouchPointChannel<?> channel;
+    private transient TouchPointChannel<?, ?> channel;
     private TaskSocket.TaskCallbackListener callbackListener;
 
     public Header() {}
@@ -101,7 +92,7 @@ public class TouchPoint {
       this.fromAction = fromAction;
     }
 
-    public Header(AgentActionMeta fromAction, TouchPointChannel<?> channel) {
+    public Header(AgentActionMeta fromAction, TouchPointChannel<?, ?> channel) {
       this.fromAction = fromAction;
       this.channel = channel;
     }
@@ -122,11 +113,11 @@ public class TouchPoint {
       return toAction;
     }
 
-    public TouchPointChannel<?> getChannel() {
+    public TouchPointChannel<?, ?> getChannel() {
       return channel;
     }
 
-    public void setChannel(TouchPointChannel<?> channel) {
+    public void setChannel(TouchPointChannel<?, ?> channel) {
       this.channel = channel;
     }
 

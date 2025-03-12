@@ -22,7 +22,7 @@ public class TouchPointChannelManager {
     channelMapping.put(Transport.MQTT, TouchPointMQTT5Publisher.class);
   }
 
-  public static TouchPointChannel<?> defaultChannel() {
+  public static TouchPointChannel<?, ?> defaultChannel() {
     try {
       return new TouchPointMQTT5Publisher();
     } catch (Exception e) {
@@ -30,7 +30,7 @@ public class TouchPointChannelManager {
     }
   }
 
-  public static <C> TouchPointChannel<?> selectChannel(AgentActionMeta actionMeta, String task) {
+  public static <C> TouchPointChannel<?, ?> selectChannel(AgentActionMeta actionMeta, String task) {
     TransportConfig<C> transportConfig = ConfigManager.selectTransport(actionMeta.getName(), task);
     Transport transport = transportConfig.transportType();
     C config = transportConfig.config();
@@ -38,12 +38,12 @@ public class TouchPointChannelManager {
     if (channelMapping.containsKey(transport)) {
       try {
         if (config instanceof RPCConfig) {
-          return (TouchPointChannel<?>)
+          return (TouchPointChannel<?, ?>)
               Objects.requireNonNull(channelMapping.get(transport))
                   .getConstructor(config.getClass())
                   .newInstance(config);
         }
-        return (TouchPointChannel<?>)
+        return (TouchPointChannel<?, ?>)
             Objects.requireNonNull(channelMapping.get(transport)).getConstructor().newInstance();
       } catch (Exception e) {
         throw new RuntimeException(e);

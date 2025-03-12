@@ -1,6 +1,7 @@
 package com.universe.touchpoint.transport;
 
 import com.universe.touchpoint.config.transport.Transport;
+import com.universe.touchpoint.transport.actor.TouchPointActorRegistry;
 import com.universe.touchpoint.transport.mqtt.TouchPointMQTT5Registry;
 import com.universe.touchpoint.transport.rpc.TouchPointDubboRegistry;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ public class TouchPointTransportRegistryFactory {
   static {
     registryMap.put(Transport.DUBBO, new TouchPointDubboRegistry());
     registryMap.put(Transport.MQTT, new TouchPointMQTT5Registry());
+    registryMap.put(Transport.ACTOR, new TouchPointActorRegistry<>());
   }
 
   public static TouchPointTransportRegistry<?> getRegistry(Transport transport) {

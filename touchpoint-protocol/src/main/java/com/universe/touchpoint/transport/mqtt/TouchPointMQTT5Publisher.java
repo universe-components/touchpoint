@@ -9,10 +9,11 @@ import com.universe.touchpoint.utils.SerializeUtils;
 import org.eclipse.paho.mqttv5.common.MqttException;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 
-public class TouchPointMQTT5Publisher implements TouchPointChannel<Boolean> {
+public class TouchPointMQTT5Publisher<T extends TouchPoint>
+    implements TouchPointChannel<T, Boolean> {
 
   @Override
-  public Boolean send(TouchPoint touchpoint) {
+  public Boolean send(T touchpoint) {
     TouchPointMQTT5Registry mqtt5Registry =
         (TouchPointMQTT5Registry) TouchPointTransportRegistryFactory.getRegistry(Transport.MQTT);
     MqttMessage message = new MqttMessage(SerializeUtils.serializeToByteArray(touchpoint));

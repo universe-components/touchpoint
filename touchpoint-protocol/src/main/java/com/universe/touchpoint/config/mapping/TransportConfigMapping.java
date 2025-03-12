@@ -1,7 +1,9 @@
 package com.universe.touchpoint.config.mapping;
 
+import com.universe.touchpoint.annotations.transport.Actor;
 import com.universe.touchpoint.annotations.transport.Dubbo;
 import com.universe.touchpoint.annotations.transport.MQTT;
+import com.universe.touchpoint.config.transport.ActorConfig;
 import com.universe.touchpoint.config.transport.MQTTConfig;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
@@ -23,6 +25,9 @@ public class TransportConfigMapping {
     annotation2Config.put(DubboService.class, DubboConfig.class);
     annotation2Config.put(Dubbo.class, DubboConfig.class);
     annotation2Type.put(DubboService.class, Transport.DUBBO);
+    annotation2Config.put(Actor.class, ActorConfig.class);
+    annotation2Type.put(Actor.class, Transport.ACTOR);
+    transport2Config.put(Transport.ACTOR, ActorConfig.class);
     annotation2Config.put(MQTT.class, MQTTConfig.class);
     annotation2Type.put(MQTT.class, Transport.MQTT);
     transport2Config.put(Transport.MQTT, MQTTConfig.class);
