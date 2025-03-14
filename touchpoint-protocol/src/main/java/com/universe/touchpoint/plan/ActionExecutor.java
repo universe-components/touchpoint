@@ -6,9 +6,13 @@ public abstract class ActionExecutor<T extends TouchPoint, O> {
 
   public T execute(T touchPoint) {
     beforeRun(touchPoint);
-    O runResult = run(touchPoint);
-    if (runResult != null) {
-      return afterRun(touchPoint, runResult);
+    try {
+      O runResult = run(touchPoint);
+      if (runResult != null) {
+        return afterRun(touchPoint, runResult);
+      }
+    } catch (Exception ex) {
+      throw new RuntimeException("Action execute failed", ex);
     }
     return null;
   }

@@ -12,7 +12,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class ResultExchanger {
 
-  public <R extends TouchPoint> String exchange(
+  public <R extends TouchPoint, F> F exchange(
       R result, String goal, String task, Transport transportType) {
     ResultProcessor<R> resultProcessor;
     if (result instanceof AgentAction<?, ?>) {

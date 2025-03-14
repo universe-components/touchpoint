@@ -7,6 +7,7 @@ import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
+import com.universe.touchpoint.transport.local.TouchPointLocalExecutor;
 import com.universe.touchpoint.transport.mqtt.TouchPointMQTT5Publisher;
 import com.universe.touchpoint.transport.rpc.TouchPointDubboChannel;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class TouchPointChannelManager {
   static {
     channelMapping.put(Transport.DUBBO, TouchPointDubboChannel.class);
     channelMapping.put(Transport.MQTT, TouchPointMQTT5Publisher.class);
+    channelMapping.put(Transport.LOCAL, TouchPointLocalExecutor.class);
   }
 
   public static TouchPointChannel<?, ?> defaultChannel() {

@@ -7,14 +7,14 @@ import com.universe.touchpoint.transport.TouchPointRpcChannel;
 import org.apache.dubbo.config.bootstrap.builders.ReferenceBuilder;
 
 public class TouchPointDubboChannel<I, O, T extends AgentAction<I, O>>
-    extends TouchPointRpcChannel<T, DubboConfig> {
+    extends TouchPointRpcChannel<T, O, DubboConfig> {
 
   public TouchPointDubboChannel(DubboConfig transportConfig) {
     super(transportConfig);
   }
 
   @Override
-  public String send(T touchpoint) {
+  public O send(T touchpoint) {
     Class<?> touchPointService =
         (Class<?>)
             ReferenceBuilder.newBuilder()

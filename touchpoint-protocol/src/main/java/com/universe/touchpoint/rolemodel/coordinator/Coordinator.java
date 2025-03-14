@@ -16,6 +16,9 @@ import java.util.Objects;
 public class Coordinator {
 
   public void execute(TouchPointContext context) {
+    if (context == null) {
+      return;
+    }
     TouchPointContext prevContext =
         (TouchPointContext) TokenizerSelector.getTokenizer("jwt").parseToken(context.getToken());
     String agentAction = context.getAction();
@@ -32,7 +35,7 @@ public class Coordinator {
     Transport prevTransport = actionMeta.getTransportConfig().transportType();
     Transport currTransport = context.getActionContext().getTransport(agentAction);
 
-    if (!Objects.equals(prevGraphName, currGraphName)) {
+    if (currGraphName != null && !Objects.equals(prevGraphName, currGraphName)) {
       new AgentSocketStateRouter<>()
           .route(
               null,

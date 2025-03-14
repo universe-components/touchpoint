@@ -57,16 +57,4 @@ public class AgentAction<I, O> extends TouchPoint {
   public AgentActionMeta getMeta() {
     return meta;
   }
-
-  //        @NonNull
-  //        @Override
-  //        public String toString() {
-  //            return "AgentAction{" +
-  //                    "action='" + action + '\'' +
-  //                    ", actionInput='" + actionInput + '\'' +
-  //                    ", thought='" + thought + '\'' +
-  //                    ", observation='" + observation + '\'' +
-  //                    '}';
-  //        }
-
 }

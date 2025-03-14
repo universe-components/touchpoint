@@ -1,6 +1,6 @@
 package com.universe.touchpoint.transport;
 
-public abstract class TouchPointRpcChannel<I, C> implements TouchPointChannel<I, String> {
+public abstract class TouchPointRpcChannel<I, O, C> implements TouchPointChannel<I, O> {
 
   protected final C transportConfig;
 

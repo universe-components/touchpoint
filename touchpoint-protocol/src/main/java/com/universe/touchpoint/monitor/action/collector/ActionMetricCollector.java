@@ -2,6 +2,7 @@ package com.universe.touchpoint.monitor.action.collector;
 
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
+import com.universe.touchpoint.api.RoleConstants;
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.context.TouchPointContextManager;
@@ -20,6 +21,7 @@ public class ActionMetricCollector extends AgentActionExecutor<TouchPoint, Touch
         .getActionContext()
         .getActionMetric(countAction)
         .incrementPredictionCount();
+    touchPoint.getState().setRedirectToAction(RoleConstants.ACTION_CAPABILITY_CHECKER);
     return touchPoint;
   }
 }
