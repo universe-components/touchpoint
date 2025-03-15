@@ -1,30 +1,28 @@
 package com.universe.touchpoint.api;
 
-import com.universe.touchpoint.api.operator.OperateMethod;
-
 public class SocketRequest<B> {
 
   private B body;
-  private OperateMethod operateMethod;
+  private ActionBody actionBody;
 
   public SocketRequest(B body) {
     this.body = body;
   }
 
-  public SocketRequest(OperateMethod operateMethod) {
-    this.operateMethod = operateMethod;
+  public SocketRequest(ActionBody actionBody) {
+    this.actionBody = actionBody;
   }
 
-  public SocketRequest(B body, OperateMethod operateMethod) {
+  public SocketRequest(B body, ActionBody actionBody) {
     this.body = body;
-    this.operateMethod = operateMethod;
+    this.actionBody = actionBody;
   }
 
   public B getBody() {
     return body;
   }
 
-  public OperateMethod getOperateMethod() {
-    return operateMethod;
+  public ActionBody getOperateMethod() {
+    return actionBody;
   }
 }

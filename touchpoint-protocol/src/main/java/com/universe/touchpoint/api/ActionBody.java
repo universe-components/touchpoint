@@ -1,13 +1,13 @@
-package com.universe.touchpoint.api.operator;
+package com.universe.touchpoint.api;
 
-public class OperateMethod {
+public class ActionBody {
 
   private String target;
   private String action;
 
-  public OperateMethod() {}
+  public ActionBody() {}
 
-  public OperateMethod(String target, String action) {
+  public ActionBody(String target, String action) {
     this.target = target;
     this.action = action;
   }

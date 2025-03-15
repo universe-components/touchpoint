@@ -1,6 +1,6 @@
 package com.universe.touchpoint.context;
 
-import com.universe.touchpoint.api.operator.OperateMethod;
+import com.universe.touchpoint.api.ActionBody;
 import com.universe.touchpoint.plan.ActionGraph;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
 import java.util.Map;
@@ -9,7 +9,7 @@ public class TouchPointContext extends AgentContext {
 
   private TaskContext taskContext = new TaskContext();
   private final ActionContext actionContext = new ActionContext();
-  private OperateMethod operateMethod;
+  private ActionBody actionBody;
   private Map<String, Object> extContext;
   private String token;
 
@@ -33,12 +33,12 @@ public class TouchPointContext extends AgentContext {
     this.taskContext = taskContext;
   }
 
-  public OperateMethod getOperateModel() {
-    return operateMethod;
+  public ActionBody getOperateModel() {
+    return actionBody;
   }
 
-  public void setOperateModel(OperateMethod operateMethod) {
-    this.operateMethod = operateMethod;
+  public void setOperateModel(ActionBody actionBody) {
+    this.actionBody = actionBody;
   }
 
   public ActionContext getActionContext() {

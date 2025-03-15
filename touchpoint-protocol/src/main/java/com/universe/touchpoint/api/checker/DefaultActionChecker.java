@@ -1,5 +1,5 @@
 package com.universe.touchpoint.api.checker;
 
-import com.universe.touchpoint.api.operator.OperateMethod;
+import com.universe.touchpoint.api.ActionBody;
 
-public interface DefaultActionChecker extends DefaultChecker<OperateMethod> {}
+public interface DefaultActionChecker extends DefaultChecker<ActionBody> {}
