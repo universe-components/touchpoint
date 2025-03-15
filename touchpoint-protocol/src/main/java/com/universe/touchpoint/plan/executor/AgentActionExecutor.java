@@ -25,7 +25,7 @@ public class AgentActionExecutor<I, O> extends ActionExecutor<AgentAction<I, O>,
           .send(
               action,
               TouchPointHelper.touchPointFilterName(
-                  TouchPointConstants.TOUCH_POINT_TASK_CONTEXT_FILTER,
+                  TouchPointConstants.TOUCH_POINT_TASK_OPERATE_CONTEXT_FILTER,
                   action.getContext().getBelongTask(),
                   RoleType.MEMBER.name()));
     }

@@ -68,7 +68,7 @@ public class RouterReadyHandler implements AgentSocketStateHandler<ActionGraph, 
                 AgentSyncProtocolSelector.selectProtocol(socketConfig.getBindProtocol()))
             .registerReceiver(
                 new TaskActionContext(taskActionContext.getAction(), task),
-                TouchPointConstants.TOUCH_POINT_TASK_CONTEXT_FILTER,
+                TouchPointConstants.TOUCH_POINT_TASK_OPERATE_CONTEXT_FILTER,
                 RoleType.MEMBER,
                 AgentAction.class);
       }

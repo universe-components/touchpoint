@@ -10,7 +10,7 @@ public class AgentReceiverSelector {
   public static AgentReceiver<?> selectReceiver(String filter) {
     return switch (filter) {
       case TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER -> new AgentStateReceiver();
-      case TouchPointConstants.TOUCH_POINT_TASK_CONTEXT_FILTER -> new AgentContextReceiver();
+      case TouchPointConstants.TOUCH_POINT_TASK_OPERATE_CONTEXT_FILTER -> new AgentContextReceiver();
       case TouchPointConstants.METRIC_FILTER -> new MetricReceiver();
       default -> null;
     };
