@@ -10,7 +10,7 @@ public class Supervisor {
     RoleExecutor<I, O> supervisor =
         (RoleExecutor<I, O>)
             TaskRoleExecutor.getInstance(task)
-                .getExecutor(agentAction.getInput().getOperateMethod().getAction());
+                .getExecutor(agentAction.getInput().getActionBody().getAction());
     Object supervisedResult = supervisor.run(agentAction.getInput(), agentAction.getContext());
     if (supervisedResult instanceof Boolean && !(Boolean) supervisedResult) {
       throw new RuntimeException(

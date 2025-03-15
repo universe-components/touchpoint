@@ -11,14 +11,14 @@ import java.util.Objects;
 public class Coordinator {
 
   public void execute(AgentAction<?, ?> action) {
-    if (action.getInput().getOperateMethod() == null) {
+    if (action.getInput().getActionBody() == null) {
       return;
     }
     TouchPointContext prevContext =
         (TouchPointContext)
             TokenizerSelector.getTokenizer("jwt").parseToken(action.getContext().getToken());
     String prevGraphName = prevContext.getActionGraph().getName();
-    String currGraphName = action.getInput().getOperateMethod().getTarget();
+    String currGraphName = action.getInput().getActionBody().getTarget();
 
     if (currGraphName != null && !Objects.equals(prevGraphName, currGraphName)) {
       new AgentSocketStateRouter<>()

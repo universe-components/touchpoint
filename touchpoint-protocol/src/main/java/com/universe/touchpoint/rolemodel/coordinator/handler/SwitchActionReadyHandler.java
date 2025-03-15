@@ -21,7 +21,7 @@ public class SwitchActionReadyHandler<I extends TouchPoint, O extends TouchPoint
     TouchPointContext context = (TouchPointContext) agentContext;
     RoleExecutor<I, AgentActionMeta> actionCoordinator =
         (RoleExecutor<I, AgentActionMeta>)
-            TaskRoleExecutor.getInstance(task).getExecutor(request.getOperateMethod().getAction());
+            TaskRoleExecutor.getInstance(task).getExecutor(request.getActionBody().getAction());
     AgentActionMeta newAction = actionCoordinator.run(request, context);
     MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
     metaRegion.putTouchPointAction(newAction.getName(), newAction);

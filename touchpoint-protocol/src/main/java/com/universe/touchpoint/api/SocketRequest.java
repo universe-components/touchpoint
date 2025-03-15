@@ -22,7 +22,7 @@ public class SocketRequest<B> {
     return body;
   }
 
-  public ActionBody getOperateMethod() {
+  public ActionBody getActionBody() {
     return actionBody;
   }
 }

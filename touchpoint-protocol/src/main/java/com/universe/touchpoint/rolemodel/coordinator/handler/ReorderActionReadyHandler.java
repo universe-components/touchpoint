@@ -17,7 +17,7 @@ public class ReorderActionReadyHandler<I extends TouchPoint, O extends TouchPoin
   public <C extends AgentContext> ActionGraph onStateChange(
       SocketRequest<I> request, C touchPointContext, String task) {
     TouchPointContext context = (TouchPointContext) touchPointContext;
-    String coordinator = request.getOperateMethod().getAction();
+    String coordinator = request.getActionBody().getAction();
     ActionGraphOperator<I> actionCoordinator =
         (ActionGraphOperator<I>) TaskRoleExecutor.getInstance(task).getExecutor(coordinator);
     ActionGraph graph = actionCoordinator.run(request, context);
