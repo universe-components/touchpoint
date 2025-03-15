@@ -1,9 +1,9 @@
 package com.universe.touchpoint.monitor;
 
+import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.context.TouchPointContextManager;
 import com.universe.touchpoint.monitor.metric.ActionMetric;
 import com.universe.touchpoint.monitor.metric.TaskMetric;
-import com.universe.touchpoint.negotiation.AgentContext;
 import com.universe.touchpoint.sync.AgentReceiver;
 import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;

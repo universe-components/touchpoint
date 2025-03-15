@@ -1,6 +1,6 @@
 package com.universe.touchpoint.sync;
 
-import com.universe.touchpoint.negotiation.AgentContext;
+import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.utils.SerializeUtils;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 

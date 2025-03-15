@@ -35,7 +35,7 @@ public class OpenAIPromptGenerator implements PromptGenerator<String> {
     if (action != null) {
       finalSuffix = finalSuffix.replace("{agent_scratchpad}", action.getThought());
       String actionName = action.getActionName();
-      String actionInput = ClassUtils.getFieldValues(action.getInput());
+      String actionInput = ClassUtils.getFieldValues(action.getInput().getBody());
       String observation = action.getOutput().toString();
       actionBody
           .append(finalSuffix)

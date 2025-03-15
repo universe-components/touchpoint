@@ -1,6 +1,7 @@
 package com.universe.touchpoint.agent;
 
 import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 
@@ -9,7 +10,7 @@ public class AgentAction<I, O> extends TouchPoint {
   private String actionName;
   private String thought;
   private O output;
-  private I input;
+  private SocketRequest<I> input;
   private AgentActionMeta meta;
 
   public AgentAction(String actionName, AgentActionMeta actionMeta, Header header, String task) {
@@ -42,11 +43,11 @@ public class AgentAction<I, O> extends TouchPoint {
     this.output = output;
   }
 
-  public I getInput() {
+  public SocketRequest<I> getInput() {
     return input;
   }
 
-  public void setInput(I input) {
+  public void setInput(SocketRequest<I> input) {
     this.input = input;
   }
 

@@ -1,12 +1,7 @@
 package com.universe.touchpoint.rolemodel.coordinator;
 
-import com.universe.touchpoint.config.ai.Model;
-import com.universe.touchpoint.config.transport.Transport;
+import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.context.TouchPointContext;
-import com.universe.touchpoint.memory.Region;
-import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.MetaRegion;
-import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.negotiation.AgentSocketState;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.negotiation.AgentSocketStateRouter;
@@ -15,43 +10,30 @@ import java.util.Objects;
 
 public class Coordinator {
 
-  public void execute(TouchPointContext context) {
-    if (context == null) {
+  public void execute(AgentAction<?, ?> action) {
+    if (action.getInput().getOperateMethod() == null) {
       return;
     }
     TouchPointContext prevContext =
-        (TouchPointContext) TokenizerSelector.getTokenizer("jwt").parseToken(context.getToken());
-    String agentAction = context.getAction();
-    AgentActionMeta actionMeta =
-        ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointAction(agentAction);
+        (TouchPointContext)
+            TokenizerSelector.getTokenizer("jwt").parseToken(action.getContext().getToken());
     String prevGraphName = prevContext.getActionGraph().getName();
-    String currGraphName = context.getTaskContext().getActionGraphContext().env();
-    Model prevlangModel = actionMeta.getModel().getModel();
-    Model prevVisionModel = actionMeta.getVisionModel().getModel();
-    Model prevVisionLangModel = actionMeta.getVisionLangModel().getModel();
-    Model currlangModel = context.getActionContext().getLangModel(agentAction);
-    Model currVisionModel = context.getActionContext().getVisionModel(agentAction);
-    Model currVisionLangModel = context.getActionContext().getVisionLangModel(agentAction);
-    Transport prevTransport = actionMeta.getTransportConfig().transportType();
-    Transport currTransport = context.getActionContext().getTransport(agentAction);
+    String currGraphName = action.getInput().getOperateMethod().getTarget();
 
     if (currGraphName != null && !Objects.equals(prevGraphName, currGraphName)) {
       new AgentSocketStateRouter<>()
           .route(
-              null,
+              action.getContext(),
               new AgentSocketStateMachine.AgentSocketStateContext<>(
-                  AgentSocketState.ACTION_GRAPH_READY, agentAction),
-              context.getTask());
-    } else if (!Objects.equals(prevlangModel, currlangModel)
-        || !Objects.equals(prevVisionModel, currVisionModel)
-        || !Objects.equals(prevVisionLangModel, currVisionLangModel)
-        || !Objects.equals(prevTransport, currTransport)) {
+                  AgentSocketState.COORDINATOR_ACTION_GRAPH_READY, action.getInput()),
+              action.getContext().getBelongTask());
+    } else {
       new AgentSocketStateRouter<>()
           .route(
-              null,
+              action.getContext(),
               new AgentSocketStateMachine.AgentSocketStateContext<>(
-                  AgentSocketState.ACTION_READY, agentAction),
-              context.getTask());
+                  AgentSocketState.ACTION_READY, action.getInput()),
+              action.getContext().getBelongTask());
     }
   }
 }

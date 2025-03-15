@@ -1,10 +1,10 @@
 package com.universe.touchpoint.android;
 
-import com.universe.touchpoint.TaskSocket;
+import com.universe.touchpoint.Socket;
 import com.universe.touchpoint.android.binder.BinderFactory;
 import com.universe.touchpoint.android.binder.BinderType;
 
-public class AgentSocket extends TaskSocket {
+public class AgentSocket extends Socket {
 
     public AgentSocket(String task) {
         super(task);

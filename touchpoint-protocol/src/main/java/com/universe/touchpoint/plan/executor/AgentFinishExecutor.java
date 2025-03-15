@@ -1,6 +1,6 @@
 package com.universe.touchpoint.plan.executor;
 
-import com.universe.touchpoint.TaskSocket;
+import com.universe.touchpoint.Socket;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.plan.ActionExecutor;
@@ -16,8 +16,7 @@ public class AgentFinishExecutor<O> extends ActionExecutor<AgentFinish<O>, O> {
   public O run(AgentFinish<O> agentFinish) {
     List<AgentActionMeta> predecessors = Router.route(agentFinish, false);
     if (predecessors == null) {
-      TaskSocket.TaskCallbackListener callbackListener =
-          agentFinish.getHeader().getCallbackListener();
+      Socket.TaskCallbackListener callbackListener = agentFinish.getHeader().getCallbackListener();
       callbackListener.onSuccess(agentFinish);
     }
     return agentFinish.getOutput();

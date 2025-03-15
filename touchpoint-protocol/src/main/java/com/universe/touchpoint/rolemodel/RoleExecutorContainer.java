@@ -13,7 +13,7 @@ public class RoleExecutorContainer {
   private final Map<String, RoleExecutor<?, ?>> executorMap = new ConcurrentHashMap<>();
 
   {
-    executorMap.put(RoleConstants.ACTION_CAPABILITY_CHECKER, new ActionMonitor<>());
+    executorMap.put(RoleConstants.ACTION_CAPABILITY_CHECKER, new ActionMonitor());
     executorMap.put(RoleConstants.TASK_EXECUTOR_CHECKER, new TaskMonitor<>());
     executorMap.put(RoleConstants.TASK_METRIC_FETCHER, new TaskMetricFetcher<>());
   }

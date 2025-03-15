@@ -1,19 +1,22 @@
 package com.universe.touchpoint.monitor.action.alarm;
 
+import com.universe.touchpoint.Socket;
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.api.executor.AgentActionExecutor;
+import com.universe.touchpoint.api.SocketRequest;
+import com.universe.touchpoint.api.checker.DefaultActionChecker;
+import com.universe.touchpoint.api.operator.OperateMethod;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.context.TaskState;
 import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.context.TouchPointContextManager;
 
-public class ActionMonitor<T extends TouchPoint> extends AgentActionExecutor<T, MonitorResult> {
+public class ActionMonitor implements DefaultActionChecker {
 
   @Override
-  public MonitorResult run(T touchPoint, TouchPointContext context) {
-    String ctxAction = context.getAction();
-    String task = context.getTask();
+  public Boolean run(SocketRequest<OperateMethod> operateMethod, TouchPointContext context) {
+    String ctxAction = operateMethod.getBody().getTarget();
+    String task = context.getBelongTask();
     ActionMetricConfig metricConfig = ConfigManager.selectActionMetricConfig(ctxAction, task);
     MonitorResult monitorResult = new MonitorResult();
 
@@ -23,15 +26,13 @@ public class ActionMonitor<T extends TouchPoint> extends AgentActionExecutor<T, 
             .getActionMetric(ctxAction)
             .getPredictionCount()
         > metricConfig.getMaxPredictionCount()) {
-      monitorResult.setState(
-          new TouchPoint.TouchPointState(
-              TaskState.NEED_SWITCH_LANG_MODEL.getCode(),
-              "The AI model has too many prediction rounds and still hasn't provided a final result",
-              touchPoint.getHeader().getToAction().getName()));
-      return monitorResult;
+      SocketRequest<OperateMethod> operateMethodRequest =
+          new SocketRequest<>(new OperateMethod(ctxAction, "switch_ai_model"));
+      new Socket("switch_ai_model").send(operateMethodRequest);
+      return false;
     }
 
     monitorResult.setState(new TouchPoint.TouchPointState(TaskState.OK.getCode(), "success"));
-    return new MonitorResult();
+    return true;
   }
 }

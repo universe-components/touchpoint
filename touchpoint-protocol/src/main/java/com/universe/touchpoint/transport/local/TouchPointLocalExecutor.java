@@ -18,7 +18,7 @@ public class TouchPointLocalExecutor<I, O, T extends AgentAction<I, O>>
         .exchange(
             action,
             action.getContext().getTaskContext().getGoal(),
-            action.getContext().getTask(),
+            action.getContext().getBelongTask(),
             Transport.LOCAL);
   }
 }

@@ -3,16 +3,15 @@ package com.universe.touchpoint.spring;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.universe.touchpoint.meta.data.TaskMeta;
-import com.universe.touchpoint.spring.annotation.Task;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = TaskTestApplication.class)
-public class TaskMetaTest {
+public class MetricsCollectTaskMetaTest {
 
   @Autowired
-  @Task("test")
   private TaskMeta taskMeta;
 
   @Test

@@ -2,7 +2,7 @@ package com.universe.touchpoint.sync;
 
 import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
-import com.universe.touchpoint.negotiation.AgentContext;
+import com.universe.touchpoint.context.AgentContext;
 import javax.annotation.Nullable;
 
 public interface AgentSyncProtocol<M> {

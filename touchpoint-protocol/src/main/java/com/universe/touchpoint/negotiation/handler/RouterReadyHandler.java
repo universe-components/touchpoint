@@ -1,17 +1,17 @@
 package com.universe.touchpoint.negotiation.handler;
 
 import com.universe.touchpoint.TouchPointConstants;
+import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
-import com.universe.touchpoint.context.TouchPointContext;
+import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
-import com.universe.touchpoint.negotiation.AgentContext;
 import com.universe.touchpoint.negotiation.AgentSocketStateHandler;
 import com.universe.touchpoint.negotiation.context.TaskActionContext;
 import com.universe.touchpoint.plan.ActionGraph;
@@ -64,13 +64,13 @@ public class RouterReadyHandler implements AgentSocketStateHandler<ActionGraph, 
         AgentSocketConfig socketConfig =
             ConfigManager.selectAgentSocket(taskActionContext.getBelongTask());
         assert socketConfig != null;
-        ((AgentSyncProtocol<TouchPointContext>)
+        ((AgentSyncProtocol<AgentAction>)
                 AgentSyncProtocolSelector.selectProtocol(socketConfig.getBindProtocol()))
             .registerReceiver(
                 new TaskActionContext(taskActionContext.getAction(), task),
                 TouchPointConstants.TOUCH_POINT_TASK_CONTEXT_FILTER,
                 RoleType.MEMBER,
-                TouchPointContext.class);
+                AgentAction.class);
       }
 
       RouteTable.getInstance().putPredecessors(taskActionContext.getAction(), predecessors);

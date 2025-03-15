@@ -68,8 +68,6 @@ public class AgentApplication extends Application {
                 !isPlugin
         );
 
-        TaskProposer.init(ctx);
-
         TaskParticipant.registerActions(receiverFilterPair);
         TaskParticipant.listenTasks(receiverFilterPair);
     }

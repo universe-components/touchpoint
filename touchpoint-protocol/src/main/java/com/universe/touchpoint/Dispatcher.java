@@ -1,7 +1,10 @@
 package com.universe.touchpoint;
 
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.context.TouchPointContext;
+import com.universe.touchpoint.api.SocketRequest;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
 import com.universe.touchpoint.plan.ResultDispatcher;
 import java.util.ArrayList;
@@ -9,28 +12,27 @@ import java.util.List;
 
 public class Dispatcher {
 
-  public static <T, F> List<F> dispatch(
-      String content,
-      String task,
-      T params,
-      TouchPointContext context,
-      TaskSocket.TaskCallbackListener callbackListener) {
+  public static <P, F> F dispatch(
+      String task, SocketRequest<P> params, Socket.TaskCallbackListener callbackListener) {
     List<F> finalResult = new ArrayList<>();
     ActionGraphBuilder.getTaskGraph(task)
         .getFirstNodes()
         .forEach(
             actionMeta -> {
-              AgentAction<T, ?> action =
+              AgentAction<P, ?> action =
                   new AgentAction<>(
                       actionMeta.getName(), actionMeta, new TouchPoint.Header(actionMeta), task);
-              action.setContext(context);
-              action.getContext().getTaskContext().setGoal(content);
+              MetaRegion metaRegion = TouchPointMemory.getRegion(Region.META);
+              action
+                  .getContext()
+                  .getTaskContext()
+                  .setGoal(metaRegion.getTouchPointAction(task).getDesc());
               action.getHeader().setCallbackListener(callbackListener);
               if (params != null) {
                 action.setInput(params);
               }
               finalResult.add(ResultDispatcher.run(action, actionMeta));
             });
-    return finalResult;
+    return finalResult.get(0);
   }
 }

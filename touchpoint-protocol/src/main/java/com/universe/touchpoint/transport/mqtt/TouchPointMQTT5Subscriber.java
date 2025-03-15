@@ -19,7 +19,7 @@ public class TouchPointMQTT5Subscriber<T extends TouchPoint> {
 
   public void handleMessage(MqttMessage message) {
     T touchPoint = SerializeUtils.deserializeFromByteArray(message.getPayload(), tpClass);
-    String taskName = touchPoint.getContext().getTask();
+    String taskName = touchPoint.getContext().getBelongTask();
     TaskContext taskContext = touchPoint.getContext().getTaskContext();
 
     touchPoint =

@@ -1,4 +1,4 @@
-package com.universe.touchpoint.api.executor;
+package com.universe.touchpoint.api.executor.vla;
 
 public class ImageData {
 

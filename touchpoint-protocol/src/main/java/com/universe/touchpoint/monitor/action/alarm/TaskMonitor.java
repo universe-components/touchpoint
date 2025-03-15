@@ -1,6 +1,7 @@
 package com.universe.touchpoint.monitor.action.alarm;
 
 import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.metric.TaskMetricConfig;
@@ -11,8 +12,8 @@ import com.universe.touchpoint.context.TouchPointContextManager;
 public class TaskMonitor<T extends TouchPoint> extends AgentActionExecutor<T, MonitorResult> {
 
   @Override
-  public MonitorResult run(T touchPoint, TouchPointContext context) {
-    String task = context.getTask();
+  public MonitorResult run(SocketRequest<T> touchPoint, TouchPointContext context) {
+    String task = context.getBelongTask();
     TaskMetricConfig metricConfig = ConfigManager.selectTaskMetricConfig(task);
     MonitorResult monitorResult = new MonitorResult();
 
@@ -26,7 +27,7 @@ public class TaskMonitor<T extends TouchPoint> extends AgentActionExecutor<T, Mo
           new TouchPoint.TouchPointState(
               TaskState.NEED_REORDER_ACTION.getCode(),
               "The task has too many action retries",
-              touchPoint.getHeader().getToAction().getName()));
+              touchPoint.getBody().getHeader().getToAction().getName()));
       return monitorResult;
     }
 

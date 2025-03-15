@@ -7,7 +7,7 @@ import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import akka.actor.typed.javadsl.Routers;
-import com.universe.touchpoint.negotiation.AgentContext;
+import com.universe.touchpoint.context.AgentContext;
 
 public class PoolActor<M> extends AbstractBehavior<M> {
 

@@ -5,7 +5,7 @@ import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
-import com.universe.touchpoint.negotiation.AgentContext;
+import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.sync.AgentReceiver;
 import com.universe.touchpoint.sync.AgentReceiverSelector;
 import java.util.Objects;

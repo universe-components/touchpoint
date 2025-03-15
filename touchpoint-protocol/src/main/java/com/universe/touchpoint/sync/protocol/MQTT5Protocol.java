@@ -2,8 +2,8 @@ package com.universe.touchpoint.sync.protocol;
 
 import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
+import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
-import com.universe.touchpoint.negotiation.AgentContext;
 import com.universe.touchpoint.sync.AgentReceiver;
 import com.universe.touchpoint.sync.AgentReceiverSelector;
 import com.universe.touchpoint.sync.AgentSyncProtocol;

@@ -1,6 +1,7 @@
 package com.universe.touchpoint.negotiation;
 
 import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.plan.ActionGraph;
 import com.universe.touchpoint.plan.ActionGraphBuilder;

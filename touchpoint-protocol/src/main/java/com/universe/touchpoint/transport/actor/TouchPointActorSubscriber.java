@@ -31,7 +31,7 @@ public class TouchPointActorSubscriber<M extends TouchPoint> extends AbstractBeh
   }
 
   public Behavior<M> onMessageReceived(M message) {
-    String taskName = message.getContext().getTask();
+    String taskName = message.getContext().getBelongTask();
     TaskContext taskContext = message.getContext().getTaskContext();
 
     message =

@@ -84,7 +84,7 @@ public class TouchPoint {
     private AgentActionMeta fromAction = null;
     private AgentActionMeta toAction = null;
     private transient TouchPointChannel<?, ?> channel;
-    private TaskSocket.TaskCallbackListener callbackListener;
+    private Socket.TaskCallbackListener callbackListener;
 
     public Header() {}
 
@@ -121,11 +121,11 @@ public class TouchPoint {
       this.channel = channel;
     }
 
-    public TaskSocket.TaskCallbackListener getCallbackListener() {
+    public Socket.TaskCallbackListener getCallbackListener() {
       return callbackListener;
     }
 
-    public void setCallbackListener(TaskSocket.TaskCallbackListener callbackListener) {
+    public void setCallbackListener(Socket.TaskCallbackListener callbackListener) {
       this.callbackListener = callbackListener;
     }
   }

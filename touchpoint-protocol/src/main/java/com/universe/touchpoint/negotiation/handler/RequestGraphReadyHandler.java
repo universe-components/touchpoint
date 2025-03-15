@@ -1,6 +1,6 @@
 package com.universe.touchpoint.negotiation.handler;
 
-import com.universe.touchpoint.negotiation.AgentContext;
+import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.negotiation.AgentSocketStateHandler;
 import com.universe.touchpoint.plan.ActionGraph;
 import com.universe.touchpoint.plan.ActionGraphBuilder;

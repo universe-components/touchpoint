@@ -3,6 +3,7 @@ package com.universe.touchpoint.negotiation;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.annotations.socket.SocketProtocol;
+import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.sync.AgentSyncProtocol;
 import com.universe.touchpoint.sync.AgentSyncProtocolSelector;

@@ -4,6 +4,7 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.ai.ChoiceParser;
 import com.universe.touchpoint.ai.models.OpenVLA;
+import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.router.Router;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class OpenVLAChoiceParser implements ChoiceParser<OpenVLA.ActionResponse>
     if (nextActions != null) {
       for (AgentActionMeta nextAction : nextActions) {
         correctAction.setActionName(nextAction.getName());
-        correctAction.setInput(choices);
+        correctAction.setInput(new SocketRequest<>(choices));
         agentActions.add(correctAction);
       }
       return Pair.of(agentActions, null);

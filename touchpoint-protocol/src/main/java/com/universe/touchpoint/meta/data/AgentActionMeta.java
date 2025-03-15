@@ -3,7 +3,7 @@ package com.universe.touchpoint.meta.data;
 import com.universe.touchpoint.agent.ActionType;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.role.RoleType;
-import com.universe.touchpoint.api.executor.ActionPredictor;
+import com.universe.touchpoint.api.executor.vla.ActionPredictor;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
 import com.universe.touchpoint.config.ai.VisionModelConfig;

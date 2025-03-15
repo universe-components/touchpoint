@@ -1,4 +1,4 @@
-package com.universe.touchpoint.negotiation;
+package com.universe.touchpoint.context;
 
 public abstract class AgentContext {
 
