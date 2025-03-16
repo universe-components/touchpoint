@@ -68,8 +68,8 @@ public class AgentApplication extends Application {
                 !isPlugin
         );
 
-        TaskParticipant.registerActions(receiverFilterPair);
-        TaskParticipant.listenTasks(receiverFilterPair);
+        ActionRegistry.registerActions(receiverFilterPair);
+        ActionRegistry.listenTasks(receiverFilterPair);
     }
 
     @Override

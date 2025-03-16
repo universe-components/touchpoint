@@ -43,7 +43,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.List;
 import java.util.Map;
 
-public class TaskParticipant {
+public class ActionRegistry {
 
     public static void registerActions(List<Pair<String, List<Object>>> receiverFilterPair) {
         for (Pair<String, List<Object>> pair : receiverFilterPair) {
@@ -76,9 +76,11 @@ public class TaskParticipant {
                 /*
                  * Local Registry
                  */
+                ActionRole role = (ActionRole) properties.get(2);
                 boolean coordinatorResult = registerCoordinator(Class.forName(clazz), (String) properties.get(0));
+                if (coordinatorResult) role = ActionRole.COORDINATOR;
                 boolean supervisorResult = registerSupervisor(Class.forName(clazz), (String) properties.get(0));
-                ActionRole role = coordinatorResult ? ActionRole.COORDINATOR : (supervisorResult ? ActionRole.SUPERVISOR : ActionRole.EXECUTOR);
+                if (supervisorResult) role = ActionRole.SUPERVISOR;
 
                 ActionDependency actionDependency = new ActionDependency((String) properties.get(0));
                 actionDependency.setToActions(StringUtils.convert((String[]) properties.get(3)));

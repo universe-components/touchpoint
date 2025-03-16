@@ -53,21 +53,20 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
       assert actionAttributes != null;
       String actionName = (String) actionAttributes.get("name");
       String actionDesc = (String) actionAttributes.get("desc");
+      ActionRole role = (ActionRole) actionAttributes.get("role");
       ActionAnnotationMeta actionAnnotationMeta =
           new ActionAnnotationMeta(actionClass, actionAttributes);
-      boolean isSupervisor = false;
-      boolean isCoordinator = false;
 
-      if (importingClassMetadata.hasAnnotation(Supervisor.class.getName())) {
-        isSupervisor = TaskParticipant.registerSupervisor(actionClass, actionName);
+      if (role == null) {
+        if (importingClassMetadata.hasAnnotation(Supervisor.class.getName())) {
+          TaskParticipant.registerSupervisor(actionClass, actionName);
+          role = ActionRole.SUPERVISOR;
+        }
+        if (importingClassMetadata.hasAnnotation(Coordinator.class.getName())) {
+          TaskParticipant.registerCoordinator(actionClass, actionName);
+          role = ActionRole.COORDINATOR;
+        }
       }
-      if (importingClassMetadata.hasAnnotation(Coordinator.class.getName())) {
-        isCoordinator = TaskParticipant.registerCoordinator(actionClass, actionName);
-      }
-      ActionRole role =
-          isCoordinator
-              ? ActionRole.COORDINATOR
-              : (isSupervisor ? ActionRole.SUPERVISOR : ActionRole.EXECUTOR);
 
       try {
         assert actionName != null;

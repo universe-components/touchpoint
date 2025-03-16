@@ -32,7 +32,7 @@ public class MetaManager {
       ParameterizedType parameterizedType = (ParameterizedType) interfaces[0];
       Type inputType = parameterizedType.getActualTypeArguments()[0];
 
-      String inputClassName = null;
+      String inputClassName;
       inputClassName = inputType.getTypeName();
       String outputClassName = null;
       if (parameterizedType.getActualTypeArguments().length > 1) {

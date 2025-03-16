@@ -10,37 +10,35 @@ import com.universe.touchpoint.utils.AnnotationUtils;
 
 public class TaskParticipant {
 
-  public static boolean registerCoordinator(Class<?> actionClass, String actionName) {
+  public static void registerCoordinator(Class<?> actionClass, String actionName) {
     try {
       CoordinatorConfig coordinatorConfig =
           (CoordinatorConfig)
               AnnotationUtils.annotation2Config(
                   actionClass, CoordinatorConfigMapping.annotation2Config);
       if (coordinatorConfig == null) {
-        return false;
+        return;
       }
       TaskRoleExecutor.getInstance(coordinatorConfig.getTask())
           .registerExecutor(
               actionName, (RoleExecutor<?, ?>) actionClass.getConstructor().newInstance());
-      return true;
     } catch (Exception ex) {
       throw new RuntimeException(ex);
     }
   }
 
-  public static boolean registerSupervisor(Class<?> actionClass, String actionName) {
+  public static void registerSupervisor(Class<?> actionClass, String actionName) {
     try {
       SupervisorConfig supervisorConfig =
           (SupervisorConfig)
               AnnotationUtils.annotation2Config(
                   actionClass, SupervisorConfigMapping.annotation2Config);
       if (supervisorConfig == null) {
-        return false;
+        return;
       }
       TaskRoleExecutor.getInstance(supervisorConfig.getTask())
           .registerExecutor(
               actionName, (RoleExecutor<?, ?>) actionClass.getConstructor().newInstance());
-      return true;
     } catch (Exception ex) {
       throw new RuntimeException(ex);
     }
