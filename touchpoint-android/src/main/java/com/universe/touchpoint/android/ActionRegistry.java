@@ -1,5 +1,6 @@
 package com.universe.touchpoint.android;
 
+import com.universe.touchpoint.TaskParticipant;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.role.RoleType;
@@ -77,9 +78,9 @@ public class ActionRegistry {
                  * Local Registry
                  */
                 ActionRole role = (ActionRole) properties.get(2);
-                boolean coordinatorResult = registerCoordinator(Class.forName(clazz), (String) properties.get(0));
+                boolean coordinatorResult = TaskParticipant.registerCoordinator(Class.forName(clazz), (String) properties.get(0));
                 if (coordinatorResult) role = ActionRole.COORDINATOR;
-                boolean supervisorResult = registerSupervisor(Class.forName(clazz), (String) properties.get(0));
+                boolean supervisorResult = TaskParticipant.registerSupervisor(Class.forName(clazz), (String) properties.get(0));
                 if (supervisorResult) role = ActionRole.SUPERVISOR;
 
                 ActionDependency actionDependency = new ActionDependency((String) properties.get(0));
@@ -101,38 +102,6 @@ public class ActionRegistry {
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
-        }
-    }
-
-    public static boolean registerCoordinator(Class<?> actionClass, String actionName) {
-        try {
-            CoordinatorConfig coordinatorConfig = (CoordinatorConfig) AnnotationUtils.annotation2Config(
-                    actionClass,
-                    CoordinatorConfigMapping.annotation2Config);
-            if (coordinatorConfig == null) {
-                return false;
-            }
-            TaskRoleExecutor.getInstance(coordinatorConfig.getTask())
-                    .registerExecutor(actionName, (RoleExecutor<?, ?>) actionClass.getConstructor().newInstance());
-            return true;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    public static boolean registerSupervisor(Class<?> actionClass, String actionName) {
-        try {
-            SupervisorConfig supervisorConfig = (SupervisorConfig) AnnotationUtils.annotation2Config(
-                    actionClass,
-                    SupervisorConfigMapping.annotation2Config);
-            if (supervisorConfig == null) {
-                return false;
-            }
-            TaskRoleExecutor.getInstance(supervisorConfig.getTask())
-                    .registerExecutor(actionName, (RoleExecutor<?, ?>) actionClass.getConstructor().newInstance());
-            return true;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
         }
     }
 
