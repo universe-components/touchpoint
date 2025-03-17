@@ -4,6 +4,7 @@ import com.universe.touchpoint.TaskParticipant;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.role.Coordinator;
+import com.universe.touchpoint.annotations.role.ExceptionHandler;
 import com.universe.touchpoint.annotations.role.OperateType;
 import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.annotations.role.Supervisor;
@@ -11,6 +12,7 @@ import com.universe.touchpoint.annotations.task.TouchPointAction;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.metric.MetricSocketConfig;
 import com.universe.touchpoint.config.role.CoordinatorConfig;
+import com.universe.touchpoint.config.role.ExceptionHandlerConfig;
 import com.universe.touchpoint.config.role.SupervisorConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
@@ -85,6 +87,19 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
                     (String) coordinatorAttributes.get("scope"),
                     (OperateType) coordinatorAttributes.get("operateType")));
       }
+      if (importingClassMetadata.hasAnnotation(ExceptionHandler.class.getName())) {
+        TaskParticipant.registerExceptionHandler(actionClass, actionAnnotationMeta.getName());
+        Map<String, Object> exceptionHandlerAttributes =
+            importingClassMetadata.getAnnotationAttributes(ExceptionHandler.class.getName());
+        assert exceptionHandlerAttributes != null;
+        roleModel =
+            new RoleModel<>(
+                ActionRole.EXCEPTION_HANDLER,
+                new ExceptionHandlerConfig(
+                    (String) exceptionHandlerAttributes.get("task"),
+                    (Integer) exceptionHandlerAttributes.get("errorCode"),
+                    (String) exceptionHandlerAttributes.get("scopeAction")));
+      }
 
       try {
         AgentActionMeta actionMeta =
@@ -103,8 +118,6 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
                 scopeAction);
         ((MetaRegion) TouchPointMemory.getRegion(Region.META))
             .putTouchPointAction(actionAnnotationMeta.getName(), actionMeta);
-
-        // Todo：no task action register to `all` filter for not limited to state machine etc.
 
         for (String task : actionAnnotationMeta.getActionDependency().getTasks()) {
           AgentSocketConfig socketConfig = ConfigManager.selectAgentSocket(task);

@@ -14,10 +14,11 @@ import com.universe.touchpoint.meta.data.AgentActionMeta;
 
 @TouchPointAction(name = "switch_ai_model", desc = "switch ai model for action")
 @Coordinator(task = "switch_ai_model", operateType = OperateType.EDIT_ACTION)
-public class SwitchAIModel4Action implements DefaultActionOperator {
+public class SwitchAIModel4Action implements DefaultActionOperator<String> {
 
   @Override
-  public AgentActionMeta run(SocketRequest<ActionBody> operateMethod, TouchPointContext context) {
+  public AgentActionMeta run(
+      SocketRequest<ActionBody<String>> operateMethod, TouchPointContext context) {
     return ((MetaRegion) TouchPointMemory.getRegion(Region.META))
         .getTouchPointAction(operateMethod.getBody().getTarget());
   }

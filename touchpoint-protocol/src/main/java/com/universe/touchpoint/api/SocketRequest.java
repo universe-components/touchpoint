@@ -3,7 +3,7 @@ package com.universe.touchpoint.api;
 public class SocketRequest<B> {
 
   private B body;
-  private ActionBody actionBody;
+  private ActionBody actionBody = new ActionBody();
 
   public SocketRequest(B body) {
     this.body = body;

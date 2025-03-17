@@ -1,22 +1,17 @@
 package com.universe.touchpoint.api;
 
-public class ActionBody {
+public class ActionBody<T> {
 
-  private String target;
+  private T target;
   private String action;
 
   public ActionBody() {}
 
-  public ActionBody(String target, String action) {
-    this.target = target;
-    this.action = action;
-  }
-
-  public String getTarget() {
+  public T getTarget() {
     return target;
   }
 
-  public void setTarget(String target) {
+  public void setTarget(T target) {
     this.target = target;
   }
 

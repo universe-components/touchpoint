@@ -16,6 +16,7 @@ import com.universe.touchpoint.config.mapping.VisionModelConfigMapping;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.metric.MetricSocketConfig;
 import com.universe.touchpoint.config.role.CoordinatorConfig;
+import com.universe.touchpoint.config.role.ExceptionHandlerConfig;
 import com.universe.touchpoint.config.role.SupervisorConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.task.ActionDependency;
@@ -83,6 +84,10 @@ public class ActionRegistry {
                 SupervisorConfig supervisorResult = TaskParticipant.registerSupervisor(Class.forName(clazz), (String) properties.get(0));
                 if (supervisorResult != null) {
                     roleModel = new RoleModel<>(ActionRole.SUPERVISOR, supervisorResult);
+                }
+                ExceptionHandlerConfig exceptionHandlerConfig = TaskParticipant.registerExceptionHandler(Class.forName(clazz), (String) properties.get(0));
+                if (exceptionHandlerConfig != null) {
+                    roleModel = new RoleModel<>(ActionRole.EXCEPTION_HANDLER, exceptionHandlerConfig);
                 }
 
                 ActionDependency actionDependency = new ActionDependency((String) properties.get(0));

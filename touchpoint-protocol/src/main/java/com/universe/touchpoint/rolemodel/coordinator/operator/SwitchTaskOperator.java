@@ -18,7 +18,7 @@ public class SwitchTaskOperator implements Operator {
         .equals(action.getContext().getBelongTask())) {
       new AgentSocketStateRouter<>()
           .route(
-              new TaskContext(action.getInput().getActionBody().getTarget()),
+              new TaskContext((String) action.getInput().getActionBody().getTarget()),
               new AgentSocketStateMachine.AgentSocketStateContext<>(
                   AgentSocketState.ACTION_GRAPH_READY, action.getMeta()),
               action.getContext().getBelongTask());

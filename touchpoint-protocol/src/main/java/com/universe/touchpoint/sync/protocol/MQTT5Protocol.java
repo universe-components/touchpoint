@@ -15,10 +15,14 @@ import java.util.Objects;
 import java.util.Properties;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.eclipse.paho.mqttv5.client.IMqttToken;
+import org.eclipse.paho.mqttv5.client.MqttCallback;
 import org.eclipse.paho.mqttv5.client.MqttClient;
 import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
+import org.eclipse.paho.mqttv5.client.MqttDisconnectResponse;
 import org.eclipse.paho.mqttv5.common.MqttException;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
+import org.eclipse.paho.mqttv5.common.packet.MqttProperties;
 
 public class MQTT5Protocol implements AgentSyncProtocol<MqttMessage> {
 
@@ -57,19 +61,40 @@ public class MQTT5Protocol implements AgentSyncProtocol<MqttMessage> {
       @Nullable C context, String filter, RoleType role, Class<MqttMessage> messageType) {
     try {
       assert context != null;
+      String socketFilterAll =
+          TouchPointHelper.touchPointFilterName(
+              String.join(".", filter, "all"), context.getBelongTask(), role.name());
       String socketFilter =
           TouchPointHelper.touchPointFilterName(filter, context.getBelongTask(), role.name());
-      client.subscribe(
-          socketFilter,
-          1,
-          (topic, message) -> {
-            if (message == null) {
-              return;
+      String[] socketTopics = {socketFilter, socketFilterAll};
+      client.setCallback(
+          new MqttCallback() {
+            @Override
+            public void disconnected(MqttDisconnectResponse disconnectResponse) {}
+
+            @Override
+            public void mqttErrorOccurred(MqttException exception) {}
+
+            @Override
+            public void messageArrived(String topic, MqttMessage message) throws Exception {
+              if (message == null) {
+                return;
+              }
+              ((AgentReceiver<MqttMessage>)
+                      Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter)))
+                  .handleMessage(context, message, topic, messageType);
             }
-            ((AgentReceiver<MqttMessage>)
-                    Objects.requireNonNull(AgentReceiverSelector.selectReceiver(filter)))
-                .handleMessage(context, message, topic, messageType);
+
+            @Override
+            public void deliveryComplete(IMqttToken token) {}
+
+            @Override
+            public void connectComplete(boolean reconnect, String serverURI) {}
+
+            @Override
+            public void authPacketArrived(int reasonCode, MqttProperties properties) {}
           });
+      client.subscribe(socketTopics, new int[] {1, 1});
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
