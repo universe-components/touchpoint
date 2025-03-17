@@ -16,9 +16,6 @@ public class Supervisor extends RoleWorker {
         supervisor.run(new SocketRequest<>(agentAction.getOutput()), agentAction.getContext());
     if (supervisedResult instanceof Boolean && !(Boolean) supervisedResult) {
       RoleWorker.run(agentAction);
-      throw new RuntimeException(
-          String.format(
-              "ActionSupervisor run failed：action[%s] is not passed", agentAction.getActionName()));
     }
   }
 }
