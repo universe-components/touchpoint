@@ -1,31 +1,18 @@
 package com.universe.touchpoint.plan.executor;
 
 import com.universe.touchpoint.Socket;
-import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.annotations.role.RoleType;
-import com.universe.touchpoint.annotations.socket.SocketProtocol;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.api.SocketRequest;
-import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.plan.ActionExecutor;
 import com.universe.touchpoint.rolemodel.RoleWorker;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
-import com.universe.touchpoint.sync.AgentSyncProtocol;
-import com.universe.touchpoint.sync.AgentSyncProtocolSelector;
 
 public class AgentActionExecutor<I, O> extends ActionExecutor<AgentAction<I, O>, O> {
 
   @Override
   public void beforeRun(AgentAction<I, O> action) {
-    ((AgentSyncProtocol<AgentAction<I, O>>)
-            AgentSyncProtocolSelector.selectProtocol(SocketProtocol.MQTT5))
-        .send(
-            action,
-            TouchPointHelper.touchPointFilterName(
-                TouchPointConstants.TOUCH_POINT_TASK_OPERATE_CONTEXT_FILTER,
-                action.getContext().getBelongTask(),
-                RoleType.MEMBER.name()));
+    RoleWorker.run(action);
   }
 
   @Override
