@@ -10,4 +10,8 @@ import java.lang.annotation.Target;
 public @interface Coordinator {
 
   String task();
+
+  String scope() default "";
+
+  OperateType operateType();
 }

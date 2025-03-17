@@ -1,0 +1,24 @@
+package com.universe.touchpoint.rolemodel;
+
+import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.api.RoleExecutor;
+import com.universe.touchpoint.api.SocketRequest;
+
+public class Supervisor extends RoleWorker {
+
+  @Override
+  public <I, O> void execute(AgentAction<I, O> agentAction) {
+    RoleExecutor<O, ?> supervisor =
+        (RoleExecutor<O, ?>)
+            TaskRoleExecutor.getInstance(agentAction.getContext().getBelongTask())
+                .getExecutor(agentAction.getInput().getActionBody().getAction());
+    Object supervisedResult =
+        supervisor.run(new SocketRequest<>(agentAction.getOutput()), agentAction.getContext());
+    if (supervisedResult instanceof Boolean && !(Boolean) supervisedResult) {
+      RoleWorker.run(agentAction);
+      throw new RuntimeException(
+          String.format(
+              "ActionSupervisor run failed：action[%s] is not passed", agentAction.getActionName()));
+    }
+  }
+}

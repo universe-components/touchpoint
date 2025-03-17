@@ -25,8 +25,4 @@ public class RoleExecutorContainer {
   public RoleExecutor<?, ?> getExecutor(String action) {
     return executorMap.get(action);
   }
-
-  public Map<String, RoleExecutor<?, ?>> getExecutorMap() {
-    return executorMap;
-  }
 }

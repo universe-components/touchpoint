@@ -15,7 +15,7 @@ import com.universe.touchpoint.utils.ClassUtils;
 
 public class AgentActionMeta extends BaseMeta {
 
-  private ActionRole role;
+  private RoleModel<?> roleModel;
   private RoleType roleType;
   private ActionType type;
   private String inputClassName;
@@ -32,7 +32,7 @@ public class AgentActionMeta extends BaseMeta {
       String agentName,
       String className,
       String actionDesc,
-      ActionRole role,
+      RoleModel<?> roleModel,
       String inputClassName,
       String outputClassName,
       LangModelConfig model,
@@ -54,8 +54,8 @@ public class AgentActionMeta extends BaseMeta {
         null,
         null,
         actionMetricConfig);
-    this.role = role;
-    this.roleType = role == ActionRole.PROPOSER ? RoleType.OWNER : RoleType.MEMBER;
+    this.roleModel = roleModel;
+    this.roleType = roleModel.getRole() == ActionRole.PROPOSER ? RoleType.OWNER : RoleType.MEMBER;
     try {
       if (ClassUtils.extendsAbstractClass(Class.forName(className), ActionPredictor.class)) {
         this.type = ActionType.ACT;
@@ -70,12 +70,12 @@ public class AgentActionMeta extends BaseMeta {
     this.toActions = toActions;
   }
 
-  public ActionRole getRole() {
-    return role;
+  public RoleModel<?> getRoleModel() {
+    return roleModel;
   }
 
-  public void setRole(ActionRole role) {
-    this.role = role;
+  public void setRole(RoleModel<?> roleModel) {
+    this.roleModel = roleModel;
   }
 
   public RoleType getRoleType() {

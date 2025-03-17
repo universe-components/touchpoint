@@ -7,6 +7,30 @@ import java.util.Map;
 
 public class StringUtils {
 
+  public static String convertToCamelCase(String input, boolean capitalizeFirst) {
+    if (input == null || input.isEmpty()) {
+      return input;
+    }
+
+    StringBuilder result = new StringBuilder();
+    boolean capitalizeNext = capitalizeFirst; // 控制首字母是否大写
+
+    for (char c : input.toCharArray()) {
+      if (c == '_') {
+        capitalizeNext = true; // 遇到下划线，下个字符需要大写
+      } else {
+        if (capitalizeNext) {
+          result.append(Character.toUpperCase(c));
+          capitalizeNext = false;
+        } else {
+          result.append(c);
+        }
+      }
+    }
+
+    return result.toString();
+  }
+
   public static Map<String, List<String>> convert(String[] toActionsConfig) {
     Map<String, List<String>> resultMap = new HashMap<>();
 

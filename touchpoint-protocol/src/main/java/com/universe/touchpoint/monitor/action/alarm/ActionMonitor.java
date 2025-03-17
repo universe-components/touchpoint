@@ -1,21 +1,20 @@
 package com.universe.touchpoint.monitor.action.alarm;
 
-import com.universe.touchpoint.Socket;
 import com.universe.touchpoint.TouchPoint;
-import com.universe.touchpoint.api.ActionBody;
+import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.api.SocketRequest;
-import com.universe.touchpoint.api.checker.DefaultActionChecker;
+import com.universe.touchpoint.api.checker.DefaultChecker;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.context.TaskState;
 import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.context.TouchPointContextManager;
 
-public class ActionMonitor implements DefaultActionChecker {
+public class ActionMonitor implements DefaultChecker<AgentAction<?, ?>> {
 
   @Override
-  public Boolean run(SocketRequest<ActionBody> operateMethod, TouchPointContext context) {
-    String ctxAction = operateMethod.getBody().getTarget();
+  public Boolean run(SocketRequest<AgentAction<?, ?>> action, TouchPointContext context) {
+    String ctxAction = action.getBody().getActionName();
     String task = context.getBelongTask();
     ActionMetricConfig metricConfig = ConfigManager.selectActionMetricConfig(ctxAction, task);
     MonitorResult monitorResult = new MonitorResult();
@@ -26,9 +25,6 @@ public class ActionMonitor implements DefaultActionChecker {
             .getActionMetric(ctxAction)
             .getPredictionCount()
         > metricConfig.getMaxPredictionCount()) {
-      SocketRequest<ActionBody> operateMethodRequest =
-          new SocketRequest<>(new ActionBody(ctxAction, "switch_ai_model"));
-      new Socket("switch_ai_model").send(operateMethodRequest);
       return false;
     }
 

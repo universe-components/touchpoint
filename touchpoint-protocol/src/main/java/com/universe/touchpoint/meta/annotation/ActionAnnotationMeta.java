@@ -1,5 +1,6 @@
 package com.universe.touchpoint.meta.annotation;
 
+import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.config.task.ActionDependency;
 import com.universe.touchpoint.meta.BaseAnnotationMeta;
 import com.universe.touchpoint.utils.StringUtils;
@@ -18,5 +19,9 @@ public class ActionAnnotationMeta extends BaseAnnotationMeta {
     assert toActions != null;
     actionDependency.setToActions(StringUtils.convert(toActions));
     return actionDependency;
+  }
+
+  public ActionRole getRole() {
+    return (ActionRole) attributes.get("role");
   }
 }

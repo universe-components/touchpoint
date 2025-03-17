@@ -1,6 +1,7 @@
 package com.universe.touchpoint.rolemodel.coordinator.action;
 
 import com.universe.touchpoint.annotations.role.Coordinator;
+import com.universe.touchpoint.annotations.role.OperateType;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
 import com.universe.touchpoint.api.ActionBody;
 import com.universe.touchpoint.api.SocketRequest;
@@ -12,7 +13,7 @@ import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 
 @TouchPointAction(name = "switch_ai_model", desc = "switch ai model for action")
-@Coordinator(task = "switch_ai_model")
+@Coordinator(task = "switch_ai_model", operateType = OperateType.EDIT_ACTION)
 public class SwitchAIModel4Action implements DefaultActionOperator {
 
   @Override

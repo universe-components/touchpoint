@@ -1,11 +1,8 @@
 package com.universe.touchpoint.monitor.action.collector;
 
-import com.universe.touchpoint.Socket;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
-import com.universe.touchpoint.api.ActionBody;
-import com.universe.touchpoint.api.RoleConstants;
 import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.context.TouchPointContext;
@@ -25,11 +22,6 @@ public class ActionMetricCollector extends AgentActionExecutor<AgentAction<?, ?>
         .getActionContext()
         .getActionMetric(countAction)
         .incrementPredictionCount();
-    SocketRequest<ActionBody> operateMethodRequest =
-        new SocketRequest<>(
-            new ActionBody(
-                request.getBody().getActionName(), RoleConstants.ACTION_CAPABILITY_CHECKER));
-    new Socket("metrics_alarm").send(operateMethodRequest);
     return request.getBody();
   }
 }

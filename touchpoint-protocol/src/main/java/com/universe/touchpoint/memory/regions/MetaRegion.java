@@ -70,7 +70,7 @@ public class MetaRegion extends TouchPointRegion {
 
   public boolean containActions(List<ActionRole> roles) {
     for (AgentActionMeta agentActionMeta : touchPointActions.values()) {
-      if (roles.contains(agentActionMeta.getRole())) {
+      if (roles.contains(agentActionMeta.getRoleModel().getRole())) {
         return true;
       }
     }

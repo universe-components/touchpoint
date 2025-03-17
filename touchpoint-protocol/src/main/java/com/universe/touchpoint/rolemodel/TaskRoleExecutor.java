@@ -9,7 +9,6 @@ public class TaskRoleExecutor {
 
   private static final Map<String, RoleExecutorContainer> roleExecutorMap = new HashMap<>();
 
-  // 获取单例实例
   public static RoleExecutorContainer getInstance(String task) {
     if (!roleExecutorMap.containsKey(task)) {
       synchronized (lock) {

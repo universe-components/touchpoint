@@ -4,15 +4,12 @@ import com.universe.touchpoint.TaskParticipant;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.role.RoleType;
-import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
 import com.universe.touchpoint.config.ai.VisionModelConfig;
 import com.universe.touchpoint.config.mapping.ActionMetricConfigMapping;
-import com.universe.touchpoint.config.mapping.CoordinatorConfigMapping;
 import com.universe.touchpoint.config.mapping.LangModelConfigMapping;
-import com.universe.touchpoint.config.mapping.SupervisorConfigMapping;
 import com.universe.touchpoint.config.mapping.TransportConfigMapping;
 import com.universe.touchpoint.config.mapping.VisionLangModelConfigMapping;
 import com.universe.touchpoint.config.mapping.VisionModelConfigMapping;
@@ -30,7 +27,7 @@ import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.meta.MetaManager;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
-import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
+import com.universe.touchpoint.meta.data.RoleModel;
 import com.universe.touchpoint.negotiation.AgentSocketState;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.negotiation.context.TaskActionContext;
@@ -77,11 +74,16 @@ public class ActionRegistry {
                 /*
                  * Local Registry
                  */
-                ActionRole role = (ActionRole) properties.get(2);
-                boolean coordinatorResult = TaskParticipant.registerCoordinator(Class.forName(clazz), (String) properties.get(0));
-                if (coordinatorResult) role = ActionRole.COORDINATOR;
-                boolean supervisorResult = TaskParticipant.registerSupervisor(Class.forName(clazz), (String) properties.get(0));
-                if (supervisorResult) role = ActionRole.SUPERVISOR;
+                String scopeAction = (String) properties.get(4);
+                RoleModel<?> roleModel = new RoleModel<>((ActionRole) properties.get(2), null);
+                CoordinatorConfig coordinatorResult = TaskParticipant.registerCoordinator(Class.forName(clazz), (String) properties.get(0));
+                if (coordinatorResult != null) {
+                    roleModel = new RoleModel<>(ActionRole.COORDINATOR, coordinatorResult);
+                }
+                SupervisorConfig supervisorResult = TaskParticipant.registerSupervisor(Class.forName(clazz), (String) properties.get(0));
+                if (supervisorResult != null) {
+                    roleModel = new RoleModel<>(ActionRole.SUPERVISOR, supervisorResult);
+                }
 
                 ActionDependency actionDependency = new ActionDependency((String) properties.get(0));
                 actionDependency.setToActions(StringUtils.convert((String[]) properties.get(3)));
@@ -96,9 +98,10 @@ public class ActionRegistry {
                                 transportConfig),
                         (String) properties.get(0),
                         (String) properties.get(1),
-                        role,
+                        roleModel,
                         actionMetricConfig,
-                        actionDependency));
+                        actionDependency,
+                        scopeAction));
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }

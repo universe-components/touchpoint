@@ -5,9 +5,10 @@ import com.universe.touchpoint.TouchPoint;
 public abstract class ActionExecutor<T extends TouchPoint, O> {
 
   public T execute(T touchPoint) {
+    O runResult;
     beforeRun(touchPoint);
     try {
-      O runResult = run(touchPoint);
+      runResult = run(touchPoint);
       if (runResult != null) {
         return afterRun(touchPoint, runResult);
       }

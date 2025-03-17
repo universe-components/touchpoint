@@ -30,6 +30,10 @@ public abstract class BaseAnnotationMeta {
     this.attributes = attributes;
   }
 
+  public String getName() {
+    return (String) attributes.get("name");
+  }
+
   public String getDescription() {
     return (String) attributes.get("desc");
   }
@@ -86,5 +90,9 @@ public abstract class BaseAnnotationMeta {
     return (TaskMetricConfig)
         AnnotationUtils.annotation2Config(
             importingClass, TaskMetricConfigMapping.annotation2Config);
+  }
+
+  public String getScopeAction() {
+    return (String) attributes.get("scopeAction");
   }
 }

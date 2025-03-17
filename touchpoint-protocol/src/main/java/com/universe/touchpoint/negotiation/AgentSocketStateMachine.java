@@ -52,17 +52,6 @@ public class AgentSocketStateMachine {
         AgentSocketStateContext.class);
   }
 
-  public <C extends AgentContext> void registerReceiver(
-      @Nullable C context, CallbackListener callbackListener, RoleType role) {
-    socketProtocol.registerReceiver(
-        context,
-        TouchPointConstants.TOUCH_POINT_TASK_STATE_FILTER,
-        role,
-        AgentSocketStateContext.class);
-    assert context != null;
-    this.callbackListener = callbackListener;
-  }
-
   public AgentSyncProtocol<AgentSocketStateContext> getSocketProtocol() {
     return socketProtocol;
   }
