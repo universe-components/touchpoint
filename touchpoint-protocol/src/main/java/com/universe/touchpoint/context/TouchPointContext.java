@@ -9,7 +9,7 @@ public class TouchPointContext extends AgentContext {
 
   private TaskContext taskContext = new TaskContext();
   private final ActionContext actionContext = new ActionContext();
-  private ActionBody actionBody;
+  private ActionBody<?> actionBody;
   private Map<String, Object> extContext;
   private String token;
 
@@ -33,11 +33,11 @@ public class TouchPointContext extends AgentContext {
     this.taskContext = taskContext;
   }
 
-  public ActionBody getOperateModel() {
+  public ActionBody<?> getActionBody() {
     return actionBody;
   }
 
-  public void setOperateModel(ActionBody actionBody) {
+  public void setActionBody(ActionBody<?> actionBody) {
     this.actionBody = actionBody;
   }
 
