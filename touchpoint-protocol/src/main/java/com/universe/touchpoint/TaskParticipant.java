@@ -7,6 +7,7 @@ import com.universe.touchpoint.config.mapping.SupervisorConfigMapping;
 import com.universe.touchpoint.config.role.CoordinatorConfig;
 import com.universe.touchpoint.config.role.ExceptionHandlerConfig;
 import com.universe.touchpoint.config.role.SupervisorConfig;
+import com.universe.touchpoint.rolemodel.Coordinator;
 import com.universe.touchpoint.rolemodel.TaskRoleExecutor;
 import com.universe.touchpoint.utils.AnnotationUtils;
 
@@ -24,6 +25,7 @@ public class TaskParticipant {
       TaskRoleExecutor.getInstance(coordinatorConfig.getTask())
           .registerExecutor(
               actionName, (RoleExecutor<?, ?>) actionClass.getConstructor().newInstance());
+      Coordinator.init();
       return coordinatorConfig;
     } catch (Exception ex) {
       throw new RuntimeException(ex);

@@ -3,7 +3,6 @@ package com.universe.touchpoint.rolemodel;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.annotations.role.OperateType;
 import com.universe.touchpoint.config.role.CoordinatorConfig;
-import com.universe.touchpoint.rolemodel.coordinator.OperatorSelector;
 
 public class Coordinator extends RoleWorker {
 
@@ -14,6 +13,6 @@ public class Coordinator extends RoleWorker {
     }
     OperateType operateType =
         ((CoordinatorConfig) action.getMeta().getRoleModel().getConfig()).getOperateType();
-    OperatorSelector.getOperator(operateType).run(action);
+    operatorMap.get(operateType.name()).run(action);
   }
 }

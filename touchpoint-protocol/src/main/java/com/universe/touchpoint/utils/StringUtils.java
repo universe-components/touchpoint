@@ -7,6 +7,20 @@ import java.util.Map;
 
 public class StringUtils {
 
+  public static String camelToUnderline(String str, boolean capitalizeFirst) {
+    if (str == null || str.isEmpty()) return "";
+
+    // 如果首字母不大写，首字母手动大写，方便统一处理
+    String normalized =
+        capitalizeFirst ? str : Character.toUpperCase(str.charAt(0)) + str.substring(1);
+
+    // 把大写字母前加下划线，然后转小写
+    String result = normalized.replaceAll("([A-Z])", "_$1").toLowerCase();
+
+    // 去掉开头的下划线
+    return result.startsWith("_") ? result.substring(1) : result;
+  }
+
   public static String convertToCamelCase(String input, boolean capitalizeFirst) {
     if (input == null || input.isEmpty()) {
       return input;
