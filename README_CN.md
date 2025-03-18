@@ -48,6 +48,22 @@ TPP协议秉承 “ 一切皆行为 ” 的理念，重新定义了智能体协�
   <img src="architecture_cn.jpg" alt="Architecture" />
 </div>
 
+## 核心概念
+TPP是一个极其简单的协议，它没有工具的概念，也没有任务的概念，它只定义三个概念来完成Agent之间的协作，这种协作可以在线调整任务编排，及给开发者提供非常灵活的扩展性。
+
+### Action
+Action是Agent之间协作的基本单位，它可以是一个函数，也可以是一行代码，也可以是一个工具，甚至是机器人的一个动作。一切事物都可以作为Action。
+
+### Role
+Role是Action对应的角色，它决定了多个Agent之间协作过程中，Agent之间如何协作的。主要将Role分为以下4种类型：
+
+- **Proposer**：当我们将一个Action指定为 `Proposer` 时，该Action就是一个任务。
+- **Executor**：当 `Proposer` 发起任务后，被指定为 `Executor` 的Action之间开始协作完成任务。
+- **Coordinator**：被指定为 `Coordinator` 的Action可以终止、调整一个正在执行的任务，也可以在任务执行时，编辑任务中的任意一个Action。目前该角色提供了3中操作类型：
+- **ORGANIZE_ACTION**：在任务执行时，根据不同的环境，动态调整Action之间的协作关系。
+- **EDIT_ACTION**：在任务执行时，根据不同Action的表现，动态修改Action。比如：一个Action执行结果不理想，`Coordinator` 会替换它使用的AI模型，使其产生更好的执行结果。
+- **SWITCH_TASK**：如果有多个任务都使用一个Action，在它们同时运行时，TPP可以根据任务执行的状态，动态切换。
+
 ## Quick start
 
 ### 导入依赖

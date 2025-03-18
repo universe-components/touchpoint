@@ -13,15 +13,15 @@ public class SwitchTaskOperator implements Operator {
   public void run(AgentAction<?, ?> action) {
     if (!action
         .getInput()
-        .getActionBody()
-        .getTarget()
+        .getContext()
+        .getBelongTask()
         .equals(action.getContext().getBelongTask())) {
       new AgentSocketStateRouter<>()
           .route(
-              new TaskContext((String) action.getInput().getActionBody().getTarget()),
+              new TaskContext(action.getInput().getContext().getBelongTask()),
               new AgentSocketStateMachine.AgentSocketStateContext<>(
                   AgentSocketState.ACTION_GRAPH_READY, action.getMeta()),
-              action.getContext().getBelongTask());
+              action.getInput().getContext().getBelongTask());
     }
   }
 }

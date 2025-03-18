@@ -1,6 +1,5 @@
 package com.universe.touchpoint.context;
 
-import com.universe.touchpoint.api.ActionBody;
 import com.universe.touchpoint.plan.ActionGraph;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
 import java.util.Map;
@@ -9,20 +8,10 @@ public class TouchPointContext extends AgentContext {
 
   private TaskContext taskContext = new TaskContext();
   private final ActionContext actionContext = new ActionContext();
-  private ActionBody<?> actionBody;
   private Map<String, Object> extContext;
-  private String token;
 
   public TouchPointContext(String task) {
     super(task);
-  }
-
-  public String getToken() {
-    return token;
-  }
-
-  public void setToken(String token) {
-    this.token = token;
   }
 
   public TaskContext getTaskContext() {
@@ -31,14 +20,6 @@ public class TouchPointContext extends AgentContext {
 
   public void setTaskContext(TaskContext taskContext) {
     this.taskContext = taskContext;
-  }
-
-  public ActionBody<?> getActionBody() {
-    return actionBody;
-  }
-
-  public void setActionBody(ActionBody<?> actionBody) {
-    this.actionBody = actionBody;
   }
 
   public ActionContext getActionContext() {

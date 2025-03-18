@@ -1,8 +1,11 @@
 package com.universe.touchpoint.negotiation;
 
-import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.context.TouchPointContext;
+import com.universe.touchpoint.memory.Region;
+import com.universe.touchpoint.memory.TouchPointMemory;
+import com.universe.touchpoint.memory.regions.MetaRegion;
+import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.plan.ActionGraph;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
 import com.universe.touchpoint.security.TokenizerSelector;
@@ -16,15 +19,18 @@ public class AgentStateReceiver
       C context, AgentSocketStateMachine.AgentSocketStateContext<?> message, String topic) {
     boolean rs = new AgentSocketStateRouter<>().route(context, message, topic);
     if (rs) {
-      TouchPoint touchPoint = new TouchPoint();
-      ActionGraph actionGraph = ActionGraphBuilder.getTaskGraph(context.getBelongTask());
       TouchPointContext tpCtx = new TouchPointContext(context.getBelongTask());
-      String token = TokenizerSelector.getTokenizer("jwt").generateToken(actionGraph);
-      tpCtx.setToken(token);
-      touchPoint.setContext(tpCtx);
+      AgentActionMeta actionMeta =
+          ((MetaRegion) TouchPointMemory.getRegion(Region.META))
+              .getTouchPointAction(context.getBelongTask());
+      ActionGraph actionGraph = ActionGraphBuilder.getTaskGraph(context.getBelongTask());
+      tpCtx.getTaskContext().setGraph(actionGraph);
+      tpCtx.getTaskContext().setGoal(actionMeta.getDesc());
+
+      String token = TokenizerSelector.getTokenizer("jwt").generateToken(tpCtx);
       AgentSocketStateMachine.getInstance(context.getBelongTask())
           .getCallbackListener()
-          .onResponse(touchPoint);
+          .onResponse(token);
     }
   }
 }

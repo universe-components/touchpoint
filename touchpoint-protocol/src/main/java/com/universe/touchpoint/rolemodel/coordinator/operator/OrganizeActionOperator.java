@@ -6,16 +6,13 @@ import com.universe.touchpoint.negotiation.AgentSocketState;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.negotiation.AgentSocketStateRouter;
 import com.universe.touchpoint.rolemodel.coordinator.Operator;
-import com.universe.touchpoint.security.TokenizerSelector;
 import java.util.Objects;
 
 public class OrganizeActionOperator implements Operator {
 
   @Override
   public void run(AgentAction<?, ?> action) {
-    TouchPointContext prevContext =
-        (TouchPointContext)
-            TokenizerSelector.getTokenizer("jwt").parseToken(action.getContext().getToken());
+    TouchPointContext prevContext = action.getContext();
     String prevGraphName = prevContext.getActionGraph().getName();
     String currGraphName = (String) action.getInput().getActionBody().getTarget();
     if (currGraphName != null && !Objects.equals(prevGraphName, currGraphName)) {

@@ -1,11 +1,12 @@
 package com.universe.touchpoint.context;
 
 import com.universe.touchpoint.monitor.metric.TaskMetric;
+import com.universe.touchpoint.plan.ActionGraph;
 
 public class TaskContext {
 
   private String goal;
-  private ActionGraphContext actionGraphContext;
+  private ActionGraph graph;
   private TaskMetric metric;
 
   public TaskContext() {}
@@ -22,12 +23,12 @@ public class TaskContext {
     this.goal = goal;
   }
 
-  public ActionGraphContext getActionGraphContext() {
-    return actionGraphContext;
+  public ActionGraph getGraph() {
+    return graph;
   }
 
-  public void setActionGraphContext(ActionGraphContext actionGraphContext) {
-    this.actionGraphContext = actionGraphContext;
+  public void setGraph(ActionGraph graph) {
+    this.graph = graph;
   }
 
   public TaskMetric getMetric() {

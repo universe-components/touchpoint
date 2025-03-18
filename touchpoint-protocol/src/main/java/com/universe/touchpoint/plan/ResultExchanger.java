@@ -4,9 +4,11 @@ import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.config.transport.Transport;
+import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.plan.processor.AgentActionProcessor;
 import com.universe.touchpoint.plan.processor.AgentFinishProcessor;
 import com.universe.touchpoint.plan.processor.DefaultResultProcessor;
+import com.universe.touchpoint.security.TokenizerSelector;
 import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -28,6 +30,9 @@ public class ResultExchanger {
     if (processedResult.getLeft() != null) {
       for (AgentAction<?, ?> agentAction : processedResult.getLeft()) {
         result.getContext().getActionContext().setCurrentAction(agentAction.getActionName());
+        AgentSocketStateMachine.getInstance(task)
+            .getCallbackListener()
+            .onResponse(TokenizerSelector.getTokenizer("jwt").generateToken(result.getContext()));
         ResultDispatcher.run(agentAction, agentAction.getMeta());
       }
     } else {
