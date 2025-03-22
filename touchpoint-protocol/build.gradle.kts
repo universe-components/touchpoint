@@ -39,6 +39,7 @@ dependencies {
     api(libs.dubbo)
     api(libs.paho)
     api(libs.retrofit)
+    api(libs.jieba)
     api(libs.converter.gson)
     api(libs.gson)
     api(libs.commons.lang3)

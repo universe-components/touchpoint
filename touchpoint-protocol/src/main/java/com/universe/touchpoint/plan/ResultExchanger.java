@@ -8,6 +8,7 @@ import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.plan.processor.AgentActionProcessor;
 import com.universe.touchpoint.plan.processor.AgentFinishProcessor;
 import com.universe.touchpoint.plan.processor.DefaultResultProcessor;
+import com.universe.touchpoint.rolemodel.RoleWorker;
 import com.universe.touchpoint.security.TokenizerSelector;
 import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
@@ -29,6 +30,7 @@ public class ResultExchanger {
         resultProcessor.process(result, goal, task, transportType);
     if (processedResult.getLeft() != null) {
       for (AgentAction<?, ?> agentAction : processedResult.getLeft()) {
+        RoleWorker.run(agentAction);
         result.getContext().getActionContext().setCurrentAction(agentAction.getActionName());
         AgentSocketStateMachine.getInstance(task)
             .getCallbackListener()

@@ -11,6 +11,7 @@ import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.plan.ResultProcessor;
+import com.universe.touchpoint.rolemodel.RoleWorker;
 import com.universe.touchpoint.router.Router;
 import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
@@ -27,6 +28,7 @@ public class AgentActionProcessor implements ResultProcessor<AgentAction<?, ?>> 
     Object input =
         PromptBuilder.createPromptGenerator(modelConfig.getType())
             .generatePrompt(nextActions, result, goal);
+    RoleWorker.run(result);
     Object choices = AIModelFactory.callModel(input, modelConfig);
     ChoiceParser<CH> choiceParser = ChoiceParserFactory.selectParser(modelConfig.getType());
     return choiceParser.parse((CH) choices, result);

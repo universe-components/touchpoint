@@ -28,6 +28,7 @@ logback = "1.5.17"
 springboot = "3.4.3"
 akka = "2.10.2"
 jwt = "0.12.6"
+jieba = "1.0.2"
 
 [libraries]
 androidPlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -67,6 +68,7 @@ akka-actor-typed = { group = "com.typesafe.akka", name = "akka-actor-typed_2.13"
 akka-actor = { group = "com.typesafe.akka", name = "akka-actor_2.13", version.ref = "akka" }
 jwt-api = { group = "io.jsonwebtoken", name = "jjwt-api", version.ref = "jwt" }
 jwt-jackson = { group = "io.jsonwebtoken", name = "jjwt-jackson", version.ref = "jwt" }
+jieba = { group = "com.huaban", name = "jieba-analysis", version.ref = "jieba" }
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
