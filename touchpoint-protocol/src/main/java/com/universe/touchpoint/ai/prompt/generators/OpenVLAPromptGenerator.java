@@ -11,6 +11,6 @@ public class OpenVLAPromptGenerator implements PromptGenerator<OpenVLA.ActionReq
   @Override
   public <I, O> OpenVLA.ActionRequest generatePrompt(
       List<AgentActionMeta> taskActions, AgentAction<I, O> action, String question) {
-    return (OpenVLA.ActionRequest) action.getOutput();
+    return (OpenVLA.ActionRequest) action.getOutput().getBody();
   }
 }

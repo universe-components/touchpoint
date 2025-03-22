@@ -3,6 +3,7 @@ package com.universe.touchpoint.monitor.action.alarm;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.api.SocketRequest;
+import com.universe.touchpoint.api.SocketResponse;
 import com.universe.touchpoint.api.checker.DefaultChecker;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
@@ -13,7 +14,8 @@ import com.universe.touchpoint.context.TouchPointContextManager;
 public class ActionMonitor implements DefaultChecker<AgentAction<?, ?>> {
 
   @Override
-  public Boolean run(SocketRequest<AgentAction<?, ?>> action, TouchPointContext context) {
+  public SocketResponse<Boolean, ?> run(
+      SocketRequest<AgentAction<?, ?>> action, TouchPointContext context) {
     String ctxAction = action.getBody().getActionName();
     String task = context.getBelongTask();
     ActionMetricConfig metricConfig = ConfigManager.selectActionMetricConfig(ctxAction, task);
@@ -25,10 +27,10 @@ public class ActionMonitor implements DefaultChecker<AgentAction<?, ?>> {
             .getActionMetric(ctxAction)
             .getPredictionCount()
         > metricConfig.getMaxPredictionCount()) {
-      return false;
+      return new SocketResponse<>(false);
     }
 
     monitorResult.setState(new TouchPoint.TouchPointState(TaskState.OK.getCode(), "success"));
-    return true;
+    return new SocketResponse<>(true);
   }
 }

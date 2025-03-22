@@ -13,7 +13,8 @@ public class Supervisor extends RoleWorker {
             TaskRoleExecutor.getInstance(agentAction.getContext().getBelongTask())
                 .getExecutor(agentAction.getInput().getActionBody().getAction());
     Object supervisedResult =
-        supervisor.run(new SocketRequest<>(agentAction.getOutput()), agentAction.getContext());
+        supervisor.run(
+            new SocketRequest<>(agentAction.getOutput().getBody()), agentAction.getContext());
     if (supervisedResult instanceof Boolean && !(Boolean) supervisedResult) {
       RoleWorker.run(agentAction);
     }

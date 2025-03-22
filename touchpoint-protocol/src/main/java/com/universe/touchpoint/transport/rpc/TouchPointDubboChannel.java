@@ -1,6 +1,7 @@
 package com.universe.touchpoint.transport.rpc;
 
 import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.api.SocketResponse;
 import com.universe.touchpoint.config.transport.rpc.DubboConfig;
 import com.universe.touchpoint.plan.ResultExchanger;
 import com.universe.touchpoint.transport.TouchPointRpcChannel;
@@ -33,7 +34,7 @@ public class TouchPointDubboChannel<I, O, T extends AgentAction<I, O>>
                     touchPointService.getDeclaredConstructor().newInstance(),
                     touchpoint.getInput());
         assert result != null;
-        touchpoint.setOutput(result);
+        touchpoint.setOutput(new SocketResponse<>(result));
         return new ResultExchanger()
             .exchange(touchpoint, touchpoint.getContext().getTaskContext().getGoal(), null, null);
       } catch (Exception e) {

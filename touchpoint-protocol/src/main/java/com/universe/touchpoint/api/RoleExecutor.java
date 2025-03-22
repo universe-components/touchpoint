@@ -4,5 +4,5 @@ import com.universe.touchpoint.context.TouchPointContext;
 
 public interface RoleExecutor<I, O> {
 
-  O run(SocketRequest<I> input, TouchPointContext context);
+  SocketResponse<O, ?> run(SocketRequest<I> input, TouchPointContext context);
 }

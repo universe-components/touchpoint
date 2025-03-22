@@ -4,6 +4,7 @@ import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
 import com.universe.touchpoint.api.SocketRequest;
+import com.universe.touchpoint.api.SocketResponse;
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.context.TouchPointContextManager;
@@ -15,13 +16,14 @@ import com.universe.touchpoint.context.TouchPointContextManager;
 public class ActionMetricCollector extends AgentActionExecutor<AgentAction<?, ?>, TouchPoint> {
 
   @Override
-  public TouchPoint run(SocketRequest<AgentAction<?, ?>> request, TouchPointContext context) {
+  public SocketResponse<TouchPoint, ?> run(
+      SocketRequest<AgentAction<?, ?>> request, TouchPointContext context) {
     String task = context.getBelongTask();
     String countAction = context.getActionContext().getCurrentAction();
     TouchPointContextManager.getTouchPointContext(task)
         .getActionContext()
         .getActionMetric(countAction)
         .incrementPredictionCount();
-    return request.getBody();
+    return new SocketResponse<>(request.getBody());
   }
 }

@@ -5,6 +5,7 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.annotations.socket.SocketProtocol;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
 import com.universe.touchpoint.api.SocketRequest;
+import com.universe.touchpoint.api.SocketResponse;
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.context.TouchPointContext;
@@ -24,7 +25,8 @@ import org.apache.commons.lang3.tuple.Pair;
 public class MetricSyncer extends AgentActionExecutor<AgentAction<?, ?>, TouchPoint> {
 
   @Override
-  public TouchPoint run(SocketRequest<AgentAction<?, ?>> action, TouchPointContext context) {
+  public SocketResponse<TouchPoint, ?> run(
+      SocketRequest<AgentAction<?, ?>> action, TouchPointContext context) {
     String task = context.getBelongTask();
     SocketProtocol protocol =
         Objects.requireNonNull(ConfigManager.selectAgentSocket(task)).getBindProtocol();
@@ -35,6 +37,6 @@ public class MetricSyncer extends AgentActionExecutor<AgentAction<?, ?>, TouchPo
     ((AgentSyncProtocol<Pair<TaskMetric, Map<String, ActionMetric>>>)
             AgentSyncProtocolSelector.selectProtocol(protocol))
         .send(Pair.of(taskMetric, actionMetrics), task);
-    return action.getBody();
+    return new SocketResponse<>(action.getBody());
   }
 }

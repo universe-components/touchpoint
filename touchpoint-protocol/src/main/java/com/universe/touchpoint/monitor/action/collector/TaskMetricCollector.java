@@ -3,6 +3,7 @@ package com.universe.touchpoint.monitor.action.collector;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
 import com.universe.touchpoint.api.SocketRequest;
+import com.universe.touchpoint.api.SocketResponse;
 import com.universe.touchpoint.api.executor.AgentActionExecutor;
 import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.context.TouchPointContextManager;
@@ -14,7 +15,8 @@ import com.universe.touchpoint.context.TouchPointContextManager;
 public class TaskMetricCollector extends AgentActionExecutor<TouchPoint, TouchPoint> {
 
   @Override
-  public TouchPoint run(SocketRequest<TouchPoint> touchPoint, TouchPointContext context) {
+  public SocketResponse<TouchPoint, ?> run(
+      SocketRequest<TouchPoint> touchPoint, TouchPointContext context) {
     String task = context.getBelongTask();
     String countAction = context.getActionContext().getCurrentAction();
     int actionRetryCount =
@@ -30,6 +32,6 @@ public class TaskMetricCollector extends AgentActionExecutor<TouchPoint, TouchPo
           .getMetric()
           .addRetryActionCount(actionRetryCount);
     }
-    return touchPoint.getBody();
+    return new SocketResponse<>(touchPoint.getBody());
   }
 }
