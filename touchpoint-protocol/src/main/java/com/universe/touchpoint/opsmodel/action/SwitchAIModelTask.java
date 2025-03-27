@@ -1,10 +1,10 @@
-package com.universe.touchpoint.monitor.action;
+package com.universe.touchpoint.opsmodel.action;
 
 import com.universe.touchpoint.annotations.task.OperateType;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
 
 @TouchPointAction(
-    name = "metrics_alarm",
-    desc = "I want to check action metrics.",
+    name = "switch_ai_model",
+    desc = "I want to switch ai model.",
     operateType = OperateType.PROPOSE_TASK)
-public class MetricAlarmTask {}
+public class SwitchAIModelTask {}

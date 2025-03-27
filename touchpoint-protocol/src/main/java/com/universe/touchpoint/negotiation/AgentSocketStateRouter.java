@@ -8,8 +8,8 @@ import com.universe.touchpoint.negotiation.handler.GlobalConfigReadyHandler;
 import com.universe.touchpoint.negotiation.handler.NegotiationConcludedHandler;
 import com.universe.touchpoint.negotiation.handler.RequestGraphReadyHandler;
 import com.universe.touchpoint.negotiation.handler.RouterReadyHandler;
-import com.universe.touchpoint.rolemodel.coordinator.handler.ReorderActionReadyHandler;
-import com.universe.touchpoint.rolemodel.coordinator.handler.SwitchActionReadyHandler;
+import com.universe.touchpoint.opsmodel.handler.ReorderActionReadyHandler;
+import com.universe.touchpoint.opsmodel.handler.SwitchActionReadyHandler;
 import java.util.HashMap;
 import java.util.Map;
 

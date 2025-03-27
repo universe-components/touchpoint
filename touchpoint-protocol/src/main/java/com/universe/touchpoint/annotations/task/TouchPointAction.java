@@ -1,6 +1,5 @@
 package com.universe.touchpoint.annotations.task;
 
-import com.universe.touchpoint.annotations.role.ActionRole;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,7 +13,9 @@ public @interface TouchPointAction {
 
   String desc();
 
-  ActionRole role() default ActionRole.EXECUTOR;
+  int errorCode() default 0;
+
+  OperateType operateType() default OperateType.EXECUTE_ACTION;
 
   String[] toAgents() default {};
 

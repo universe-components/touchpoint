@@ -1,9 +1,9 @@
 package com.universe.touchpoint.android;
 
-import com.universe.touchpoint.TaskParticipant;
 import com.universe.touchpoint.TouchPointConstants;
-import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.role.RoleType;
+import com.universe.touchpoint.annotations.task.OperateType;
+import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
@@ -15,9 +15,6 @@ import com.universe.touchpoint.config.mapping.VisionLangModelConfigMapping;
 import com.universe.touchpoint.config.mapping.VisionModelConfigMapping;
 import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.metric.MetricSocketConfig;
-import com.universe.touchpoint.config.role.CoordinatorConfig;
-import com.universe.touchpoint.config.role.ExceptionHandlerConfig;
-import com.universe.touchpoint.config.role.SupervisorConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.task.ActionDependency;
 import com.universe.touchpoint.config.transport.Transport;
@@ -28,7 +25,6 @@ import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.meta.MetaManager;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
-import com.universe.touchpoint.meta.data.RoleModel;
 import com.universe.touchpoint.negotiation.AgentSocketState;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.negotiation.context.TaskActionContext;
@@ -76,20 +72,7 @@ public class ActionRegistry {
                  * Local Registry
                  */
                 String scopeAction = (String) properties.get(4);
-                RoleModel<?> roleModel = new RoleModel<>((ActionRole) properties.get(2), null);
-                CoordinatorConfig coordinatorResult = TaskParticipant.registerCoordinator(Class.forName(clazz), (String) properties.get(0));
-                if (coordinatorResult != null) {
-                    roleModel = new RoleModel<>(ActionRole.COORDINATOR, coordinatorResult);
-                }
-                SupervisorConfig supervisorResult = TaskParticipant.registerSupervisor(Class.forName(clazz), (String) properties.get(0));
-                if (supervisorResult != null) {
-                    roleModel = new RoleModel<>(ActionRole.SUPERVISOR, supervisorResult);
-                }
-                ExceptionHandlerConfig exceptionHandlerConfig = TaskParticipant.registerExceptionHandler(Class.forName(clazz), (String) properties.get(0));
-                if (exceptionHandlerConfig != null) {
-                    roleModel = new RoleModel<>(ActionRole.EXCEPTION_HANDLER, exceptionHandlerConfig);
-                }
-
+                OperateType operateType = (OperateType) properties.get(5);
                 ActionDependency actionDependency = new ActionDependency((String) properties.get(0));
                 actionDependency.setToActions(StringUtils.convert((String[]) properties.get(3)));
                 ((MetaRegion) TouchPointMemory.getRegion(Region.META)).putTouchPointAction((String) properties.get(0), MetaManager.buildAction(
@@ -103,7 +86,7 @@ public class ActionRegistry {
                                 transportConfig),
                         (String) properties.get(0),
                         (String) properties.get(1),
-                        roleModel,
+                        operateType,
                         actionMetricConfig,
                         actionDependency,
                         scopeAction));
@@ -133,6 +116,9 @@ public class ActionRegistry {
                 ((AgentSyncProtocol<Pair>) AgentSyncProtocolSelector.selectProtocol(socketConfig.getBindProtocol())).registerReceiver(
                         actionContext,
                         TouchPointConstants.METRIC_FILTER, RoleType.MEMBER, Pair.class);
+                ((AgentSyncProtocol<SocketRequest>) AgentSyncProtocolSelector.selectProtocol(socketConfig.getBindProtocol())).registerReceiver(
+                        actionContext,
+                        TouchPointConstants.TOUCH_POINT_ACTIVITY_FILTER, RoleType.MEMBER, SocketRequest.class);
 
 
                 AgentSocketStateMachine.getInstance(task).send(

@@ -12,6 +12,10 @@ public class TouchPointConstants {
 
   public static final String METRIC_FILTER = "metric";
 
+  public static final String TOUCH_POINT_ACTIVITY_FILTER = "activity";
+
+  public static final String TOUCH_POINT_ACTIVITY_RESPONSE_FILTER = "activity_response";
+
   public static final String TOUCH_POINT_CLEAN_FILTER = "clean";
 
   public static final String TOUCH_POINT_CLEAN_EVENT_NAME = "clean_event";

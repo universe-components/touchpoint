@@ -1,14 +1,14 @@
 package com.universe.touchpoint;
 
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.annotations.task.OperateType;
 import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.context.TouchPointContext;
 import com.universe.touchpoint.memory.Region;
 import com.universe.touchpoint.memory.TouchPointMemory;
 import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
-import com.universe.touchpoint.plan.ActionGraphBuilder;
+import com.universe.touchpoint.plan.ActionPlanner;
 import com.universe.touchpoint.plan.ResultDispatcher;
 import com.universe.touchpoint.security.TokenizerSelector;
 import java.util.ArrayList;
@@ -19,16 +19,9 @@ public class Dispatcher {
   public static <P, F> F dispatch(
       String action, SocketRequest<P> params, Socket.TaskCallbackListener callbackListener) {
     List<F> finalResult = new ArrayList<>();
-    AgentActionMeta firstActionMeta =
-        ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointAction(action);
-    String task;
-    if (firstActionMeta.getRoleModel().getRole() == ActionRole.PROPOSER) {
-      task = action;
-    } else {
-      task = (String) params.getActionBody().getTarget();
-    }
-    ActionGraphBuilder.getTaskGraph(task)
-        .getFirstNodes()
+    String task = confirmTask(action, params);
+    ActionPlanner.getSelector(params, callbackListener, task, true)
+        .select(task, params)
         .forEach(
             actionMeta -> {
               AgentAction<P, ?> agentAction =
@@ -42,5 +35,17 @@ public class Dispatcher {
               finalResult.add(ResultDispatcher.run(agentAction, actionMeta));
             });
     return finalResult.get(0);
+  }
+
+  public static <P> String confirmTask(String action, SocketRequest<P> params) {
+    String task;
+    AgentActionMeta firstActionMeta =
+        ((MetaRegion) TouchPointMemory.getRegion(Region.META)).getTouchPointAction(action);
+    if (firstActionMeta.getOperateType() == OperateType.PROPOSE_TASK) {
+      task = action;
+    } else {
+      task = (String) params.getActionBody().getTarget();
+    }
+    return task;
   }
 }

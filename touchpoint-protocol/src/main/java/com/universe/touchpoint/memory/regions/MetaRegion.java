@@ -1,6 +1,6 @@
 package com.universe.touchpoint.memory.regions;
 
-import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.annotations.task.OperateType;
 import com.universe.touchpoint.memory.TouchPointRegion;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.meta.data.AgentMeta;
@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MetaRegion extends TouchPointRegion {
 
   private final Map<String, AgentActionMeta> touchPointActions = new ConcurrentHashMap<>();
+  private final Map<String, AgentActionMeta> exceptionActions = new ConcurrentHashMap<>();
   private final Map<String, AgentActionMeta> touchPointSwapActions = new ConcurrentHashMap<>();
   private final Map<String, TaskMeta> touchPointTasks = new ConcurrentHashMap<>();
   private final Map<String, AgentMeta> touchPointAgents = new ConcurrentHashMap<>();
@@ -26,6 +27,18 @@ public class MetaRegion extends TouchPointRegion {
 
   public AgentActionMeta getTouchPointAction(String name) {
     return touchPointActions.get(name);
+  }
+
+  public void putExceptionAction(String name, AgentActionMeta agentActionMeta) {
+    exceptionActions.put(name, agentActionMeta);
+  }
+
+  public boolean containsExceptionAction(String name) {
+    return exceptionActions.containsKey(name);
+  }
+
+  public AgentActionMeta getExceptionAction(String name) {
+    return exceptionActions.get(name);
   }
 
   public void putTouchPointSwapAction(String name, AgentActionMeta agentActionMeta) {
@@ -68,9 +81,9 @@ public class MetaRegion extends TouchPointRegion {
     touchPointSwapActions.clear();
   }
 
-  public boolean containActions(List<ActionRole> roles) {
+  public boolean containActions(List<OperateType> operateTypes) {
     for (AgentActionMeta agentActionMeta : touchPointActions.values()) {
-      if (roles.contains(agentActionMeta.getRoleModel().getRole())) {
+      if (operateTypes.contains(agentActionMeta.getOperateType())) {
         return true;
       }
     }

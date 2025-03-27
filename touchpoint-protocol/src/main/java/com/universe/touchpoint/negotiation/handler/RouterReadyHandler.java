@@ -2,8 +2,8 @@ package com.universe.touchpoint.negotiation.handler;
 
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.AgentAction;
-import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.role.RoleType;
+import com.universe.touchpoint.annotations.task.OperateType;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.config.transport.TransportConfig;
@@ -59,7 +59,7 @@ public class RouterReadyHandler implements AgentSocketStateHandler<ActionGraph, 
         }
       }
 
-      if (metaRegion.containActions(Collections.singletonList(ActionRole.COORDINATOR))) {
+      if (metaRegion.containActions(Collections.singletonList(OperateType.ORGANIZE_ACTION))) {
         ActionGraphBuilder.putGraph(task, actionGraph);
         AgentSocketConfig socketConfig =
             ConfigManager.selectAgentSocket(taskActionContext.getBelongTask());

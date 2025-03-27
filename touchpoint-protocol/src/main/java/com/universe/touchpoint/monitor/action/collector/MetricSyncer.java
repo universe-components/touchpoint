@@ -1,6 +1,7 @@
 package com.universe.touchpoint.monitor.action.collector;
 
 import com.universe.touchpoint.TouchPoint;
+import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.annotations.socket.SocketProtocol;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
@@ -36,7 +37,7 @@ public class MetricSyncer extends AgentActionExecutor<AgentAction<?, ?>, TouchPo
         TouchPointContextManager.getTouchPointContext(task).getActionContext().getActionMetrics();
     ((AgentSyncProtocol<Pair<TaskMetric, Map<String, ActionMetric>>>)
             AgentSyncProtocolSelector.selectProtocol(protocol))
-        .send(Pair.of(taskMetric, actionMetrics), task);
+        .send(Pair.of(taskMetric, actionMetrics), TouchPointConstants.METRIC_FILTER);
     return new SocketResponse<>(action.getBody());
   }
 }

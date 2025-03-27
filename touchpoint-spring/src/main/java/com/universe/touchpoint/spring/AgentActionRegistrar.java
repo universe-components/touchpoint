@@ -1,19 +1,11 @@
 package com.universe.touchpoint.spring;
 
-import com.universe.touchpoint.TaskParticipant;
 import com.universe.touchpoint.TouchPointConstants;
-import com.universe.touchpoint.annotations.role.ActionRole;
-import com.universe.touchpoint.annotations.role.Coordinator;
-import com.universe.touchpoint.annotations.role.ExceptionHandler;
-import com.universe.touchpoint.annotations.role.OperateType;
 import com.universe.touchpoint.annotations.role.RoleType;
-import com.universe.touchpoint.annotations.role.Supervisor;
 import com.universe.touchpoint.annotations.task.TouchPointAction;
+import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.metric.MetricSocketConfig;
-import com.universe.touchpoint.config.role.CoordinatorConfig;
-import com.universe.touchpoint.config.role.ExceptionHandlerConfig;
-import com.universe.touchpoint.config.role.SupervisorConfig;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.helper.TouchPointHelper;
 import com.universe.touchpoint.memory.Region;
@@ -22,7 +14,6 @@ import com.universe.touchpoint.memory.regions.MetaRegion;
 import com.universe.touchpoint.meta.MetaManager;
 import com.universe.touchpoint.meta.annotation.ActionAnnotationMeta;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
-import com.universe.touchpoint.meta.data.RoleModel;
 import com.universe.touchpoint.negotiation.AgentSocketState;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.negotiation.context.TaskActionContext;
@@ -60,47 +51,7 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
       ActionAnnotationMeta actionAnnotationMeta =
           new ActionAnnotationMeta(actionClass, actionAttributes);
 
-      RoleModel<?> roleModel = new RoleModel<>(actionAnnotationMeta.getRole(), null);
       String scopeAction = actionAnnotationMeta.getScopeAction();
-      if (importingClassMetadata.hasAnnotation(Supervisor.class.getName())) {
-        TaskParticipant.registerSupervisor(actionClass, actionAnnotationMeta.getName());
-        Map<String, Object> supervisorAttributes =
-            importingClassMetadata.getAnnotationAttributes(Supervisor.class.getName());
-        assert supervisorAttributes != null;
-        roleModel =
-            new RoleModel<>(
-                ActionRole.SUPERVISOR,
-                new SupervisorConfig(
-                    (String) supervisorAttributes.get("task"),
-                    (String) supervisorAttributes.get("scopeAction")));
-      }
-      if (importingClassMetadata.hasAnnotation(Coordinator.class.getName())) {
-        TaskParticipant.registerCoordinator(actionClass, actionAnnotationMeta.getName());
-        Map<String, Object> coordinatorAttributes =
-            importingClassMetadata.getAnnotationAttributes(Coordinator.class.getName());
-        assert coordinatorAttributes != null;
-        roleModel =
-            new RoleModel<>(
-                ActionRole.COORDINATOR,
-                new CoordinatorConfig(
-                    (String) coordinatorAttributes.get("task"),
-                    (String) coordinatorAttributes.get("scope"),
-                    (OperateType) coordinatorAttributes.get("operateType")));
-      }
-      if (importingClassMetadata.hasAnnotation(ExceptionHandler.class.getName())) {
-        TaskParticipant.registerExceptionHandler(actionClass, actionAnnotationMeta.getName());
-        Map<String, Object> exceptionHandlerAttributes =
-            importingClassMetadata.getAnnotationAttributes(ExceptionHandler.class.getName());
-        assert exceptionHandlerAttributes != null;
-        roleModel =
-            new RoleModel<>(
-                ActionRole.EXCEPTION_HANDLER,
-                new ExceptionHandlerConfig(
-                    (String) exceptionHandlerAttributes.get("task"),
-                    (Integer) exceptionHandlerAttributes.get("errorCode"),
-                    (String) exceptionHandlerAttributes.get("scopeAction")));
-      }
-
       try {
         AgentActionMeta actionMeta =
             MetaManager.buildAction(
@@ -112,7 +63,7 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
                 actionAnnotationMeta.getTransportConfig(),
                 actionAnnotationMeta.getName(),
                 actionAnnotationMeta.getDescription(),
-                roleModel,
+                actionAnnotationMeta.getOperateType(),
                 actionAnnotationMeta.getActionMetricConfig(),
                 actionAnnotationMeta.getActionDependency(),
                 scopeAction);
@@ -139,6 +90,13 @@ public class AgentActionRegistrar implements ImportBeanDefinitionRegistrar, Envi
                   TouchPointConstants.METRIC_FILTER,
                   RoleType.MEMBER,
                   Pair.class);
+          ((AgentSyncProtocol<SocketRequest>)
+                  AgentSyncProtocolSelector.selectProtocol(socketConfig.getBindProtocol()))
+              .registerReceiver(
+                  new TaskActionContext(actionAnnotationMeta.getName(), task),
+                  TouchPointConstants.TOUCH_POINT_ACTIVITY_FILTER,
+                  RoleType.MEMBER,
+                  SocketRequest.class);
 
           AgentSocketStateMachine.getInstance(task)
               .send(

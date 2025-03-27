@@ -1,8 +1,8 @@
 package com.universe.touchpoint.meta.data;
 
 import com.universe.touchpoint.agent.ActionType;
-import com.universe.touchpoint.annotations.role.ActionRole;
 import com.universe.touchpoint.annotations.role.RoleType;
+import com.universe.touchpoint.annotations.task.OperateType;
 import com.universe.touchpoint.api.executor.vla.ActionPredictor;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
@@ -15,7 +15,7 @@ import com.universe.touchpoint.utils.ClassUtils;
 
 public class AgentActionMeta extends BaseMeta {
 
-  private RoleModel<?> roleModel;
+  private OperateType operateType;
   private RoleType roleType;
   private ActionType type;
   private String inputClassName;
@@ -32,7 +32,7 @@ public class AgentActionMeta extends BaseMeta {
       String agentName,
       String className,
       String actionDesc,
-      RoleModel<?> roleModel,
+      OperateType operateType,
       String inputClassName,
       String outputClassName,
       LangModelConfig model,
@@ -54,8 +54,8 @@ public class AgentActionMeta extends BaseMeta {
         null,
         null,
         actionMetricConfig);
-    this.roleModel = roleModel;
-    this.roleType = roleModel.getRole() == ActionRole.PROPOSER ? RoleType.OWNER : RoleType.MEMBER;
+    this.operateType = operateType;
+    this.roleType = operateType == OperateType.PROPOSE_TASK ? RoleType.OWNER : RoleType.MEMBER;
     try {
       if (ClassUtils.extendsAbstractClass(Class.forName(className), ActionPredictor.class)) {
         this.type = ActionType.ACT;
@@ -70,13 +70,13 @@ public class AgentActionMeta extends BaseMeta {
     this.toActions = toActions;
   }
 
-  public RoleModel<?> getRoleModel() {
-    return roleModel;
+  public OperateType getOperateType() {
+    return operateType;
   }
 
-  public void setRole(RoleModel<?> roleModel) {
-    this.roleModel = roleModel;
-  }
+  //  public RoleModel<?> getRoleModel() {
+  //    return roleModel;
+  //  }
 
   public RoleType getRoleType() {
     return roleType;

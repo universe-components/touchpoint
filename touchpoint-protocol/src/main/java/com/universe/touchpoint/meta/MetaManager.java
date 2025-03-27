@@ -1,5 +1,6 @@
 package com.universe.touchpoint.meta;
 
+import com.universe.touchpoint.annotations.task.OperateType;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.ai.VisionLangModelConfig;
 import com.universe.touchpoint.config.ai.VisionModelConfig;
@@ -7,7 +8,6 @@ import com.universe.touchpoint.config.metric.ActionMetricConfig;
 import com.universe.touchpoint.config.task.ActionDependency;
 import com.universe.touchpoint.config.transport.TransportConfig;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
-import com.universe.touchpoint.meta.data.RoleModel;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -22,7 +22,7 @@ public class MetaManager {
       TransportConfig<C> transportConfig,
       String actionName,
       String actionDesc,
-      RoleModel<?> roleModel,
+      OperateType operateType,
       ActionMetricConfig actionMetricConfig,
       ActionDependency toActions,
       String scopeAction) {
@@ -46,7 +46,7 @@ public class MetaManager {
           agentName,
           receiverClassName,
           actionDesc,
-          roleModel,
+          operateType,
           inputClassName,
           outputClassName,
           model,
@@ -54,8 +54,7 @@ public class MetaManager {
           visionLangModelConfig,
           transportConfig,
           actionMetricConfig,
-          toActions,
-          scopeAction);
+          toActions);
     } catch (Exception e) {
       e.printStackTrace();
     }

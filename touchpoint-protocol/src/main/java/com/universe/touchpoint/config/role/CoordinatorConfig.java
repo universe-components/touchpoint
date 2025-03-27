@@ -1,6 +1,6 @@
 package com.universe.touchpoint.config.role;
 
-import com.universe.touchpoint.annotations.role.OperateType;
+import com.universe.touchpoint.annotations.task.OperateType;
 
 public class CoordinatorConfig extends RoleConfig {
 

@@ -31,10 +31,11 @@ public class ActionGraphReadyHandler<Config>
                       .addEdge(actionMeta, metaRegion.getTouchPointSwapAction(toAction));
                 }
               });
-      ActionGraphBuilder.getTaskGraph(task)
-          .addEdge(
-              metaRegion.getTouchPointSwapAction(actionMeta.getRoleModel().getConfig().getScope()),
-              actionMeta);
+      //      ActionGraphBuilder.getTaskGraph(task)
+      //          .addEdge(
+      //
+      // metaRegion.getTouchPointSwapAction(actionMeta.getRoleModel().getConfig().getScope()),
+      //              actionMeta);
       return (Map<String, Config>)
           Map.of(
               "transport", ConfigManager.selectTransport(null, task),
