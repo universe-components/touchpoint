@@ -1,4 +1,4 @@
-package com.universe.touchpoint.text;
+package com.universe.touchpoint.textmodel;
 
 import java.io.BufferedReader;
 import java.io.File;

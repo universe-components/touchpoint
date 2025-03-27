@@ -1,8 +1,8 @@
 package com.universe.touchpoint.memory;
 
-import com.universe.touchpoint.text.TFIDF;
-import com.universe.touchpoint.text.Tokenizer;
-import com.universe.touchpoint.text.algo.Similarity;
+import com.universe.touchpoint.textmodel.TFIDF;
+import com.universe.touchpoint.textmodel.Tokenizer;
+import com.universe.touchpoint.textmodel.algo.Similarity;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.universe.touchpoint.text;
+package com.universe.touchpoint.textmodel;
 
 import com.huaban.analysis.jieba.JiebaSegmenter;
 import com.huaban.analysis.jieba.SegToken;

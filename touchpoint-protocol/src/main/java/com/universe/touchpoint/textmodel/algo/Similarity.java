@@ -1,4 +1,4 @@
-package com.universe.touchpoint.text.algo;
+package com.universe.touchpoint.textmodel.algo;
 
 import java.util.HashSet;
 import java.util.Map;
