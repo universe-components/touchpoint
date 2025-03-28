@@ -1,7 +1,7 @@
 package com.universe.touchpoint.sync;
 
 import com.universe.touchpoint.TouchPointConstants;
-import com.universe.touchpoint.guide.AgentContextReceiver;
+import com.universe.touchpoint.layer.AgentContextReceiver;
 import com.universe.touchpoint.memory.RelevanceActionSelector;
 import com.universe.touchpoint.monitor.MetricReceiver;
 import com.universe.touchpoint.negotiation.AgentStateReceiver;

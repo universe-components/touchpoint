@@ -5,7 +5,7 @@ import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.transport.RPCConfig;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.config.transport.TransportConfig;
-import com.universe.touchpoint.guide.TaskRoleExecutor;
+import com.universe.touchpoint.layer.TaskRoleExecutor;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.transport.local.TouchPointLocalExecutor;
 import com.universe.touchpoint.transport.mqtt.TouchPointMQTT5Publisher;

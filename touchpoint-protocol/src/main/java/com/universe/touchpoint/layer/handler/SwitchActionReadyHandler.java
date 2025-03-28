@@ -1,4 +1,4 @@
-package com.universe.touchpoint.guide.handler;
+package com.universe.touchpoint.layer.handler;
 
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.api.RoleExecutor;
@@ -6,7 +6,7 @@ import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.api.SocketResponse;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.context.TouchPointContext;
-import com.universe.touchpoint.guide.TaskRoleExecutor;
+import com.universe.touchpoint.layer.TaskRoleExecutor;
 import com.universe.touchpoint.meta.MetaRegion;
 import com.universe.touchpoint.meta.Region;
 import com.universe.touchpoint.meta.TouchPointMemory;

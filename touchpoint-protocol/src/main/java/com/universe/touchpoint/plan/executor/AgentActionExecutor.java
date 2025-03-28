@@ -5,8 +5,8 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.api.SocketResponse;
-import com.universe.touchpoint.guide.RoleWorker;
-import com.universe.touchpoint.guide.TaskRoleExecutor;
+import com.universe.touchpoint.layer.RoleWorker;
+import com.universe.touchpoint.layer.TaskRoleExecutor;
 import com.universe.touchpoint.plan.ActionExecutor;
 
 public class AgentActionExecutor<I, O> extends ActionExecutor<AgentAction<I, O>, O> {

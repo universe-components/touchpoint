@@ -1,11 +1,11 @@
-package com.universe.touchpoint.guide.operator;
+package com.universe.touchpoint.layer.operator;
 
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.api.RoleExecutor;
 import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.api.SocketResponse;
-import com.universe.touchpoint.guide.Operator;
-import com.universe.touchpoint.guide.TaskRoleExecutor;
+import com.universe.touchpoint.layer.Operator;
+import com.universe.touchpoint.layer.TaskRoleExecutor;
 import java.util.Objects;
 
 public class ExceptionOperator implements Operator {

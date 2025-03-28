@@ -4,7 +4,7 @@ import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.config.transport.Transport;
-import com.universe.touchpoint.guide.RoleWorker;
+import com.universe.touchpoint.layer.RoleWorker;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.plan.processor.AgentActionProcessor;
 import com.universe.touchpoint.plan.processor.AgentFinishProcessor;

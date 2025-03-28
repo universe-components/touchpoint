@@ -1,8 +1,8 @@
-package com.universe.touchpoint.guide.operator;
+package com.universe.touchpoint.layer.operator;
 
 import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.context.TouchPointContext;
-import com.universe.touchpoint.guide.Operator;
+import com.universe.touchpoint.layer.Operator;
 import com.universe.touchpoint.negotiation.AgentSocketState;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.negotiation.AgentSocketStateRouter;

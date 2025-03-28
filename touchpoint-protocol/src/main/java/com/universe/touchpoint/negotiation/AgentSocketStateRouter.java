@@ -2,9 +2,9 @@ package com.universe.touchpoint.negotiation;
 
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.context.AgentContext;
-import com.universe.touchpoint.guide.handler.ReorderActionReadyHandler;
-import com.universe.touchpoint.guide.handler.SwitchActionReadyHandler;
 import com.universe.touchpoint.helper.TouchPointHelper;
+import com.universe.touchpoint.layer.handler.ReorderActionReadyHandler;
+import com.universe.touchpoint.layer.handler.SwitchActionReadyHandler;
 import com.universe.touchpoint.negotiation.handler.ActionGraphReadyHandler;
 import com.universe.touchpoint.negotiation.handler.GlobalConfigReadyHandler;
 import com.universe.touchpoint.negotiation.handler.NegotiationConcludedHandler;

@@ -9,7 +9,7 @@ import com.universe.touchpoint.ai.prompt.PromptBuilder;
 import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.transport.Transport;
-import com.universe.touchpoint.guide.RoleWorker;
+import com.universe.touchpoint.layer.RoleWorker;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.plan.ResultProcessor;
 import com.universe.touchpoint.router.Router;
