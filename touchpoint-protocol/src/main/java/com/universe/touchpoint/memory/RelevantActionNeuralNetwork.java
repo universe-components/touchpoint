@@ -27,9 +27,9 @@ import com.universe.touchpoint.sync.AgentSyncProtocolSelector;
 import java.util.List;
 import java.util.Objects;
 
-public class ActionRelatedNeuralNetwork<P> implements ActionSelector<P> {
+public class RelevantActionNeuralNetwork<P> implements ActionSelector<P> {
 
-  public ActionRelatedNeuralNetwork(
+  public RelevantActionNeuralNetwork(
       SocketRequest<P> params, Socket.TaskCallbackListener callbackListener, String task) {
     AgentSocketConfig socketConfig = ConfigManager.selectAgentSocket(task);
     ((AgentSyncProtocol<SocketResponse>)

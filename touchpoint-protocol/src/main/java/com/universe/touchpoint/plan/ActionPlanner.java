@@ -2,7 +2,7 @@ package com.universe.touchpoint.plan;
 
 import com.universe.touchpoint.Socket;
 import com.universe.touchpoint.api.SocketRequest;
-import com.universe.touchpoint.memory.ActionRelatedNeuralNetwork;
+import com.universe.touchpoint.memory.RelevantActionNeuralNetwork;
 import com.universe.touchpoint.plan.selector.DefaultActionSelector;
 
 public class ActionPlanner {
@@ -13,7 +13,7 @@ public class ActionPlanner {
       String task,
       boolean isUseModel) {
     if (isUseModel) {
-      return new ActionRelatedNeuralNetwork<>(params, callbackListener, task);
+      return new RelevantActionNeuralNetwork<>(params, callbackListener, task);
     }
     return new DefaultActionSelector<>();
   }
