@@ -2,7 +2,7 @@ package com.universe.touchpoint.sync;
 
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.layer.AgentContextReceiver;
-import com.universe.touchpoint.memory.RelevanceActionSelector;
+import com.universe.touchpoint.memory.ActionRelatedNeuralNetwork;
 import com.universe.touchpoint.monitor.MetricReceiver;
 import com.universe.touchpoint.negotiation.AgentStateReceiver;
 
@@ -15,9 +15,9 @@ public class AgentReceiverSelector {
           new AgentContextReceiver();
       case TouchPointConstants.METRIC_FILTER -> new MetricReceiver();
       case TouchPointConstants.TOUCH_POINT_ACTIVITY_FILTER ->
-          new RelevanceActionSelector.ActivityRecordReceiver<>();
+          new ActionRelatedNeuralNetwork.ActivityRecordReceiver<>();
       case TouchPointConstants.TOUCH_POINT_ACTIVITY_RESPONSE_FILTER ->
-          new RelevanceActionSelector.ActivityResponseReceiver<>();
+          new ActionRelatedNeuralNetwork.ActivityResponseReceiver<>();
       default -> null;
     };
   }
