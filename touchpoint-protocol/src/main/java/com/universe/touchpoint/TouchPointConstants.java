@@ -2,8 +2,6 @@ package com.universe.touchpoint;
 
 public class TouchPointConstants {
 
-  public static final String TOUCH_POINT_PKG = "com.universe.touchpoint.touchpoints";
-
   public static final String TOUCH_POINT_FILTER_PREFIX = "com.universe.receiver.filter";
 
   public static final String TOUCH_POINT_TASK_STATE_FILTER = "task_state";
