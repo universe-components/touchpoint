@@ -1,4 +1,4 @@
-package com.universe.touchpoint.opsmodel;
+package com.universe.touchpoint.guide;
 
 import com.universe.touchpoint.agent.AgentAction;
 

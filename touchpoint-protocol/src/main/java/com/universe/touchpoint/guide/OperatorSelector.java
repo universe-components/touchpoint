@@ -1,4 +1,4 @@
-package com.universe.touchpoint.opsmodel;
+package com.universe.touchpoint.guide;
 
 import com.universe.touchpoint.annotations.task.OperateType;
 import com.universe.touchpoint.utils.StringUtils;

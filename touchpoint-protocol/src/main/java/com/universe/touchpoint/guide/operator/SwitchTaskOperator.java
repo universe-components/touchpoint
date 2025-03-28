@@ -1,11 +1,11 @@
-package com.universe.touchpoint.opsmodel.operator;
+package com.universe.touchpoint.guide.operator;
 
 import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.guide.Operator;
 import com.universe.touchpoint.negotiation.AgentSocketState;
 import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.negotiation.AgentSocketStateRouter;
 import com.universe.touchpoint.negotiation.context.TaskContext;
-import com.universe.touchpoint.opsmodel.Operator;
 
 public class SwitchTaskOperator implements Operator {
 

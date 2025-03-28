@@ -1,4 +1,4 @@
-package com.universe.touchpoint.opsmodel.handler;
+package com.universe.touchpoint.guide.handler;
 
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.api.RoleExecutor;
@@ -6,12 +6,12 @@ import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.api.SocketResponse;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.context.TouchPointContext;
+import com.universe.touchpoint.guide.TaskRoleExecutor;
 import com.universe.touchpoint.meta.MetaRegion;
 import com.universe.touchpoint.meta.Region;
 import com.universe.touchpoint.meta.TouchPointMemory;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.negotiation.AgentSocketStateHandler;
-import com.universe.touchpoint.opsmodel.TaskRoleExecutor;
 
 public class SwitchActionReadyHandler<I extends TouchPoint, O extends TouchPoint>
     implements AgentSocketStateHandler<SocketRequest<I>, AgentActionMeta> {

@@ -1,12 +1,12 @@
-package com.universe.touchpoint.opsmodel.handler;
+package com.universe.touchpoint.guide.handler;
 
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.api.operator.ActionGraphOperator;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.context.TouchPointContext;
+import com.universe.touchpoint.guide.TaskRoleExecutor;
 import com.universe.touchpoint.negotiation.AgentSocketStateHandler;
-import com.universe.touchpoint.opsmodel.TaskRoleExecutor;
 import com.universe.touchpoint.plan.ActionGraph;
 import com.universe.touchpoint.plan.ActionGraphBuilder;
 
