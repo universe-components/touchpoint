@@ -1,9 +1,9 @@
 package com.universe.touchpoint.negotiation.handler;
 
 import com.universe.touchpoint.context.AgentContext;
-import com.universe.touchpoint.memory.Region;
-import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.MetaRegion;
+import com.universe.touchpoint.meta.MetaRegion;
+import com.universe.touchpoint.meta.Region;
+import com.universe.touchpoint.meta.TouchPointMemory;
 import com.universe.touchpoint.negotiation.AgentSocketStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

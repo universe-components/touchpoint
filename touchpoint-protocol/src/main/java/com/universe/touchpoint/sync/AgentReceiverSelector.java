@@ -1,10 +1,10 @@
 package com.universe.touchpoint.sync;
 
 import com.universe.touchpoint.TouchPointConstants;
+import com.universe.touchpoint.memory.RelevanceActionSelector;
 import com.universe.touchpoint.monitor.MetricReceiver;
 import com.universe.touchpoint.negotiation.AgentStateReceiver;
 import com.universe.touchpoint.opsmodel.AgentContextReceiver;
-import com.universe.touchpoint.plan.selector.RelevanceActionSelector;
 
 public class AgentReceiverSelector {
 

@@ -2,9 +2,9 @@ package com.universe.touchpoint.negotiation;
 
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.context.TouchPointContext;
-import com.universe.touchpoint.memory.Region;
-import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.MetaRegion;
+import com.universe.touchpoint.meta.MetaRegion;
+import com.universe.touchpoint.meta.Region;
+import com.universe.touchpoint.meta.TouchPointMemory;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.plan.ActionGraph;
 import com.universe.touchpoint.plan.ActionGraphBuilder;

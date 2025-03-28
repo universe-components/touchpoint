@@ -1,7 +1,6 @@
-package com.universe.touchpoint.memory.regions;
+package com.universe.touchpoint.meta;
 
 import com.universe.touchpoint.annotations.task.OperateType;
-import com.universe.touchpoint.memory.TouchPointRegion;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.meta.data.AgentMeta;
 import com.universe.touchpoint.meta.data.TaskMeta;

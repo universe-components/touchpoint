@@ -2,9 +2,9 @@ package com.universe.touchpoint.context;
 
 import com.universe.touchpoint.config.ai.Model;
 import com.universe.touchpoint.config.transport.Transport;
-import com.universe.touchpoint.memory.Region;
-import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.MetaRegion;
+import com.universe.touchpoint.meta.MetaRegion;
+import com.universe.touchpoint.meta.Region;
+import com.universe.touchpoint.meta.TouchPointMemory;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.monitor.metric.ActionMetric;
 import java.util.HashMap;

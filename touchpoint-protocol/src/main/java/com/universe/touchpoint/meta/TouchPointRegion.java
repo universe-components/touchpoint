@@ -1,4 +1,4 @@
-package com.universe.touchpoint.memory;
+package com.universe.touchpoint.meta;
 
 public abstract class TouchPointRegion {
 

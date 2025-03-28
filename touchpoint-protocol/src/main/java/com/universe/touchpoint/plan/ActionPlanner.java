@@ -2,8 +2,8 @@ package com.universe.touchpoint.plan;
 
 import com.universe.touchpoint.Socket;
 import com.universe.touchpoint.api.SocketRequest;
+import com.universe.touchpoint.memory.RelevanceActionSelector;
 import com.universe.touchpoint.plan.selector.DefaultActionSelector;
-import com.universe.touchpoint.plan.selector.RelevanceActionSelector;
 
 public class ActionPlanner {
 

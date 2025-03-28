@@ -1,4 +1,4 @@
-package com.universe.touchpoint.plan.selector;
+package com.universe.touchpoint.memory;
 
 import com.universe.touchpoint.Socket;
 import com.universe.touchpoint.TouchPoint;
@@ -12,10 +12,9 @@ import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.socket.AgentSocketConfig;
 import com.universe.touchpoint.context.AgentContext;
 import com.universe.touchpoint.context.TouchPointContext;
-import com.universe.touchpoint.memory.ActivityGraphBuilder;
-import com.universe.touchpoint.memory.Region;
-import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.MetaRegion;
+import com.universe.touchpoint.meta.MetaRegion;
+import com.universe.touchpoint.meta.Region;
+import com.universe.touchpoint.meta.TouchPointMemory;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.negotiation.context.TaskActionContext;
 import com.universe.touchpoint.plan.ActionSelector;

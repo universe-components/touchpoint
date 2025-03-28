@@ -1,6 +1,5 @@
-package com.universe.touchpoint.memory;
+package com.universe.touchpoint.meta;
 
-import com.universe.touchpoint.memory.regions.MetaRegion;
 import java.util.HashMap;
 import java.util.Map;
 

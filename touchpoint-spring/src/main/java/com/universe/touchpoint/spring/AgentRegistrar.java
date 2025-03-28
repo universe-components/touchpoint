@@ -1,9 +1,9 @@
 package com.universe.touchpoint.spring;
 
 import com.universe.touchpoint.annotations.task.TouchPointAgent;
-import com.universe.touchpoint.memory.Region;
-import com.universe.touchpoint.memory.TouchPointMemory;
-import com.universe.touchpoint.memory.regions.MetaRegion;
+import com.universe.touchpoint.meta.MetaRegion;
+import com.universe.touchpoint.meta.Region;
+import com.universe.touchpoint.meta.TouchPointMemory;
 import com.universe.touchpoint.meta.annotation.AgentAnnotationMeta;
 import com.universe.touchpoint.meta.data.AgentMeta;
 import java.util.Map;
