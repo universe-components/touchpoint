@@ -48,7 +48,7 @@ public class TFIDF {
     if (!file.exists()) return;
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
       totalDocuments = Integer.parseInt(br.readLine().trim());
-      Map<String, Integer> tempDF = new ConcurrentHashMap<>();
+      Map<String, Integer> tempDF = new HashMap<>();
       String line;
       while ((line = br.readLine()) != null) {
         String[] parts = line.split("\t");

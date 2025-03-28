@@ -30,6 +30,8 @@ import com.universe.touchpoint.negotiation.AgentSocketStateMachine;
 import com.universe.touchpoint.negotiation.context.TaskActionContext;
 import com.universe.touchpoint.sync.AgentSyncProtocol;
 import com.universe.touchpoint.sync.AgentSyncProtocolSelector;
+import com.universe.touchpoint.textmodel.TFIDF;
+import com.universe.touchpoint.textmodel.Tokenizer;
 import com.universe.touchpoint.utils.AnnotationUtils;
 import com.universe.touchpoint.utils.StringUtils;
 
@@ -90,6 +92,12 @@ public class ActionRegistry {
                         actionMetricConfig,
                         actionDependency,
                         scopeAction));
+
+                new Tokenizer().loadStopWords("resources/stop_words.txt");
+
+                TFIDF tfidf = new TFIDF();
+                tfidf.loadIDF("resources/idf_dict.txt");
+                tfidf.startHotIDFLoader(60);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -119,7 +127,6 @@ public class ActionRegistry {
                 ((AgentSyncProtocol<SocketRequest>) AgentSyncProtocolSelector.selectProtocol(socketConfig.getBindProtocol())).registerReceiver(
                         actionContext,
                         TouchPointConstants.TOUCH_POINT_ACTIVITY_FILTER, RoleType.MEMBER, SocketRequest.class);
-
 
                 AgentSocketStateMachine.getInstance(task).send(
                         new AgentSocketStateMachine.AgentSocketStateContext<>(
