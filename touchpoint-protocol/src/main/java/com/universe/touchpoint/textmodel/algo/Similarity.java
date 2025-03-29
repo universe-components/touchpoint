@@ -1,8 +1,6 @@
 package com.universe.touchpoint.textmodel.algo;
 
 import com.universe.touchpoint.textmodel.VectorUtils;
-
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -26,5 +24,4 @@ public class Similarity {
     }
     return (norm1 == 0 || norm2 == 0) ? 0.0 : dotProduct / (Math.sqrt(norm1) * Math.sqrt(norm2));
   }
-
 }
