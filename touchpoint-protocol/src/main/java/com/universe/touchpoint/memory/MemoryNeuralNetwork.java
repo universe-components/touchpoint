@@ -3,6 +3,7 @@ package com.universe.touchpoint.memory;
 import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.agent.AgentAction;
+import com.universe.touchpoint.agent.AgentFinish;
 import com.universe.touchpoint.annotations.socket.SocketProtocol;
 import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.api.SocketResponse;
@@ -24,7 +25,7 @@ import java.util.Objects;
 
 public class MemoryNeuralNetwork<P> {
 
-  public void select(String task, SocketRequest<P> request) {
+  public void firstActions(SocketRequest<P> request) {
     SocketProtocol protocol =
         Objects.requireNonNull(
                 ConfigManager.selectAgentSocket(request.getContext().getBelongTask()))
@@ -33,11 +34,30 @@ public class MemoryNeuralNetwork<P> {
         .send(request, TouchPointConstants.TOUCH_POINT_ACTIVITY_FILTER);
   }
 
+  public <F extends TouchPoint> void nextAction(F from) {
+    SocketProtocol protocol =
+        Objects.requireNonNull(ConfigManager.selectAgentSocket(from.getContext().getBelongTask()))
+            .getBindProtocol();
+    String actionName = null;
+    if (from instanceof AgentAction<?, ?>) {
+      actionName = ((AgentAction<?, ?>) from).getActionName();
+    } else if (from instanceof AgentFinish) {
+      actionName = from.getHeader().getFromAction().getName();
+    }
+    SocketRequest<P> request = new SocketRequest<>();
+    request.getContext().getActionContext().setCurrentAction(actionName);
+    ((AgentSyncProtocol<SocketRequest<P>>) AgentSyncProtocolSelector.selectProtocol(protocol))
+        .send(request, TouchPointConstants.TOUCH_POINT_ACTIVITY_FILTER);
+  }
+
   public static class ActivityRecordReceiver<P> extends AgentReceiver<SocketRequest<P>> {
     @Override
     public <C extends AgentContext> void handleMessage(
         C context, SocketRequest<P> request, String topic) {
-      String inputText = request.getContext().getTaskContext().getGoal();
+      String inputText = request.getContext().getActionContext().getCurrentAction();
+      if (inputText == null) {
+        inputText = request.getContext().getTaskContext().getGoal();
+      }
       AgentActionMeta actionMeta =
           ((MetaRegion) TouchPointMemory.getRegion(Region.META))
               .getTouchPointAction(((TaskActionContext) context).getAction());

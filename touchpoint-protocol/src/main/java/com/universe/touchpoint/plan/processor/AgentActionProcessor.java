@@ -10,9 +10,9 @@ import com.universe.touchpoint.config.ConfigManager;
 import com.universe.touchpoint.config.ai.LangModelConfig;
 import com.universe.touchpoint.config.transport.Transport;
 import com.universe.touchpoint.layer.RoleWorker;
+import com.universe.touchpoint.memory.ActionSelector;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
 import com.universe.touchpoint.plan.ResultProcessor;
-import com.universe.touchpoint.router.Router;
 import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -23,7 +23,7 @@ public class AgentActionProcessor implements ResultProcessor<AgentAction<?, ?>> 
       AgentAction<?, ?> result, String goal, String task, Transport transportType) {
     LangModelConfig modelConfig = ConfigManager.selectModel(goal, result.getMeta(), task);
 
-    List<AgentActionMeta> nextActions = Router.route(result, true);
+    List<AgentActionMeta> nextActions = ActionSelector.nextAction(result, true);
 
     Object input =
         PromptBuilder.createPromptGenerator(modelConfig.getType())

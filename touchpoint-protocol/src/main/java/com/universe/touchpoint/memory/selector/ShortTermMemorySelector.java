@@ -1,6 +1,7 @@
 package com.universe.touchpoint.memory.selector;
 
 import com.universe.touchpoint.Socket;
+import com.universe.touchpoint.TouchPoint;
 import com.universe.touchpoint.TouchPointConstants;
 import com.universe.touchpoint.annotations.role.RoleType;
 import com.universe.touchpoint.api.SocketRequest;
@@ -17,6 +18,8 @@ import java.util.List;
 
 public class ShortTermMemorySelector<I> extends ActionSelector {
 
+  public ShortTermMemorySelector() {}
+
   public ShortTermMemorySelector(
       SocketRequest<I> params, Socket.TaskCallbackListener callbackListener, String task) {
     AgentSocketConfig socketConfig = ConfigManager.selectAgentSocket(task);
@@ -30,8 +33,14 @@ public class ShortTermMemorySelector<I> extends ActionSelector {
   }
 
   @Override
-  public List<AgentActionMeta> select() {
-    new MemoryNeuralNetwork<I>().select(getTask(), (SocketRequest<I>) getRequest());
+  public List<AgentActionMeta> firstActions() {
+    new MemoryNeuralNetwork<I>().firstActions((SocketRequest<I>) getRequest());
+    return null;
+  }
+
+  @Override
+  public <F extends TouchPoint> List<AgentActionMeta> nextActions(F from) {
+    new MemoryNeuralNetwork<I>().nextAction(from);
     return null;
   }
 }

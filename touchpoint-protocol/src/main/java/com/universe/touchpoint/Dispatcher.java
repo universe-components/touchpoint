@@ -20,7 +20,7 @@ public class Dispatcher {
       String action, SocketRequest<P> params, Socket.TaskCallbackListener callbackListener) {
     List<F> finalResult = new ArrayList<>();
     String task = confirmTask(action, params);
-    AgentActionMeta actionMeta = ActionSelector.select(task, params, callbackListener);
+    AgentActionMeta actionMeta = ActionSelector.firstAction(task, params, callbackListener);
     AgentAction<P, ?> agentAction =
         new AgentAction<>(
             actionMeta.getName(), actionMeta, new TouchPoint.Header(actionMeta), task);

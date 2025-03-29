@@ -9,6 +9,8 @@ public class SocketRequest<B> {
   private TouchPointContext context;
   private String token;
 
+  public SocketRequest() {}
+
   public SocketRequest(B body) {
     this.body = body;
   }
