@@ -4,11 +4,11 @@ import com.universe.touchpoint.agent.AgentAction;
 import com.universe.touchpoint.annotations.task.OperateType;
 import com.universe.touchpoint.api.SocketRequest;
 import com.universe.touchpoint.context.TouchPointContext;
+import com.universe.touchpoint.memory.ActionSelector;
 import com.universe.touchpoint.meta.MetaRegion;
 import com.universe.touchpoint.meta.Region;
 import com.universe.touchpoint.meta.TouchPointMemory;
 import com.universe.touchpoint.meta.data.AgentActionMeta;
-import com.universe.touchpoint.plan.ActionPlanner;
 import com.universe.touchpoint.plan.ResultDispatcher;
 import com.universe.touchpoint.security.TokenizerSelector;
 import java.util.ArrayList;
@@ -20,20 +20,15 @@ public class Dispatcher {
       String action, SocketRequest<P> params, Socket.TaskCallbackListener callbackListener) {
     List<F> finalResult = new ArrayList<>();
     String task = confirmTask(action, params);
-    ActionPlanner.getSelector(params, callbackListener, task, true)
-        .select(task, params)
-        .forEach(
-            actionMeta -> {
-              AgentAction<P, ?> agentAction =
-                  new AgentAction<>(
-                      actionMeta.getName(), actionMeta, new TouchPoint.Header(actionMeta), task);
-              agentAction.setContext(
-                  (TouchPointContext)
-                      TokenizerSelector.getTokenizer("jwt").parseToken(params.getToken()));
-              agentAction.getHeader().setCallbackListener(callbackListener);
-              agentAction.setInput(params);
-              finalResult.add(ResultDispatcher.run(agentAction, actionMeta));
-            });
+    AgentActionMeta actionMeta = ActionSelector.select(task, params, callbackListener);
+    AgentAction<P, ?> agentAction =
+        new AgentAction<>(
+            actionMeta.getName(), actionMeta, new TouchPoint.Header(actionMeta), task);
+    agentAction.setContext(
+        (TouchPointContext) TokenizerSelector.getTokenizer("jwt").parseToken(params.getToken()));
+    agentAction.getHeader().setCallbackListener(callbackListener);
+    agentAction.setInput(params);
+    finalResult.add(ResultDispatcher.run(agentAction, actionMeta));
     return finalResult.get(0);
   }
 
