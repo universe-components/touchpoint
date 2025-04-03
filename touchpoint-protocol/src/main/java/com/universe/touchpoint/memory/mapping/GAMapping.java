@@ -34,11 +34,11 @@ public class GAMapping implements TaskActionMapping {
   }
 
   private List<List<AgentActionMeta>> initPopulation(Set<AgentActionMeta> actions) {
-    List<AgentActionMeta> toolList = new ArrayList<>(actions);
+    List<AgentActionMeta> actionList = new ArrayList<>(actions);
     List<List<AgentActionMeta>> population = new ArrayList<>();
     for (int i = 0; i < POP_SIZE; i++) {
-      Collections.shuffle(toolList);
-      population.add(new ArrayList<>(toolList.subList(0, 3)));
+      Collections.shuffle(actionList);
+      population.add(new ArrayList<>(actionList.subList(0, 3)));
     }
     return population;
   }
