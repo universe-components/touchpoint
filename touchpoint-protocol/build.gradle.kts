@@ -43,6 +43,7 @@ dependencies {
     api(libs.converter.gson)
     api(libs.gson)
     api(libs.commons.lang3)
+    api(libs.hipparchus.clustering)
     api(libs.logback)
     api(libs.slf4j.api)
     implementation(libs.jep)

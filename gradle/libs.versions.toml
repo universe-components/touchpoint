@@ -29,6 +29,7 @@ springboot = "3.4.3"
 akka = "2.10.2"
 jwt = "0.12.6"
 jieba = "1.0.2"
+hipparchus = "4.0.1"
 
 [libraries]
 androidPlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -53,6 +54,7 @@ anthropic = { group = "com.anthropic", name = "anthropic-java", version.ref = "a
 dubbo = { group = "org.apache.dubbo", name = "dubbo", version.ref = "dubbo" }
 paho = { group = "org.eclipse.paho", name = "org.eclipse.paho.mqttv5.client", version.ref = "paho" }
 commons-lang3 = { group = "org.apache.commons", name = "commons-lang3", version.ref = "commons-lang3" }
+hipparchus-clustering = { group = "org.hipparchus", name = "hipparchus-clustering", version.ref = "hipparchus"}
 jep = { group = "black.ninia", name = "jep", version.ref = "jep" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
