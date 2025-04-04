@@ -7,8 +7,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -19,6 +21,7 @@ public class TFIDF {
   private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
   private final Map<String, Integer> documentFrequencies = new ConcurrentHashMap<>();
   private volatile int totalDocuments = 0;
+  private Set<String> allWords;
   private String idfPath = null; // 可选保存当前热加载的 idf 路径
 
   private final Tokenizer tokenizer = new Tokenizer();
@@ -30,7 +33,7 @@ public class TFIDF {
     for (String token : tokens) {
       tf.put(token, tf.getOrDefault(token, 0.0) + 1.0);
     }
-    tf.replaceAll((t, v) -> tf.get(t) / tokens.size());
+    tf.replaceAll((t, v) -> v / tokens.size());
 
     Map<String, Double> tfidf = new HashMap<>();
     for (String token : tf.keySet()) {
@@ -38,6 +41,7 @@ public class TFIDF {
           Math.log((totalDocuments + 1.0) / (documentFrequencies.getOrDefault(token, 0) + 1.0)) + 1;
       tfidf.put(token, tf.get(token) * idf);
     }
+    this.allWords = new HashSet<>(tf.keySet());
     return tfidf;
   }
 
@@ -89,6 +93,10 @@ public class TFIDF {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public Set<String> getAllWords() {
+    return allWords;
   }
 
   public void incrementTotalDocuments() {

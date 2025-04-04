@@ -14,9 +14,9 @@ import org.hipparchus.clustering.KMeansPlusPlusClusterer;
 
 public class KMeans {
 
-  public static int findOptimalK(List<DoublePoint> actions, int maxK) {
-    int estimatedK = ElbowMethod.estimateKUsingElbow(actions, maxK);
-    return SilhouetteScore.refineKUsingSilhouette(actions, estimatedK);
+  public static int findOptimalK(List<DoublePoint> actions, double[][] covarianceMatrix, int maxK) {
+    int estimatedK = ElbowMethod.estimateKUsingElbow(actions, covarianceMatrix, maxK);
+    return SilhouetteScore.refineKUsingSilhouette(actions, covarianceMatrix, estimatedK);
   }
 
   public static List<CentroidCluster<DoublePoint>> clusterActions(

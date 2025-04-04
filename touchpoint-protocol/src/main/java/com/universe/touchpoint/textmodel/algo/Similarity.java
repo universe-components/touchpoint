@@ -1,6 +1,6 @@
 package com.universe.touchpoint.textmodel.algo;
 
-import com.universe.touchpoint.textmodel.VectorUtils;
+import com.universe.touchpoint.textmodel.utils.VectorUtils;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;

@@ -1,15 +1,20 @@
 package com.universe.touchpoint.textmodel.algo.kmeans;
 
+import com.universe.touchpoint.textmodel.utils.VectorUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.hipparchus.clustering.CentroidCluster;
 import org.hipparchus.clustering.DoublePoint;
 import org.hipparchus.clustering.KMeansPlusPlusClusterer;
+import org.hipparchus.linear.MatrixUtils;
+import org.hipparchus.linear.RealMatrix;
 
 public class ElbowMethod {
 
-  public static int estimateKUsingElbow(List<DoublePoint> actions, int maxK) {
+  public static int estimateKUsingElbow(
+      List<DoublePoint> actions, double[][] covarianceMatrix, int maxK) {
     List<Double> wcss = new ArrayList<>();
+    RealMatrix covarianceMatrixReal = MatrixUtils.createRealMatrix(covarianceMatrix);
 
     // 计算 WCSS（簇内误差平方和）
     for (int k = 1; k <= maxK; k++) {
@@ -20,7 +25,8 @@ public class ElbowMethod {
       for (CentroidCluster<DoublePoint> cluster : clusters) {
         double[] centroid = cluster.getCenter().getPoint();
         for (DoublePoint point : cluster.getPoints()) {
-          sumSquaredError += squaredEuclideanDistance(point.getPoint(), centroid);
+          sumSquaredError +=
+              VectorUtils.mahalanobisDistance(point.getPoint(), centroid, covarianceMatrixReal);
         }
       }
       wcss.add(sumSquaredError);
@@ -49,14 +55,5 @@ public class ElbowMethod {
     }
 
     return bestK;
-  }
-
-  private static double squaredEuclideanDistance(double[] point1, double[] point2) {
-    double sum = 0;
-    for (int i = 0; i < point1.length; i++) {
-      double diff = point1[i] - point2[i];
-      sum += diff * diff;
-    }
-    return sum;
   }
 }

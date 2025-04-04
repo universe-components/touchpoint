@@ -1,16 +1,21 @@
 package com.universe.touchpoint.textmodel.algo.kmeans;
 
+import com.universe.touchpoint.textmodel.utils.VectorUtils;
 import java.util.List;
 import org.hipparchus.clustering.CentroidCluster;
 import org.hipparchus.clustering.DoublePoint;
 import org.hipparchus.clustering.KMeansPlusPlusClusterer;
+import org.hipparchus.linear.MatrixUtils;
+import org.hipparchus.linear.RealMatrix;
 
 public class SilhouetteScore {
 
   // 计算轮廓系数
-  public static double computeSilhouetteScore(List<DoublePoint> actions, int k) {
+  public static double computeSilhouetteScore(
+      List<DoublePoint> actions, int k, double[][] covarianceMatrix) {
     KMeansPlusPlusClusterer<DoublePoint> clusterer = new KMeansPlusPlusClusterer<>(k, 100);
     List<CentroidCluster<DoublePoint>> clusters = clusterer.cluster(actions);
+    RealMatrix covarianceMatrixReal = MatrixUtils.createRealMatrix(covarianceMatrix);
 
     double totalScore = 0;
     int count = 0;
@@ -23,7 +28,9 @@ public class SilhouetteScore {
         // 计算簇内平均距离
         for (DoublePoint other : clusterPoints) {
           if (!tool.equals(other)) {
-            a += euclideanDistance(tool.getPoint(), other.getPoint());
+            a +=
+                VectorUtils.mahalanobisDistance(
+                    tool.getPoint(), other.getPoint(), covarianceMatrixReal);
           }
         }
         if (clusterPoints.size() > 1) {
@@ -34,7 +41,9 @@ public class SilhouetteScore {
         for (CentroidCluster<DoublePoint> otherCluster : clusters) {
           if (!otherCluster.equals(cluster)) {
             for (DoublePoint other : otherCluster.getPoints()) {
-              double dist = euclideanDistance(tool.getPoint(), other.getPoint());
+              double dist =
+                  VectorUtils.mahalanobisDistance(
+                      tool.getPoint(), other.getPoint(), covarianceMatrixReal);
               b = Math.min(b, dist);
             }
           }
@@ -50,12 +59,13 @@ public class SilhouetteScore {
   }
 
   // 使用轮廓系数优化 K 值
-  public static int refineKUsingSilhouette(List<DoublePoint> actions, int estimatedK) {
+  public static int refineKUsingSilhouette(
+      List<DoublePoint> actions, double[][] covarianceMatrix, int estimatedK) {
     double bestScore = -1;
     int bestK = estimatedK;
 
     for (int k = Math.max(2, estimatedK - 1); k <= estimatedK + 1; k++) {
-      double score = computeSilhouetteScore(actions, k);
+      double score = computeSilhouetteScore(actions, k, covarianceMatrix);
       if (score > bestScore) {
         bestScore = score;
         bestK = k;
@@ -63,15 +73,5 @@ public class SilhouetteScore {
     }
 
     return bestK;
-  }
-
-  // 计算欧几里得距离
-  private static double euclideanDistance(double[] point1, double[] point2) {
-    double sum = 0;
-    for (int i = 0; i < point1.length; i++) {
-      double diff = point1[i] - point2[i];
-      sum += diff * diff;
-    }
-    return Math.sqrt(sum);
   }
 }
