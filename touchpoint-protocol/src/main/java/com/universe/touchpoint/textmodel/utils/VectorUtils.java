@@ -1,12 +1,33 @@
 package com.universe.touchpoint.textmodel.utils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.hipparchus.linear.ArrayRealVector;
 import org.hipparchus.linear.MatrixUtils;
 import org.hipparchus.linear.RealMatrix;
 
 public class VectorUtils {
+
+  // 计算每个 token（单词）的均值
+  public static Map<String, Double> computeFeatureMean(
+      List<Map<String, Double>> sparseMatrix, Set<String> vocabulary) {
+    Map<String, Double> mean = new HashMap<>();
+    int numSamples = sparseMatrix.size();
+
+    for (Map<String, Double> tfidfVector : sparseMatrix) {
+      for (Map.Entry<String, Double> entry : tfidfVector.entrySet()) {
+        mean.put(entry.getKey(), mean.getOrDefault(entry.getKey(), 0.0) + entry.getValue());
+      }
+    }
+
+    // 计算均值
+    for (String token : vocabulary) {
+      mean.put(token, mean.getOrDefault(token, 0.0) / numSamples);
+    }
+    return mean;
+  }
 
   // 归一化向量，使其 L2 范数 = 1
   public static Map<String, Double> normalizeVector(Map<String, Double> vector) {
