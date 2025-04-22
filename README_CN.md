@@ -269,7 +269,7 @@ class WeatherService {
 ## Design Notes
 - [实体关系模型](./docs/design/README_ENTITY_CN.md)
 - [协商握手](./docs/design/README_HANDSHAKE_CN)
-- [生命周期和操作者模型](./docs/design/README_LIFECYCLE_OPERATOR_MODEL_CN)
+- [生命周期和操作者模型](./docs/design/README_LIFECYCLE_OPERATOR_MODEL_CN.md)
 - [去中心化及无状态](./docs/design/README_STATELESS)
 
 ## RoadMap
