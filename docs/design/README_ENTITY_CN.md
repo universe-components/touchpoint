@@ -18,9 +18,9 @@ Socket配置作用于Agent上，Task配置作用于Task上，其他配置可作�
 ### 模型和机制
 - `SocketMachine`: 用于建立Agent之间的协作关系，通过握手机制实现，参见[协商握手](./README_HANDSHAKE_CN)。
 - `AIModel`: 主要用于AI模型调用和结果处理等。
-- `RoleModel`: 主要包含协作者和监督者相关处理，参见[上下文-角色模型](./README_CONTEXT_ROLE.md)。
+- `OperatorModel`: 主要包含协作者、监督者、执行者相关操作流程，参见[生命周期和操作者模型](./README_LIFECYCLE_OPERATOR_MODEL.md)。
 - `Transport`: Action之间通信协议的选择。
-- `Metric`: Task、Action运行指标的收集和同步，参见[状态同步](./README_STATELESS)。
+- `Metric`: Task、Action运行指标的收集和同步。
 
 所有模型和机制，与相关配置的作用域对应，比如，`AIModel` 作用于Agent，那么，该Agent上的所有Action都使用该模型，如果`AIModel` 作用于Task，那么，该Task所有Action都使用该模型，如果`AIModel` 作用于Action，那么，该Action使用该模型。  
 

@@ -6,11 +6,11 @@
 </div>
 
 ### Configuration
-- `Socket`: The communication method for agent negotiation and relationship establishment, currently supporting `MQTT`.
+- `Socket`: The communication method for agent negotiation and relationship establishment, currently supporting `Actor` and `MQTT`.
 - `Task`: Task-related configurations, primarily including the task name.
 - `AIModel`: AI model configuration, including model name, temperature, etc.
 - `Role`: Role-related configurations used to specify coordinators, supervisors, and their roles within specific tasks.
-- `Transport`: The communication protocol configuration between Actions, currently supporting `MQTT` and `RPC`.
+- `Transport`: The communication protocol configuration between Actions, currently supporting `Actor`, MQTT` and `RPC`.
 - `Metric`: Task and Action metric thresholds and metric synchronization protocol configuration, with the synchronization protocol set to `MQTT`.
 
 The `Socket` configuration applies to `Agents`, the `Task` configuration applies to `Tasks`, and other configurations can apply to `Agents`, `Tasks`, and `Actions`.
@@ -18,9 +18,9 @@ The `Socket` configuration applies to `Agents`, the `Task` configuration applies
 ### Models and Mechanisms
 - `SocketMachine`: Establishes collaboration relationships between Agents using a handshake mechanism. See [Negotiation Handshake](./README_HANDSHAKE.md)。
 - `AIModel`: Mainly responsible for AI model invocation and result processing.
-- `RoleModel`: Handles processes related to collaborators and supervisors.
+- `RoleModel`: Handles processes related to executor、collaborators and supervisors.
 - `Transport`: Defines the communication protocol selection between Actions.
-- `Metric`: Collects and synchronizes Task and Action performance metrics. See [State Synchronization](./README_STATELESS)。
+- `Metric`: Collects and synchronizes Task and Action performance metrics.
 
 All models and mechanisms align with their respective configuration scopes. For example:
 - If AIModel is applied at the Agent level, all Actions within that Agent use the specified model.
