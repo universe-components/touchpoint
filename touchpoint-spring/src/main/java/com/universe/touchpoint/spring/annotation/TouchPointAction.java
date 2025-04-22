@@ -1,6 +1,6 @@
 package com.universe.touchpoint.spring.annotation;
 
-import com.universe.touchpoint.annotations.role.ActionRole;
+import com.universe.touchpoint.annotations.task.OperateType;
 import com.universe.touchpoint.spring.AgentActionRegistrar;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -17,7 +17,7 @@ public @interface TouchPointAction {
 
   String desc();
 
-  ActionRole role() default ActionRole.EXECUTOR;
+  OperateType operateType() default OperateType.EXECUTE_ACTION;
 
   String[] toAgents() default {};
 

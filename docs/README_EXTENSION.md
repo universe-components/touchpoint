@@ -108,8 +108,7 @@ class Router implements AgentActionExecutor<String, TouchPoint> {
 
 Step 3: Implement `Coordinator` to weave the router into the playback process.
 ```java
-@TouchPointAction(name = "media_coordinator", desc = "add router to playback process", toActions = {"movie[]"})
-@Coordinator(task = "movie")
+@TouchPointAction(name = "media_coordinator", desc = "add router to playback process", toActions = {"movie[]"}, operateType = OperateType.ORGANIZE_ACTION)
 class MediaCoordinator implements ActionGraphOperator<String> {
 
     @Override
