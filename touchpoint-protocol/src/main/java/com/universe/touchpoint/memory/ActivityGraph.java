@@ -23,12 +23,13 @@ public class ActivityGraph {
     for (String token : uniqueTokens) {
       tfidf.incrementDocumentFrequency(token);
     }
-    tfidfVectors.put(input, new TFIDF().computeTFIDF(input));
+    tfidfVectors.put(input, tfidf.computeTFIDF(input));
     tfidf.saveIDF(); // 自动保存
   }
 
   // 连接两个节点并计算相似度
   public double addEdge(String text1, String text2) {
+    //    SparseMatrix.computeSparseCovarianceMatrix(new TextVector())
     double sim = Similarity.cosineSimilarity(tfidfVectors.get(text1), tfidfVectors.get(text2));
     similarityEdges.computeIfAbsent(text1, k -> new ConcurrentHashMap<>()).put(text2, sim);
     similarityEdges.computeIfAbsent(text2, k -> new ConcurrentHashMap<>()).put(text1, sim);
