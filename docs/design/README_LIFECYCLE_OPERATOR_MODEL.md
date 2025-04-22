@@ -15,4 +15,4 @@ The following operator types are currently built into TPP:
  - ExceptionHandler: Used to handle exceptions thrown by an Action. This operator type receives the exception information and calls custom Actions to handle the exception accordingly.
  - SwitchTask: When task A needs to call a specific Action from task B to proceed, this operator type automatically adds the Action from task B into task A and invokes it.
 
-Note: TPP allows developers to define custom operator types. For details, please refer to the [Operator Interface](./touchpoint-protocol/src/java/com/universe/touchpoint/layer/Operator.java).
+Note: TPP allows developers to define custom operator types. For details, please refer to the [Operator Interface](../../../../touchpoint-protocol/src/java/com/universe/touchpoint/layer/Operator.java).
