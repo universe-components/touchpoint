@@ -9,7 +9,7 @@
 - `Socket`: The communication method for agent negotiation and relationship establishment, currently supporting `Actor` and `MQTT`.
 - `Task`: Task-related configurations, primarily including the task name.
 - `AIModel`: AI model configuration, including model name, temperature, etc.
-- `Role`: Role-related configurations used to specify coordinators, supervisors, and their roles within specific tasks.
+- `Operator`: Operator-related configurations used to specify organize actions, handle exceptions, switch task etc.
 - `Transport`: The communication protocol configuration between Actions, currently supporting `Actor`, MQTT` and `RPC`.
 - `Metric`: Task and Action metric thresholds and metric synchronization protocol configuration, with the synchronization protocol set to `MQTT`.
 
@@ -18,7 +18,7 @@ The `Socket` configuration applies to `Agents`, the `Task` configuration applies
 ### Models and Mechanisms
 - `SocketMachine`: Establishes collaboration relationships between Agents using a handshake mechanism. See [Negotiation Handshake](./README_HANDSHAKE.md)。
 - `AIModel`: Mainly responsible for AI model invocation and result processing.
-- `RoleModel`: Handles processes related to executor、collaborators and supervisors.
+- `OperatorModel`: Handles operation processes related to executor、collaborators and supervisors including organize actions, handle exceptions, switch task etc.
 - `Transport`: Defines the communication protocol selection between Actions.
 - `Metric`: Collects and synchronizes Task and Action performance metrics.
 
