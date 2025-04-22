@@ -15,4 +15,4 @@ TPP协议的操作者模型定义了不同的操作类型，不同类型操作�
  - ExceptionHandler：当某个Action抛出异常时，该操作类型会接收异常信息，并根据异常信息调用自定义Action来处理异常。
  - SwitchTask：当一个任务A需要调用另一个任务B中指定Action来完成时，那么，该操作类型会自动将任务B中的Action加入到任务A中，并调用任务B中的Action。
 
-说明：TPP允许开发者自定义操作类型，具体请参考[Operator接口](../../../../touchpoint-protocol/src/java/com/universe/touchpoint/layer/Operator.java)。
+说明：TPP允许开发者自定义操作类型，具体请参考[Operator接口](../../../../blob/master/touchpoint-protocol/src/main/java/com/universe/touchpoint/layer/Operator.java)。
