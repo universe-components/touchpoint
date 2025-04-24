@@ -8,7 +8,7 @@ The Touchpoint Protocol (TPP) is a collaboration communication protocol between 
 
 The TPP protocol adheres to the philosophy of "Anything is Action", redefining Agent Collaboration, achieving a truly adaptive multi-agent collaboration model.
 
-- **The Gear Model**: TPP breaks away from traditional block-based programming by abandoning the complex, multi-interface definitions it relies on. Instead, it uses a unified interface. Through a system — where the Lifecycle drives the Operator, and the Operator drives the Action, it forms a mechanism similar to gears in a watch. This structure enables the construction of a fully adaptive multi-agent system, where components interconnected and respond seamlessly to changes.
+- **The Gear Model**: TPP breaks away from traditional block-based programming by abandoning the complex, multi-interface definitions it relies on. Instead, it uses a unified interface. Through a system — where the Lifecycle drives operators, and the Operator drives actions, it forms a mechanism similar to gears in a watch. This structure enables the construction of a fully adaptive multi-agent system, where components interconnected and respond seamlessly to changes.
 
 - **Context-Role Driven Model**: Through the context-role driven model, multi-agents can autonomously adjust and optimize their collaboration relationships based on different scenarios and environments at runtime, without requiring human intervention.
 
