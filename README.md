@@ -45,7 +45,7 @@ The TPP protocol adheres to the philosophy of "Anything is Action", redefining A
 ## Architecture
 
 <div align="center">
-  <img src="architecture.jpg" alt="Architecture" />
+  <img src="./docs/design/images/gear_model.png" alt="Architecture" />
 </div>
 
 ## Getting Started
